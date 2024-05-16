@@ -45,6 +45,7 @@
       health: hero.vitality * 20,
       armor: 0,
       damage: [0, 0],
+      weight: 0,
       stamina: hero.endurance * 20,
       undistributedPoints: AVAILABLE_ATTR_POINTS - (hero.vitality + hero.endurance + hero.strength + hero.dexterity) + INIT_POINTS * 4,
       undistributedMasteryPoints: AVAILABLE_MASTERY_POINTS - masteryTiers.reduce((p, c) => p + c, 0)
@@ -69,6 +70,7 @@
 
       let itemDamage = item.damage ?? [0, 0];
       stats.armor += item.armor ?? 0;
+      stats.weight += item.weight ?? 0;
 
       for(const mod of item.modifiers) {
         if(mods[mod.stat]) {
@@ -186,7 +188,7 @@
     <div class="sm:col-span-3">
       <div class="px-4 sm:px-0 min-h-20">
         <h3 class="text-base font-semibold leading-7 text-gray-900">Gear</h3>
-        <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-500">Select your equipment</p>
+        <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-500">Choose your equipment</p>
       </div>
       <div class="bg-gray-100 p-5 rounded-lg my-6">
         <div class="flex gap-5 justify-center mb-5">
@@ -216,7 +218,7 @@
     <div class="sm:col-span-1">
       <div class="px-4 sm:px-0 min-h-20">
         <h3 class="text-base font-semibold leading-7 text-gray-900">Modifiers</h3>
-        <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-500">Affixes affecting your stats</p>
+        <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-500">What is affecting your stats?</p>
       </div>
       <dl class="divide-y divide-gray-100">
       {#each Object.entries($modifiers) as [p, m]}
@@ -267,6 +269,10 @@
           <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
             <dt class="text-sm font-medium leading-6 text-gray-900">Armor</dt>
             <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{$heroStats.armor}</dd>
+          </div>
+          <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+            <dt class="text-sm font-medium leading-6 text-gray-900">Weight</dt>
+            <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{$heroStats.weight}</dd>
           </div>
         </dl>
       </div>

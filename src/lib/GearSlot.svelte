@@ -3,6 +3,7 @@
   import { fly } from 'svelte/transition';
 	import { sineOut } from 'svelte/easing';
 	import { state } from './state';
+	import { onMount } from 'svelte';
 
   export let type: string;
   export let item: Item | null = null; 
@@ -13,27 +14,52 @@
 
   $: availableItems = $state.items.filter(i => allowedGroups.includes(i.group));
 
+  function selectItem(itm: Item | null) {
+    showMenu = false;
+    item = itm;
+  }
+
   function toggleMenu() {
     showMenu = !showMenu;
+  }
 
+  function closeMenu() {
     if(showMenu) {
-      document.body.addEventListener('pointerup', toggleMenu);
-    } else {
-      document.body.removeEventListener('pointerup', toggleMenu);
+      showMenu = false;
     }
   }
+
+  onMount(() => {
+    document.body.addEventListener('pointerup', closeMenu);
+
+    return () => {
+      document.body.removeEventListener('pointerup', closeMenu);
+    }
+  })
 </script>
 
-<div class="relative block min-w-48 p-6 bg-white border border-gray-200 rounded-md shadow hover:ring-2 hover:ring-inset hover:ring-indigo-600">
+<div class="relative">
+<button 
+  type="button" 
+  class="min-w-48 p-6 bg-white border text-left border-gray-200 rounded-md shadow hover:ring-2 hover:ring-inset hover:ring-indigo-600"
+  aria-expanded={showMenu} 
+  on:click={toggleMenu}
+>
   {#if item}
   <p class="text-sm leading-5 text-gray-500">{type}</p>
   {item.name}
 
+  {#if item.damage}
+  <p class="text-sm">
+    {item.damage[0]}-{item.damage[1]} ({Math.round((item.damage[0] + item.damage[1]) / 2)})
+  </p>
+  {/if}
+
   <dl class="divide-y divide-gray-100 my-3">
     {#each item.modifiers as m}
-    <div class="sm:grid sm:grid-cols-2 sm:gap-4 sm:px-0">
-      <dt class="text-xs font-medium leading-6 text-gray-900">{m.stat}</dt>
-      <dd class="mt-1 text-xs leading-6 text-gray-700 sm:col-span-1 sm:mt-0">
+    <div class="py-1 sm:grid sm:grid-cols-2 sm:gap-4 sm:px-0">
+      <dt class="text-sm font-medium leading-6 text-gray-900">{m.stat}</dt>
+      <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-1 sm:mt-0">
         {#if m.value > 1}+{/if}
         {#if m.type === 'flat'}
           {m.value}
@@ -48,60 +74,53 @@
   {:else}
   <p class="text-md leading-5 text-gray-500 text-center">{type}</p>
   {/if}
+</button>
 
-  <hr class="my-3">
 
-  <button type="button" class="flex w-full items-center gap-x-1 justify-center text-sm font-semibold leading-6 text-gray-900" aria-expanded={showMenu} on:click={toggleMenu}>
-    <span>Select</span>
-    <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-      <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
-    </svg>
-  </button>
-
-  {#if showMenu}
-  <div 
-    class="absolute left-1/2 -translate-x-1/2 z-10 mt-5 flex px-4" 
-    transition:fly={{ duration: 200, y: 5, opacity: 0, easing: sineOut }}
-    >
-    <div class="w-screen max-w-md flex-auto overflow-hidden rounded-3xl bg-white text-sm leading-6 shadow-lg ring-1 ring-gray-900/5">
-      <div class="p-4">
-        {#if availableItems.length > 0}
-          <button type="button" class="relative text-left w-full flex gap-x-6 rounded-lg p-4 hover:bg-gray-50" on:click={() => item = null}>
-            <div class="mt-1 flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-gray-50 group-hover:bg-white">
-              <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368"><path d="M440-183v-274L200-596v274l240 139Zm80 0 240-139v-274L520-457v274Zm-80 92L160-252q-19-11-29.5-29T120-321v-318q0-22 10.5-40t29.5-29l280-161q19-11 40-11t40 11l280 161q19 11 29.5 29t10.5 40v318q0 22-10.5 40T800-252L520-91q-19 11-40 11t-40-11Zm200-528 77-44-237-137-78 45 238 136Zm-160 93 78-45-237-137-78 45 237 137Z"/></svg>
+{#if showMenu}
+<div 
+  class="absolute left-1/2 -translate-x-1/2 z-10 mt-5 flex px-4" 
+  transition:fly={{ duration: 200, y: 5, opacity: 0, easing: sineOut }}
+  >
+  <div class="w-screen max-w-md flex-auto overflow-hidden rounded-3xl bg-white text-sm leading-6 shadow-lg ring-1 ring-gray-900/5">
+    <div class="p-4">
+      {#if availableItems.length > 0}
+        <button type="button" class="relative text-left w-full flex gap-x-6 rounded-lg p-4 hover:bg-gray-50" on:click={() => selectItem(null)}>
+          <div class="mt-1 flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-gray-50 group-hover:bg-white">
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368"><path d="M440-183v-274L200-596v274l240 139Zm80 0 240-139v-274L520-457v274Zm-80 92L160-252q-19-11-29.5-29T120-321v-318q0-22 10.5-40t29.5-29l280-161q19-11 40-11t40 11l280 161q19 11 29.5 29t10.5 40v318q0 22-10.5 40T800-252L520-91q-19 11-40 11t-40-11Zm200-528 77-44-237-137-78 45 238 136Zm-160 93 78-45-237-137-78 45 237 137Z"/></svg>
+          </div>
+          <div>
+            <div class="font-semibold text-gray-900">
+              No Item
+              <span class="absolute inset-0"></span>
             </div>
-            <div>
-              <div class="font-semibold text-gray-900">
-                No Item
-                <span class="absolute inset-0"></span>
-              </div>
-              <p class="mt-1 text-gray-600">Empty Slot</p>
+            <p class="mt-1 text-gray-600">Empty Slot</p>
+          </div>
+        </button>
+        {#each availableItems as itm}
+        <button 
+          type="button" 
+          class="relative text-left w-full flex gap-x-6 rounded-lg p-4 hover:bg-gray-50" 
+          on:click={() => selectItem(itm)} 
+          class:bg-gray-100={itm === item}>
+          <div class="mt-1 flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-gray-50 group-hover:bg-white">
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368"><path d="M440-183v-274L200-596v274l240 139Zm80 0 240-139v-274L520-457v274Zm-80 92L160-252q-19-11-29.5-29T120-321v-318q0-22 10.5-40t29.5-29l280-161q19-11 40-11t40 11l280 161q19 11 29.5 29t10.5 40v318q0 22-10.5 40T800-252L520-91q-19 11-40 11t-40-11Zm200-528 77-44-237-137-78 45 238 136Zm-160 93 78-45-237-137-78 45 237 137Z"/></svg>
+          </div>
+          <div>
+            <div class="font-semibold text-gray-900">
+              {itm.name}
+              <span class="absolute inset-0"></span>
             </div>
-          </button>
-          {#each availableItems as itm}
-          <button 
-            type="button" 
-            class="relative text-left w-full flex gap-x-6 rounded-lg p-4 hover:bg-gray-50" 
-            on:click={() => item = itm} 
-            class:bg-gray-100={itm === item}>
-            <div class="mt-1 flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-gray-50 group-hover:bg-white">
-              <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368"><path d="M440-183v-274L200-596v274l240 139Zm80 0 240-139v-274L520-457v274Zm-80 92L160-252q-19-11-29.5-29T120-321v-318q0-22 10.5-40t29.5-29l280-161q19-11 40-11t40 11l280 161q19 11 29.5 29t10.5 40v318q0 22-10.5 40T800-252L520-91q-19 11-40 11t-40-11Zm200-528 77-44-237-137-78 45 238 136Zm-160 93 78-45-237-137-78 45 237 137Z"/></svg>
-            </div>
-            <div>
-              <div class="font-semibold text-gray-900">
-                {itm.name}
-                <span class="absolute inset-0"></span>
-              </div>
-              <p class="mt-1 text-gray-400 font-bold">{itm.type}</p>
-              <p class="mt-1 text-gray-600">{itm.description}</p>
-            </div>
-          </button>
-          {/each}
-        {:else}
-        <p class="mt-1 text-gray-600 italic">No items available</p>
-        {/if}
-      </div>
+            <p class="mt-1 text-gray-400 font-bold">{itm.type}</p>
+            <p class="mt-1 text-gray-600">{itm.description}</p>
+          </div>
+        </button>
+        {/each}
+      {:else}
+      <p class="mt-1 text-gray-600 italic">No items available</p>
+      {/if}
     </div>
   </div>
-  {/if}
+</div>
+{/if}
 </div>
