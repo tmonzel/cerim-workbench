@@ -1,4 +1,64 @@
 {
+  "maxLevel": 30,
+
+  "attributePointsPerLevel": 3,
+  "masteryPointsPerLevel": 1,
+  
+  "attributes": {
+    "vitality": {
+      "name": "Vitality",
+      "initialValue": 12,
+      "modifiers": [
+        {
+          "property": "health",
+          "span": [40, 1],
+          "rate": -0.1
+        }
+      ]
+    },
+
+    "endurance": {
+      "name": "Endurance",
+      "initialValue": 0,
+      "modifiers": [
+        {
+          "property": "stamina",
+          "span": [40, 1],
+          "rate": -0.1
+        }
+      ]
+    },
+
+    "strength": {
+      "name": "Strength",
+      "initialValue": 0,
+      "modifiers": [
+        {
+          "property": "poise",
+          "span": [5, 1],
+          "rate": -0.1
+        },
+        {
+          "property": "equipLoad",
+          "span": [5, 1],
+          "rate": -0.1
+        }
+      ]
+    },
+
+    "dexterity": {
+      "name": "Dexterity",
+      "initialValue": 0,
+      "modifiers": [
+        {
+          "property": "speed",
+          "span": [20, 1],
+          "rate": -0.1
+        }
+      ]
+    }
+  },
+  
   "masteries": [
     {
       "name": "Melee Weapon Master",
@@ -30,17 +90,135 @@
       ]
     }
   ],
-  
-  "items": [
-    {
+
+  "baseItems": {
+    "boarskinLeatherHat": {
       "name": "Boarskin Leather Hat",
       "type": "Leather Helmet",
       "group": "helmets",
       "tags": ["armor"],
       "weight": 5,
       "armor": 10,
+      "poise": 5,
       "description": "Any coward can forge a helmet out of metal. For the Boarkskin, true glory comes from the wearing of flesh.",
-      "requiredLevel": 11,
+      "requiredLevel": 11
+    },
+
+    "cerimHood": {
+      "name": "Cerim Hood",
+      "type": "Mesh Helmet",
+      "group": "helmets",
+      "tags": ["armor"],
+      "weight": 5,
+      "armor": 10,
+      "poise": 5,
+      "description": "A protective hood stitched by the Cerim, imbued with the words of the Sayer.",
+      "requiredLevel": 1
+    },
+
+    "druidsEye": {
+      "name": "Druid’s Eye",
+      "type": "Cloth Helmet",
+      "group": "helmets",
+      "tags": ["armor"],
+      "armor": 10,
+      "weight": 3,
+      "poise": 5,
+      "description": "Who wears this helmet shall see beyond the now, into the age of trees.",
+      "requiredLevel": 1
+    },
+
+    "cerimCloak": {
+      "name": "Cerim Cloak",
+      "type": "Mesh Body Armor",
+      "group": "bodyArmors",
+      "tags": ["armor"],
+      "weight": 15,
+      "armor": 140,
+      "poise": 10,
+      "description": "A traditional cloak made by the Cerim, imbued with the words of the Sayer.",
+      "requiredLevel": 1
+    },
+
+    "helmsmansJacket": {
+      "name": "Helmsman’s Jacket",
+      "type": "Leather Body Armor",
+      "group": "bodyArmors",
+      "tags": ["armor"],
+      "weight": 23,
+      "armor": 140,
+      "poise": 10,
+      "description": "The faded coat of a middle ranking seaman - likely stolen and traded by pirates.",
+      "requiredLevel": 1,
+      "modifiers": []
+    },
+
+    "holyPrisonerRags": {
+      "name": "Holy Prisoner Rags",
+      "type": "Cloth Body Armor",
+      "group": "bodyArmors",
+      "tags": ["armor"],
+      "weight": 20,
+      "armor": 140,
+      "poise": 10,
+      "description": "A filthy, ragged cape belonging to one who formerly lived and worked in the Nameless Pass.",
+      "requiredLevel": 1
+    },
+
+    "cerimGloves": {
+      "name": "Cerim Gloves",
+      "type": "Mesh Gloves",
+      "group": "gloves",
+      "tags": ["armor"],
+      "weight": 4,
+      "armor": 15,
+      "poise": 2,
+      "description": "A pair of gloves crafted by the Cerim, imbued with the words of the sayer.",
+      "requiredLevel": 1
+    },
+
+    "huntersAxe": {
+      "name": "Hunter’s Axe",
+      "type": "One Handed Axe",
+      "group": "axes",
+      "weight": 6,
+      "attackSpeed": 1.2,
+      "tags": ["melee"],
+      "damage": [10, 20],
+      "description": "A simple axe carried by hunters to make a fast shelter or a faster kill.",
+      "requiredLevel": 1,
+      "scaling": [
+        {
+          "attr": "dexterity",
+          "span": [5, 1],
+          "rate": -0.1
+        }
+      ]
+    },
+
+    "answeredPrayer": {
+      "name": "Answered Prayer",
+      "type": "One Handed Bow",
+      "group": "bows",
+      "weight": 5,
+      "aps": 1.5,
+      "tags": ["ranged"],
+      "damage": [5, 15],
+      "description": "-",
+      "requiredLevel": 1,
+      "scaling": [
+        {
+          "attr": "dexterity",
+          "span": [8, 1],
+          "rate": -0.1
+        }
+      ]
+    }
+  },
+  
+  "items": [
+    {
+      "base": "boarskinLeatherHat",
       "tier": 3,
       "modifiers": [
         {
@@ -52,62 +230,35 @@
       ]
     },
     {
-      "name": "Cerim Hood",
-      "type": "Mesh Helmet",
-      "group": "helmets",
-      "tags": ["armor"],
-      "weight": 5,
-      "armor": 10,
-      "description": "A protective hood stitched by the Cerim, imbued with the words of the Sayer.",
-      "requiredLevel": 1,
+      "base": "cerimHood",
       "modifiers": []
     },
   
     {
-      "name": "Druid’s Eye",
-      "type": "Cloth Helmet",
-      "group": "helmets",
-      "tags": ["armor"],
-      "protection": 10,
-      "weight": 3,
-      "description": "Who wears this helmet shall see beyond the now, into the age of trees.",
-      "requiredLevel": 1,
+      "base": "druidsEye",
       "modifiers": []
     },
 
     {
-      "name": "Cerim Cloak",
-      "type": "Mesh Body Armor",
-      "group": "bodyArmors",
-      "tags": ["armor"],
-      "weight": 15,
-      "armor": 140,
-      "description": "A traditional cloak made by the Cerim, imbued with the words of the Sayer.",
-      "requiredLevel": 1,
+      "base": "cerimCloak",
+      "name": "Healthy Cerim Cloak",
+      "modifiers": [
+        {
+          "tier": 1,
+          "stat": "health",
+          "operation": "multiply",
+          "value": 1.5
+        }
+      ]
+    },
+  
+    {
+      "base": "helmsmansJacket",
       "modifiers": []
     },
   
     {
-      "name": "Helmsman’s Jacket",
-      "type": "Leather Body Armor",
-      "group": "bodyArmors",
-      "tags": ["armor"],
-      "weight": 23,
-      "armor": 140,
-      "description": "The faded coat of a middle ranking seaman - likely stolen and traded by pirates.",
-      "requiredLevel": 1,
-      "modifiers": []
-    },
-  
-    {
-      "name": "Holy Prisoner Rags",
-      "type": "Cloth Body Armor",
-      "group": "bodyArmors",
-      "tags": ["armor"],
-      "weight": 20,
-      "armor": 140,
-      "description": "A filthy, ragged cape belonging to one who formerly lived and worked in the Nameless Pass.",
-      "requiredLevel": 1,
+      "base": "holyPrisonerRags",
       "modifiers": [
         {
           "stat": "stamina",
@@ -118,14 +269,7 @@
     },
 
     {
-      "name": "Cerim Gloves",
-      "type": "Mesh Gloves",
-      "group": "gloves",
-      "tags": ["armor"],
-      "weight": 4,
-      "armor": 15,
-      "description": "A pair of gloves crafted by the Cerim, imbued with the words of the sayer.",
-      "requiredLevel": 1,
+      "base": "cerimGloves",
       "modifiers": [
         {
           "stat": "attackSpeed",
@@ -135,42 +279,22 @@
           "stat": "stamina",
           "type": "flat",
           "value": 10
+        },
+        {
+          "stat": "resistances",
+          "type": "flat",
+          "value": 15
         }
       ]
     },
 
     {
-      "name": "Hunter’s Axe",
-      "type": "One Handed Axe",
-      "group": "axes",
-      "weight": 6,
-      "attackSpeed": 1.2,
-      "tags": ["melee"],
-      "damage": [10, 20],
-      "description": "A simple axe carried by hunters to make a fast shelter or a faster kill.",
-      "requiredLevel": 1,
+      "base": "huntersAxe",
       "modifiers": []
     },
 
     {
-      "name": "Answered Prayer",
-      "type": "One Handed Bow",
-      "group": "bows",
-      "weight": 5,
-      "aps": 1.5,
-      "tags": ["ranged"],
-      "damage": [10, 20],
-      "description": "-",
-      "requiredLevel": 1,
-      "scaling": [
-        {
-          "attr": "dexterity",
-          "property": "damage",
-          "curve": "decaying",
-          "range": [1, 30],
-          "base": 3
-        }
-      ],
+      "base": "answeredPrayer",
       "modifiers": []
     }
   ]

@@ -1,18 +1,38 @@
 <script lang="ts">
-	import type { Item } from './types';
+	import { type AttributeState, type DataSchema, type Item } from './types';
   import { fly } from 'svelte/transition';
 	import { sineOut } from 'svelte/easing';
-	import { state } from './state';
-	import { onMount } from 'svelte';
+	import { getContext, onMount } from 'svelte';
+	import { type Readable } from 'svelte/store';
+	import { scaleValue } from '$lib';
 
   export let type: string;
+  export let attributes: AttributeState;
   export let item: Item | null = null; 
   export let allowedGroups: string[] = [];
 
   let showMenu = false;
   let availableItems: Item[] = [];
 
-  $: availableItems = $state.items.filter(i => allowedGroups.includes(i.group));
+  const data = getContext<Readable<DataSchema>>('data');
+
+  $: availableItems = $data.items.filter(i => allowedGroups.includes(i.base?.group));
+
+  $: {
+    if(item && item.base.scaling) {
+      for(const mod of item.base.scaling) {
+        if(item.base.damage && attributes[mod.attr] > 0) {
+          
+          item.damage = [
+            item.base.damage[0] + scaleValue(attributes[mod.attr], mod.span, mod.rate), 
+            item.base.damage[1] + scaleValue(attributes[mod.attr], mod.span, mod.rate)
+          ];
+        } else {
+          item.damage = item.base.damage;
+        }
+      }
+    }
+  }
 
   function selectItem(itm: Item | null) {
     showMenu = false;
@@ -47,10 +67,10 @@
 >
   {#if item}
   <p class="text-sm leading-5 text-gray-500">{type}</p>
-  {item.name}
+  {item.name ?? "Nameless"} ({item.base.name})
 
-  {#if item.damage}
-  <p class="text-sm">
+  {#if item.damage && item.base.damage}
+  <p class="text-sm" class:text-indigo-600={item.damage[0] > item.base.damage[0]}>
     {item.damage[0]}-{item.damage[1]} ({Math.round((item.damage[0] + item.damage[1]) / 2)})
   </p>
   {/if}
@@ -108,11 +128,11 @@
           </div>
           <div>
             <div class="font-semibold text-gray-900">
-              {itm.name}
+              {itm.name ?? "Nameless"} ({itm.base.name})
               <span class="absolute inset-0"></span>
             </div>
-            <p class="mt-1 text-gray-400 font-bold">{itm.type}</p>
-            <p class="mt-1 text-gray-600">{itm.description}</p>
+            <p class="mt-1 text-gray-400 font-bold">{itm.base.type}</p>
+            <p class="mt-1 text-gray-600">{itm.base.description}</p>
           </div>
         </button>
         {/each}

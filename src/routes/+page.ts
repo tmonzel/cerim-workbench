@@ -1,11 +1,12 @@
-import { state } from '$lib/state';
-
 /** @type {import('./$types').PageLoad} */
 export async function load({ fetch }) {
 	const res = await fetch(`./data.json`);
 	const data = await res.json();
 
-	state.set(data);
+	// Resolve item bases
+	for(const i in data.items) {
+		data.items[i].base = data.baseItems[data.items[i].base];
+	}
 
 	return data;
 }
