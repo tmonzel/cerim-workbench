@@ -1,24 +1,22 @@
 import { derived, writable } from 'svelte/store';
-import type { AttributeState, DataSchema, EquipState, StatModifier, StatValues } from './types';
+import type { AttributeState, EquipState, HeroState, StatModifier, StatValues } from './types';
 import { scaleValue } from '$lib';
+import { appState } from './state';
 
-export function useHero(data: DataSchema) {
-  const attributeState: AttributeState = {};
+export function useHero() {
+  const attributes = writable<AttributeState>({});
 
-  for(const [name, schema] of Object.entries(data.attributes)) {
-    attributeState[name] = schema.initialValue;
-  }
+  const state = derived([attributes, appState], (v) => {
+    const attrs = v[0];
+    const app = v[1];
 
-  const attributes = writable<AttributeState>(attributeState);
-
-  const state = derived(attributes, (v) => {
-    const numDistributedPoints = Object.values(v).reduce((p, c) => p + c, 0);
+    const numDistributedPoints = Object.values(attrs).reduce((p, c) => p + c, 0);
     
     return {
-      level: Math.floor(numDistributedPoints / data.attributePointsPerLevel),
-      attributePoints: data.attributePointsPerLevel * data.maxLevel - numDistributedPoints,
-      masteryPoints: data.masteryPointsPerLevel * data.maxLevel
-    };
+      level: Math.floor(numDistributedPoints / app.schema.attributePointsPerLevel),
+      attributePoints: app.schema.attributePointsPerLevel * app.schema.maxLevel - numDistributedPoints,
+      masteryPoints: app.schema.masteryPointsPerLevel * app.schema.maxLevel
+    } as HeroState;
   });
   
   const equip = writable<EquipState>({
@@ -33,9 +31,10 @@ export function useHero(data: DataSchema) {
 
   const modifiers = writable<{ [property: string]: StatModifier }>({});
 
-  const values = derived([attributes, equip], (state) => {
+  const values = derived([attributes, equip, appState], (state) => {
     const attributes = state[0];
     const gear = state[1];
+    const app = state[2];
 
     const stats: StatValues = {
       dps: [0, 0],
@@ -49,7 +48,7 @@ export function useHero(data: DataSchema) {
       stamina: 0
     }
 
-    for(const [name, schema] of Object.entries(data.attributes)) {
+    for(const [name, schema] of Object.entries(app.schema.attributes)) {
       if(!schema.modifiers) {
         continue;
       }

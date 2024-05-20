@@ -7,6 +7,7 @@
   "attributes": {
     "vitality": {
       "name": "Vitality",
+      "flag": "VIT",
       "initialValue": 12,
       "modifiers": [
         {
@@ -19,6 +20,7 @@
 
     "endurance": {
       "name": "Endurance",
+      "flag": "END",
       "initialValue": 0,
       "modifiers": [
         {
@@ -31,6 +33,7 @@
 
     "strength": {
       "name": "Strength",
+      "flag": "STR",
       "initialValue": 0,
       "modifiers": [
         {
@@ -48,6 +51,7 @@
 
     "dexterity": {
       "name": "Dexterity",
+      "flag": "DEX",
       "initialValue": 0,
       "modifiers": [
         {
@@ -101,7 +105,8 @@
       "armor": 10,
       "poise": 5,
       "description": "Any coward can forge a helmet out of metal. For the Boarkskin, true glory comes from the wearing of flesh.",
-      "requiredLevel": 11
+      "requiredLevel": 11,
+      "iconUrl": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAACqUlEQVR4nO2WS4iOURjHfwwjRMQYlyESCwuXhW8xspCRmpKFJJmJ3AcLGpcm2YhQFAukkJDJJbkuLCwsKGOEIXJJmi8i14RB8xk99f90er2X835YqPnX6e095/k/53/Oec5zHmjHf4Y+QDVQDzQBL4Ec8Aq4BxwBqmT3VzEI2At8B9o82idgp3h/jBrgixybgAvAUmA0UAp0AEqADLAWuO0I+QDMKXTizsABOfoBHAWGe3IrdER5IeanU1oB+0X+CMxIr5/FjoCNaclrnMnHFTD5Mu2a+ahLSx4KtCi6K2PsxirQ7sreWjNwWZNbW1mAeOql/GDEeC+daX6FUS2bImZ+oR/QqtUM5HeUOlH+Gdih6O8KdAFGaNVZ2bzXuDcWiXg2ZKwIuKpxEzEsxk934IRs3wBlvgJOijQvZGyVxp4AfT18meCL4pz2FXBdhEyIs2cam+rrDOgPvBNvig8hK+PglmXU/9BzYgvUzbLPiXvOh9gs48GB/gUJN8PFAOB+yK1o9XkbGiKOoFb92z0EnJLtY6AcKAYeqW+9bw6oDfQvVP+hBH434Kts54dk1qdAxzgHc2Vo181FubOqJGxznuR1wGRgn3MUscFYAnyT4QT19XZuh7UhCQJsy4/HZEjLD7HYI8NGBdStgIPZ+KFSQZsP7NfyeU2JKhJl2r58QWHfB6qIwuIjCdMdH1a8eKHaWXGT3oAV+t+QUMQEYYXIc3EnplG+W1uWLzDr5KQmZIJpwBndgEvALD1OeWwS93AaAUVAT+f/mJxM0r+9fFuAFxHB9hbYBYzRw5VTbWlZMjWK5dCy2RLgSqAesMy3GhgJLAduBsTcEL9NR5kaVSErbNGVqogIrlHAVkW/y7tTiIAGx0GjCs4enlyLhZnAee2g+RhfiIh28C/wE+4x8LkPtjjhAAAAAElFTkSuQmCC"
     },
 
     "cerimHood": {
@@ -125,7 +130,8 @@
       "weight": 3,
       "poise": 5,
       "description": "Who wears this helmet shall see beyond the now, into the age of trees.",
-      "requiredLevel": 1
+      "requiredLevel": 1,
+      "iconUrl": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAACV0lEQVR4nO2XT0tVURTFfy+M/hiY0cRqFJSvqElN6gMUNukjlAmKRWVENKxpX6AgcKBE9IfG1jgJAq2HEBUaWgm+gpqZ1sQbG9aBzeHdxzm8pyMXbHh777PW3vece/e9DzbRGiqyDcdWYBD4IhtUbENwFvgEFJFZ7Mx6Ft4BPHAFZ4GLslnF1oD7WttW7ANmVGQFuBVtuf2+DaxqzYw4bcFhYEHCH4FjTdYe15pCnEOtFt8DzEvwLbA3gbMbeC3Ot0ROQ2wBXknoHdBJOnYCU+K+lFY2bkjgH3BAsTfApFvTzO8R1zSu5xbfBfwW2ReY1Pbm+KbxK3MHuSTiB1rHe2nZ45qMFyKNtKGBq9J6nkP6KtJJFzsPTAN/gJp8n6spNxXlTkjLnqZkrIjU7QrEo9em3jnZWoN8aKJbvjWXjFWRwkidln8T6ALuyf8sKxTr0pQstBNIo5BmMn6ItF/+X/nb5HcAc+5q5xQzbFfMOEjD/KWcBmoinZK/KL/Prel3DdjvgD7Fvss/7YZZMh6LNCT/rjvHgWgX/NUPaI2tvaPYkPxHOQ1cE2nMFRt1VzyuwdIv61Qs5EddU2OK2eOYjKMiLUafXFZs2b0ZO2ThDbgcHUfFHd+RnAaqItWbNGcWEHzLxagrZ5rJGBbpaUm+rIFGeKacaSbjiUiX29DAFeVMMwkVt20Tuot7SxoIA6ZRA73iTrjjTPqE79HQiEfrkq4iHE8jG9aaMr5pJ6PqBMOOxOYnX2x113DWDViGg8AF4KG+9eJ74KdeuSN6i677P6Zqye9NkIP/aa/wrUZg1zUAAAAASUVORK5CYII="
     },
 
     "cerimCloak": {
@@ -140,6 +146,18 @@
       "requiredLevel": 1
     },
 
+    "cerimShield": {
+      "name": "Cerim Shield",
+      "type": "Medium Shield",
+      "group": "shields",
+      "tags": ["armor"],
+      "weight": 15,
+      "armor": 140,
+      "poise": 10,
+      "description": "A traditional shield made by the Cerim, imbued with the words of the Sayer.",
+      "iconUrl": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAACA0lEQVR4nO2Wz0tUURTHP41vSiVQ2s2ixezkiW2dwPZWVLSwlViggYF7IxhQkBim/oGC0EWrCIaItq1EkNwYjVOILkxRspBWNZRMXDjB4fLem/t+zG4+cBYz953zvt/749wHXZKRA0aABxIj8l/HuAjcAMrAO+AEaFlxImNledbkJOYZUAM2gB8BLzOxC7yU2A155rvUqElNZ1pW7Im7x8BtoBCQU5CxReAV8BFoWnViCxgCeknOJWAnjYCkeMA88DvtDGgmJNrhA+uqxousBNQlolw/BH5J7ldgPKJepjPgB7geaFMvtgBX11fVuNnA1U4J8C3X5uhdUOMlYCvLTRjX9V8Zr2cpwI/h2gioAOeyEOBZ5/oQuGW5rijX28AVB0Oh6IQ4rk+l5/dH1HOiKQmP1FrvA9ci1rohYmzOyrip6cy+tXuXgUHLdUOtdTXiziiqzerMG0k6SOhac0+eNTWdmZakDxGunwB9Dt1yTXJm4gjoB44k8b7l+jNwOSTPvi/uSM63gI3ZlrvWPjACnga4DpuBYeBnEvea50rAFO4U1YfICinIA++l0DEw5pAzqpZvVTphKvqA11LwD7Agwmw86Rv/e8hb4DwZkQOWrON3EzgjcR34pLqhOSE9dICSdbuZL99N9fuL4zKlwgNmpbO1VMOaC1majpEHJiVMv+9CEv4BtHTs/HtjCy8AAAAASUVORK5CYII="
+    },
+
     "helmsmansJacket": {
       "name": "Helmsman’s Jacket",
       "type": "Leather Body Armor",
@@ -150,7 +168,8 @@
       "poise": 10,
       "description": "The faded coat of a middle ranking seaman - likely stolen and traded by pirates.",
       "requiredLevel": 1,
-      "modifiers": []
+      "modifiers": [],
+      "iconUrl": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAACU0lEQVR4nO2Wy0tVURTGf4JGXkmisj+gLKlBJCE9iF7kIHMWEdzoMXUoNQ2CQCkbV0YPsEE0qiwqo3BSw0DLSQ26TSoqDApLGuiRBd+GxeFo+9x7hveDBeesvb5vr/1Ye2+oo4582A9UgPdAyflL8lUUUxgagVPAc+AbkDh7CqwD1gPPUm0WOwaclEZV6ADepoQT+aYz/NOLxE8CG/N2vgH4KoE3wDFgNzAP/AVOAw+An+r4vnyzitkLlIEJaXwB2mM7b3QjsU6WubabbrSHnP+wkrG2G85v3Idu5qKWYxUwJdJ4KoGS9kOY3kfAY/dv696cSmBcbVPSjsKoE73m/A3A7Yx1DnZLMQHDrs1mIgoHRPgN/NKaHgV6gSeurQe4IuuRL1FMrzjz0ghtUSV6R8EDQH/GKK3EDmbwzPc9I940BvU9EpPAJwXvAppcydmOPg+0LcFdq5gJl2yTtOz/Y0wC/xR8FdijsrP/1cSjTRyrjH3SSqT9Xwxp7dJT2ZIjgZUZfNO8FCvQpR38DpirIoE14syp/oelWRUmJbYpB2eb2zc1457EjuTgnBDnbhEJnJPY9RycEXGMWzN2SOwHsD0ivsuV7s4iEtia2sl2TB8HNgOtwAp9l3V5hU1rtqWIBM5K7AMws8Q9EGxGsfZ9pogExiRW1m3Wp5Ha8+uPrKI3QZ9iyuLYS6kmLHcn4VDqql0MzYpNxDWNqtGg0yucjJ8l3q23YIusXb7Lev2EQ+hi6nquqRJeR6x/sFeRFZMbncAF4KVGOiuz7xdqs6qpow5isQDX8e6MVaawjAAAAABJRU5ErkJggg=="
     },
 
     "holyPrisonerRags": {
@@ -174,7 +193,21 @@
       "armor": 15,
       "poise": 2,
       "description": "A pair of gloves crafted by the Cerim, imbued with the words of the sayer.",
-      "requiredLevel": 1
+      "requiredLevel": 1,
+      "iconUrl": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAABk0lEQVR4nO2VvUoDQRSFP1CyQsAnyBMooqIoClrY+BraWwgW1v7H+BBiZRMLf9MrgrVoZSNIjBoRhBR2KwsnsCy7mPnJpvHAZffO3HPv2bmzM/APO/QBZeBDtqex3LAFhAnb7GbBArAPvAIvQEtFZ4BZvbc0V9eKRBxvKKd8cWRkjEe261NAPeWL0wTE5yOON4SxgiZ+w1dLQksB3loSZiz5X763loSWAtJ8ZwGmfs8FYCIgACravQ0dPkGeLaik7N5angIaCpwExnXR+OihsYBR+SMJERFugZsYpxO/YwHl2Ak2lCICJb+OcTrxjTZhTcFvwHBChC2MWjgAXInwruJtEbkIQBfHqUhfwAT2GFSeb1NiAFyI3ATGLAUsKMedDTkAzpXgU7+mKS7FX8MSBeBMSe4NuaviPQNFHLCiRIeGvCPx1nHEiRItGfKWxau6Cmgq0ZOSbQBzQH8iLvLnNV9VfHsTOyHMsOic2NZvuiM/K9YZAVACFnVrPmQUegQOFFcSr2uYAo6BHz2n6RGKvSrsjF8UYPq4qCSU4wAAAABJRU5ErkJggg=="
+    },
+
+    "cerimBoots": {
+      "name": "Cerim Boots",
+      "type": "Mesh Boots",
+      "group": "boots",
+      "tags": ["armor"],
+      "weight": 4,
+      "armor": 15,
+      "poise": 2,
+      "description": "A pair of boots crafted by the Cerim, imbued with the words of the sayer.",
+      "requiredLevel": 1,
+      "iconUrl": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAAB2klEQVR4nO2WzyumURTHP34XptCsLIc0iYWFzQizHBYSkSyk1GQ9ViKksLFWZCeZjZUFf4KaoogIsaBMLzUhZkKvbn2fuj0987qP99q937qLe57vOfd7z3PvORcyyCA+soE6YAhYBraAS+ABSAJlvAM+AH3ATyChhaLGne+dfgNWgPvQQpcSMwJ0Ad2y7/sUcBRa9JfSXgNkhbit4mz43H0SeAImgKpX+IPiL/gSUKCAN478afHHfAkojjhgqbAkjsmEF5TGFLAuTocvAeUKeOrI3xS/yZeAWgU0RcYFx+J/9iWgKeYvuBbnoy8BfTEF/BXHVEwvmFXA7478XZ+HMA84U8BhzVPBlOsD8Q+BonQFVAJ7VupPgH4g1+LkAD3AtsUz52ASKMFTKe61dpZUb4jqE+fADxUv49emrBSmI+CLUpkTOpABgvkAkC9beyhzD2pOnRHNy6mw/Lbu9YWCNmgEO7dhflGj+sJT6Aatqr84IyHHCs1nIq7l1H98x/X9FhgFrjSfjyPgUU5BevMl4kI7n7K+2fgE/AOegRbZqvVSeo5TKf9IgGlKb6kfpjvamJPdZMQJe3KojylgR35fQ/Ze2ddcAy2meHimMxKuN6L5nQQkVegyyIAAL/4MyC/mHi/YAAAAAElFTkSuQmCC"
     },
 
     "huntersAxe": {
@@ -204,7 +237,6 @@
       "aps": 1.5,
       "tags": ["ranged"],
       "damage": [5, 15],
-      "description": "-",
       "requiredLevel": 1,
       "scaling": [
         {
@@ -213,6 +245,34 @@
           "rate": -0.1
         }
       ]
+    },
+
+    "eternalCompanion": {
+      "name": "Eternal Companion",
+      "type": "Two Handed Great Hammer",
+      "group": "hammers",
+      "tags": ["melee"],
+      "weight": 15,
+      "damage": [25, 45],
+      "requiredLevel": 1,
+      "scaling": [
+        {
+          "attr": "strength",
+          "span": [8, 1],
+          "rate": -0.1
+        }
+      ]
+    },
+
+    "basicSword": {
+      "name": "Basic Sword",
+      "type": "One Handed Sword",
+      "group": "swords",
+      "tags": ["melee"],
+      "weight": 15,
+      "damage": [25, 45],
+      "requiredLevel": 1,
+      "iconUrl": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAABn0lEQVR4nO2VvUpDQRSEP4xKGk06a0VJGjut/MEf8A2sUgQiaCx8AhsNCKKgtr6ANukUo88QO4OIdRqjgggWKhJZmAuHJYXFbhozsHDZgTtzz5lzLvTwzzACpLshNAUUgF3gHLgF3oG2TETFhoQ6HWciKhaBL4lVgQpQBLZ05yoRDaPAs4QOPK6o+7NY4sNAQyI1IOXxFXE7McRTwLUEGjLjoyreBTM4TvRyV/6xDuYOTQinQ4uv68WfwLzHuUpcinfBLIcWn5NwW6Nn4SpxJ+4VWI6R+JYEjj1uBngS9wjkQ4sPma+7AfoNt2aq4rhsaPE+4EICD0bAhW3fhO0UGAglugpM6vnI9HVcdxnNfhI2F8ygq/Vb/d4zIkvinYl73b8ACwTGoCl5cjbFzZogurDliIQ88COhD7WjbH46V2pDFGTMjn8zJtpmBP29HwRZjVey412fJ4yJtjIRBTmgCdTNjl8xYUva0TLTERQFI+ImYNv85xvKRE2cG9EoKHkmks2WhC2tEY2KkjFR91Zu11CSiWaMvf5XFGIumR56+AULCoiUJC3RKwAAAABJRU5ErkJggg=="
     }
   },
   
@@ -289,12 +349,34 @@
     },
 
     {
+      "base": "cerimBoots",
+      "modifiers": []
+    },
+
+    {
+      "base": "cerimShield",
+      "modifiers": []
+    },
+
+    {
+      "base": "basicSword",
+      "name": "Cerim Sword",
+      "modifiers": []
+    },
+
+    {
       "base": "huntersAxe",
+      "name": "Nailbiter",
       "modifiers": []
     },
 
     {
       "base": "answeredPrayer",
+      "modifiers": []
+    },
+
+    {
+      "base": "eternalCompanion",
       "modifiers": []
     }
   ]

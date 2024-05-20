@@ -1,5 +1,3 @@
-// place files you want to import through the `$lib` alias in this folder.
-
 export function scaleValue(value: number, span: number[] = [1, 1], rate: number = -0.01) {
   let v = 0;
 

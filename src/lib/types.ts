@@ -8,16 +8,23 @@ export type DataSchema = {
 
   masteries: Mastery[];
   baseItems: { [id: string]: BaseItem };
-  items: Item[];
+  items?: ItemSchema[];
 }
 
 export type AttributeSchema = {
   name: string;
   initialValue: number;
+  flag: string;
   modifiers: StatModifier[];
 }
 
 export type AttributeState = { [name: string]: number }
+
+export type HeroState = {
+  level: number;
+  attributePoints: number;
+  masteryPoints: number;
+}
 
 export type StatValues = {
   [name: string]: number | number[];
@@ -45,10 +52,19 @@ export type BaseItem = {
   description?: string;
   requiredLevel: number;
   scaling?: ItemScaling[];
+  iconUrl?: string;
 }
 
 export type Item = {
   base: BaseItem;
+  name: string;
+  tier: number;
+  modifiers: ItemModifier[];
+  damage?: number[];
+}
+
+export type ItemSchema = {
+  base: string;
   name: string;
   tier: number;
   modifiers: ItemModifier[];

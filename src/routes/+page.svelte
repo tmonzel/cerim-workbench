@@ -7,6 +7,7 @@
 	import MasteryControl from '$lib/MasteryControl.svelte';
 	import { setContext } from 'svelte';
 	import { useHero } from '$lib/hero';
+	import { appState, loadData } from '$lib/state';
 
 	export let data: DataSchema;
 
@@ -15,16 +16,33 @@
     attributes, 
     equip, 
     modifiers, 
-    values 
-  } = useHero(data);
+    values
+  } = useHero();
 
-  function loadData(data: DataSchema): void {
-
+  $: {
+    for(const [name, schema] of Object.entries($appState.schema.attributes)) {
+      $attributes[name] = schema.initialValue;
+    }
   }
 
-  export const dataState = writable<DataSchema>(data);
+  setContext('attributes', attributes);
+  setContext('state', state);
 
-  setContext('data', dataState);
+  loadData(data);
+
+  function importData() {
+    let input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'application/JSON';
+    input.onchange = async(_) => {
+      let files = Array.from(input.files!);
+      let text = await files[0].text();
+
+      loadData(JSON.parse(text));
+    };
+
+    input.click();
+  }
 
   const selectedMasteryTiers = writable([]);
 </script>
@@ -46,6 +64,13 @@
       <h3 class="text-lg">Mastery Points</h3>
       <p class="mt-2 text-5xl">{$state.masteryPoints}</p>
     </div>
+
+    <div class="ml-auto">
+      <button type="button" on:click={importData} 
+          class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800">
+        <span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">Import</span>
+      </button>
+    </div>
   </div>
 
   <hr class="my-8">
@@ -54,9 +79,9 @@
     <div class="sm:col-span-1">
       <div class="px-4 sm:px-0 min-h-20">
         <h3 class="text-base font-semibold leading-7 text-gray-900">Attributes</h3>
-        <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-500">Distribute your attribute points</p>
+        <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-500">Spend attribute points to level up ({data.attributePointsPerLevel})</p>
       </div>
-      {#each Object.entries(data.attributes) as [name, attr]}
+      {#each Object.entries($appState.schema.attributes) as [name, attr]}
       <div class="mb-4">
         <AttributeControl 
           label={attr.name}
@@ -73,24 +98,24 @@
       </div>
       <div class="bg-gray-100 p-5 rounded-lg my-6">
         <div class="flex gap-5 justify-center mb-5">
-          <GearSlot type="Head" attributes={$attributes} bind:item={$equip.head} allowedGroups={['helmets']} />
-          <GearSlot type="Neck" attributes={$attributes} allowedGroups={['amulets']} />
+          <GearSlot type="Head" bind:item={$equip.head} allowedGroups={['helmets']} />
+          <GearSlot type="Neck" allowedGroups={['amulets']} />
         </div>
         <div class="flex gap-5 justify-center mb-5">
-          <GearSlot type="MainHand" attributes={$attributes} bind:item={$equip.mainHand} allowedGroups={['axes', 'bows']} />
-          <GearSlot type="Chest" attributes={$attributes} bind:item={$equip.chest} allowedGroups={['bodyArmors']} />
-          <GearSlot type="OffHand" attributes={$attributes} bind:item={$equip.offHand} allowedGroups={['shields']} />
+          <GearSlot type="MainHand" bind:item={$equip.mainHand} allowedGroups={['axes', 'bows', 'hammers', 'swords']} />
+          <GearSlot type="Chest" bind:item={$equip.chest} allowedGroups={['bodyArmors']} />
+          <GearSlot type="OffHand" bind:item={$equip.offHand} allowedGroups={['shields']} />
         </div>
         <div class="flex gap-5 justify-center mb-5">
-          <GearSlot type="Legs" attributes={$attributes} bind:item={$equip.legs} allowedGroups={['pants']} />
-          <GearSlot type="Hand" attributes={$attributes} bind:item={$equip.hand} allowedGroups={['gloves']} />
+          <GearSlot type="Legs" bind:item={$equip.legs} allowedGroups={['pants']} />
+          <GearSlot type="Hand" bind:item={$equip.hand} allowedGroups={['gloves']} />
         </div>
         <div class="flex gap-5 justify-center">
-          <GearSlot type="Feet" attributes={$attributes} bind:item={$equip.feet} allowedGroups={['boots']} />
+          <GearSlot type="Feet" bind:item={$equip.feet} allowedGroups={['boots']} />
         </div>
       </div>
       <div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-3">
-        {#each data.masteries as mastery, i}
+        {#each $appState.schema.masteries as mastery, i}
           <MasteryControl {mastery} bind:tier={$selectedMasteryTiers[i]}/>
         {/each}
       </div>
