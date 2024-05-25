@@ -5,67 +5,205 @@
   "masteryPointsPerLevel": 1,
   
   "attributes": {
-    "vitality": {
+    "vit": {
       "name": "Vitality",
       "flag": "VIT",
       "initialValue": 12,
       "modifiers": [
         {
-          "property": "health",
+          "affects": "health",
           "span": [40, 1],
           "rate": -0.1
         }
       ]
     },
 
-    "endurance": {
+    "end": {
       "name": "Endurance",
       "flag": "END",
       "initialValue": 0,
       "modifiers": [
         {
-          "property": "stamina",
+          "affects": "stamina",
           "span": [40, 1],
           "rate": -0.1
         }
       ]
     },
 
-    "strength": {
+    "str": {
       "name": "Strength",
       "flag": "STR",
       "initialValue": 0,
       "modifiers": [
         {
-          "property": "poise",
+          "affects": "poise",
           "span": [5, 1],
           "rate": -0.1
         },
         {
-          "property": "equipLoad",
+          "affects": "equipLoad",
           "span": [5, 1],
           "rate": -0.1
         }
       ]
     },
 
-    "dexterity": {
+    "dex": {
       "name": "Dexterity",
       "flag": "DEX",
       "initialValue": 0,
       "modifiers": [
         {
-          "property": "speed",
+          "affects": "speed",
           "span": [20, 1],
           "rate": -0.1
         }
+      ]
+    },
+
+    "int": {
+      "name": "Intelligence",
+      "flag": "INT",
+      "initialValue": 0
+    },
+
+    "fth": {
+      "name": "Faith",
+      "flag": "FTH",
+      "initialValue": 0
+    }
+  },
+
+  "scalingRates": {
+    "S": -0.005,
+    "A": -0.01,
+    "B": -0.05,
+    "C": -0.1,
+    "D": -0.15,
+    "E": -0.2
+  },
+
+  "abilities": {
+
+  },
+
+  "modifiers": {
+    "addLightningDamage": {
+      "type": "flat",
+      "affects": "damage",
+      "name": "Add Lightning Damage",
+      "scope": "item",
+      "scaling": {
+        "attr": "int",
+        "span": [2, 1],
+        "rate": -0.05
+      },
+      "values": [
+        [1, 4, 1],
+        [1, 8, 1],
+        [1, 12, 1],
+        [1, 16, 1],
+        [1, 20, 1]
+      ]
+    },
+
+    "increaseDamage": {
+      "type": "percentage",
+      "affects": "damage",
+      "name": "Increase Damage",
+      "scope": "item",
+      "values": [
+        0.1,
+        0.2,
+        0.3,
+        0.4,
+        0.5
+      ]
+    },
+
+    "addFocus": {
+      "type": "flat",
+      "affects": "focus",
+      "name": "Add Focus",
+      "values": [
+        4,
+        8,
+        12,
+        14,
+        15
+      ]
+    },
+
+    "increaseFocus": {
+      "type": "percentage",
+      "affects": "focus",
+      "name": "Increase Focus",
+      "values": [
+        1.2,
+        1.4,
+        1.5,
+        1.6,
+        1.7
+      ]
+    },
+
+    "addStamina": {
+      "name": "Add Stamina",
+      "type": "flat",
+      "affects": "stamina",
+      "values": [
+        4,
+        8,
+        12,
+        14,
+        15
+      ]
+    },
+
+    "increaseCastSpeed": {
+      "type": "percentage",
+      "affects": "castSpeed",
+      "name": "Increased cast speed",
+      "values": [
+        0.1,
+        0.2,
+        0.3,
+        0.4,
+        0.5
+      ]
+    },
+
+    "increaseAttackSpeed": {
+      "type": "percentage",
+      "affects": "attackSpeed",
+      "name": "Increased attack speed",
+      "values": [
+        0.1,
+        0.2,
+        0.3,
+        0.4,
+        0.5
+      ]
+    },
+
+    "increaseHealth": {
+      "type": "percentage",
+      "affects": "health",
+      "name": "Increased health",
+      "values": [
+        0.05,
+        0.1,
+        0.15,
+        0.2,
+        0.25
       ]
     }
   },
   
   "masteries": [
     {
-      "name": "Melee Weapon Master",
+      "name": "Melee Weapons",
       "description": "Specialize in melee weapons which increases your damage output",
       "tiers": [
         {
@@ -73,7 +211,12 @@
           "modifiers": [
             {
               "property": "damage",
-              "type": "percentual",
+              "affectedGroups": ["swords", "axes", "hammers", "daggers"],
+              "value": 1.2
+            },
+
+            {
+              "property": "attackSpeed",
               "affectedGroups": ["swords", "axes", "hammers", "daggers"],
               "value": 1.1
             }
@@ -85,7 +228,12 @@
           "modifiers": [
             {
               "property": "damage",
-              "type": "percentual",
+              "affectedGroups": ["swords", "axes", "hammers", "daggers"],
+              "value": 1.4
+            },
+
+            {
+              "property": "attackSpeed",
               "affectedGroups": ["swords", "axes", "hammers", "daggers"],
               "value": 1.2
             }
@@ -96,6 +244,17 @@
   ],
 
   "baseItems": {
+    "crimsonMedallion": {
+      "name": "Crimson Medallion",
+      "type": "Talisman",
+      "group": "talismans",
+      "tags": ["medallion"],
+      "weight": 0.3,
+      "description": "A primordial life energy resides inside.",
+      "requiredLevel": 1,
+      "iconUrl": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAABIklEQVR4nN3VTytEYRTH8U8pNf4skJ1RFmhSyoadkpdhM2/AytLKSlK8AZmykIUNySuQHVmYndhaKhPybzR1FrdcZsydWYxfnXp6zjnf3zndWw//SRVU0ZeB0R+Mx7TkTSQnMxiMB6PG+qbjSBYzGCwF4zQtuRzJwwwGe8FYSUvm8RYx2gR8GE/4xMRPRfsxwU4TBhvRe/JbUQEvMcXiH+AzsfkH5uoVr8YkD5huAD6Cu+jZbmSaLhxFw32dTWZxG7VnyGlQufjVqnjHARYwhEHMYxevUXOOgUbhyU3W8ByQtKgZbKFbBuWxjosE+BKbGNNiVSPaokLCoHZuqXK4Shhco6eVBqWUD1zqKINelBPwcty1VFPx6lXi3BYVMz5IHagvqDdXXz+PYeIAAAAASUVORK5CYII="
+    },
+
     "boarskinLeatherHat": {
       "name": "Boarskin Leather Hat",
       "type": "Leather Helmet",
@@ -197,6 +356,25 @@
       "iconUrl": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAABk0lEQVR4nO2VvUoDQRSFP1CyQsAnyBMooqIoClrY+BraWwgW1v7H+BBiZRMLf9MrgrVoZSNIjBoRhBR2KwsnsCy7mPnJpvHAZffO3HPv2bmzM/APO/QBZeBDtqex3LAFhAnb7GbBArAPvAIvQEtFZ4BZvbc0V9eKRBxvKKd8cWRkjEe261NAPeWL0wTE5yOON4SxgiZ+w1dLQksB3loSZiz5X763loSWAtJ8ZwGmfs8FYCIgACravQ0dPkGeLaik7N5angIaCpwExnXR+OihsYBR+SMJERFugZsYpxO/YwHl2Ak2lCICJb+OcTrxjTZhTcFvwHBChC2MWjgAXInwruJtEbkIQBfHqUhfwAT2GFSeb1NiAFyI3ATGLAUsKMedDTkAzpXgU7+mKS7FX8MSBeBMSe4NuaviPQNFHLCiRIeGvCPx1nHEiRItGfKWxau6Cmgq0ZOSbQBzQH8iLvLnNV9VfHsTOyHMsOic2NZvuiM/K9YZAVACFnVrPmQUegQOFFcSr2uYAo6BHz2n6RGKvSrsjF8UYPq4qCSU4wAAAABJRU5ErkJggg=="
     },
 
+    "arcanistGloves": {
+      "name": "Arcanist Gloves",
+      "type": "Cloth Gloves",
+      "group": "gloves",
+      "tags": ["armor"],
+      "weight": 2,
+      "armor": 5,
+      "poise": 1,
+      "requiredLevel": 1,
+      "scaling": [
+        {
+          "attr": "int",
+          "span": [8, 1],
+          "rate": -0.1
+        }
+      ],
+      "iconUrl": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAABk0lEQVR4nO2VvUoDQRSFP1CyQsAnyBMooqIoClrY+BraWwgW1v7H+BBiZRMLf9MrgrVoZSNIjBoRhBR2KwsnsCy7mPnJpvHAZffO3HPv2bmzM/APO/QBZeBDtqex3LAFhAnb7GbBArAPvAIvQEtFZ4BZvbc0V9eKRBxvKKd8cWRkjEe261NAPeWL0wTE5yOON4SxgiZ+w1dLQksB3loSZiz5X763loSWAtJ8ZwGmfs8FYCIgACravQ0dPkGeLaik7N5angIaCpwExnXR+OihsYBR+SMJERFugZsYpxO/YwHl2Ak2lCICJb+OcTrxjTZhTcFvwHBChC2MWjgAXInwruJtEbkIQBfHqUhfwAT2GFSeb1NiAFyI3ATGLAUsKMedDTkAzpXgU7+mKS7FX8MSBeBMSe4NuaviPQNFHLCiRIeGvCPx1nHEiRItGfKWxau6Cmgq0ZOSbQBzQH8iLvLnNV9VfHsTOyHMsOic2NZvuiM/K9YZAVACFnVrPmQUegQOFFcSr2uYAo6BHz2n6RGKvSrsjF8UYPq4qCSU4wAAAABJRU5ErkJggg=="
+    },
+
     "cerimBoots": {
       "name": "Cerim Boots",
       "type": "Mesh Boots",
@@ -222,9 +400,15 @@
       "requiredLevel": 1,
       "scaling": [
         {
-          "attr": "dexterity",
+          "attr": "dex",
           "span": [5, 1],
-          "rate": -0.1
+          "rate": -0.005
+        },
+
+        {
+          "attr": "int",
+          "span": [2, 1],
+          "rate": -0.005
         }
       ]
     },
@@ -240,7 +424,7 @@
       "requiredLevel": 1,
       "scaling": [
         {
-          "attr": "dexterity",
+          "attr": "dex",
           "span": [8, 1],
           "rate": -0.1
         }
@@ -257,7 +441,7 @@
       "requiredLevel": 1,
       "scaling": [
         {
-          "attr": "strength",
+          "attr": "str",
           "span": [8, 1],
           "rate": -0.1
         }
@@ -273,111 +457,152 @@
       "damage": [25, 45],
       "requiredLevel": 1,
       "iconUrl": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAABn0lEQVR4nO2VvUpDQRSEP4xKGk06a0VJGjut/MEf8A2sUgQiaCx8AhsNCKKgtr6ANukUo88QO4OIdRqjgggWKhJZmAuHJYXFbhozsHDZgTtzz5lzLvTwzzACpLshNAUUgF3gHLgF3oG2TETFhoQ6HWciKhaBL4lVgQpQBLZ05yoRDaPAs4QOPK6o+7NY4sNAQyI1IOXxFXE7McRTwLUEGjLjoyreBTM4TvRyV/6xDuYOTQinQ4uv68WfwLzHuUpcinfBLIcWn5NwW6Nn4SpxJ+4VWI6R+JYEjj1uBngS9wjkQ4sPma+7AfoNt2aq4rhsaPE+4EICD0bAhW3fhO0UGAglugpM6vnI9HVcdxnNfhI2F8ygq/Vb/d4zIkvinYl73b8ACwTGoCl5cjbFzZogurDliIQ88COhD7WjbH46V2pDFGTMjn8zJtpmBP29HwRZjVey412fJ4yJtjIRBTmgCdTNjl8xYUva0TLTERQFI+ImYNv85xvKRE2cG9EoKHkmks2WhC2tEY2KkjFR91Zu11CSiWaMvf5XFGIumR56+AULCoiUJC3RKwAAAABJRU5ErkJggg=="
+    },
+
+    "catTalisman": {
+      "name": "Longtail Cat",
+      "type": "Talisman",
+      "group": "talismans",
+      "weight": 0.6,
+      "iconUrl": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAABIklEQVR4nN3VTytEYRTH8U8pNf4skJ1RFmhSyoadkpdhM2/AytLKSlK8AZmykIUNySuQHVmYndhaKhPybzR1FrdcZsydWYxfnXp6zjnf3zndWw//SRVU0ZeB0R+Mx7TkTSQnMxiMB6PG+qbjSBYzGCwF4zQtuRzJwwwGe8FYSUvm8RYx2gR8GE/4xMRPRfsxwU4TBhvRe/JbUQEvMcXiH+AzsfkH5uoVr8YkD5huAD6Cu+jZbmSaLhxFw32dTWZxG7VnyGlQufjVqnjHARYwhEHMYxevUXOOgUbhyU3W8ByQtKgZbKFbBuWxjosE+BKbGNNiVSPaokLCoHZuqXK4Shhco6eVBqWUD1zqKINelBPwcty1VFPx6lXi3BYVMz5IHagvqDdXXz+PYeIAAAAASUVORK5CYII="
     }
   },
   
   "items": [
     {
-      "base": "boarskinLeatherHat",
-      "tier": 3,
-      "modifiers": [
+      "base": "arcanistGloves",
+      "quality": 0.1,
+      "attributes": [
         {
-          "tier": 1,
-          "stat": "health",
-          "operation": "multiply",
-          "value": 1.5
+          "modifier": "addFocus",
+          "tier": 2
+        },
+        {
+          "modifier": "increaseCastSpeed",
+          "tier": 2
+        }
+      ]
+    },
+    {
+      "base": "catTalisman",
+      "effect": "Renders the wearer immune to Fall Damage"
+    },
+    {
+      "base": "crimsonMedallion",
+      "attributes": [
+        {
+          "modifier": "health",
+          "tier": 1
+        }
+      ]
+    },
+    {
+      "base": "crimsonMedallion",
+      "attributes": [
+        {
+          "modifier": "increaseHealth",
+          "tier": 2
+        }
+      ]
+    },
+    {
+      "base": "boarskinLeatherHat",
+      "attributes": [
+        {
+          "modifier": "increaseHealth",
+          "tier": 1
         }
       ]
     },
     {
       "base": "cerimHood",
-      "modifiers": []
+      "attributes": []
     },
   
     {
       "base": "druidsEye",
-      "modifiers": []
+      "attributes": []
     },
 
     {
       "base": "cerimCloak",
       "name": "Healthy Cerim Cloak",
-      "modifiers": [
+      "attributes": [
         {
-          "tier": 1,
-          "stat": "health",
-          "operation": "multiply",
-          "value": 1.5
+          "modifier": "increaseHealth",
+          "tier": 1
         }
       ]
     },
   
     {
       "base": "helmsmansJacket",
-      "modifiers": []
+      "attributes": []
     },
   
     {
       "base": "holyPrisonerRags",
-      "modifiers": [
+      "attributes": [
         {
-          "stat": "stamina",
-          "type": "flat",
-          "value": 15
+          "modifier": "addStamina",
+          "tier": 2
         }
       ]
     },
 
     {
       "base": "cerimGloves",
-      "modifiers": [
+      "attributes": [
         {
-          "stat": "attackSpeed",
-          "value": 1.2
+          "modifier": "increaseAttackSpeed",
+          "tier": 1
         },
         {
-          "stat": "stamina",
-          "type": "flat",
-          "value": 10
-        },
-        {
-          "stat": "resistances",
-          "type": "flat",
-          "value": 15
+          "modifier": "addStamina",
+          "tier": 1
         }
       ]
     },
 
     {
       "base": "cerimBoots",
-      "modifiers": []
+      "attributes": []
     },
 
     {
       "base": "cerimShield",
-      "modifiers": []
+      "attributes": []
     },
 
     {
       "base": "basicSword",
       "name": "Cerim Sword",
-      "modifiers": []
+      "attributes": []
     },
 
     {
       "base": "huntersAxe",
       "name": "Nailbiter",
-      "modifiers": []
+      "attributes": [
+        {
+          "modifier": "addLightningDamage",
+          "tier": 2
+        },
+        {
+          "modifier": "increaseDamage",
+          "tier": 3
+        }
+      ]
     },
 
     {
       "base": "answeredPrayer",
-      "modifiers": []
+      "attributes": []
     },
 
     {
       "base": "eternalCompanion",
-      "modifiers": []
+      "attributes": []
     }
   ]
 }

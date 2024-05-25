@@ -7,3 +7,11 @@ export function scaleValue(value: number, span: number[] = [1, 1], rate: number 
   
   return Math.round(v);
 }
+
+export function humanize(v: string) {
+  return v
+    .replace(/^[\s_]+|[\s_]+$/g, '')
+    .replace(/[_\s]+/g, ' ')
+    .replace(/([a-z]{1})([A-Z]{1})/g, "$1 $2")
+    .replace(/^[a-z]/, (v) => { return v.toUpperCase(); });
+}

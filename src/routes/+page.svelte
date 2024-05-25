@@ -1,13 +1,12 @@
 <script lang="ts">
   import "../app.css";
   import type { DataSchema } from '$lib/types';
-	import { writable } from 'svelte/store';
 	import AttributeControl from '$lib/AttributeControl.svelte';
 	import GearSlot from '$lib/GearSlot.svelte';
-	import MasteryControl from '$lib/MasteryControl.svelte';
 	import { setContext } from 'svelte';
 	import { useHero } from '$lib/hero';
 	import { appState, loadData } from '$lib/state';
+	import { renderDamageValue } from '$lib/helpers';
 
 	export let data: DataSchema;
 
@@ -16,7 +15,8 @@
     attributes, 
     equip, 
     modifiers, 
-    values
+    values,
+    equippedItems
   } = useHero();
 
   $: {
@@ -43,8 +43,6 @@
 
     input.click();
   }
-
-  const selectedMasteryTiers = writable([]);
 </script>
 
 <div class="p-12">
@@ -58,11 +56,6 @@
     <div>
       <h3 class="text-lg">Attribute Points</h3>
       <p class="mt-2 text-5xl">{$state.attributePoints}</p>
-    </div>
-    
-    <div>
-      <h3 class="text-lg">Mastery Points</h3>
-      <p class="mt-2 text-5xl">{$state.masteryPoints}</p>
     </div>
 
     <div class="ml-auto">
@@ -98,49 +91,89 @@
       </div>
       <div class="bg-gray-100 p-5 rounded-lg my-6">
         <div class="flex gap-5 justify-center mb-5">
-          <GearSlot type="Head" bind:item={$equip.head} allowedGroups={['helmets']} />
-          <GearSlot type="Neck" allowedGroups={['amulets']} />
+          <GearSlot 
+            type="Head" 
+            item={$equippedItems.head} 
+            allowedGroups={['helmets']}
+            on:selectItem={(item) => $equip.head = item.detail} 
+          />
+          
+          <GearSlot 
+            type="Neck" 
+            item={$equippedItems.neck} 
+            allowedGroups={['talismans']}
+            on:selectItem={(item) => $equip.neck = item.detail} 
+          />
         </div>
         <div class="flex gap-5 justify-center mb-5">
-          <GearSlot type="MainHand" bind:item={$equip.mainHand} allowedGroups={['axes', 'bows', 'hammers', 'swords']} />
-          <GearSlot type="Chest" bind:item={$equip.chest} allowedGroups={['bodyArmors']} />
-          <GearSlot type="OffHand" bind:item={$equip.offHand} allowedGroups={['shields']} />
+          <GearSlot 
+            type="MainHand" 
+            item={$equippedItems.mainHand}  
+            allowedGroups={['axes', 'bows', 'hammers', 'swords']} 
+            on:selectItem={(item) => $equip.mainHand = item.detail}
+          />
+
+          <GearSlot 
+            type="Chest" 
+            item={$equippedItems.chest} 
+            allowedGroups={['bodyArmors']}
+            on:selectItem={(item) => $equip.chest = item.detail} 
+          />
+          
+          <GearSlot 
+            type="OffHand" 
+            item={$equippedItems.offHand} 
+            allowedGroups={['shields']} 
+            on:selectItem={(item) => $equip.offHand = item.detail}
+          />
         </div>
         <div class="flex gap-5 justify-center mb-5">
-          <GearSlot type="Legs" bind:item={$equip.legs} allowedGroups={['pants']} />
-          <GearSlot type="Hand" bind:item={$equip.hand} allowedGroups={['gloves']} />
+          <GearSlot 
+            type="Legs" 
+            item={$equippedItems.legs} 
+            allowedGroups={['pants']} 
+            on:selectItem={(item) => $equip.legs = item.detail}
+          />
+          
+          <GearSlot 
+            type="Hand" 
+            item={$equippedItems.hand} 
+            allowedGroups={['gloves']} 
+            on:selectItem={(item) => $equip.hand = item.detail}
+          />
         </div>
         <div class="flex gap-5 justify-center">
-          <GearSlot type="Feet" bind:item={$equip.feet} allowedGroups={['boots']} />
+          <GearSlot 
+            type="Feet" 
+            item={$equippedItems.feet} 
+            allowedGroups={['boots']} 
+            on:selectItem={(item) => $equip.feet = item.detail}
+          />
         </div>
-      </div>
-      <div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-3">
-        {#each $appState.schema.masteries as mastery, i}
-          <MasteryControl {mastery} bind:tier={$selectedMasteryTiers[i]}/>
-        {/each}
       </div>
     </div>
 
     <div class="sm:col-span-1">
-      <div class="px-4 sm:px-0 min-h-20">
-        <h3 class="text-base font-semibold leading-7 text-gray-900">Modifiers</h3>
-        <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-500">What is affecting your stats?</p>
+      <div>
+        <div class="px-4 sm:px-0 min-h-20">
+          <h3 class="text-base font-semibold leading-7 text-gray-900">Modifiers</h3>
+          <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-500">What affects your stats?</p>
+        </div>
+        <dl class="mt-6 divide-y divide-gray-100">
+          {#each Object.entries($modifiers) as [stat, types]}
+            {#each Object.entries(types) as [t, m]}
+              
+            <div class="py-1 sm:grid sm:grid-cols-2 sm:gap-4 sm:px-0">
+              <dt class="text-sm font-medium leading-6 text-gray-900">{stat}</dt>
+              <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-1 sm:mt-0">
+                {m}
+              </dd>
+            </div>
+              
+            {/each}
+          {/each}
+        </dl>
       </div>
-      <dl class="divide-y divide-gray-100">
-      {#each Object.entries($modifiers) as [p, m]}
-      <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-        <dt class="text-sm font-medium leading-6 text-gray-900">{p}</dt>
-        <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-          {#if m.value > 1}+{/if}
-          {#if m.type === 'flat'}
-            {m.value}
-          {:else}
-            {Math.round((m.value - 1) * 100)}%
-          {/if}
-        </dd>
-      </div>
-      {/each}
-      </dl>
     </div>
 
     <div class="sm:col-span-1">
@@ -152,7 +185,9 @@
         <dl class="divide-y divide-gray-100">
           <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
             <dt class="text-sm font-medium leading-6 text-gray-900">DPS</dt>
-            <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{$values.dps[0]}-{$values.dps[1]} ({Math.round(($values.dps[0] + $values.dps[1]) / 2)})</dd>
+            <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+              {renderDamageValue($values.dps)}
+            </dd>
           </div>
           <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
             <dt class="text-sm font-medium leading-6 text-gray-900">APS</dt>
@@ -161,7 +196,7 @@
           <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
             <dt class="text-sm font-medium leading-6 text-gray-900">Flat Damage</dt>
             <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-              {$values.damage[0]}-{$values.damage[1]} ({Math.round(($values.damage[0] + $values.damage[1]) / 2)})
+              {renderDamageValue($values.damage)}
             </dd>
           </div>
           <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">

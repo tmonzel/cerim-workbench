@@ -1,5 +1,7 @@
 import { writable } from 'svelte/store';
-import type { DataSchema, Item } from './types';
+import type { DataSchema } from './types';
+import { ArmorItem, DamageItem, Item, TalismanItem } from './item';
+import { FlatDamageAttribute, FlatValueAttribute, PercentageDamageAttribute, PercentageValueAttribute, type ItemAttribute } from './item-attribute';
 
 export type AppState = {
   schema: DataSchema;
@@ -12,8 +14,8 @@ export const appState = writable<AppState>({
     attributePointsPerLevel: 3,
     masteryPointsPerLevel: 1,
     attributes: {},
-    masteries: [],
     baseItems: {},
+    modifiers: {}
   },
   items: []
 });
@@ -24,14 +26,49 @@ export function loadData(schema: DataSchema) {
   if(schema.items) {
     // Resolve items
     for(const i in schema.items) {
-      const item: Item = {
-        tier: schema.items[i].tier,
-        name: schema.items[i].name,
-        base: schema.baseItems[schema.items[i].base],
-        modifiers: schema.items[i].modifiers
-      }
+      const itemSchema = schema.items[i];
+      const baseItem = schema.baseItems[itemSchema.base]
 
-      items.push(item);
+      const attributes: ItemAttribute[] = (itemSchema.attributes ?? [])
+        .filter(s => !!schema.modifiers[s.modifier])
+        .map(s => {
+          const mod = schema.modifiers[s.modifier];
+          
+          if(mod.type === 'flat') {
+            if(mod.affects === 'damage') {
+              return new FlatDamageAttribute(mod.name, mod.affects, mod.values as (number[])[], s.tier, mod.scaling);
+            } else {
+              return new FlatValueAttribute(mod.name, mod.affects, mod.values as number[], s.tier, mod.scaling)
+            }
+          } else if(mod.type === 'percentage') {
+            if(mod.affects === 'damage') {
+              return new PercentageDamageAttribute(mod.name, mod.affects, mod.values as number[], s.tier, mod.scaling);
+            } else {
+              return new PercentageValueAttribute(mod.name, mod.affects, mod.values as number[], s.tier, mod.scaling);
+            }
+          }
+
+
+          return new FlatValueAttribute(mod.name, mod.affects, mod.values as number[], s.tier, mod.scaling);
+        })
+
+      
+      if(baseItem.damage) {
+        // Damage Item
+        items.push(
+          new DamageItem(baseItem, itemSchema, attributes)
+        );
+      } else if(baseItem.armor) {
+        // Armor Item
+        items.push(
+          new ArmorItem(baseItem, itemSchema, attributes)
+        );
+      } else {
+        // Talisman Item
+        items.push(
+          new TalismanItem(baseItem, itemSchema, attributes)
+        );
+      }
     }
   }
   

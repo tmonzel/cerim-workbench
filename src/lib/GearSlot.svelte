@@ -1,13 +1,11 @@
 <script lang="ts">
-	import { type AttributeState, type DataSchema, type HeroState, type Item } from './types';
-  import { fly } from 'svelte/transition';
-	import { sineOut } from 'svelte/easing';
-	import { getContext, onMount } from 'svelte';
+	import { createEventDispatcher, getContext } from 'svelte';
 	import { type Readable } from 'svelte/store';
-	import { scaleValue } from '$lib';
 	import ItemCard from './ItemCard.svelte';
 	import { appState } from './state';
 	import Dialog from './Dialog.svelte';
+	import type { HeroState } from './hero';
+	import { Item } from './item';
 
   export let type: string;
   export let item: Item | null = null; 
@@ -16,33 +14,15 @@
   let selectionDialog: Dialog;
   let availableItems: Item[] = [];
 
-  const attributes = getContext<Readable<AttributeState>>('attributes');
+  const dispatch = createEventDispatcher();
+
   const state = getContext<Readable<HeroState>>('state');
 
   $: availableItems = $appState.items.filter(i => allowedGroups.includes(i.base.group));
 
-  $: {
-
-    // If its a weapon with damage scaling
-    if(item && item.base.scaling && item.base.damage) {
-      let damageIncrease = 0;
-
-      for(const mod of item.base.scaling) {
-        if(item.base.damage && $attributes[mod.attr] > 0) {
-          damageIncrease += scaleValue($attributes[mod.attr], mod.span, mod.rate);
-        }
-      }
-
-      item.damage = [
-        item.base.damage[0] + damageIncrease, 
-        item.base.damage[1] + damageIncrease
-      ];
-    }
-  }
-
   function selectItem(itm: Item | null) {
     selectionDialog.close();
-    item = itm;
+    dispatch('selectItem', itm);
   }
 
   function toggleMenu() {

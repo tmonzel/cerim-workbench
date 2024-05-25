@@ -1,3 +1,5 @@
+import type { Item } from './item';
+
 export type DataSchema = {
   maxLevel: number;
 
@@ -5,26 +7,29 @@ export type DataSchema = {
   masteryPointsPerLevel: number;
 
   attributes: { [name: string]: AttributeSchema };
+  modifiers: { [name: string]: ModifierSchema };
 
-  masteries: Mastery[];
   baseItems: { [id: string]: BaseItem };
   items?: ItemSchema[];
+}
+
+export type ModifierSchema<TValue = unknown> = {
+  name: string;
+  type: string;
+  scope?: string;
+  affects: string;
+  values: TValue[];
+  scaling?: AttributeScaling;
 }
 
 export type AttributeSchema = {
   name: string;
   initialValue: number;
   flag: string;
-  modifiers: StatModifier[];
+  modifiers: StatModifier<unknown>[];
 }
 
 export type AttributeState = { [name: string]: number }
-
-export type HeroState = {
-  level: number;
-  attributePoints: number;
-  masteryPoints: number;
-}
 
 export type StatValues = {
   [name: string]: number | number[];
@@ -51,62 +56,42 @@ export type BaseItem = {
   attackSpeed?: number;
   description?: string;
   requiredLevel: number;
-  scaling?: ItemScaling[];
+  scaling?: AttributeScaling[];
   iconUrl?: string;
-}
-
-export type Item = {
-  base: BaseItem;
-  name: string;
-  tier: number;
-  modifiers: ItemModifier[];
-  damage?: number[];
 }
 
 export type ItemSchema = {
   base: string;
   name: string;
-  tier: number;
-  modifiers: ItemModifier[];
+  quality: number;
+  attributes: ItemAttributeSchema[];
   damage?: number[];
+  effect?: string;
 }
 
+export type ItemAttributeSchema = {
+  modifier: string;
+  tier: number;
+}
 
-export type ItemScaling = {
+export type AttributeScaling = {
   attr: string;
   span?: number[];
   rate?: number;
 }
 
-export type ItemModifier = {
-  tier: number;
-  stat: string;
-  type: string;
-  value: number;
-}
-
-export type Mastery = {
-  name: string;
-  tiers: MasteryTier[];
-  description: string;
-}
-
-export type MasteryTier = {
-  name: string;
-  modifiers: StatModifier[];
-}
-
-export type StatModifier = {
-  property: string;
-  type: string;
+export type StatModifier<T = number> = {
+  affects: string;
+  type?: string;
   scale?: string;
   span?: number[];
   rate?: number;
-  value: number;
-  affectedGroups: string[];
+  value: T;
+  affectedGroups?: string[];
 }
 
 export type EquipState = {
+  neck: Item | null;
   head: Item | null;
   chest: Item | null;
   legs: Item | null;

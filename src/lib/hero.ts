@@ -1,7 +1,14 @@
 import { derived, writable } from 'svelte/store';
-import type { AttributeState, EquipState, HeroState, StatModifier, StatValues } from './types';
+import type { AttributeState, EquipState, StatValues } from './types';
 import { scaleValue } from '$lib';
 import { appState } from './state';
+import { statModifierMap, type StatModifiers } from './modifiers';
+
+export type HeroState = {
+  level: number;
+  attributePoints: number;
+  masteryPoints: number;
+}
 
 export function useHero() {
   const attributes = writable<AttributeState>({});
@@ -14,12 +21,12 @@ export function useHero() {
     
     return {
       level: Math.floor(numDistributedPoints / app.schema.attributePointsPerLevel),
-      attributePoints: app.schema.attributePointsPerLevel * app.schema.maxLevel - numDistributedPoints,
-      masteryPoints: app.schema.masteryPointsPerLevel * app.schema.maxLevel
+      attributePoints: app.schema.attributePointsPerLevel * app.schema.maxLevel - numDistributedPoints
     } as HeroState;
   });
   
   const equip = writable<EquipState>({
+    neck: null,
     head: null,
     chest: null,
     legs: null,
@@ -29,11 +36,121 @@ export function useHero() {
     offHand: null
   });
 
-  const modifiers = writable<{ [property: string]: StatModifier }>({});
+  const equippedItems = derived([equip, attributes], ([items, attributes]) => {
 
-  const values = derived([attributes, equip, appState], (state) => {
+    for(const item of Object.values(items)) {
+      if(!item) {
+        continue;
+      }
+
+      item.update(attributes);
+    }
+
+    return items;
+  });
+
+  const modifiers = derived(equippedItems, (items) => {
+    const mods: StatModifiers = {};
+
+    for(const [, item] of Object.entries(items)) {
+      if(!item) {
+        continue;
+      }
+
+      /*if(item instanceof DamageItem) {
+        const dmg = item.damage;
+
+        if(!mods['damage']) {
+          mods['damage'] = {
+            flat: new FlatDamageModifier(dmg.get())
+          }
+        } else {
+          mods['damage'].flat.increase(dmg.get());
+        }
+      }*/
+
+      /*if(item.base.damage) {
+        // Weapon item
+        
+        // If its a weapon with damage scaling
+        if(item.base.scaling) {
+          let damageIncrease = 0;
+
+          for(const mod of item.base.scaling) {
+            if(item.base.damage && attributes[mod.attr] > 0) {
+              damageIncrease += scaleValue(attributes[mod.attr], mod.span, mod.rate);
+            }
+          }
+
+          item.damage = [
+            item.base.damage[0] + damageIncrease, 
+            item.base.damage[1] + damageIncrease
+          ];
+
+          //equip.set({ ...get(equip), [slot]: item });
+        }
+
+        if(!mods['damage']) {
+          mods['damage'] = {
+            flat: new FlatDamageModifier(item.damage)
+          }
+        } else {
+          mods['damage'].flat.increase(item.damage);
+        }
+      }*/
+
+      /*if(item.base.armor) {
+        // Armor item
+        if(!mods['armor']) {
+          mods['armor'] = {
+            flat: new FlatModifier(item.base.armor)
+          }
+        } else {
+          mods['armor'].flat.increase(item.base.armor);
+        }
+      }
+
+      if(item.base.weight) {
+        if(!mods['weight']) {
+          mods['weight'] = {
+            flat: new FlatModifier(item.base.weight)
+          }
+        } else {
+          mods['weight'].flat.increase(item.base.weight);
+        }
+      }*/
+      
+      //mods.attackSpeed.value += item.base.attackSpeed ?? 0;
+      //mods.armor.value += item.base.armor ?? 0;
+      //mods.weight.value += item.base.weight ?? 0;
+      //mods.poise.value += item.base.poise ?? 0;
+
+
+      /*for(const attr of item.attributes) {
+        if(attr.scope === 'item') {
+          continue;
+        }
+
+        const value = attr.modifier.getValue();
+
+        if(!mods[attr.affects]) {
+          mods[attr.affects] = {};
+        }
+
+        if(mods[attr.affects][attr.type]) {
+          mods[attr.affects][attr.type].increase(value);
+        } else {
+          mods[attr.affects][attr.type] = new (statModifierMap[attr.affects][attr.type])(value);
+        }
+      }*/
+    }
+
+    return mods;
+  });
+
+  const values = derived([attributes, modifiers, appState], (state) => {
     const attributes = state[0];
-    const gear = state[1];
+    const mods = state[1];
     const app = state[2];
 
     const stats: StatValues = {
@@ -54,81 +171,26 @@ export function useHero() {
       }
 
       for(const mod of schema.modifiers) {
-        if(mod.rate) {
-          stats[mod.property] = scaleValue(attributes[name], mod.span, mod.rate);
-          continue;
-        }
-
-        stats[mod.property] = attributes[name] * mod.value;
+        const modifierClass = statModifierMap[mod.affects][mod.type ?? 'flat'];
+        const m = new modifierClass(mod.value);
+        stats[mod.affects] = m.modify(scaleValue(attributes[name], mod.span, mod.rate)) as number | number[];
       }
     }
 
-    const gearItems = [
-      gear.head, 
-      gear.chest, 
-      gear.legs, 
-      gear.feet, 
-      gear.mainHand, 
-      gear.offHand, 
-      gear.hand
-    ];
-
-    const mods: { [property: string]: StatModifier } = {};
-
-    for(const item of gearItems) {
-      if(!item) {
+    for(const [s, ms] of Object.entries(mods)) {
+      if(!ms.flat) {
         continue;
       }
-      
-      stats.armor += item.base.armor ?? 0;
-      stats.weight += item.base.weight ?? 0;
-      stats.poise += item.base.poise ?? 0;
 
-      for(const mod of item.modifiers) {
-        if(mods[mod.stat]) {
-          mods[mod.stat].value += mod.type === 'flat' ? mod.value : mod.value - 1;
-          continue;
-        }
-        
-        mods[mod.stat] = { property: mod.stat, value: mod.value, type: mod.type, affectedGroups: [] }
-      }
-
-      const itemDamage = item.damage ? item.damage : (item.base.damage ?? [0,0]);
-
-      /*for(const i in masteryTiers) {
-        const tier = masteryTiers[i];
-
-        if(tier === 0) continue;
-
-        const mastery = data.masteries[i];
-        const tierSchema = mastery.tiers[tier - 1];
-        
-        for(const mod of tierSchema.modifiers) {
-          if(!mod.affectedGroups.includes(item.base.group)) continue;
-
-          switch(mod.property) {
-            case 'damage':
-              itemDamage = [mod.value * itemDamage[0], mod.value * itemDamage[1]];
-          }
-        }
-      }*/
-
-      stats.damage = [
-        Math.round(stats.damage[0] + itemDamage[0]), 
-        Math.round(stats.damage[1] + itemDamage[1])
-      ];
-
-      stats.attackSpeed = item.base.attackSpeed ?? stats.attackSpeed;
+      stats[s] = ms.flat.modify(stats[s]) as number | number[];
     }
     
-    for(const [p, m] of Object.entries(mods)) {
-      if(m.type === 'flat') {
-        // Flat
-        stats[p] = m.value + Number(stats[p]);
-      } else {
-        // Percentual
-        stats[p] = m.value * Number(stats[p]);
+    for(const [s, ms] of Object.entries(mods)) {
+      if(!ms.percentage) {
+        continue;
       }
+
+      stats[s] = ms.percentage.modify(stats[s]) as number | number[];
     }
 
     stats.dps = [
@@ -136,9 +198,10 @@ export function useHero() {
       Math.round(stats.damage[1] * stats.attackSpeed)
     ];
 
-    modifiers.set(mods);
-
-    return stats;
+    return {
+      ...stats,
+      health: Math.round(stats.health * 100) / 100
+    };
   });
 
   return {
@@ -146,6 +209,7 @@ export function useHero() {
     attributes,
     equip,
     modifiers,
+    equippedItems,
     values
   }
 }

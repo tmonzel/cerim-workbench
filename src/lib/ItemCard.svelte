@@ -1,12 +1,12 @@
 <script lang="ts">
-	import { appState } from './state';
-	import type { Item } from './types';
+	import { ArmorItem, DamageItem, type Item } from './item';
+  import { appState } from './state';
 
   export let item: Item;
   export let slotted = false;
 </script>
 
-<div class="flex gap-x-6">
+<div class="flex gap-x-3">
   <div class="mt-1 flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-gray-50 group-hover:bg-white">
     {#if item.base.iconUrl}
       <img src={item.base.iconUrl} alt="Item icon" />
@@ -16,58 +16,74 @@
   </div>
   <div>
     <div class="font-medium">
-      {item.name ?? "Nameless"} ({item.base.name})
+      {#if item.name}
+        {item.name} {#if item.quality}({item.quality}){/if}
+      {:else}
+        {item.base.name} {#if item.quality}({item.quality}){/if}
+      {/if}
+      
       <span class="absolute inset-0"></span>
     </div>
     <p class="text-sm">{item.base.type}</p>
   
-    {#if item.base.damage}
-      {#if item.damage}
-        <p class="mt-2 text-xl" class:text-indigo-700={item.damage[0] > item.base.damage[0]}>
-          {item.damage[0]}-{item.damage[1]} ({Math.round((item.damage[0] + item.damage[1]) / 2)})
-        </p>
-      {:else}
-        <p class="mt-2 text-xl font-light">
-          {item.base.damage[0]}-{item.base.damage[1]} ({Math.round((item.base.damage[0] + item.base.damage[1]) / 2)})
+    <div class="flex items-center gap-x-12 my-4">
+      {#if item instanceof DamageItem}
+        <p class="text-xl" class:text-indigo-700={item.damage.min > item.baseDamage.min}>
+          {item.damage}
         </p>
       {/if}
-    {/if}
 
-    {#if item.base.armor}
-      <p class="mt-2 text-xl font-light flex items-center">
-        <img class="w-5 h-5 mr-0.5" alt="Armor Icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAABpElEQVR4nO2WSyuEYRiGLzYORY5TyGJINiiHfyCykiwoa4qS8AfY2GEhC/6ArJTCQghRUspmykY5ruSYjbPeuhfvwuD9vnfYzFXP5pvnut9nZr6Z54MkSdypBqaBGPCoiumaeS1hNAALwDvwEafe1WN6Q5MJRIEuYMM6xLzjcaBWPabqdO3R6tuQG1WPEx9f1BUwBkS+8SLquYqT8WueJewBM0AHkO7gm95OYFYZJuvJZYA7SSWEp1RZNy7ShaQqDwPUKOvcRdqX1OhhgCbr6/w185J6PQzQr6w5F2lU0pSHAaaVNeIitUg68DDAobKaXaRc4AV4BfJDHF4AvCkrx1Ve1+TdIQboUcZaELlX8naIAbaU0RdEzgLuFVAfwK+X+wBkE5AJhawEcJfkThLyJrpTULuD1yrHfIKFhGRAYdf6X/+JYmsbDuGBVOt5YBfI+GELblo3r3G9EAFOFbwaZzWnAcvquQSK8Ew5cGYtFntVm8N2rMMrSRBlwLEOugWGgUHtenPtBKggwWRb29KuRSCPP6QNOFKZn2gK/0DKfx2cBF98AsCYhBU6oefbAAAAAElFTkSuQmCC">
-        {item.base.armor}
-      </p>
-    {/if}
+      {#if item instanceof ArmorItem}
+        <p class="text-xl font-light flex items-center gap-x-1">
+          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368"><path d="M480-80q-139-35-229.5-159.5T160-516v-244l320-120 320 120v244q0 152-90.5 276.5T480-80Zm0-84q104-33 172-132t68-220v-189l-240-90-240 90v189q0 121 68 220t172 132Zm0-316Z"/></svg>
+          {item.armor}
+        </p>
+      {/if}
 
-    {#if item.base.scaling}
-      <p class="flex items-center mt-2">
-        <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#999999">
-          <path d="M120-120v-80l80-80v160h-80Zm160 0v-240l80-80v320h-80Zm160 0v-320l80 81v239h-80Zm160 0v-239l80-80v319h-80Zm160 0v-400l80-80v480h-80ZM120-327v-113l280-280 160 160 280-280v113L560-447 400-607 120-327Z"/>
-        </svg> 
-        
-        <span class="ml-1 text-xs font-semibold">{item.base.scaling.map(s => $appState.schema.attributes[s.attr].flag).join(',')}</span>
-      </p>
-    {/if}
+      {#if item.weight}
+        <p class="text-xl font-light flex items-center gap-x-1">
+          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368"><path d="M240-200h480l-57-400H297l-57 400Zm240-480q17 0 28.5-11.5T520-720q0-17-11.5-28.5T480-760q-17 0-28.5 11.5T440-720q0 17 11.5 28.5T480-680Zm113 0h70q30 0 52 20t27 49l57 400q5 36-18.5 63.5T720-120H240q-37 0-60.5-27.5T161-211l57-400q5-29 27-49t52-20h70q-3-10-5-19.5t-2-20.5q0-50 35-85t85-35q50 0 85 35t35 85q0 11-2 20.5t-5 19.5ZM240-200h480-480Z"/></svg>
+          {item.weight}
+        </p>
+      {/if}
+
+      
+    </div>
+
+    <div class="flex gap-x-4 items-center">
+      {#if item.base.scaling}
+        <p class="text-xs flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368"><path d="m136-240-56-56 296-298 160 160 208-206H640v-80h240v240h-80v-104L536-320 376-480 136-240Z"/></svg>
+          
+          <span class="ml-1 text-xs font-semibold">{item.base.scaling.map(s => $appState.schema.attributes[s.attr].flag).join(',')}</span>
+        </p>
+      {/if}
+
+      {#if item.quality}
+        <p class="text-xs flex items-center text-gray-500">
+          QUALITY
+          {item.quality}
+        </p>
+      {/if}
+    </div>
   
     <dl class="divide-y divide-gray-100 my-3">
-      {#each item.modifiers as m}
-      <div class="py-1 sm:grid sm:grid-cols-2 sm:gap-4 sm:px-0">
-        <dt class="text-sm font-medium leading-6 text-gray-900">{m.stat}</dt>
-        <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-1 sm:mt-0">
-          {#if m.value > 1}+{/if}
-          {#if m.type === 'flat'}
-            {m.value}
-          {:else}
-            {Math.round((m.value - 1) * 100)}%
-          {/if}
-        </dd>
-      </div>
+      {#each item.attributes as attr}
+        <div class="py-1 sm:grid sm:grid-cols-2 sm:gap-4 sm:px-0">
+          <dt class="text-sm font-medium leading-6 text-gray-900">{attr.name}({attr.tier})</dt>
+          <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-1 sm:mt-0">
+            {attr.value}
+          </dd>
+        </div>
       {/each}
     </dl>
+
+    {#if item.effect}
+      <p class="text-sm italic">{item.effect}</p>
+    {/if}
     
     {#if !slotted && item.base.description}
-    <p class="mt-1 text-gray-600">{item.base.description}</p>
+    <p class="mt-1 text-gray-500 italic">{item.base.description}</p>
     {/if}
   </div>
 </div>
