@@ -6,6 +6,7 @@ import { attributeStore } from './attribute.store';
 import { dataStore } from './data.store';
 import { DamageItem } from './equip/items/DamageItem';
 import { ArmorItem } from './equip/items/ArmorItem';
+import { modifications } from './modifications';
 
 export type HeroState = {
   [name: string]: number | number[] | ComplexDamage;
@@ -24,8 +25,8 @@ export type HeroState = {
 
 export type HeroStatTypes = 'focus' | 'stamina' | 'armor' | 'weight' | 'poise' | 'equipLoad' | 'damage' | 'health';
 
-export const heroState = derived([attributeStore, equipState, dataStore], (state) => {
-  const [attributes, equip, data] = state;
+export const heroState = derived([attributeStore, equipState, modifications, dataStore], (state) => {
+  const [attributes, equip, mods, data] = state;
 
   const stats: HeroState = {
     level: 0,
@@ -59,6 +60,19 @@ export const heroState = derived([attributeStore, equipState, dataStore], (state
 
     if(item instanceof ArmorItem) {
       stats.armor += item.armor.value;
+    }
+  }
+
+  for(const mod of Object.values(mods)) {
+    if(mod.type === 'percentual') {
+
+      if(mod.stat === 'health') {
+        stats.health += stats.health * mod.value;
+      }
+    } else {
+      if(mod.stat === 'stamina') {
+        stats.stamina += mod.value;
+      }
     }
   }
 

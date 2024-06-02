@@ -29,7 +29,7 @@ const load = (data: DataSchema) => {
 
   if(data.itemAffixDefs) {
     for(const [id, def] of Object.entries(data.itemAffixDefs)) {
-      registerModification(id, def.name, def.type);
+      registerModification(id, { name: def.name, type: def.type, stat: def.affects });
     }
   }
 
