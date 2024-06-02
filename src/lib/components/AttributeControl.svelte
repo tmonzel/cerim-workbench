@@ -1,10 +1,6 @@
 <script lang="ts">
-  import { createEventDispatcher } from 'svelte';
-
-  export let label = '';
-  export let value = 0;
-
-  const dispatch = createEventDispatcher();
+  export let label: string;
+  export let value: number;
 
   const id = crypto.randomUUID();
 
@@ -14,7 +10,6 @@
     }
 
     value = newValue;
-    dispatch('valueChange', newValue);
   }
 </script>
 

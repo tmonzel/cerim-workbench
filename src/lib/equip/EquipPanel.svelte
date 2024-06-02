@@ -1,0 +1,67 @@
+<script lang="ts">
+  import EquipSlot from './EquipSlot.svelte';
+	import { equipState, equipStore } from './state';
+</script>
+
+<div class="bg-gray-100 p-5 rounded-lg my-6">
+  <div class="flex gap-5 justify-center mb-5">
+    <EquipSlot 
+      type="Head" 
+      item={$equipState.head} 
+      allowedGroups={['helmets']}
+      on:selectItem={(item) => $equipStore.head = item.detail} 
+    />
+    
+    <EquipSlot 
+      type="Neck" 
+      item={$equipState.neck} 
+      allowedGroups={['talismans']}
+      on:selectItem={(item) => $equipStore.neck = item.detail} 
+    />
+  </div>
+  <div class="flex gap-5 justify-center mb-5">
+    <EquipSlot 
+      type="MainHand" 
+      item={$equipState.mainHand}  
+      allowedGroups={['axes', 'bows', 'hammers', 'swords']} 
+      on:selectItem={(item) => $equipStore.mainHand = item.detail}
+    />
+
+    <EquipSlot 
+      type="Chest" 
+      item={$equipState.chest} 
+      allowedGroups={['bodyArmors']}
+      on:selectItem={(item) => $equipStore.chest = item.detail} 
+    />
+    
+    <EquipSlot 
+      type="OffHand" 
+      item={$equipState.offHand} 
+      allowedGroups={['shields']} 
+      on:selectItem={(item) => $equipStore.offHand = item.detail}
+    />
+  </div>
+  <div class="flex gap-5 justify-center mb-5">
+    <EquipSlot 
+      type="Legs" 
+      item={$equipState.legs} 
+      allowedGroups={['pants']} 
+      on:selectItem={(item) => $equipStore.legs = item.detail}
+    />
+    
+    <EquipSlot 
+      type="Hand" 
+      item={$equipState.hand} 
+      allowedGroups={['gloves']} 
+      on:selectItem={(item) => $equipStore.hand = item.detail}
+    />
+  </div>
+  <div class="flex gap-5 justify-center">
+    <EquipSlot 
+      type="Feet" 
+      item={$equipState.feet} 
+      allowedGroups={['boots']} 
+      on:selectItem={(item) => $equipStore.feet = item.detail}
+    />
+  </div>
+</div>

@@ -3,79 +3,8 @@
 
   "attributePointsPerLevel": 3,
   "masteryPointsPerLevel": 1,
-  
-  "attributes": {
-    "vit": {
-      "name": "Vitality",
-      "flag": "VIT",
-      "initialValue": 12,
-      "modifiers": [
-        {
-          "affects": "health",
-          "span": [40, 1],
-          "rate": -0.1
-        }
-      ]
-    },
 
-    "end": {
-      "name": "Endurance",
-      "flag": "END",
-      "initialValue": 0,
-      "modifiers": [
-        {
-          "affects": "stamina",
-          "span": [40, 1],
-          "rate": -0.1
-        }
-      ]
-    },
-
-    "str": {
-      "name": "Strength",
-      "flag": "STR",
-      "initialValue": 0,
-      "modifiers": [
-        {
-          "affects": "poise",
-          "span": [5, 1],
-          "rate": -0.1
-        },
-        {
-          "affects": "equipLoad",
-          "span": [5, 1],
-          "rate": -0.1
-        }
-      ]
-    },
-
-    "dex": {
-      "name": "Dexterity",
-      "flag": "DEX",
-      "initialValue": 0,
-      "modifiers": [
-        {
-          "affects": "speed",
-          "span": [20, 1],
-          "rate": -0.1
-        }
-      ]
-    },
-
-    "int": {
-      "name": "Intelligence",
-      "flag": "INT",
-      "initialValue": 0
-    },
-
-    "fth": {
-      "name": "Faith",
-      "flag": "FTH",
-      "initialValue": 0
-    }
-  },
-
-  "scalingRates": {
+  "scalingGrades": {
     "S": -0.005,
     "A": -0.01,
     "B": -0.05,
@@ -83,42 +12,145 @@
     "D": -0.15,
     "E": -0.2
   },
+  
+  "attributes": {
+    "vit": {
+      "name": "Vitality",
+      "default": 0
+    },
+
+    "end": {
+      "name": "Endurance",
+      "default": 0
+    },
+
+    "str": {
+      "name": "Strength",
+      "default": 0
+    },
+
+    "dex": {
+      "name": "Dexterity",
+      "default": 0
+    },
+
+    "int": {
+      "name": "Intelligence",
+      "default": 0
+    },
+
+    "fth": {
+      "name": "Faith",
+      "default": 0
+    }
+  },
+
+  "modifiers": [
+    {
+      "attr": "vit",
+      "affects": "health",
+      "value": 1,
+      "mutations": [
+        {
+          "from": [0, 4],
+          "to": [25, 31]
+        },
+        {
+          "from": [26, 31],
+          "to": [40, 48]
+        },
+
+        {
+          "from": [41, 26],
+          "to": [60, 13]
+        },
+
+        {
+          "from": [61, 6],
+          "to": [99, 3]
+        }
+      ]
+    },
+
+    {
+      "attr": "end",
+      "affects": "stamina",
+      "value": 20
+    },
+
+    {
+      "attr": "str",
+      "affects": "poise",
+      "value": 5,
+      "mutations": [
+        {
+          "from": [0, 0],
+          "to": [25, 1]
+        }
+      ]
+    },
+
+    {
+      "attr": "str",
+      "affects": "equipLoad",
+      "value": 5
+    },
+
+    {
+      "attr": "str",
+      "affects": "damage",
+      "value": [0.5, 1]
+    },
+
+    {
+      "attr": "dex",
+      "affects": "speed",
+      "value": 1.2
+    }
+  ],
 
   "abilities": {
 
   },
 
-  "modifiers": {
+  "itemAffixDefs": {
     "addLightningDamage": {
       "type": "flat",
       "affects": "damage",
       "name": "Add Lightning Damage",
-      "scope": "item",
-      "scaling": {
-        "attr": "int",
-        "span": [2, 1],
-        "rate": -0.05
-      },
       "values": [
-        [1, 4, 1],
-        [1, 8, 1],
-        [1, 12, 1],
-        [1, 16, 1],
-        [1, 20, 1]
+        [1, 4, 2],
+        [1, 8, 2],
+        [1, 12, 2],
+        [1, 16, 2],
+        [1, 20, 2]
       ]
     },
 
     "increaseDamage": {
-      "type": "percentage",
+      "type": "percentual",
       "affects": "damage",
       "name": "Increase Damage",
-      "scope": "item",
       "values": [
-        0.1,
-        0.2,
-        0.3,
-        0.4,
-        0.5
+        1.1,
+        1.2,
+        1.3,
+        1.4,
+        1.5
+      ]
+    },
+
+    "decreaseItemWeight": {
+      "scope": "item",
+      "type": "percentual",
+      "affects": "weight",
+      "name": "Decrease Weight",
+      "values": [
+        0.9,
+        0.8,
+        0.7,
+        0.6,
+        0.5 
       ]
     },
 
@@ -136,7 +168,7 @@
     },
 
     "increaseFocus": {
-      "type": "percentage",
+      "type": "percentual",
       "affects": "focus",
       "name": "Increase Focus",
       "values": [
@@ -149,8 +181,8 @@
     },
 
     "addStamina": {
-      "name": "Add Stamina",
       "type": "flat",
+      "name": "Add Stamina",
       "affects": "stamina",
       "values": [
         4,
@@ -162,91 +194,50 @@
     },
 
     "increaseCastSpeed": {
-      "type": "percentage",
+      "type": "percentual",
       "affects": "castSpeed",
       "name": "Increased cast speed",
       "values": [
-        0.1,
-        0.2,
-        0.3,
-        0.4,
-        0.5
+        1.1,
+        1.2,
+        1.3,
+        1.4,
+        1.5
       ]
     },
 
     "increaseAttackSpeed": {
-      "type": "percentage",
+      "type": "percentual",
       "affects": "attackSpeed",
       "name": "Increased attack speed",
       "values": [
-        0.1,
-        0.2,
-        0.3,
-        0.4,
-        0.5
+        1.1,
+        1.2,
+        1.3,
+        1.4,
+        1.5
       ]
     },
 
     "increaseHealth": {
-      "type": "percentage",
+      "type": "percentual",
       "affects": "health",
       "name": "Increased health",
       "values": [
-        0.05,
-        0.1,
-        0.15,
-        0.2,
-        0.25
+        1.05,
+        1.1,
+        1.15,
+        1.2,
+        1.25
       ]
     }
   },
-  
-  "masteries": [
-    {
-      "name": "Melee Weapons",
-      "description": "Specialize in melee weapons which increases your damage output",
-      "tiers": [
-        {
-          "name": "Advanced",
-          "modifiers": [
-            {
-              "property": "damage",
-              "affectedGroups": ["swords", "axes", "hammers", "daggers"],
-              "value": 1.2
-            },
 
-            {
-              "property": "attackSpeed",
-              "affectedGroups": ["swords", "axes", "hammers", "daggers"],
-              "value": 1.1
-            }
-          ]
-        },
-
-        {
-          "name": "Grandmaster",
-          "modifiers": [
-            {
-              "property": "damage",
-              "affectedGroups": ["swords", "axes", "hammers", "daggers"],
-              "value": 1.4
-            },
-
-            {
-              "property": "attackSpeed",
-              "affectedGroups": ["swords", "axes", "hammers", "daggers"],
-              "value": 1.2
-            }
-          ]
-        }
-      ]
-    }
-  ],
-
-  "baseItems": {
+  "itemDefs": {
     "crimsonMedallion": {
+      "type": "talisman",
       "name": "Crimson Medallion",
-      "type": "Talisman",
+      "caption": "Medallion",
       "group": "talismans",
       "tags": ["medallion"],
       "weight": 0.3,
@@ -256,8 +247,9 @@
     },
 
     "boarskinLeatherHat": {
+      "type": "armor",
       "name": "Boarskin Leather Hat",
-      "type": "Leather Helmet",
+      "caption": "Leather Helmet",
       "group": "helmets",
       "tags": ["armor"],
       "weight": 5,
@@ -269,8 +261,9 @@
     },
 
     "cerimHood": {
+      "type": "armor",
       "name": "Cerim Hood",
-      "type": "Mesh Helmet",
+      "caption": "Mesh Helmet",
       "group": "helmets",
       "tags": ["armor"],
       "weight": 5,
@@ -281,8 +274,9 @@
     },
 
     "druidsEye": {
+      "type": "armor",
       "name": "Druid’s Eye",
-      "type": "Cloth Helmet",
+      "caption": "Cloth Helmet",
       "group": "helmets",
       "tags": ["armor"],
       "armor": 10,
@@ -294,8 +288,9 @@
     },
 
     "cerimCloak": {
+      "type": "armor",
       "name": "Cerim Cloak",
-      "type": "Mesh Body Armor",
+      "caption": "Mesh Body Armor",
       "group": "bodyArmors",
       "tags": ["armor"],
       "weight": 15,
@@ -306,8 +301,9 @@
     },
 
     "cerimShield": {
+      "type": "armor",
       "name": "Cerim Shield",
-      "type": "Medium Shield",
+      "caption": "Medium Shield",
       "group": "shields",
       "tags": ["armor"],
       "weight": 15,
@@ -318,8 +314,9 @@
     },
 
     "helmsmansJacket": {
+      "type": "armor",
       "name": "Helmsman’s Jacket",
-      "type": "Leather Body Armor",
+      "caption": "Leather Body Armor",
       "group": "bodyArmors",
       "tags": ["armor"],
       "weight": 23,
@@ -332,8 +329,9 @@
     },
 
     "holyPrisonerRags": {
+      "type": "armor",
       "name": "Holy Prisoner Rags",
-      "type": "Cloth Body Armor",
+      "caption": "Cloth Body Armor",
       "group": "bodyArmors",
       "tags": ["armor"],
       "weight": 20,
@@ -344,8 +342,9 @@
     },
 
     "cerimGloves": {
+      "type": "armor",
       "name": "Cerim Gloves",
-      "type": "Mesh Gloves",
+      "caption": "Mesh Gloves",
       "group": "gloves",
       "tags": ["armor"],
       "weight": 4,
@@ -357,17 +356,19 @@
     },
 
     "arcanistGloves": {
+      "type": "armor",
       "name": "Arcanist Gloves",
-      "type": "Cloth Gloves",
+      "caption": "Cloth Gloves",
       "group": "gloves",
       "tags": ["armor"],
       "weight": 2,
       "armor": 5,
       "poise": 1,
       "requiredLevel": 1,
-      "scaling": [
+      "modifiers": [
         {
           "attr": "int",
+          "affects": "damage",
           "span": [8, 1],
           "rate": -0.1
         }
@@ -376,8 +377,9 @@
     },
 
     "cerimBoots": {
+      "type": "armor",
       "name": "Cerim Boots",
-      "type": "Mesh Boots",
+      "caption": "Mesh Boots",
       "group": "boots",
       "tags": ["armor"],
       "weight": 4,
@@ -389,59 +391,63 @@
     },
 
     "huntersAxe": {
+      "type": "weapon",
       "name": "Hunter’s Axe",
-      "type": "One Handed Axe",
+      "caption": "One Handed Axe",
       "group": "axes",
       "weight": 6,
       "attackSpeed": 1.2,
       "tags": ["melee"],
-      "damage": [10, 20],
+      "damage": [10, 20, 0],
       "description": "A simple axe carried by hunters to make a fast shelter or a faster kill.",
       "requiredLevel": 1,
-      "scaling": [
+      "modifiers": [
         {
           "attr": "dex",
-          "span": [5, 1],
-          "rate": -0.005
+          "affects": "damage",
+          "value": [5, 1, 0]
         },
 
         {
           "attr": "int",
-          "span": [2, 1],
-          "rate": -0.005
+          "affects": "damage",
+          "value": [2, 1, 1]
         }
       ]
     },
 
     "answeredPrayer": {
+      "type": "weapon",
       "name": "Answered Prayer",
-      "type": "One Handed Bow",
+      "caption": "One Handed Bow",
       "group": "bows",
       "weight": 5,
       "aps": 1.5,
       "tags": ["ranged"],
-      "damage": [5, 15],
+      "damage": [5, 15, 1],
       "requiredLevel": 1,
-      "scaling": [
+      "modifiers": [
         {
           "attr": "dex",
-          "span": [8, 1],
-          "rate": -0.1
+          "affects": "damage",
+          "value": [1, 1, 2]
         }
       ]
     },
 
     "eternalCompanion": {
+      "type": "weapon",
       "name": "Eternal Companion",
-      "type": "Two Handed Great Hammer",
+      "caption": "Two Handed Great Hammer",
       "group": "hammers",
       "tags": ["melee"],
       "weight": 15,
-      "damage": [25, 45],
+      "damage": [25, 45, 0],
       "requiredLevel": 1,
-      "scaling": [
+      "modifiers": [
         {
           "attr": "str",
+          "affects": "damage",
           "span": [8, 1],
           "rate": -0.1
         }
@@ -449,19 +455,21 @@
     },
 
     "basicSword": {
+      "type": "weapon",
       "name": "Basic Sword",
-      "type": "One Handed Sword",
+      "caption": "One Handed Sword",
       "group": "swords",
       "tags": ["melee"],
       "weight": 15,
-      "damage": [25, 45],
+      "damage": [25, 45, 0],
       "requiredLevel": 1,
       "iconUrl": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAABn0lEQVR4nO2VvUpDQRSEP4xKGk06a0VJGjut/MEf8A2sUgQiaCx8AhsNCKKgtr6ANukUo88QO4OIdRqjgggWKhJZmAuHJYXFbhozsHDZgTtzz5lzLvTwzzACpLshNAUUgF3gHLgF3oG2TETFhoQ6HWciKhaBL4lVgQpQBLZ05yoRDaPAs4QOPK6o+7NY4sNAQyI1IOXxFXE7McRTwLUEGjLjoyreBTM4TvRyV/6xDuYOTQinQ4uv68WfwLzHuUpcinfBLIcWn5NwW6Nn4SpxJ+4VWI6R+JYEjj1uBngS9wjkQ4sPma+7AfoNt2aq4rhsaPE+4EICD0bAhW3fhO0UGAglugpM6vnI9HVcdxnNfhI2F8ygq/Vb/d4zIkvinYl73b8ACwTGoCl5cjbFzZogurDliIQ88COhD7WjbH46V2pDFGTMjn8zJtpmBP29HwRZjVey412fJ4yJtjIRBTmgCdTNjl8xYUva0TLTERQFI+ImYNv85xvKRE2cG9EoKHkmks2WhC2tEY2KkjFR91Zu11CSiWaMvf5XFGIumR56+AULCoiUJC3RKwAAAABJRU5ErkJggg=="
     },
 
     "catTalisman": {
+      "type": "talisman",
       "name": "Longtail Cat",
-      "type": "Talisman",
+      "caption": "Medallion",
       "group": "talismans",
       "weight": 0.6,
       "iconUrl": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAABIklEQVR4nN3VTytEYRTH8U8pNf4skJ1RFmhSyoadkpdhM2/AytLKSlK8AZmykIUNySuQHVmYndhaKhPybzR1FrdcZsydWYxfnXp6zjnf3zndWw//SRVU0ZeB0R+Mx7TkTSQnMxiMB6PG+qbjSBYzGCwF4zQtuRzJwwwGe8FYSUvm8RYx2gR8GE/4xMRPRfsxwU4TBhvRe/JbUQEvMcXiH+AzsfkH5uoVr8YkD5huAD6Cu+jZbmSaLhxFw32dTWZxG7VnyGlQufjVqnjHARYwhEHMYxevUXOOgUbhyU3W8ByQtKgZbKFbBuWxjosE+BKbGNNiVSPaokLCoHZuqXK4Shhco6eVBqWUD1zqKINelBPwcty1VFPx6lXi3BYVMz5IHagvqDdXXz+PYeIAAAAASUVORK5CYII="
@@ -470,139 +478,145 @@
   
   "items": [
     {
-      "base": "arcanistGloves",
+      "def": "arcanistGloves",
       "quality": 0.1,
-      "attributes": [
+      "affixes": [
         {
-          "modifier": "addFocus",
+          "def": "addFocus",
           "tier": 2
         },
         {
-          "modifier": "increaseCastSpeed",
+          "def": "increaseCastSpeed",
           "tier": 2
         }
       ]
     },
     {
-      "base": "catTalisman",
-      "effect": "Renders the wearer immune to Fall Damage"
+      "def": "catTalisman",
+      "effect": "Renders the wearer immune to Fall Damage",
+      "affixes": []
     },
     {
-      "base": "crimsonMedallion",
-      "attributes": [
+      "def": "crimsonMedallion",
+      "affixes": [
         {
-          "modifier": "health",
+          "def": "health",
           "tier": 1
         }
       ]
     },
     {
-      "base": "crimsonMedallion",
-      "attributes": [
+      "def": "crimsonMedallion",
+      "affixes": [
         {
-          "modifier": "increaseHealth",
+          "def": "increaseHealth",
           "tier": 2
         }
       ]
     },
     {
-      "base": "boarskinLeatherHat",
-      "attributes": [
+      "def": "boarskinLeatherHat",
+      "affixes": [
         {
-          "modifier": "increaseHealth",
+          "def": "increaseHealth",
           "tier": 1
         }
       ]
     },
     {
-      "base": "cerimHood",
-      "attributes": []
+      "def": "cerimHood",
+      "affixes": []
     },
   
     {
-      "base": "druidsEye",
-      "attributes": []
+      "def": "druidsEye",
+      "affixes": []
     },
 
     {
-      "base": "cerimCloak",
+      "def": "cerimCloak",
       "name": "Healthy Cerim Cloak",
-      "attributes": [
+      "affixes": [
         {
-          "modifier": "increaseHealth",
+          "def": "increaseHealth",
           "tier": 1
         }
       ]
     },
   
     {
-      "base": "helmsmansJacket",
-      "attributes": []
+      "def": "helmsmansJacket",
+      "affixes": [
+        {
+          "def": "decreaseItemWeight",
+          "tier": 0
+        }
+      ]
     },
   
     {
-      "base": "holyPrisonerRags",
-      "attributes": [
+      "def": "holyPrisonerRags",
+      "affixes": [
         {
-          "modifier": "addStamina",
+          "def": "addStamina",
           "tier": 2
         }
       ]
     },
 
     {
-      "base": "cerimGloves",
-      "attributes": [
+      "def": "cerimGloves",
+      "affixes": [
         {
-          "modifier": "increaseAttackSpeed",
+          "def": "increaseAttackSpeed",
           "tier": 1
         },
         {
-          "modifier": "addStamina",
+          "def": "addStamina",
           "tier": 1
         }
       ]
     },
 
     {
-      "base": "cerimBoots",
-      "attributes": []
+      "def": "cerimBoots",
+      "affixes": []
     },
 
     {
-      "base": "cerimShield",
-      "attributes": []
+      "def": "cerimShield",
+      "affixes": []
     },
 
     {
-      "base": "basicSword",
+      "def": "basicSword",
       "name": "Cerim Sword",
-      "attributes": []
+      "affixes": []
     },
 
     {
-      "base": "huntersAxe",
+      "def": "huntersAxe",
       "name": "Nailbiter",
-      "attributes": [
+      "affixes": [
         {
-          "modifier": "addLightningDamage",
+          "def": "addLightningDamage",
           "tier": 2
         },
         {
-          "modifier": "increaseDamage",
+          "def": "increaseDamage",
           "tier": 3
         }
       ]
     },
 
     {
-      "base": "answeredPrayer",
-      "attributes": []
+      "def": "answeredPrayer",
+      "affixes": []
     },
 
     {
-      "base": "eternalCompanion",
-      "attributes": []
+      "def": "eternalCompanion",
+      "affixes": []
     }
   ]
 }

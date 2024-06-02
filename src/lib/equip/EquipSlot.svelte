@@ -1,11 +1,10 @@
 <script lang="ts">
-	import { createEventDispatcher, getContext } from 'svelte';
-	import { type Readable } from 'svelte/store';
+	import { createEventDispatcher } from 'svelte';
 	import ItemCard from './ItemCard.svelte';
-	import { appState } from './state';
-	import Dialog from './Dialog.svelte';
-	import type { HeroState } from './hero';
-	import { Item } from './item';
+  import Dialog from '../components/Dialog.svelte';
+	import { heroState } from '../hero';
+	import type { Item } from './items/Item';
+	import { itemStore } from './state';
 
   export let type: string;
   export let item: Item | null = null; 
@@ -16,9 +15,7 @@
 
   const dispatch = createEventDispatcher();
 
-  const state = getContext<Readable<HeroState>>('state');
-
-  $: availableItems = $appState.items.filter(i => allowedGroups.includes(i.base.group));
+  $: availableItems = $itemStore.filter(i => allowedGroups.includes(i.group));
 
   function selectItem(itm: Item | null) {
     selectionDialog.close();
@@ -43,7 +40,7 @@
 
       <ItemCard {item} slotted />
 
-      {#if $state.level < item.base.requiredLevel}
+      {#if $heroState.level < item.requiredLevel}
         <span class="bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300">
           Required Level
         </span>

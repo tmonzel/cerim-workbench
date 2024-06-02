@@ -1,4 +1,4 @@
-import type { Item } from './item';
+import type { ItemAffixDef, ItemDef } from './equip/types';
 
 export type DataSchema = {
   maxLevel: number;
@@ -6,97 +6,58 @@ export type DataSchema = {
   attributePointsPerLevel: number;
   masteryPointsPerLevel: number;
 
-  attributes: { [name: string]: AttributeSchema };
-  modifiers: { [name: string]: ModifierSchema };
+  modifiers?: ModifierDef[];
+  attributes: { [name: string]: AttributeDef };
 
-  baseItems: { [id: string]: BaseItem };
+  itemDefs: { [id: string]: ItemDef };
+  itemAffixDefs: { [name: string]: ItemAffixDef };
+
   items?: ItemSchema[];
 }
 
-export type ModifierSchema<TValue = unknown> = {
+export type AttributeDef = {
   name: string;
-  type: string;
-  scope?: string;
+  default: number;
+}
+
+export type ModifierDef = {
+  attr: string;
   affects: string;
-  values: TValue[];
-  scaling?: AttributeScaling;
+  mutations?: Mutation[];
+  value: number | number[];
 }
 
-export type AttributeSchema = {
-  name: string;
-  initialValue: number;
-  flag: string;
-  modifiers: StatModifier<unknown>[];
+export type Mutation = {
+  from: { [0]: number; [1]: number };
+  to: { [0]: number; [1]: number };
 }
 
-export type AttributeState = { [name: string]: number }
-
-export type StatValues = {
-  [name: string]: number | number[];
-  dps: number[];
-  attackSpeed: number;
-  health: number;
-  armor: number;
-  damage: number[];
-  weight: number;
-  poise: number;
-  equipLoad: number;
-  stamina: number;
-}
-
-export type BaseItem = {
-  name: string;
-  type: string;
-  group: string;
-  tags: string[];
-  poise?: number;
-  weight: number;
-  armor?: number;
-  damage?: number[];
-  attackSpeed?: number;
-  description?: string;
-  requiredLevel: number;
-  scaling?: AttributeScaling[];
-  iconUrl?: string;
+export type ModifierScaling = {
+  range: { [0]: number; [1]: number };
+  scale: { [0]: number; [1]: number };
 }
 
 export type ItemSchema = {
-  base: string;
+  def: string;
   name: string;
   quality: number;
-  attributes: ItemAttributeSchema[];
+  affixes: ItemAffixSchema[];
   damage?: number[];
   effect?: string;
 }
 
-export type ItemAttributeSchema = {
-  modifier: string;
+export type ItemAffixSchema = {
+  def: string;
   tier: number;
 }
 
-export type AttributeScaling = {
-  attr: string;
-  span?: number[];
-  rate?: number;
+export type DataState = {
+  maxLevel: number;
+  attributePointsPerLevel: number;
+  attributes: { [name: string]: AttributeDef };
 }
 
-export type StatModifier<T = number> = {
-  affects: string;
-  type?: string;
-  scale?: string;
-  span?: number[];
-  rate?: number;
+export type DynamicValue<T> = {
+  base: T;
   value: T;
-  affectedGroups?: string[];
-}
-
-export type EquipState = {
-  neck: Item | null;
-  head: Item | null;
-  chest: Item | null;
-  legs: Item | null;
-  hand: Item | null;
-  feet: Item | null;
-  mainHand: Item | null;
-  offHand: Item | null;
 }

@@ -1,58 +1,27 @@
-export class DamageValue {
-  constructor(
-    private value: number[] = [0, 0]
-  ) {}
+export function scaleValue(value: number, span: number[] = [1, 1], rate: number = -0.01) {
+  let v = 0;
 
-  get min(): number {
-    return this.value[0];
+  for(let i = 0; i < value; i++) {
+    v += (span[0] - span[1]) * Math.exp(rate * i) + span[1];
   }
-
-  get max(): number {
-    return this.value[1];
-  }
-
-  multiply(value: number): void {
-    this.value = [value * this.value[0], value * this.value[1]];
-  }
-
-  add(value: number[]): void {
-    this.value = [value[0] + this.value[0], value[1] + this.value[1]];
-  }
-
-  get(): number[] {
-    return this.value;
-  }
-
-  set(value: number[]): void {
-    this.value = value;
-  }
-
-  toString(): string {
-    const avg = Math.round((this.value[0] + this.value[1]) / 2);
-    return `${Math.round(this.value[0] * 10) / 10}-${Math.round(this.value[1] * 10) / 10} (${avg})`;
-  }
+  
+  return Math.round(v);
 }
 
-export class PercentageValue {
-  constructor(private value: number = 0) {}
-
-  add(value: number): void {
-    this.value += value;
-  }
-
-  set(value: number): void {
-    this.value = value;
-  }
-
-  get(): number {
-    return this.value;
-  }
-
-  toString(): string {
-    return `${Math.round(this.value * 100)} %`;
-  }
+export function calcNormalDist(x: number, peak: number, b: number, variance: number = 1): number {
+  const f = -Math.pow((x - b), 2) / variance;
+  return peak * Math.pow(Math.E, f);
 }
 
-export function renderDamageValue(v: number[]): string {
-  return `${new DamageValue(v)})`;
+export function humanize(v: string) {
+  return v
+    .replace(/^[\s_]+|[\s_]+$/g, '')
+    .replace(/[_\s]+/g, ' ')
+    .replace(/([a-z]{1})([A-Z]{1})/g, "$1 $2")
+    .replace(/^[a-z]/, (v) => { return v.toUpperCase(); });
+}
+
+export function roundValue(value: number, decimals: number = 1): number {
+  const d = Math.pow(10, decimals);
+  return value > 0 ? Math.round(value * d) / d : 0;
 }
