@@ -20,15 +20,19 @@ export class DamageStat implements Stat<ComplexDamage> {
   }
 
   isModified(): boolean {
-    return this.multiplier !== 1 || this.added.getTotal()[0] > 0 || this.scale.getTotal()[0] > 0;
+    return this.multiplier !== 1;
   }
 
   add(v: ComplexDamage): void {
     this.added.add(v.getValue());
   }
 
-  getAdded(): ComplexDamage {
-    return this.added;
+  set(value: DamageValue[]): void {
+    this.value = value;
+  }
+
+  hasAdded(): boolean {
+    return this.added.min !== 0;
   }
 
   getTotal(): ComplexDamage {

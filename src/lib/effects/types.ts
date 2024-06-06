@@ -1,11 +1,11 @@
 import type { Mutation } from '$lib/core';
-import type { DamageValue } from '$lib/types';
+import type { DamageValue, HeroStatTypes } from '$lib/types';
 
 export type EffectDef = {
   attr: string;
-  affects: 'stamina' | 'health' | 'armor' | 'weight' | 'poise';
+  affects: Exclude<HeroStatTypes, 'damage'>;
   mutations?: Mutation[];
-  value: number | DamageValue;
+  value: number;
 }
 
 export type DamageEffectDef = {

@@ -1,10 +1,19 @@
 <script lang="ts">
-	import type { Stat } from '$lib/types';
+	import { DamageStat, roundValue, type NumberStat } from '$lib/core';
 
-  export let stat: Stat<number>;
+  export let stat: NumberStat | DamageStat;
 
-  $: total = stat.getTotal();
   $: isModified = stat.isModified();
 </script>
 
-<span class:text-indigo-500={isModified}>{Math.round(total * 100) / 100}</span>
+{#if stat instanceof DamageStat}
+  {@const total = stat.getTotal()}
+  <span class:text-teal-500={isModified} class:font-semibold={isModified}>
+    {roundValue(total.min)}-{roundValue(total.max)} ({total.avg}){#if isModified}^{/if}
+  </span>
+{:else}
+  {@const total = stat.getTotal()}
+  <span class:text-teal-500={isModified} class:font-semibold={isModified}>
+    {Math.round(total * 100) / 100}{#if isModified}^{/if}
+  </span>
+{/if}

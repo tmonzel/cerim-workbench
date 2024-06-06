@@ -1,8 +1,9 @@
 import type { Stat } from '$lib/types';
+import type { FlatNumber } from '../types';
 
 export class NumberStat implements Stat<number> {
   multiplier = 1;
-  private added = 0;
+  added: FlatNumber = { value: 0, type: 'flat' };
   private scale = 0;
 
   constructor(
@@ -10,13 +11,17 @@ export class NumberStat implements Stat<number> {
   ) {}
 
   reset(): void {
-    this.added = 0;
+    this.added.value = 0;
     this.multiplier = 1;
     this.scale = 0;
   }
 
+  hasAdded(): boolean {
+    return this.added.value !== 0;
+  }
+
   isModified(): boolean {
-    return ((this._value + this.added) * this.multiplier) !== this._value;
+    return this.multiplier !== 1 || this.added.value !== 0;
   }
 
   set(value: number): void {
@@ -24,15 +29,11 @@ export class NumberStat implements Stat<number> {
   }
 
   add(v: number): void {
-    this.added += v;
-  }
-
-  getAdded(): number {
-    return this.added;
+    this.added.value += v;
   }
 
   getTotal(): number {
-    return (this._value + this.added + this.scale) * this.multiplier;
+    return (this._value + this.added.value + this.scale) * this.multiplier;
   }
 
   toString(): string {

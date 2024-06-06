@@ -2,11 +2,9 @@ import type { Attribute, DataSchema } from './types';
 import { appState } from './state';
 import { registerModifier } from './modifiers';
 import { addEffect } from './effects';
-import { createItem, registerItemBase } from './items';
-import type { Item } from './items/Item';
+import { addItem, registerItemBase } from './items';
 
 export function loadData(data: DataSchema) {
-  const items: Item[] = [];
   const attributes: Record<string, Attribute> = {};
 
   // Resolve effects
@@ -33,7 +31,7 @@ export function loadData(data: DataSchema) {
   // Resolve items
   if(data.items) {
     for(const def of data.items) {
-      items.push(createItem(def));
+      addItem(def);
     }
   }
 
@@ -50,7 +48,6 @@ export function loadData(data: DataSchema) {
   appState.set({
     maxLevel: data.maxLevel,
     attributePointsPerLevel: data.attributePointsPerLevel,
-    items,
     attributes
   })
 }

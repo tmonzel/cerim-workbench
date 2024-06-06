@@ -70,6 +70,10 @@ export class Item {
     return this.def.effect;
   }
 
+  get attackSpeed(): number | undefined {
+    return this.base.attackSpeed;
+  }
+
   applyAffixes(): void {
     for(const affix of this.affixes) {
       if(affix.scope !== 'item') {
@@ -82,7 +86,7 @@ export class Item {
 
   applyAttributeChange(attributes: AttributeState): void {
     const effects = this.base.effects ?? [];
-    const effectDamage = new ComplexDamage();
+    const damageScale = new ComplexDamage();
 
     for(const effect of effects) {
       const attr = attributes[effect.attr];
@@ -90,10 +94,10 @@ export class Item {
       if(effect.affects === 'damage') {
         // Mutate damage
         const mutator = new DamageMutator(effect.value, effect.mutations ?? []);
-        effectDamage.add(mutator.mutate(attr.value).getValue());
+        damageScale.add(mutator.mutate(attr.value).getValue());
       }
     }
 
-    this.damage.setScale(effectDamage);
+    this.damage.setScale(damageScale);
   }
 }

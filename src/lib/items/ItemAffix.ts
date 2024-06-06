@@ -1,11 +1,11 @@
-import { ComplexDamage, DamageNumber, FlatNumber, PercentageNumber } from '$lib/core';
+import { ComplexDamage, type DamageNumber, type FlatNumber, type PercentageNumber } from '$lib/core';
 import type { ModifierDef, ModifierScope } from '$lib/modifiers';
 import type { HeroStatTypes } from '$lib/types';
 import type { Item } from './Item';
 import type { ItemAffixDef } from './types';
 
 export class ItemAffix {
-  readonly value: FlatNumber | PercentageNumber | DamageNumber;
+  readonly num: FlatNumber | PercentageNumber | DamageNumber = { value: 0, type: 'flat' };
 
   constructor(
     private modifierDef: ModifierDef,
@@ -13,14 +13,15 @@ export class ItemAffix {
   ) {
 
     if(modifierDef.affects === 'damage' && modifierDef.type === 'flat') {
-      this.value = new DamageNumber(modifierDef.values[def.tier]);
+      this.num = { type: 'damage', value: modifierDef.values[def.tier] }
     } else {
       if(modifierDef.type === 'percentual') {
-        this.value = new PercentageNumber(modifierDef.values[def.tier]);
+        this.num = { type: 'percentual', value: modifierDef.values[def.tier] };
       } else {
-        this.value = new FlatNumber(modifierDef.values[def.tier]);
+        this.num = { type: 'flat', value: modifierDef.values[def.tier] };
       }
     }
+    
   }
 
   get name(): string {
@@ -40,18 +41,19 @@ export class ItemAffix {
   }
 
   apply(item: Item): void {
-    if(this.value instanceof DamageNumber) {
-      item.damage.add(new ComplexDamage([this.value.num]));
-    } else if(this.value instanceof PercentageNumber) {
+    if(this.num.type === 'damage') {
+      item.damage.add(new ComplexDamage([this.num.value]));
+    } else if(this.num.type === 'percentual') {
       
       switch(this.modifierDef.affects) {
         case 'damage':
         case 'weight':
-          item[this.modifierDef.affects].multiplier += this.value.num;
+        case 'armor':
+          item[this.modifierDef.affects].multiplier += this.num.value;
       }
 
 
-    } else if(this.value instanceof FlatNumber) {
+    } else if(this.num.type === 'flat') {
       //item.damage.multiplier += this.value.num;
     }
   }

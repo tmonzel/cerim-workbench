@@ -18,10 +18,13 @@ export class StatEffect extends Effect<HeroState> {
       // Mutate normal stat number
       const mutator = new NumberMutator(base, this.def.mutations ?? []);
 
-      if(this.def.affects === 'health') {
-        hero.stats.health.setScale(mutator.mutate(attr.value));
+      switch(this.def.affects) {
+        case 'health':
+        case 'stamina':
+        case 'poise':
+        case 'equipLoad':
+          hero.stats[this.def.affects].setScale(mutator.mutate(attr.value));
       }
-      
     }
 
     else if(Array.isArray(base)) {

@@ -41,7 +41,7 @@
 
   <hr class="my-8">
 
-  <div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+  <div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-7">
     <div class="sm:col-span-1">
       <div class="px-4 sm:px-0 min-h-20">
         <h3 class="text-base font-semibold leading-7 text-gray-900">Attributes</h3>
@@ -50,7 +50,7 @@
       <AttributePanel bind:attributes={$appState.attributes} />
     </div>
     
-    <div class="sm:col-span-3">
+    <div class="sm:col-span-4">
       <div class="px-4 sm:px-0 min-h-20">
         <h3 class="text-base font-semibold leading-7 text-gray-900">Gear</h3>
         <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-500">Choose your equipment</p>

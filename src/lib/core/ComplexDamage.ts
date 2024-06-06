@@ -11,9 +11,22 @@ export class ComplexDamage {
 
   private overall = [0, 0];
   private total = [0, 0];
+  private average = 0;
 
   constructor(value?: DamageValue[]) {
     this.add(value ?? []);
+  }
+
+  get min(): number {
+    return this.total[0];
+  }
+
+  get max(): number {
+    return this.total[1];
+  }
+
+  get avg(): number {
+    return this.average;
   }
 
   clone(): ComplexDamage {
@@ -87,12 +100,19 @@ export class ComplexDamage {
 
   private update(): void {
     this.total = [0, 0];
+    this.average = 0;
     
     const values = [ ...Object.values(this.typedValues), this.overall];
 
     for(const v of values) {
       this.total[0] += v[0];
       this.total[1] += v[1];
+    }
+
+    const sum = this.total[0] + this.total[1];
+
+    if(sum > 0) {
+      this.average = Math.round((sum / 2) * 100) / 100;
     }
   }
 }

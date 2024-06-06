@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { HeroState } from '$lib/hero';
-	import DamageBadge from './DamageBadge.svelte';
+	import DamageDistBar from './DamageDistBar.svelte';
 	import StatBadge from './StatBadge.svelte';
 
   export let hero: HeroState; 
@@ -9,19 +9,16 @@
 <div class="mt-6 border-t border-gray-100">
   <dl class="divide-y divide-gray-100">
     <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-      <dt class="text-sm font-medium leading-6 text-gray-900">DPS</dt>
-      <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-        {hero.dps}
-      </dd>
-    </div>
-    <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
       <dt class="text-sm font-medium leading-6 text-gray-900">APS</dt>
-      <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{hero.attackSpeed}</dd>
+      <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+        <StatBadge stat={hero.stats.attackSpeed} />
+      </dd>
     </div>
     <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
       <dt class="text-sm font-medium leading-6 text-gray-900">Damage</dt>
       <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-        <DamageBadge stat={hero.stats.damage} showTypes />
+        <StatBadge stat={hero.stats.damage} />
+        <DamageDistBar damage={hero.stats.damage.getTotal()} />
       </dd>
     </div>
     <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">

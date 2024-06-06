@@ -4,6 +4,11 @@
   "attributePointsPerLevel": 3,
   "masteryPointsPerLevel": 1,
 
+  "config": {
+    "calcAttackSpeedBasedOnWeaponWeight": false,
+    "alertRequiredItemLevel": true
+  },
+
   "scalingGrades": {
     "S": -0.005,
     "A": -0.01,
@@ -173,6 +178,20 @@
       "type": "percentual",
       "affects": "focus",
       "name": "Increase Focus",
+      "values": [
+        0.2,
+        0.4,
+        0.5,
+        0.6,
+        0.7
+      ]
+    },
+
+    "increaseItemArmor": {
+      "type": "percentual",
+      "affects": "armor",
+      "name": "Increase Armor",
+      "scope": "item",
       "values": [
         0.2,
         0.4,
@@ -462,6 +481,7 @@
       "caption": "One Handed Sword",
       "group": "swords",
       "tags": ["melee"],
+      "attackSpeed": 1.4,
       "weight": 15,
       "damage": [25, 45, 0],
       "requiredLevel": 1,
@@ -559,6 +579,10 @@
     {
       "base": "holyPrisonerRags",
       "affixes": [
+        {
+          "modifier": "increaseItemArmor",
+          "tier": 2
+        },
         {
           "modifier": "addStamina",
           "tier": 2

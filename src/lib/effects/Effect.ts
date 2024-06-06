@@ -1,5 +1,5 @@
 import type { AttributeState } from '$lib/state';
-import type { DamageEffectDef, EffectDef } from '$lib/types';
+import type { DamageEffectDef, EffectDef } from './types';
 
 export abstract class Effect<T = unknown> {
   readonly attributeName: string;

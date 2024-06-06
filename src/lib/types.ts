@@ -43,7 +43,6 @@ export type ComplexDamageValue = (DamageValue)[];
 export type Stat<T = number> = {
   add(v: T): void;
   getTotal(): T;
-  getAdded(): T;
   isModified(): boolean;
   reset(): void;
   setScale(v: T): void;
@@ -59,4 +58,4 @@ export enum DamageType {
   POISON = 4
 }
 
-export type HeroStatTypes = 'focus' | 'stamina' | 'armor' | 'weight' | 'poise' | 'equipLoad' | 'damage' | 'health';
+export type HeroStatTypes = 'focus' | 'stamina' | 'armor' | 'weight' | 'poise' | 'equipLoad' | 'damage' | 'health' | 'attackSpeed';

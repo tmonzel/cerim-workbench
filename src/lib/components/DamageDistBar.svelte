@@ -1,0 +1,32 @@
+<script lang="ts">
+	import { ComplexDamage } from '$lib/core';
+
+  export let damage: ComplexDamage;
+
+  let gradient = '';
+  let colorMap = ['#333', '#dc2626', '#facc15', 'blue', 'green'];
+
+  $: {
+    let v = [];
+    let lastPercent = 0;
+    let dist = damage.getTypeDistribution();
+
+    for(const [k, d] of Object.entries(dist)) {
+      const percent = d * 100;
+
+      if(percent > 0) {
+        v.push(colorMap[Number(k)] + ' ' + lastPercent + '% ' + (lastPercent + percent) + '%');
+        lastPercent = percent;
+      }
+    }
+
+    if(v.length > 0) {
+      gradient = `linear-gradient(to right, ${v.join(',')})`;
+    } else {
+      gradient = '';
+    }
+  }
+</script>
+<div style="border: 1px solid #333; padding: 2px">
+  <div style="width: 100%; height: 6px" style:background={gradient}></div>
+</div>
