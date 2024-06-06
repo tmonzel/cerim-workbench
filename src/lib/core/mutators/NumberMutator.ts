@@ -1,5 +1,5 @@
-import type { Mutation } from '$lib/types';
-import { NumRange } from './NumRange';
+import type { Mutation } from '../types';
+import { NumRange } from '../NumRange';
 
 export class NumberMutator {
   constructor(
@@ -16,7 +16,6 @@ export class NumberMutator {
 
     return inc;
   }
-  
 
   private calcValue(index: number): number {
     const mutations = this.mutations ?? [];

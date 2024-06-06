@@ -1,11 +1,11 @@
 
-import type { Mutation } from '$lib/types';
-import { ComplexDamage } from '$lib/values/complex-damage';
-import { Damage } from '$lib/values/damage';
+import { type Mutation } from '../types';
+import type { DamageValue } from '$lib/types';
+import { ComplexDamage } from '../ComplexDamage';
 
 export class DamageMutator {
   constructor(
-    readonly base: number[], 
+    readonly base: DamageValue, 
     private mutations: Mutation[] = []
   ) {}
 
@@ -13,13 +13,13 @@ export class DamageMutator {
     const damage = new ComplexDamage();
     
     for(let i = 0; i < progress; i++) {
-      damage.add(this.calcValue(i).get());
+      damage.add([this.calcValue(i)]);
     }
-
+    
     return damage;
   }
 
-  private calcValue(index: number): Damage {
+  private calcValue(index: number): DamageValue {
     const mutations = this.mutations ?? [];
 
     for(const m of mutations) {
@@ -33,7 +33,8 @@ export class DamageMutator {
         value *= modValue;
       }*/
     }
-
-    return new Damage(this.base);
+    //console.log(this.base);
+    
+    return this.base;
   }
 }

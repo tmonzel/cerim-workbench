@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { dataStore } from '$lib/data.store';
+	import { loadData } from '$lib/data';
 	import { heroState } from '$lib/hero';
 
   function importData() {
@@ -10,7 +10,7 @@
       let files = Array.from(input.files!);
       let text = await files[0].text();
 
-      dataStore.load(JSON.parse(text));
+      loadData(JSON.parse(text));
     };
 
     input.click();

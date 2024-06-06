@@ -1,19 +1,19 @@
 <script lang="ts">
   import "../app.css";
-	import { dataStore } from '$lib/data.store';
-	import EquipPanel from '$lib/equip/EquipPanel.svelte';
 	import HeroStats from '$lib/components/HeroStats.svelte';
 	import { heroState } from '$lib/hero';
 	import Header from '$lib/components/Header.svelte';
 	import AttributePanel from '$lib/components/AttributePanel.svelte';
-	import { attributeStore } from '$lib/attribute.store';
 	import HeroModifiers from '$lib/components/HeroModifiers.svelte';
 	import type { DataSchema } from '$lib/types';
+	import { appState } from '$lib/state';
+	import { loadData } from '$lib/data';
+	import EquipPanel from '$lib/items/EquipPanel.svelte';
 
 	export let data: DataSchema;
 
   // Initial data load
-  dataStore.load(data);
+  loadData(data);
 
   /*
     E: 0 - 24
@@ -47,7 +47,7 @@
         <h3 class="text-base font-semibold leading-7 text-gray-900">Attributes</h3>
         <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-500">Spend attribute points to level up ({data.attributePointsPerLevel})</p>
       </div>
-      <AttributePanel bind:state={$attributeStore} />
+      <AttributePanel bind:attributes={$appState.attributes} />
     </div>
     
     <div class="sm:col-span-3">
@@ -71,7 +71,7 @@
         <h3 class="text-base font-semibold leading-7 text-gray-900">Stats</h3>
         <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-500">Calculated hero stats based on attributes, gear etc.</p>
       </div>
-      <HeroStats state={$heroState} />
+      <HeroStats hero={$heroState} />
     </div>
   </div>
 </div>

@@ -1,8 +1,6 @@
 import { derived, writable } from 'svelte/store';
-import { attributeStore } from '$lib/attribute.store';
-import type { Item } from './items/Item';
-
-export const itemStore = writable<Item[]>([]);
+import type { Item } from './Item';
+import { attributeState } from '$lib/state';
 
 export type EquipState = {
   neck: Item | null;
@@ -26,7 +24,7 @@ export const equipStore = writable<EquipState>({
   offHand: null
 });
 
-export const equipState = derived([equipStore, attributeStore], ([equip, attributes]) => {
+export const equipState = derived([equipStore, attributeState], ([equip, attributes]) => {
   for(const item of Object.values(equip)) {
     if(!item) {
       continue;

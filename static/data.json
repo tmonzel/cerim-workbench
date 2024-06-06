@@ -12,6 +12,10 @@
     "D": -0.15,
     "E": -0.2
   },
+
+  "abilities": {
+
+  },
   
   "attributes": {
     "vit": {
@@ -45,7 +49,7 @@
     }
   },
 
-  "modifiers": [
+  "effects": [
     {
       "attr": "vit",
       "affects": "health",
@@ -109,12 +113,9 @@
     }
   ],
 
-  "abilities": {
-
-  },
-
-  "itemAffixDefs": {
+  "modifiers": {
     "addLightningDamage": {
+      "scope": "item",
       "type": "flat",
       "affects": "damage",
       "name": "Add Lightning Damage",
@@ -128,6 +129,7 @@
     },
 
     "increaseDamage": {
+      "scope": "item",
       "type": "percentual",
       "affects": "damage",
       "name": "Increase Damage",
@@ -233,7 +235,7 @@
     }
   },
 
-  "itemDefs": {
+  "models": {
     "crimsonMedallion": {
       "type": "talisman",
       "name": "Crimson Medallion",
@@ -401,17 +403,17 @@
       "damage": [10, 20, 0],
       "description": "A simple axe carried by hunters to make a fast shelter or a faster kill.",
       "requiredLevel": 1,
-      "modifiers": [
+      "effects": [
         {
           "attr": "dex",
           "affects": "damage",
-          "value": [5, 1, 0]
+          "value": [1, 5, 0]
         },
 
         {
           "attr": "int",
           "affects": "damage",
-          "value": [2, 1, 1]
+          "value": [1, 2, 1]
         }
       ]
     },
@@ -478,144 +480,144 @@
   
   "items": [
     {
-      "def": "arcanistGloves",
+      "base": "arcanistGloves",
       "quality": 0.1,
       "affixes": [
         {
-          "def": "addFocus",
+          "modifier": "addFocus",
           "tier": 2
         },
         {
-          "def": "increaseCastSpeed",
+          "modifier": "increaseCastSpeed",
           "tier": 2
         }
       ]
     },
     {
-      "def": "catTalisman",
+      "base": "catTalisman",
       "effect": "Renders the wearer immune to Fall Damage",
       "affixes": []
     },
     {
-      "def": "crimsonMedallion",
+      "base": "crimsonMedallion",
       "affixes": [
         {
-          "def": "health",
+          "modifier": "health",
           "tier": 1
         }
       ]
     },
     {
-      "def": "crimsonMedallion",
+      "base": "crimsonMedallion",
       "affixes": [
         {
-          "def": "increaseHealth",
+          "modifier": "increaseHealth",
           "tier": 2
         }
       ]
     },
     {
-      "def": "boarskinLeatherHat",
+      "base": "boarskinLeatherHat",
       "affixes": [
         {
-          "def": "increaseHealth",
+          "modifier": "increaseHealth",
           "tier": 1
         }
       ]
     },
     {
-      "def": "cerimHood",
+      "base": "cerimHood",
       "affixes": []
     },
   
     {
-      "def": "druidsEye",
+      "base": "druidsEye",
       "affixes": []
     },
 
     {
-      "def": "cerimCloak",
+      "base": "cerimCloak",
       "name": "Healthy Cerim Cloak",
       "affixes": [
         {
-          "def": "increaseHealth",
+          "modifier": "increaseHealth",
           "tier": 1
         }
       ]
     },
   
     {
-      "def": "helmsmansJacket",
+      "base": "helmsmansJacket",
       "affixes": [
         {
-          "def": "decreaseItemWeight",
+          "modifier": "decreaseItemWeight",
           "tier": 0
         }
       ]
     },
   
     {
-      "def": "holyPrisonerRags",
+      "base": "holyPrisonerRags",
       "affixes": [
         {
-          "def": "addStamina",
+          "modifier": "addStamina",
           "tier": 2
         }
       ]
     },
 
     {
-      "def": "cerimGloves",
+      "base": "cerimGloves",
       "affixes": [
         {
-          "def": "increaseAttackSpeed",
+          "modifier": "increaseAttackSpeed",
           "tier": 1
         },
         {
-          "def": "addStamina",
+          "modifier": "addStamina",
           "tier": 1
         }
       ]
     },
 
     {
-      "def": "cerimBoots",
+      "base": "cerimBoots",
       "affixes": []
     },
 
     {
-      "def": "cerimShield",
+      "base": "cerimShield",
       "affixes": []
     },
 
     {
-      "def": "basicSword",
+      "base": "basicSword",
       "name": "Cerim Sword",
       "affixes": []
     },
 
     {
-      "def": "huntersAxe",
+      "base": "huntersAxe",
       "name": "Nailbiter",
       "affixes": [
         {
-          "def": "addLightningDamage",
+          "modifier": "addLightningDamage",
           "tier": 2
         },
         {
-          "def": "increaseDamage",
+          "modifier": "increaseDamage",
           "tier": 3
         }
       ]
     },
 
     {
-      "def": "answeredPrayer",
+      "base": "answeredPrayer",
       "affixes": []
     },
 
     {
-      "def": "eternalCompanion",
+      "base": "eternalCompanion",
       "affixes": []
     }
   ]

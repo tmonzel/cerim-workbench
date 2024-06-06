@@ -1,16 +1,16 @@
 <script lang="ts">
-	import type { AttributeState } from '$lib/attribute.store';
+	import type { Attribute } from '$lib/types';
 	import AttributeControl from './AttributeControl.svelte';
 
-  export let state: AttributeState;
+  export let attributes: Record<string, Attribute>;
 </script>
 
 <div>
-  {#each Object.keys(state) as name}
+  {#each Object.keys(attributes) as name}
     <div class="mb-4">
       <AttributeControl 
-        label={state[name].label} 
-        bind:value={state[name].value} 
+        label={attributes[name].label} 
+        bind:value={attributes[name].value} 
       />
     </div>
   {/each}

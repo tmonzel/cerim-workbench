@@ -3,19 +3,18 @@
 	import ItemCard from './ItemCard.svelte';
   import Dialog from '../components/Dialog.svelte';
 	import { heroState } from '../hero';
-	import type { Item } from './items/Item';
-	import { itemStore } from './state';
+	import type { Item } from './Item';
+	import { itemState } from '$lib/state';
+	import { derived } from 'svelte/store';
 
   export let type: string;
   export let item: Item | null = null; 
   export let allowedGroups: string[] = [];
 
   let selectionDialog: Dialog;
-  let availableItems: Item[] = [];
+  let availableItems = derived(itemState, (items) => items.filter(i => allowedGroups.includes(i.group)));
 
   const dispatch = createEventDispatcher();
-
-  $: availableItems = $itemStore.filter(i => allowedGroups.includes(i.group));
 
   function selectItem(itm: Item | null) {
     selectionDialog.close();
@@ -52,7 +51,7 @@
   </button>
 
   <Dialog bind:this={selectionDialog} title={type} backdropClose>
-    {#if availableItems.length > 0}
+    {#if $availableItems.length > 0}
       <div class="grid grid-cols-4 gap-2">
         <button 
           type="button" 
@@ -73,7 +72,7 @@
             <p class="mt-1 text-gray-600">Empty Slot</p>
           </div>
         </button>
-        {#each availableItems as itm}
+        {#each $availableItems as itm}
         <button 
           type="button" 
           class="relative text-left w-full rounded-lg flex p-4 ring-inset hover:bg-gray-50" 
