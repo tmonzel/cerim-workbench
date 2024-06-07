@@ -24,7 +24,7 @@ export type ItemDef = {
   base: string;
   name: string;
   quality: number;
-  affixes: ItemAffixDef[];
+  affixes?: ItemAffixDef[];
   effect?: string;
 }
  

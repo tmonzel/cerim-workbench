@@ -23,7 +23,7 @@ export class Item {
     this.armor = new NumberStat(this.base.armor);
     this.scalingFlags = (this.base.effects ?? []).map(m => m.attr.toUpperCase());
 
-    for(const affixDef of this.def.affixes) {
+    for(const affixDef of this.def.affixes ?? []) {
       const modifierDef = getModifierDef(affixDef.modifier);
 
       if(!modifierDef) {
