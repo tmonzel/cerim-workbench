@@ -1,4 +1,4 @@
-import type { EffectDef } from './effects';
+import type { Effect } from './effects';
 import type { ItemBaseDef, ItemDef } from './items/types';
 import type { ModifierDef } from './modifiers';
 
@@ -8,7 +8,7 @@ export type DataSchema = {
   attributePointsPerLevel: number;
   masteryPointsPerLevel: number;
 
-  effects?: EffectDef[];
+  effects?: Effect[];
   attributes?: { [name: string]: AttributeDef };
 
   models?: { [id: string]: ItemBaseDef };
@@ -32,30 +32,15 @@ export type ModifierScaling = {
   scale: { [0]: number; [1]: number };
 }
 
-export type DynamicValue<T> = {
-  base: T;
-  value: T;
-}
-
-export type DamageValue = { [0]: number; [1]: number; [2]?: number };
-export type ComplexDamageValue = (DamageValue)[];
-
-export type Stat<T = number> = {
-  add(v: T): void;
-  getTotal(): T;
-  isModified(): boolean;
-  reset(): void;
-  setScale(v: T): void;
-
-  multiplier: number;
-}
+export type DamageValue = { [0]: number; [1]: number; [2]: number };
+export type ResistanceValue = { [0]: number; [1]: number; };
 
 export enum DamageType {
   PHYSICAL = 0,
   FIRE = 1,
-  LIGHTNING = 2,
-  COLD = 3,
+  COLD = 2,
+  LIGHTNING = 3,
   POISON = 4
 }
 
-export type HeroStatTypes = 'focus' | 'stamina' | 'armor' | 'weight' | 'poise' | 'equipLoad' | 'damage' | 'health' | 'attackSpeed';
+export type HeroStatTypes = 'focus' | 'stamina' | 'armor' | 'weight' | 'poise' | 'equipLoad' | 'damage' | 'health' | 'attackSpeed' | 'resistance';

@@ -108,7 +108,7 @@
     {
       "attr": "str",
       "affects": "damage",
-      "value": [0.5, 1]
+      "value": [0.5, 1, 0]
     },
 
     {
@@ -125,11 +125,11 @@
       "affects": "damage",
       "name": "Add Lightning Damage",
       "values": [
-        [1, 4, 2],
-        [1, 8, 2],
-        [1, 12, 2],
-        [1, 16, 2],
-        [1, 20, 2]
+        [1, 4, 3],
+        [1, 8, 3],
+        [1, 12, 3],
+        [1, 16, 3],
+        [1, 20, 3]
       ]
     },
 
@@ -211,6 +211,32 @@
         12,
         14,
         15
+      ]
+    },
+
+    "addFireResistance": {
+      "type": "flat",
+      "name": "Fire Resist",
+      "affects": "resistance",
+      "values": [
+        [2, 1],
+        [4, 1],
+        [6, 1],
+        [8, 1],
+        [10, 1]
+      ]
+    },
+
+    "addPoisonResistance": {
+      "type": "flat",
+      "name": "Poison Resist",
+      "affects": "resistance",
+      "values": [
+        [2, 4],
+        [4, 4],
+        [6, 4],
+        [8, 4],
+        [10, 4]
       ]
     },
 
@@ -376,6 +402,18 @@
       "iconUrl": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAABk0lEQVR4nO2VvUoDQRSFP1CyQsAnyBMooqIoClrY+BraWwgW1v7H+BBiZRMLf9MrgrVoZSNIjBoRhBR2KwsnsCy7mPnJpvHAZffO3HPv2bmzM/APO/QBZeBDtqex3LAFhAnb7GbBArAPvAIvQEtFZ4BZvbc0V9eKRBxvKKd8cWRkjEe261NAPeWL0wTE5yOON4SxgiZ+w1dLQksB3loSZiz5X763loSWAtJ8ZwGmfs8FYCIgACravQ0dPkGeLaik7N5angIaCpwExnXR+OihsYBR+SMJERFugZsYpxO/YwHl2Ak2lCICJb+OcTrxjTZhTcFvwHBChC2MWjgAXInwruJtEbkIQBfHqUhfwAT2GFSeb1NiAFyI3ATGLAUsKMedDTkAzpXgU7+mKS7FX8MSBeBMSe4NuaviPQNFHLCiRIeGvCPx1nHEiRItGfKWxau6Cmgq0ZOSbQBzQH8iLvLnNV9VfHsTOyHMsOic2NZvuiM/K9YZAVACFnVrPmQUegQOFFcSr2uYAo6BHz2n6RGKvSrsjF8UYPq4qCSU4wAAAABJRU5ErkJggg=="
     },
 
+    "cerimLeggings": {
+      "type": "armor",
+      "name": "Cerim Leggings",
+      "caption": "Mesh Pants",
+      "group": "pants",
+      "tags": ["armor"],
+      "weight": 6,
+      "armor": 25,
+      "description": "A pair of leg guards favored by the Cerim, imbued with the words of the Sayer.",
+      "requiredLevel": 1
+    },
+
     "arcanistGloves": {
       "type": "armor",
       "name": "Arcanist Gloves",
@@ -500,6 +538,9 @@
   
   "items": [
     {
+      "base": "cerimLeggings"
+    },
+    {
       "base": "arcanistGloves",
       "quality": 0.1,
       "affixes": [
@@ -516,7 +557,12 @@
     {
       "base": "catTalisman",
       "effect": "Renders the wearer immune to Fall Damage",
-      "affixes": []
+      "affixes": [
+        {
+          "modifier": "addFireResistance",
+          "tier": 2
+        }
+      ]
     },
     {
       "base": "crimsonMedallion",
@@ -542,6 +588,10 @@
         {
           "modifier": "increaseHealth",
           "tier": 1
+        },
+        {
+          "modifier": "addPoisonResistance",
+          "tier": 3
         }
       ]
     },
@@ -606,7 +656,12 @@
 
     {
       "base": "cerimBoots",
-      "affixes": []
+      "affixes": [
+        {
+          "modifier": "addPoisonResistance",
+          "tier": 2
+        }
+      ]
     },
 
     {

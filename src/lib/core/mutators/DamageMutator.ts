@@ -1,7 +1,7 @@
 
 import { type Mutation } from '../types';
 import type { DamageValue } from '$lib/types';
-import { ComplexDamage } from '../ComplexDamage';
+import { FlatDamage } from '../values/FlatDamage';
 
 export class DamageMutator {
   constructor(
@@ -9,11 +9,11 @@ export class DamageMutator {
     private mutations: Mutation[] = []
   ) {}
 
-  mutate(progress: number): ComplexDamage {
-    const damage = new ComplexDamage();
+  mutate(progress: number): FlatDamage {
+    const damage = new FlatDamage();
     
     for(let i = 0; i < progress; i++) {
-      damage.add([this.calcValue(i)]);
+      damage.add(new FlatDamage([this.calcValue(i)]));
     }
     
     return damage;

@@ -14,26 +14,6 @@
 
   // Initial data load
   loadData(data);
-
-  /*
-    E: 0 - 24
-    D: 25 - 59
-    C: 60 - 89
-    B: 90 - 139
-    A: 140 - 174
-    S: 175+
-
-    "rgba(255, 0, 0, 0.6)",
-        "rgba(255, 48, 0, 0.6)",
-        "rgba(255, 102, 0, 0.6)",
-        "rgba(255, 154, 0, 0.6)",
-        "rgba(255, 205, 0, 0.6)",
-        "rgba(255, 255, 0, 0.6)",
-        "rgba(203, 255, 0, 0.6)",
-        "rgba(150, 255, 0, 0.6)",
-        "rgba(94, 255, 0, 0.6)",
-        "rgba(0, 255, 0, 0.6)"
-  */
 </script>
 
 <div class="p-12">
@@ -43,35 +23,38 @@
 
   <div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-7">
     <div class="sm:col-span-1">
-      <div class="px-4 sm:px-0 min-h-20">
-        <h3 class="text-base font-semibold leading-7 text-gray-900">Attributes</h3>
-        <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-500">Spend attribute points to level up ({data.attributePointsPerLevel})</p>
+      <div class="sticky top-5">
+        <div class="px-4 sm:px-0 min-h-20">
+          <h3 class="text-base font-semibold leading-7 text-gray-900">Attributes</h3>
+          <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-500">Spend attribute points to level up ({data.attributePointsPerLevel})</p>
+        </div>
+        <AttributePanel bind:attributes={$appState.attributes} />
       </div>
-      <AttributePanel bind:attributes={$appState.attributes} />
     </div>
     
     <div class="sm:col-span-4">
-      <div class="px-4 sm:px-0 min-h-20">
-        <h3 class="text-base font-semibold leading-7 text-gray-900">Gear</h3>
-        <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-500">Choose your equipment</p>
-      </div>
+      
       <EquipPanel />
     </div>
 
     <div class="sm:col-span-1">
-      <div class="px-4 sm:px-0 min-h-20">
-        <h3 class="text-base font-semibold leading-7 text-gray-900">Modifiers</h3>
-        <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-500">What affects your stats?</p>
+      <div class="sticky top-5">
+        <div class="px-4 sm:px-0 min-h-20">
+          <h3 class="text-base font-semibold leading-7 text-gray-900">Modifiers</h3>
+          <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-500">What affects your stats?</p>
+        </div>
+        <HeroModifiers />
       </div>
-      <HeroModifiers />
     </div>
 
     <div class="sm:col-span-1">
-      <div class="px-4 sm:px-0 min-h-20">
-        <h3 class="text-base font-semibold leading-7 text-gray-900">Stats</h3>
-        <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-500">Calculated hero stats based on attributes, gear etc.</p>
+      <div class="sticky top-5">
+        <div class="px-4 sm:px-0 min-h-20">
+          <h3 class="text-base font-semibold leading-7 text-gray-900">Stats</h3>
+          <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-500">Calculated hero stats based on attributes, gear etc.</p>
+        </div>
+        <HeroStats stats={$heroState.stats} />
       </div>
-      <HeroStats hero={$heroState} />
     </div>
   </div>
 </div>

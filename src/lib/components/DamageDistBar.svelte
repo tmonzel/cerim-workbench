@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { ComplexDamage } from '$lib/core';
+	import { FlatDamage } from '$lib/core';
 
-  export let damage: ComplexDamage;
+  export let damage: FlatDamage;
 
   let gradient = '';
-  let colorMap = ['#333', '#dc2626', '#facc15', 'blue', 'green'];
+  let colorMap = ['#333', '#dc2626', 'blue', '#facc15', 'green'];
 
   $: {
     let v = [];

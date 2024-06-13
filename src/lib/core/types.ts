@@ -1,5 +1,3 @@
-import type { DamageValue } from '$lib/types';
-
 export type Mutation = {
   from: { [0]: number; [1]: number };
   to: { [0]: number; [1]: number };
@@ -7,6 +5,17 @@ export type Mutation = {
 
 export type Maybe<T> = T | null | undefined;
 
-export type FlatNumber = { value: number; type: 'flat' };
-export type PercentageNumber = { value: number; type: 'percentual' };
-export type DamageNumber = { value: DamageValue; type: 'damage' };
+export type DynamicValue<T = number> = {
+  multiplier: number;
+  added: T[];
+
+  set(v: T): void;
+  isModified(): boolean;
+  getAdded(): T;
+  getTotal(): T;
+}
+
+export type Stat<T = number> = {
+  label: string;
+  value: DynamicValue<T>;
+}

@@ -26,39 +26,41 @@
   }
 </script>
 
-<div class="relative">
-  <button 
-    type="button" 
-    class="min-w-48 p-6 bg-white border text-left border-gray-200 rounded-md shadow transition-all ease-out duration-200 hover:ring-2 hover:ring-inset hover:ring-indigo-600 hover:bg-indigo-50" 
-    on:click={toggleMenu}
-  >
-    {#if item}
-      <p class="bg-indigo-100 text-indigo-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-indigo-900 dark:text-indigo-300 inline">
-        {type}
-      </p>
+<button 
+  type="button" 
+  class="p-5 bg-white border text-left border-gray-200 rounded-md shadow transition-all ease-out duration-200 hover:ring-2 hover:ring-inset hover:ring-indigo-600 hover:bg-indigo-50" 
+  class:opacity-100={!item}
+  on:click={toggleMenu}
+>
+  {#if item}
+    <p class="bg-indigo-100 text-indigo-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-indigo-900 dark:text-indigo-300 inline">
+      {type}
+    </p>
 
-      <div class="pt-3">
-        <ItemCard {item} slotted />
+    <div class="pt-3">
+      <ItemCard {item} slotted />
+    </div>
+
+    {#if $heroState.level < item.requiredLevel}
+      <div class="flex justify-end">
+        <Badge type="alert">Required Level ({item.requiredLevel})</Badge>
       </div>
-
-      {#if $heroState.level < item.requiredLevel}
-        <div class="flex justify-end">
-          <Badge type="alert">Required Level ({item.requiredLevel})</Badge>
-        </div>
-      {/if}
-
-    {:else}
-    <p class="text-md leading-5 text-gray-500 text-center">{type}</p>
     {/if}
-  </button>
-</div>
 
-<Dialog bind:this={selectionDialog} title={type} backdropClose>
+  {:else}
+  <div class="my-16">
+    <p class="text-lg text-zinc-500 text-center font-semibold">{type}</p>
+    <p class="text-xs text-center text-zinc-400">({allowedGroups.join(', ')})</p>
+  </div>
+  {/if}
+</button>
+
+<Dialog bind:this={selectionDialog} title={`Select ${type} equipment`} backdropClose>
   {#if availableItems.length > 0}
     <div class="grid grid-cols-4 gap-2">
       <button 
         type="button" 
-        class="relative text-left w-full flex gap-x-6 p-4 rounded-lg hover:bg-gray-50" 
+        class="relative text-left flex gap-x-6 p-4 rounded-lg hover:bg-gray-50" 
         on:click={() => selectItem(null)}
         class:ring-2={null === item}
         class:bg-indigo-50={null === item}

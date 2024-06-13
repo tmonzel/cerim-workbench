@@ -1,41 +1,89 @@
-import { NumberStat } from '$lib/core/stats/NumberStat';
-import { DamageStat } from '$lib/core/stats/DamageStat';
-import { DamageMutator } from '$lib/core/mutators/DamageMutator';
-import { ComplexDamage } from '$lib/core';
+import { DamageMutator, DynamicDamage, DynamicNumber, FlatDamage, FlatResistance, FlatStat } from '$lib/core';
 import type { AttributeState } from '$lib/state';
-import type { ItemBaseDef, ItemDef, ItemType } from './types';
+import type { ItemBaseDef, ItemDef, ItemModification, ItemType } from './types';
 import { getModifierDef } from '$lib/modifiers';
-import { ItemAffix } from './ItemAffix';
+import { PercentualStat } from '$lib/core/values/PercentualStat';
+import { DynamicResistance } from '$lib/core/DynamicResistance';
+import type { ResistanceValue } from '$lib/types';
 
 export class Item {
-  readonly damage: DamageStat;
-  readonly weight: NumberStat;
-  readonly armor: NumberStat;
+  readonly damage: DynamicDamage;
+  readonly weight: DynamicNumber;
+  readonly armor: DynamicNumber;
+  readonly resistance: DynamicResistance;
   readonly scalingFlags: string[];
-  readonly affixes: ItemAffix[] = []
+  readonly modifications: ItemModification[] = [];
 
   constructor(
     protected base: ItemBaseDef,
     protected def: ItemDef 
   ) {
-    this.damage = new DamageStat(this.base.damage ? [this.base.damage] : undefined);
-    this.weight = new NumberStat(this.base.weight);
-    this.armor = new NumberStat(this.base.armor);
+    this.damage = new DynamicDamage(this.base.damage ? new FlatDamage([this.base.damage]) : undefined);
+    this.weight = new DynamicNumber(this.base.weight);
+    this.armor = new DynamicNumber(this.base.armor);
+    this.resistance = new DynamicResistance();
+
     this.scalingFlags = (this.base.effects ?? []).map(m => m.attr.toUpperCase());
 
     for(const affixDef of this.def.affixes ?? []) {
-      const modifierDef = getModifierDef(affixDef.modifier);
+      const modifier = getModifierDef(affixDef.modifier);
 
-      if(!modifierDef) {
+      if(!modifier) {
         continue;
       }
-      
-      this.affixes.push(
-        new ItemAffix(modifierDef, affixDef)
-      );
-    }
 
-    this.applyAffixes();
+      let value: FlatStat | PercentualStat | FlatDamage | FlatResistance;
+
+      if(modifier.affects === 'damage' && modifier.type === 'flat') {
+        value = new FlatDamage([modifier.values[affixDef.tier]]);
+      } else if(modifier.affects === 'resistance' && modifier.type === 'flat') {
+        const resist: ResistanceValue | ResistanceValue[] = modifier.values[affixDef.tier];
+
+        if(Array.isArray(resist) && Array.isArray(resist[0])) {
+          value = new FlatResistance(resist)
+        } else {
+          value = new FlatResistance([resist]);
+        }
+      } else {
+        if(modifier.type === 'percentual') {
+          value = new PercentualStat(modifier.values[affixDef.tier]);
+        } else {
+          value = new FlatStat(modifier.values[affixDef.tier]);
+        }
+      }
+
+      const mod: ItemModification = {
+        name: modifier.name,
+        tier: affixDef.tier,
+        scope: modifier.scope ?? 'hero',
+        stat: modifier.affects,
+        value 
+      };
+
+      this.modifications.push(mod);
+
+      if(value instanceof FlatResistance) {
+        this.resistance.base.add(value);
+        
+      }
+
+      if(mod.scope === 'item') {
+        // Item affected modifiers
+
+        if(value instanceof FlatDamage) {
+          this.damage.base.add(value);
+        } 
+        
+        else if(value instanceof PercentualStat) {
+          switch(mod.stat) {
+            case 'damage':
+            case 'weight':
+            case 'armor':
+              this[mod.stat].multiplier += value.getValue();
+          }
+        }
+      }
+    }
   }
 
   get group(): string {
@@ -74,19 +122,11 @@ export class Item {
     return this.base.attackSpeed;
   }
 
-  applyAffixes(): void {
-    for(const affix of this.affixes) {
-      if(affix.scope !== 'item') {
-        continue;
-      }
-
-      affix.apply(this);
-    }
-  }
-
   applyAttributeChange(attributes: AttributeState): void {
+    this.damage.added = [];
+
     const effects = this.base.effects ?? [];
-    const damageScale = new ComplexDamage();
+    const damageScale = new FlatDamage();
 
     for(const effect of effects) {
       const attr = attributes[effect.attr];
@@ -94,10 +134,10 @@ export class Item {
       if(effect.affects === 'damage') {
         // Mutate damage
         const mutator = new DamageMutator(effect.value, effect.mutations ?? []);
-        damageScale.add(mutator.mutate(attr.value).getValue());
+        damageScale.add(mutator.mutate(attr.value));
       }
     }
 
-    this.damage.setScale(damageScale);
+    this.damage.added.push(damageScale);
   }
 }

@@ -1,20 +1,19 @@
 import { DamageType, type DamageValue } from '$lib/types';
 
-export class ComplexDamage {
+export class FlatDamage {
   private typedValues: { [key: string]: number[] } = {
     [DamageType.PHYSICAL]: [0, 0],
     [DamageType.FIRE]: [0, 0],
-    [DamageType.LIGHTNING]: [0, 0],
     [DamageType.COLD]: [0, 0],
+    [DamageType.LIGHTNING]: [0, 0],
     [DamageType.POISON]: [0, 0]
   }
 
-  private overall = [0, 0];
   private total = [0, 0];
   private average = 0;
 
-  constructor(value?: DamageValue[]) {
-    this.add(value ?? []);
+  constructor(value: DamageValue[] = []) {
+    this.set(value);
   }
 
   get min(): number {
@@ -29,8 +28,8 @@ export class ComplexDamage {
     return this.average;
   }
 
-  clone(): ComplexDamage {
-    return new ComplexDamage(this.getValue());
+  clone(): FlatDamage {
+    return new FlatDamage(this.getValue());
   }
 
   reset(): void {
@@ -40,32 +39,39 @@ export class ComplexDamage {
   }
 
   set(value: DamageValue[]): void {
-    this.reset();
-    this.add(value);
-  }
-
-  add(value: DamageValue[]): void {
     for(const d of value) {
-      const currVal = d[2] !== undefined ? this.typedValues[d[2]] : this.overall;
-
-      if(d[2] !== undefined) {
-        this.typedValues[d[2]] = [currVal[0] + d[0], currVal[1] + d[1]];
-      } else {
-        this.overall = [currVal[0] + this.overall[0], currVal[1] + this.overall[1]];
-      }
+      this.typedValues[d[2]] = [d[0], d[1]];
     }
 
     this.update();
   }
 
-  multiply(amount: number): void {
-    for(const [t, v] of Object.entries(this.typedValues)) {
-      this.typedValues[t] = [v[0] * amount, v[1] * amount];
+  add(value: FlatDamage): FlatDamage {
+    const damage: DamageValue[] = [];
+
+    for(const t of Object.keys(this.typedValues)) {
+      damage.push([
+        this.typedValues[t][0] + value.typedValues[t][0], 
+        this.typedValues[t][1] + value.typedValues[t][1],
+        Number(t)
+      ]);
     }
 
-    this.overall = [this.overall[0] * amount, this.overall[1] * amount];
+    this.set(damage);
 
-    this.update();
+    return this;
+  }
+
+  multiply(amount: number): FlatDamage {
+    const damage: DamageValue[] = [];
+
+    for(const [t, v] of Object.entries(this.typedValues)) {
+      damage.push([v[0] * amount, v[1] * amount, Number(t)])
+    }
+
+    this.set(damage);
+
+    return this;
   }
 
   getTotal(): number[] {
@@ -93,8 +99,6 @@ export class ComplexDamage {
       r.push({ [0]: v[0], [1]: v[1], [2]: Number(t) });
     }
 
-    r.push({ [0]: this.overall[0], [1]: this.overall[1] });
-
     return r;
   }
 
@@ -102,7 +106,7 @@ export class ComplexDamage {
     this.total = [0, 0];
     this.average = 0;
     
-    const values = [ ...Object.values(this.typedValues), this.overall];
+    const values = [ ...Object.values(this.typedValues)];
 
     for(const v of values) {
       this.total[0] += v[0];
@@ -114,5 +118,9 @@ export class ComplexDamage {
     if(sum > 0) {
       this.average = Math.round((sum / 2) * 100) / 100;
     }
+  }
+
+  toString(): string {
+    return `${this.min > 0 ? '+' : ''}${Math.round(this.min * 100) / 100}-${Math.round(this.max * 100) / 100}(${Math.round(this.average * 100) / 100})`;
   }
 }

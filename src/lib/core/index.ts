@@ -1,8 +1,11 @@
-export * from './ComplexDamage';
+export * from './values/FlatDamage';
+export * from './values/FlatResistance';
+export * from './values/FlatStat';
+export * from './values/PercentualStat';
 export * from './helpers';
 export * from './types';
 
-export * from './stats/DamageStat';
-export * from './stats/NumberStat';
+export * from './DynamicDamage';
+export * from './DynamicNumber';
 
 export * from './mutators/DamageMutator';

@@ -11,13 +11,13 @@ export class NumberMutator {
     let inc = 0;
 
     for(let i = 0; i < progress; i++) {
-      inc += this.calcValue(i);
+      inc += this.calcProgressByIndex(i);
     }
 
     return inc;
   }
 
-  private calcValue(index: number): number {
+  private calcProgressByIndex(index: number): number {
     const mutations = this.mutations ?? [];
     
     let value = this.base;
