@@ -94,7 +94,7 @@
         <div class="py-2 sm:grid sm:grid-cols-6 sm:gap-4 sm:px-0">
           <dt class="text-sm font-medium leading-6 text-gray-900 sm:col-span-4">{mod.name}({mod.tier})</dt>
           <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-            {#if percentage >= 0}+{:else}-{/if}{Math.round(percentage * 100)}%
+            {#if percentage >= 0}+{/if}{Math.round(percentage * 100)}%
           </dd>
         </div>
         {/if}
