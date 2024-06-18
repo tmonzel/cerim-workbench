@@ -9,11 +9,11 @@
 <div class="mt-6 border-t border-gray-100">
   <dl class="divide-y divide-gray-100">
     <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-      <dt class="text-sm font-medium leading-6 text-gray-900">{stats.attackSpeed.label}</dt>
+      <dt class="text-sm font-medium leading-6 text-gray-900">APS</dt>
       <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
         <ValueBadge 
-          value={stats.attackSpeed.value.getTotal()} 
-          isModified={stats.attackSpeed.value.isModified()} 
+          value={stats.attackSpeed.getValue()} 
+          isModified={stats.attackSpeed.isModified()} 
         />
       </dd>
     </div>
@@ -21,18 +21,18 @@
       <dt class="text-sm font-medium leading-6 text-gray-900">Damage</dt>
       <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
         <ValueBadge 
-          value={stats.damage.value.getTotal()} 
-          isModified={stats.damage.value.isModified()} 
+          value={stats.damage.getValue()} 
+          isModified={stats.damage.isModified()} 
         />
-        <DamageDistBar damage={stats.damage.value.getTotal()} />
+        <DamageDistBar damage={stats.damage.getValue()} />
       </dd>
     </div>
     <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
       <dt class="text-sm font-medium leading-6 text-gray-900">Health</dt>
       <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
         <ValueBadge 
-          value={stats.health.value.getTotal()} 
-          isModified={stats.health.value.isModified()} 
+          value={stats.health.getValue()} 
+          isModified={stats.health.isModified()} 
         />
       </dd>
     </div>
@@ -40,8 +40,8 @@
       <dt class="text-sm font-medium leading-6 text-gray-900">Stamina</dt>
       <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
         <ValueBadge 
-          value={stats.stamina.value.getTotal()} 
-          isModified={stats.stamina.value.isModified()}
+          value={stats.stamina.getValue()} 
+          isModified={stats.stamina.isModified()}
         />
       </dd>
     </div>
@@ -49,8 +49,8 @@
       <dt class="text-sm font-medium leading-6 text-gray-900">Armor</dt>
       <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
         <ValueBadge 
-          value={stats.armor.value.getTotal()} 
-          isModified={stats.armor.value.isModified()} 
+          value={stats.armor.getValue()} 
+          isModified={stats.armor.isModified()} 
         />
       </dd>
     </div>
@@ -58,8 +58,8 @@
       <dt class="text-sm font-medium leading-6 text-gray-900">Weight</dt>
       <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
         <ValueBadge 
-          value={stats.weight.value.getTotal()} 
-          isModified={stats.weight.value.isModified()}
+          value={stats.weight.getValue()} 
+          isModified={stats.weight.isModified()}
         />
       </dd>
     </div>
@@ -67,8 +67,8 @@
       <dt class="text-sm font-medium leading-6 text-gray-900">Poise Defense</dt>
       <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
         <ValueBadge 
-          value={stats.poise.value.getTotal()} 
-          isModified={stats.poise.value.isModified()}
+          value={stats.poise.getValue()} 
+          isModified={stats.poise.isModified()}
         />
       </dd>
     </div>
@@ -76,8 +76,8 @@
       <dt class="text-sm font-medium leading-6 text-gray-900">Equip Load</dt>
       <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
         <ValueBadge 
-          value={stats.equipLoad.value.getTotal()} 
-          isModified={stats.equipLoad.value.isModified()}
+          value={stats.equipLoad.getValue()} 
+          isModified={stats.equipLoad.isModified()}
         />
       </dd>
     </div>
@@ -85,8 +85,8 @@
       <dt class="text-sm font-medium leading-6 text-gray-900">Resistances</dt>
       <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
         <ValueBadge 
-          value={stats.resistance.value.getTotal()} 
-          isModified={stats.resistance.value.isModified()}
+          value={stats.resistance.getValue()} 
+          isModified={stats.resistance.isModified()}
         />
       </dd>
     </div>

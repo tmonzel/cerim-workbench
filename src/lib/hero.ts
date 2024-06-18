@@ -1,23 +1,21 @@
 import { derived } from 'svelte/store';
 import { equipState } from './items/state';
 import { appState, attributeState } from './state';
-import { DamageMutator, DynamicDamage, DynamicNumber, FlatDamage, FlatResistance, FlatStat, type Stat } from './core';
+import { DynamicDamage, DynamicNumber, FlatDamage, FlatResistance } from './core';
 import { findEffects } from './effects';
-import { NumberMutator } from './core/mutators/NumberMutator';
 import { DynamicResistance } from './core/DynamicResistance';
-import { PercentualStat } from './core/values/PercentualStat';
 
 export type HeroStats = {
-  damage: Stat<FlatDamage>;
-  health: Stat<number>;
-  stamina: Stat<number>;
-  armor: Stat<number>;
-  weight: Stat<number>;
-  poise: Stat<number>;
-  equipLoad: Stat<number>;
-  focus: Stat<number>;
-  attackSpeed: Stat<number>;
-  resistance: Stat<FlatResistance>;
+  damage: DynamicDamage;
+  health: DynamicNumber;
+  stamina: DynamicNumber;
+  armor: DynamicNumber;
+  weight: DynamicNumber;
+  poise: DynamicNumber;
+  equipLoad: DynamicNumber;
+  focus: DynamicNumber;
+  attackSpeed: DynamicNumber;
+  resistance: DynamicResistance;
 }
 
 export type HeroState = {
@@ -35,137 +33,77 @@ export const heroState = derived([attributeState, equipState, appState], (s) => 
     attributePoints: 0,
     dps: new FlatDamage(),
     stats: {
-      damage: { 
-        label: 'Damage', 
-        value: new DynamicDamage() 
-      },
-      health: { 
-        label: 'Health', 
-        value: new DynamicNumber() 
-      },
-      stamina: { 
-        label: 'Stamina', 
-        value: new DynamicNumber() 
-      },
-      armor: { 
-        label: 'Armor', 
-        value: new DynamicNumber() 
-      },
-      weight: { 
-        label: 'Weight', 
-        value: new DynamicNumber() 
-      },
-      poise: { 
-        label: 'Poise', 
-        value: new DynamicNumber() 
-      },
-      equipLoad: { 
-        label: 'Equip Load', 
-        value: new DynamicNumber() 
-      },
-      focus: { 
-        label: 'Focus', 
-        value: new DynamicNumber() 
-      },
-      attackSpeed: { 
-        label: 'Attack Speed', 
-        value: new DynamicNumber(1) 
-      },
-      resistance: { 
-        label: 'Resistance', 
-        value: new DynamicResistance() 
-      }
+      damage: new DynamicDamage(),
+      health: new DynamicNumber(),
+      stamina: new DynamicNumber() ,
+      armor: new DynamicNumber(),
+      weight: new DynamicNumber(),
+      poise: new DynamicNumber(),
+      equipLoad: new DynamicNumber(),
+      focus: new DynamicNumber(),
+      attackSpeed: new DynamicNumber(),
+      resistance: new DynamicResistance()
     },
   };
 
   for(const effect of findEffects()) {
-    const attr = attributes[effect.attr];
-    const base = effect.value;
-
-    if(!attr) {
-      continue;
-    }
-
-    if(typeof base === 'number') {
-      // Mutate normal stat number
-      const mutator = new NumberMutator(base, effect.mutations ?? []);
-
-      switch(effect.affects) {
-        case 'health':
-        case 'stamina':
-        case 'poise':
-        case 'equipLoad':
-          hero.stats[effect.affects].value.set(mutator.mutate(attr.value));
-      }
-    }
-
-    else if(Array.isArray(base)) {
-      // Mutate damage
-      const mutator = new DamageMutator(base, effect.mutations ?? []);
-      hero.stats.damage.value.added.push(mutator.mutate(attr.value));
-    }
+    effect.apply(attributes, hero.stats);
   }
-
-  let equipArmor = 0;
-  let equipWeight = 0;
-  const equipDamage = new FlatDamage();
 
   for(const item of Object.values(equip)) {
     if(!item) {
       continue;
     }
 
-    hero.stats.resistance.value.added.push(
-      item.resistance.getTotal()
-    );
-
-    for(const mod of item.modifications) {
-      if(mod.scope !== 'hero') {
-        continue;
-      }
-
-      switch(mod.stat) {
+    const itemStats = item.stats;
+  
+    for(const [stat, value] of Object.entries(itemStats)) {
+      switch(stat) {
+        case 'resistance':
+          hero.stats.resistance.base.add(value.getValue() as FlatResistance);
+          break;
+        case 'attackSpeed':
+          hero.stats.attackSpeed.base += value.getValue() as number;
+          hero.stats.attackSpeed.multiplier += value.multiplier - 1;
+          break;
         case 'stamina':
         case 'health':
-        case 'equipLoad':
-        case 'poise':
-        case 'attackSpeed':
-          if(mod.value instanceof FlatStat) {
-            hero.stats[mod.stat].value.added.push(mod.value.getValue());
-          } else if(mod.value instanceof PercentualStat) {
-            hero.stats[mod.stat].value.multiplier += mod.value.getValue();
-          }
+        case 'weight':
+        case 'armor':
+          hero.stats[stat].added += value.added as number;
+          hero.stats[stat].multiplier += value.multiplier - 1;
       }
     }
 
-    // Add attack speed if any
-    if(item.attackSpeed) {
-      hero.stats.attackSpeed.value.added.push(item.attackSpeed);
+    for(const mod of item.modifications) {
+      if(mod.scope === 'hero' && mod.modifier.type === 'multiply') {
+        hero.stats[mod.stat].multiplier += mod.modifier.value - 1;
+      }
     }
     
     // Sum item damage
-    equipDamage.add(item.damage.getTotal());
+    hero.stats.damage.base.add(itemStats.damage.getValue());
 
     // Sum item weights
-    equipWeight += item.weight.getTotal();
+    hero.stats.weight.base += itemStats.weight.getValue();
 
     // Sum item armors
-    equipArmor += item.armor.getTotal();
+    hero.stats.armor.base += itemStats.armor.getValue();
   }
 
-  hero.stats.armor.value.set(equipArmor);
-  hero.stats.weight.value.set(equipWeight);
-  hero.stats.damage.value.set(equipDamage);
-  
+  if(hero.stats.attackSpeed.base === 0) {
+    // Set attacks per second to one if no weapon equipped
+    hero.stats.attackSpeed.base = 1;
+  }
 
-  const totalDamage = hero.stats.damage.value.getTotal();
+  const totalDamage = hero.stats.damage.getValue();
   const numDistributedPoints = Object.values(attributes).reduce((p, c) => p + c.value, 0);
 
   hero.level = Math.floor(numDistributedPoints / state.attributePointsPerLevel);
   hero.attributePoints = state.attributePointsPerLevel * state.maxLevel - numDistributedPoints
 
   hero.dps.add(totalDamage);
-  hero.dps.multiply(hero.stats.attackSpeed.value.getTotal());
+  hero.dps.multiply(hero.stats.attackSpeed.getValue());
 
   return hero;
 });

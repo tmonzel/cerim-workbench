@@ -33,7 +33,7 @@
     <div>
       <h3 class="text-lg">Damage Per Second</h3>
       <p class="mt-2 text-5xl">
-        {Math.round($heroState.dps.min)}-{Math.round($heroState.dps.max)} ({Math.round($heroState.dps.avg)})
+        {Math.round($heroState.dps.min * 10) / 10}-{Math.round($heroState.dps.max * 10) / 10} ({Math.round($heroState.dps.avg)})
       </p>
     </div>
 
@@ -45,31 +45,3 @@
     </div>
   </div>
 </header>
-
-<style>
-
-  /*
-    E: 0 - 24
-    D: 25 - 59
-    C: 60 - 89
-    B: 90 - 139
-    A: 140 - 174
-    S: 175+
-
-    "rgba(255, 0, 0, 0.6)",
-        "rgba(255, 48, 0, 0.6)",
-        "rgba(255, 102, 0, 0.6)",
-        "rgba(255, 154, 0, 0.6)",
-        "rgba(255, 205, 0, 0.6)",
-        "rgba(255, 255, 0, 0.6)",
-        "rgba(203, 255, 0, 0.6)",
-        "rgba(150, 255, 0, 0.6)",
-        "rgba(94, 255, 0, 0.6)",
-        "rgba(0, 255, 0, 0.6)"
-  */
-  .rainbow {
-    background: linear-gradient(90deg, rgba(255, 0, 0, 0.6) 10%, rgba(255, 48, 0, 0.6) 10% 20%, rgba(255, 102, 0, 0.6) 20% 30%, rgba(255, 205, 0, 0.6) 30% 40%, rgba(255, 255, 0, 0.6) 40% 50%, rgba(203, 255, 0, 0.6) 50% 60%, rgba(150, 255, 0, 0.6) 60% 70%, rgba(94, 255, 0, 0.6) 70% 80%, rgba(0, 255, 0, 0.6) 80%);
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-</style>

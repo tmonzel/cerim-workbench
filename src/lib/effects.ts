@@ -1,4 +1,7 @@
-import type { Mutation } from './core';
+import { DamageMutator, type Mutation } from './core';
+import { NumberMutator } from './core/mutators/NumberMutator';
+import type { HeroStats } from './hero';
+import type { AttributeState } from './state';
 import type { DamageValue, HeroStatTypes } from './types';
 
 export type BaseEffect = {
@@ -16,14 +19,52 @@ export interface DamageEffect extends BaseEffect {
   value: DamageValue;
 }
 
-export type Effect = DefaultEffect | DamageEffect;
+export type EffectDef = DefaultEffect | DamageEffect;
 
-const list: Effect[] = [];
+const list: AttributeEffect[] = [];
 
-export function addEffect(def: Effect): void {
-  list.push(def);
+export function addEffect(def: EffectDef): void {
+  list.push(new AttributeEffect(def));
 }
 
-export function findEffects(): Effect[] {
+export function findEffects(): AttributeEffect[] {
   return list;
+}
+
+export type Effect = (attributes: AttributeState, stats: HeroStats) => void;
+
+export class AttributeEffect {
+  get attributeId(): string {
+    return this.def.attr;
+  }
+
+  constructor(private def: EffectDef) {}
+
+  apply(attributes: AttributeState, stats: HeroStats): void {
+    const attr = attributes[this.def.attr];
+    const base = this.def.value;
+
+    if(!attr) {
+      return;
+    }
+
+    if(typeof base === 'number') {
+      // Mutate normal stat number
+      const mutator = new NumberMutator(base, this.def.mutations ?? []);
+
+      switch(this.def.affects) {
+        case 'health':
+        case 'stamina':
+        case 'poise':
+        case 'equipLoad':
+          stats[this.def.affects].base += mutator.mutate(attr.value);
+      }
+    }
+
+    else if(Array.isArray(base)) {
+      // Mutate damage
+      const mutator = new DamageMutator(base, this.def.mutations ?? []);
+      stats.damage.base.add(mutator.mutate(attr.value));
+    }
+  }
 }

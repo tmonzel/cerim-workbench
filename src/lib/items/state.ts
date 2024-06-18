@@ -30,7 +30,7 @@ export const equipState = derived([equipStore, attributeState], ([equip, attribu
       continue;
     }
 
-    item.applyAttributeChange(attributes);
+    item.applyStatEffects(attributes);
   }
 
   return equip;

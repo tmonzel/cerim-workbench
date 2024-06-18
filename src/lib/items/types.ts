@@ -1,6 +1,5 @@
-import type { FlatDamage, FlatResistance, FlatStat } from '$lib/core';
-import type { PercentualStat } from '$lib/core/values/PercentualStat';
-import type { Effect } from '$lib/effects';
+import type { FlatModifier, PercentualModifier } from '$lib/core';
+import type { EffectDef } from '$lib/effects';
 import type { ModifierScope } from '$lib/modifiers';
 import type { DamageValue, HeroStatTypes } from '$lib/types';
 
@@ -19,7 +18,7 @@ export type ItemBaseDef = {
   attackSpeed?: number;
   description?: string;
   requiredLevel: number;
-  effects?: Effect[];
+  effects?: EffectDef[];
   iconUrl?: string;
 }
 
@@ -35,8 +34,8 @@ export type ItemModification = {
   name: string;
   tier: number;
   stat: HeroStatTypes;
-  scope: ModifierScope;
-  value: FlatStat | PercentualStat | FlatDamage | FlatResistance;
+  scope?: ModifierScope;
+  modifier: PercentualModifier | FlatModifier;
 }
  
 export type ItemAffixDef = {

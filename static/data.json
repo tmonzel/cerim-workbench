@@ -120,7 +120,6 @@
 
   "modifiers": {
     "addLightningDamage": {
-      "scope": "item",
       "type": "flat",
       "affects": "damage",
       "name": "Add Lightning Damage",
@@ -134,30 +133,42 @@
     },
 
     "increaseDamage": {
-      "scope": "item",
       "type": "percentual",
       "affects": "damage",
       "name": "Increase Damage",
       "values": [
-        0.1,
-        0.2,
-        0.3,
-        0.4,
-        0.5
+        1.1,
+        1.2,
+        1.3,
+        1.4,
+        1.5
       ]
     },
 
-    "decreaseItemWeight": {
-      "scope": "item",
+    "increaseOverallDamage": {
+      "scope": "hero",
+      "type": "percentual",
+      "affects": "damage",
+      "name": "Increase Overall Damage",
+      "values": [
+        1.05,
+        1.1,
+        1.15,
+        1.2,
+        1.25
+      ]
+    },
+
+    "decreaseWeight": {
       "type": "percentual",
       "affects": "weight",
       "name": "Decrease Weight",
       "values": [
-        -0.1,
-        -0.2,
-        -0.3,
-        -0.4,
-        -0.5 
+        0.9,
+        0.8,
+        0.7,
+        0.6,
+        0.5 
       ]
     },
 
@@ -179,25 +190,24 @@
       "affects": "focus",
       "name": "Increase Focus",
       "values": [
-        0.2,
-        0.4,
-        0.5,
-        0.6,
-        0.7
+        1.2,
+        1.4,
+        1.5,
+        1.6,
+        1.7
       ]
     },
 
-    "increaseItemArmor": {
+    "increaseArmor": {
       "type": "percentual",
       "affects": "armor",
       "name": "Increase Armor",
-      "scope": "item",
       "values": [
-        0.2,
-        0.4,
-        0.5,
-        0.6,
-        0.7
+        1.2,
+        1.4,
+        1.5,
+        1.6,
+        1.7
       ]
     },
 
@@ -245,11 +255,11 @@
       "affects": "castSpeed",
       "name": "Increased cast speed",
       "values": [
-        0.1,
-        0.2,
-        0.3,
-        0.4,
-        0.5
+        1.1,
+        1.2,
+        1.3,
+        1.4,
+        1.5
       ]
     },
 
@@ -258,11 +268,11 @@
       "affects": "attackSpeed",
       "name": "Increased attack speed",
       "values": [
-        0.1,
-        0.2,
-        0.3,
-        0.4,
-        0.5
+        1.1,
+        1.2,
+        1.3,
+        1.4,
+        1.5
       ]
     },
 
@@ -271,11 +281,11 @@
       "affects": "health",
       "name": "Increased health",
       "values": [
-        0.05,
-        0.1,
-        0.15,
-        0.2,
-        0.25
+        1.05,
+        1.1,
+        1.15,
+        1.2,
+        1.25
       ]
     }
   },
@@ -561,6 +571,10 @@
         {
           "modifier": "addFireResistance",
           "tier": 2
+        },
+        {
+          "modifier": "increaseOverallDamage",
+          "tier": 3
         }
       ]
     },
@@ -620,7 +634,7 @@
       "base": "helmsmansJacket",
       "affixes": [
         {
-          "modifier": "decreaseItemWeight",
+          "modifier": "decreaseWeight",
           "tier": 0
         }
       ]
@@ -630,7 +644,7 @@
       "base": "holyPrisonerRags",
       "affixes": [
         {
-          "modifier": "increaseItemArmor",
+          "modifier": "increaseArmor",
           "tier": 2
         },
         {

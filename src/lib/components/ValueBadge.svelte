@@ -1,17 +1,17 @@
 <script lang="ts">
-	import { FlatDamage, FlatResistance, FlatStat, PercentualStat, roundValue } from '$lib/core';
+	import { FlatDamage, FlatResistance, FlatStat, roundValue } from '$lib/core';
 	import { DamageType } from '$lib/types';
 
-  export let value: FlatDamage | FlatResistance | FlatStat | PercentualStat | number;
+  export let value: FlatDamage | FlatResistance | number;
   export let isModified = false;
 </script>
 
 {#if value instanceof FlatDamage}
-  <span class:text-teal-500={isModified} class:font-semibold={isModified}>
+  <span class:text-indigo-500={isModified} class:font-semibold={isModified}>
     {roundValue(value.min)}-{roundValue(value.max)} ({value.avg}){#if isModified}^{/if}
   </span>
 {:else if value instanceof FlatResistance}
-  {@const resist = value.resistancesByType}
+  {@const resist = value.value}
   <span class="flex gap-2">
     {#if resist[DamageType.PHYSICAL] > 0}
     <div class="flex flex-col">
@@ -48,16 +48,8 @@
     </div> 
     {/if}
   </span>
-{:else if value instanceof FlatStat}
-  <span class:text-teal-500={isModified} class:font-semibold={isModified}>
-    {Math.round(value.getValue() * 100) / 100}{#if isModified}^{/if}
-  </span>
-{:else if value instanceof PercentualStat}
-  <span class:text-teal-500={isModified} class:font-semibold={isModified}>
-    {Math.round(value.getValue() * 100)}%{#if isModified}^{/if}
-  </span>
 {:else if typeof value === 'number'}
-  <span class:text-teal-500={isModified} class:font-semibold={isModified}>
+  <span class:text-indigo-500={isModified} class:font-semibold={isModified}>
     {Math.round(value * 100) / 100}{#if isModified}^{/if}
   </span>
 {/if}

@@ -1,8 +1,8 @@
 export class FlatStat {
-  constructor(private value: number) {}
+  constructor(public value: number) {}
 
-  getValue(): number {
-    return this.value;
+  isPresent(): boolean {
+    return this.value > 0;
   }
 
   toString(): string {

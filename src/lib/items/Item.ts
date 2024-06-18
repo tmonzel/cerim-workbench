@@ -1,90 +1,14 @@
-import { DamageMutator, DynamicDamage, DynamicNumber, FlatDamage, FlatResistance, FlatStat } from '$lib/core';
+import { DynamicDamage, DynamicNumber, FlatDamage, FlatResistance } from '$lib/core';
 import type { AttributeState } from '$lib/state';
 import type { ItemBaseDef, ItemDef, ItemModification, ItemType } from './types';
-import { getModifierDef } from '$lib/modifiers';
-import { PercentualStat } from '$lib/core/values/PercentualStat';
 import { DynamicResistance } from '$lib/core/DynamicResistance';
-import type { ResistanceValue } from '$lib/types';
+import type { HeroStats } from '$lib/hero';
+import type { AttributeEffect } from '$lib/effects';
 
 export class Item {
-  readonly damage: DynamicDamage;
-  readonly weight: DynamicNumber;
-  readonly armor: DynamicNumber;
-  readonly resistance: DynamicResistance;
-  readonly scalingFlags: string[];
+  stats: HeroStats;
   readonly modifications: ItemModification[] = [];
-
-  constructor(
-    protected base: ItemBaseDef,
-    protected def: ItemDef 
-  ) {
-    this.damage = new DynamicDamage(this.base.damage ? new FlatDamage([this.base.damage]) : undefined);
-    this.weight = new DynamicNumber(this.base.weight);
-    this.armor = new DynamicNumber(this.base.armor);
-    this.resistance = new DynamicResistance();
-
-    this.scalingFlags = (this.base.effects ?? []).map(m => m.attr.toUpperCase());
-
-    for(const affixDef of this.def.affixes ?? []) {
-      const modifier = getModifierDef(affixDef.modifier);
-
-      if(!modifier) {
-        continue;
-      }
-
-      let value: FlatStat | PercentualStat | FlatDamage | FlatResistance;
-
-      if(modifier.affects === 'damage' && modifier.type === 'flat') {
-        value = new FlatDamage([modifier.values[affixDef.tier]]);
-      } else if(modifier.affects === 'resistance' && modifier.type === 'flat') {
-        const resist: ResistanceValue | ResistanceValue[] = modifier.values[affixDef.tier];
-
-        if(Array.isArray(resist) && Array.isArray(resist[0])) {
-          value = new FlatResistance(resist)
-        } else {
-          value = new FlatResistance([resist]);
-        }
-      } else {
-        if(modifier.type === 'percentual') {
-          value = new PercentualStat(modifier.values[affixDef.tier]);
-        } else {
-          value = new FlatStat(modifier.values[affixDef.tier]);
-        }
-      }
-
-      const mod: ItemModification = {
-        name: modifier.name,
-        tier: affixDef.tier,
-        scope: modifier.scope ?? 'hero',
-        stat: modifier.affects,
-        value 
-      };
-
-      this.modifications.push(mod);
-
-      if(value instanceof FlatResistance) {
-        this.resistance.base.add(value);
-        
-      }
-
-      if(mod.scope === 'item') {
-        // Item affected modifiers
-
-        if(value instanceof FlatDamage) {
-          this.damage.base.add(value);
-        } 
-        
-        else if(value instanceof PercentualStat) {
-          switch(mod.stat) {
-            case 'damage':
-            case 'weight':
-            case 'armor':
-              this[mod.stat].multiplier += value.getValue();
-          }
-        }
-      }
-    }
-  }
+  readonly effects: AttributeEffect[] = [];
 
   get group(): string {
     return this.base.group;
@@ -118,26 +42,76 @@ export class Item {
     return this.def.effect;
   }
 
-  get attackSpeed(): number | undefined {
-    return this.base.attackSpeed;
+  constructor(
+    protected base: ItemBaseDef,
+    protected def: ItemDef 
+  ) {
+    this.stats = this.createStats();
   }
 
-  applyAttributeChange(attributes: AttributeState): void {
-    this.damage.added = [];
+  addModification(mod: ItemModification): void {
+    this.modifications.push(mod);
+  }
 
-    const effects = this.base.effects ?? [];
-    const damageScale = new FlatDamage();
+  initStats(): void {
+    const stats = this.createStats();
 
-    for(const effect of effects) {
-      const attr = attributes[effect.attr];
+    for(const mod of this.modifications) {
+      if(!stats[mod.stat]) {
+        continue;
+      }
 
-      if(effect.affects === 'damage') {
-        // Mutate damage
-        const mutator = new DamageMutator(effect.value, effect.mutations ?? []);
-        damageScale.add(mutator.mutate(attr.value));
+      if(mod.modifier.type === 'multiply') {
+        stats[mod.stat].multiplier += mod.modifier.value - 1;
+        continue;
+      }
+
+      if(mod.modifier.type === 'add') {
+        switch(mod.stat) {
+          case 'damage':
+            stats.damage.added.add(mod.modifier.value as FlatDamage);
+            break;
+          case 'resistance':
+            stats.resistance.added.add(mod.modifier.value as FlatResistance);
+            break;
+          case 'stamina':
+          case 'armor':
+          case 'weight':
+          case 'attackSpeed':
+          case 'health':
+            stats[mod.stat].added += mod.modifier.value as number;
+        }
       }
     }
 
-    this.damage.added.push(damageScale);
+    this.stats = stats;
+  }
+
+  addEffect(effect: AttributeEffect): void {
+    this.effects.push(effect);
+  }
+
+  getScalingFlags(): string[] {
+    return this.effects.map(e => e.attributeId.toUpperCase());
+  }
+
+  applyStatEffects(attributes: AttributeState): void {
+    this.initStats();
+    this.effects.forEach(effect => effect.apply(attributes, this.stats));
+  }
+
+  private createStats(): HeroStats {
+    return {
+      damage: new DynamicDamage(this.base.damage ? new FlatDamage([this.base.damage]) : undefined),
+      weight: new DynamicNumber(this.base.weight),
+      armor: new DynamicNumber(this.base.armor),
+      resistance: new DynamicResistance(),
+      attackSpeed: new DynamicNumber(this.base.attackSpeed),
+      stamina: new DynamicNumber(),
+      equipLoad: new DynamicNumber(),
+      health: new DynamicNumber(),
+      poise: new DynamicNumber(),
+      focus: new DynamicNumber()
+    }
   }
 }
