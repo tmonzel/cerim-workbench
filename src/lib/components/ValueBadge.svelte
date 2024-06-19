@@ -7,7 +7,7 @@
 </script>
 
 {#if value instanceof FlatDamage}
-  <span class:text-indigo-500={isModified} class:font-semibold={isModified}>
+  <span class:text-yellow-300={isModified} class:font-semibold={isModified}>
     {roundValue(value.min)}-{roundValue(value.max)} ({value.avg}){#if isModified}^{/if}
   </span>
 {:else if value instanceof FlatResistance}
@@ -49,7 +49,7 @@
     {/if}
   </span>
 {:else if typeof value === 'number'}
-  <span class:text-indigo-500={isModified} class:font-semibold={isModified}>
+  <span class:text-yellow-300={isModified} class:font-semibold={isModified}>
     {Math.round(value * 100) / 100}{#if isModified}^{/if}
   </span>
 {/if}

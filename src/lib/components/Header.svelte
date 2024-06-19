@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { loadData } from '$lib/data';
 	import { heroState } from '$lib/hero';
+  import BlurredText from '$lib/components/BlurredText.svelte';
 
   function importData() {
     let input = document.createElement('input');
@@ -18,21 +19,24 @@
 </script>
 
 <header>
-  <h1 class="text-4xl font-bold mb-8"><span>Hero</span> Workbench</h1>
+  <BlurredText blurColor="#777">
+    <h1 class="text-4xl font-bold mb-8"><span>Hero</span> Workbench</h1>
+  </BlurredText>
+
   <div class="flex gap-20 mb-10">
     <div>
-      <h3 class="text-lg">Level</h3>
-      <p class="mt-2 text-5xl">{$heroState.level}</p>
+      <h3 class="text-lg text-amber-300">Level</h3>
+      <p class="mt-2 text-5xl dark:text-zinc-300">{$heroState.level}</p>
     </div>
 
     <div>
-      <h3 class="text-lg">Attribute Points</h3>
-      <p class="mt-2 text-5xl">{$heroState.attributePoints}</p>
+      <h3 class="text-lg  text-amber-300">Attribute Points</h3>
+      <p class="mt-2 text-5xl dark:text-zinc-300">{$heroState.attributePoints}</p>
     </div>
 
     <div>
-      <h3 class="text-lg">Damage Per Second</h3>
-      <p class="mt-2 text-5xl">
+      <h3 class="text-lg  text-amber-300">Damage Per Second</h3>
+      <p class="mt-2 text-5xl dark:text-zinc-300">
         {Math.round($heroState.dps.min * 10) / 10}-{Math.round($heroState.dps.max * 10) / 10} ({Math.round($heroState.dps.avg)})
       </p>
     </div>

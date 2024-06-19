@@ -27,6 +27,6 @@
     }
   }
 </script>
-<div style="border: 1px solid #333; padding: 2px">
+<div style="padding: 2px" class="border-2">
   <div style="width: 100%; height: 6px" style:background={gradient}></div>
 </div>

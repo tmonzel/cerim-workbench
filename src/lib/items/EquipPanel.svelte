@@ -4,8 +4,8 @@
 </script>
 
 
-<div class="flex bg-gray-100 p-5 gap-5 rounded-lg">
-  <div class="basis-2/6 bg-gray-100 gap-5 rounded-lg flex flex-col">
+<div class="flex gap-3 rounded-lg">
+  <div class="basis-2/6 gap-5 rounded-lg flex flex-col">
     <EquipSlot 
       type="MainHand" 
       item={$equipState.mainHand}  
@@ -13,26 +13,26 @@
       on:selectItem={(item) => $equipStore.mainHand = item.detail}
     />
   </div>
-  <div class="basis-2/6 bg-gray-100 gap-5 rounded-lg flex flex-col">
-  <EquipSlot 
-    type="OffHand" 
-    item={$equipState.offHand} 
-    allowedGroups={['shields']} 
-    on:selectItem={(item) => $equipStore.offHand = item.detail}
-  />
-</div>
-<div class="basis-2/6 bg-gray-100 gap-5 rounded-lg flex flex-col">
-  <EquipSlot 
-    type="Hands" 
-    item={$equipState.hand} 
-    allowedGroups={['gloves']} 
-    on:selectItem={(item) => $equipStore.hand = item.detail}
-  />
-</div>
+  <div class="basis-2/6 gap-5 rounded-lg flex flex-col">
+    <EquipSlot 
+      type="OffHand" 
+      item={$equipState.offHand} 
+      allowedGroups={['shields']} 
+      on:selectItem={(item) => $equipStore.offHand = item.detail}
+    />
+  </div>
+  <div class="basis-2/6 gap-5 rounded-lg flex flex-col">
+    <EquipSlot 
+      type="Hands" 
+      item={$equipState.hand} 
+      allowedGroups={['gloves']} 
+      on:selectItem={(item) => $equipStore.hand = item.detail}
+    />
+  </div>
 </div>
 
 <div class="flex gap-5 my-6">
-  <div class="basis-3/6 bg-gray-100 p-5 gap-5 rounded-lg flex flex-col">
+  <div class="basis-3/6 gap-5 rounded-lg flex flex-col">
     <EquipSlot 
       type="Head" 
       item={$equipState.head} 
@@ -61,7 +61,7 @@
       on:selectItem={(item) => $equipStore.feet = item.detail}
     />
   </div>
-  <div class="basis-3/6 bg-gray-100 p-5 rounded-lg gap-5 flex flex-col">
+  <div class="basis-3/6 rounded-lg gap-5 flex flex-col">
     <EquipSlot 
       type="Neck" 
       item={$equipState.neck} 

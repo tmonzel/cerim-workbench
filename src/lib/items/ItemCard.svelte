@@ -11,7 +11,7 @@
   $: scalingFlags = item.getScalingFlags();
 </script>
 
-<div class="flex gap-x-3">
+<div class="flex gap-x-3 dark:text-zinc-200">
   <div class="mt-1 flex h-16 w-16 flex-none items-center justify-center rounded-lg bg-gray-50 group-hover:bg-white">
     {#if item.iconUrl}
       <img src={item.iconUrl} alt="Item icon" />
@@ -59,7 +59,7 @@
     <div class="flex gap-x-4 items-center">
       {#if scalingFlags.length > 0}
         <p class="text-xs flex items-center">
-          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368">
+          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e4e4e7">
             <path d="m136-240-56-56 296-298 160 160 208-206H640v-80h240v240h-80v-104L536-320 376-480 136-240Z"/>
           </svg>
           
@@ -68,18 +68,18 @@
       {/if}
       {#if stats.attackSpeed.getValue() > 0}
       <p class="text-xs flex items-center">
-        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368"><path d="M418-340q24 24 62 23.5t56-27.5l224-336-336 224q-27 18-28.5 55t22.5 61Zm62-460q59 0 113.5 16.5T696-734l-76 48q-33-17-68.5-25.5T480-720q-133 0-226.5 93.5T160-400q0 42 11.5 83t32.5 77h552q23-38 33.5-79t10.5-85q0-36-8.5-70T766-540l48-76q30 47 47.5 100T880-406q1 57-13 109t-41 99q-11 18-30 28t-40 10H204q-21 0-40-10t-30-28q-26-45-40-95.5T80-400q0-83 31.5-155.5t86-127Q252-737 325-768.5T480-800Zm7 313Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e4e4e7"><path d="M418-340q24 24 62 23.5t56-27.5l224-336-336 224q-27 18-28.5 55t22.5 61Zm62-460q59 0 113.5 16.5T696-734l-76 48q-33-17-68.5-25.5T480-720q-133 0-226.5 93.5T160-400q0 42 11.5 83t32.5 77h552q23-38 33.5-79t10.5-85q0-36-8.5-70T766-540l48-76q30 47 47.5 100T880-406q1 57-13 109t-41 99q-11 18-30 28t-40 10H204q-21 0-40-10t-30-28q-26-45-40-95.5T80-400q0-83 31.5-155.5t86-127Q252-737 325-768.5T480-800Zm7 313Z"/></svg>
         <span class="ml-1 text-xs font-semibold">{stats.attackSpeed.getValue()}</span>
       </p>
       {/if}
     </div>
   
-    <dl class="divide-y divide-gray-100 my-3">
+    <dl class="divide-y divide-gray-100/20 my-3">
       {#each item.modifications as mod}
         {#if mod.modifier.type === 'add'}
           <div class="py-2 sm:grid sm:grid-cols-6 sm:gap-4 sm:px-0">
-            <dt class="text-sm font-medium leading-6 text-gray-900 sm:col-span-4">{mod.name}({mod.tier})</dt>
-            <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+            <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-200 sm:col-span-4">{mod.name}({mod.tier})</dt>
+            <dd class="mt-1 text-sm leading-6 text-gray-700 dark:text-zinc-200 sm:col-span-2 sm:mt-0">
               {#if mod.modifier.value instanceof FlatResistance}
                 <ValueBadge value={mod.modifier.value} />
               {:else}
@@ -92,8 +92,8 @@
         {#if mod.modifier.type === 'multiply'}
         {@const percentage = mod.modifier.value - 1}
         <div class="py-2 sm:grid sm:grid-cols-6 sm:gap-4 sm:px-0">
-          <dt class="text-sm font-medium leading-6 text-gray-900 sm:col-span-4">{mod.name}({mod.tier})</dt>
-          <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+          <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-200 sm:col-span-4">{mod.name}({mod.tier})</dt>
+          <dd class="mt-1 text-sm leading-6 text-gray-700 dark:text-zinc-200 sm:col-span-2 sm:mt-0">
             {#if percentage >= 0}+{/if}{Math.round(percentage * 100)}%
           </dd>
         </div>

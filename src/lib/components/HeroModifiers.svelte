@@ -21,19 +21,19 @@
   const modifiedStats = derived(heroState, (hero) => Object.entries(hero.stats));
 </script>
 
-<div class="mt-6">
+<div>
   {#if $modifiedStats.length === 0}
     <Badge type="highlight">No active modifiers</Badge>
   {/if}
 
-  <dl class="divide-y divide-gray-100">
+  <dl class="divide-y divide-gray-100/20">
     {#each $modifiedStats as [stat, s]}
       {@const value = s.added}
 
       {#if s.hasAdded()}
         <div class="py-3 sm:grid sm:grid-cols-2 sm:gap-4 sm:px-0">
-          <dt class="text-sm font-medium leading-6 text-gray-900">{statLabelMap[stat]}</dt>
-          <dd class="mt-1 text-sm leading 6 text-gray-700 sm:col-span-1 sm:mt-0">
+          <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-300">{statLabelMap[stat]}</dt>
+          <dd class="mt-1 text-sm leading 6 text-gray-700 dark:text-zinc-300 sm:col-span-1 sm:mt-0">
             {#if value instanceof FlatResistance}
               <ValueBadge value={value} />
             {:else}
@@ -45,8 +45,8 @@
 
       {#if s.multiplier !== 1}
         <div class="py-3 sm:grid sm:grid-cols-2 sm:gap-4 sm:px-0">
-          <dt class="text-sm font-medium leading-6 text-gray-900">Increased {statLabelMap[stat]}</dt>
-          <dd class="mt-1 text-sm leading 6 text-gray-700 sm:col-span-1 sm:mt-0">
+          <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-300">Increased {statLabelMap[stat]}</dt>
+          <dd class="mt-1 text-sm leading 6 text-gray-700 dark:text-zinc-300 sm:col-span-1 sm:mt-0">
             +{Math.round((s.multiplier - 1) * 100)}%
           </dd>
         </div>
