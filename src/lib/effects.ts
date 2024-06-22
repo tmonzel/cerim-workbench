@@ -1,8 +1,7 @@
 import { DamageMutator, type Mutation } from './core';
 import { NumberMutator } from './core/mutators/NumberMutator';
-import type { HeroStats } from './hero';
 import type { AttributeState } from './state';
-import type { DamageValue, HeroStatTypes } from './types';
+import type { DamageValue, HeroStatTypes, HeroStats } from './types';
 
 export type BaseEffect = {
   attr: string;
@@ -57,7 +56,8 @@ export class AttributeEffect {
         case 'stamina':
         case 'poise':
         case 'equipLoad':
-          stats[this.def.affects].base += mutator.mutate(attr.value);
+        case 'focus':
+          stats[this.def.affects].base += mutator.mutate(attr.value + attr.offset);
       }
     }
 

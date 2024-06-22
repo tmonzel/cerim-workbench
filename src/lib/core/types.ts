@@ -13,7 +13,7 @@ export type DynamicValue<T = number | FlatDamage | FlatResistance> = {
   added: T;
   multiplier: number;
 
-  addModifier(m: PercentualModifier | FlatModifier<T>): void;
+  hasAdded(): boolean;
   isModified(): boolean;
   getValue(): T;
 }
@@ -23,14 +23,43 @@ export type Stat<T = number> = {
   value: DynamicValue<T>;
 }
 
-export type Modifier<T = number | FlatDamage | FlatResistance> = FlatModifier<T> | PercentualModifier;
-
-export type FlatModifier<T = number | FlatDamage | FlatResistance> = {
-  type: 'add';
-  value: T;
+export enum AttributeType {
+  VIGOR = 'vig',
+  ENDURANCE = 'end',
+  STRENGTH = 'str',
+  DEXTERITY = 'dex',
+  MIND = 'mnd',
+  INTELLIGENCE = 'int',
+  FAITH = 'fth'
 }
 
-export type PercentualModifier = {
-  type: 'multiply';
-  value: number;
+export enum AttackDamageType {
+  PHYSICAL = 'phy',
+  MAGIC = 'mag',
+  FIRE = 'fir',
+  LIGHTNING = 'lit',
+  HOLY = 'hol',
+
+  FROSTBITE = 'frb',
+  POISON = 'poi',
+  HEMORRHAGE = 'hem'
 }
+
+export enum AffinityType {
+  STANDARD = 'standard',
+  HEAVY = 'heavy',
+  KEEN = 'keen',
+  QUALITY = 'quality',
+  FIRE = 'fire',
+  LIGHTNING = 'lightning',
+  SACRED = 'sacred',
+  COLD = 'cold',
+}
+
+export type BaseScalingValue = { [0]: number; [1]: string | string[] } | number;
+export type AttackBase = Partial<Record<AttackDamageType, number>>;
+export type ScalingBase = Partial<Record<AttributeType, BaseScalingValue>>;
+
+export type Guard = Record<string, NumberRange>;
+
+export type NumberRange = { [0]: number, [1]: number };

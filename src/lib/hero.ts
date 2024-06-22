@@ -1,28 +1,19 @@
 import { derived } from 'svelte/store';
-import { equipState } from './items/state';
-import { appState, attributeState } from './state';
-import { DynamicDamage, DynamicNumber, FlatDamage, FlatResistance } from './core';
+import { appState, attributeState, equipState } from './state';
+import { DynamicDamage, DynamicNumber, FlatResistance } from './core';
 import { findEffects } from './effects';
 import { DynamicResistance } from './core/DynamicResistance';
-
-export type HeroStats = {
-  damage: DynamicDamage;
-  health: DynamicNumber;
-  stamina: DynamicNumber;
-  armor: DynamicNumber;
-  weight: DynamicNumber;
-  poise: DynamicNumber;
-  equipLoad: DynamicNumber;
-  focus: DynamicNumber;
-  attackSpeed: DynamicNumber;
-  resistance: DynamicResistance;
-}
+import type { HeroStats } from './types';
+import { DynamicAttribute } from './core/DynamicAttribute';
+import { DynamicAttack } from './core/DynamicAttack';
 
 export type HeroState = {
   level: number;
   attributePoints: number;
-  dps: FlatDamage;
+  dps: number;
   stats: HeroStats;
+  attack: DynamicAttack;
+  effects: string[];
 }
 
 export const heroState = derived([attributeState, equipState, appState], (s) => {
@@ -31,7 +22,7 @@ export const heroState = derived([attributeState, equipState, appState], (s) => 
   const hero: HeroState = {
     level: 0,
     attributePoints: 0,
-    dps: new FlatDamage(),
+    dps: 0,
     stats: {
       damage: new DynamicDamage(),
       health: new DynamicNumber(),
@@ -42,13 +33,16 @@ export const heroState = derived([attributeState, equipState, appState], (s) => 
       equipLoad: new DynamicNumber(),
       focus: new DynamicNumber(),
       attackSpeed: new DynamicNumber(),
-      resistance: new DynamicResistance()
+      resistance: new DynamicResistance(),
+      robustness: new DynamicNumber(),
+      immunity: new DynamicNumber(),
+      vitality: new DynamicNumber(),
+      attributes: new DynamicAttribute()
     },
+    
+    attack: new DynamicAttack(),
+    effects: []
   };
-
-  for(const effect of findEffects()) {
-    effect.apply(attributes, hero.stats);
-  }
 
   for(const item of Object.values(equip)) {
     if(!item) {
@@ -68,21 +62,26 @@ export const heroState = derived([attributeState, equipState, appState], (s) => 
           break;
         case 'stamina':
         case 'health':
-        case 'weight':
         case 'armor':
+        case 'focus':
+        case 'vitality':
           hero.stats[stat].added += value.added as number;
           hero.stats[stat].multiplier += value.multiplier - 1;
       }
     }
 
     for(const mod of item.modifications) {
-      if(mod.scope === 'hero' && mod.modifier.type === 'multiply') {
-        hero.stats[mod.stat].multiplier += mod.modifier.value - 1;
+      if(mod.scope === 'hero' && mod.type === 'percentual') {
+        hero.stats[mod.stat].multiplier += mod.value - 1;
       }
+    }
+
+    if(item.effects) {
+      hero.effects = [ ...hero.effects, ...item.effects ];
     }
     
     // Sum item damage
-    hero.stats.damage.base.add(itemStats.damage.getValue());
+    hero.attack.base.add(item.attack.getValue());
 
     // Sum item weights
     hero.stats.weight.base += itemStats.weight.getValue();
@@ -96,14 +95,18 @@ export const heroState = derived([attributeState, equipState, appState], (s) => 
     hero.stats.attackSpeed.base = 1;
   }
 
-  const totalDamage = hero.stats.damage.getValue();
+  for(const effect of findEffects()) {
+    effect.apply(attributes, hero.stats);
+  }
+
+  const attackDamage = hero.attack.getValue();
   const numDistributedPoints = Object.values(attributes).reduce((p, c) => p + c.value, 0);
 
   hero.level = Math.floor(numDistributedPoints / state.attributePointsPerLevel);
   hero.attributePoints = state.attributePointsPerLevel * state.maxLevel - numDistributedPoints
 
-  hero.dps.add(totalDamage);
-  hero.dps.multiply(hero.stats.attackSpeed.getValue());
+  hero.dps += attackDamage.getTotal();
+  hero.dps *= hero.stats.attackSpeed.getValue();
 
   return hero;
 });

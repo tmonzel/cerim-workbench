@@ -1,0 +1,811 @@
+{
+  "maxLevel": 30,
+
+  "attributePointsPerLevel": 3,
+  "masteryPointsPerLevel": 1,
+
+  "config": {
+    "calcAttackSpeedBasedOnWeaponWeight": false,
+    "alertRequiredItemLevel": true,
+    "useDamageAverageOnly": true
+  },
+
+  "scalingGrades": {
+    "S": -0.005,
+    "A": -0.01,
+    "B": -0.05,
+    "C": -0.1,
+    "D": -0.15,
+    "E": -0.2
+  },
+
+  "rarities": {
+    "legendary": {
+      "name": "Legendary",
+      "color": "yellow"
+    },
+
+    "epic": {
+      "name": "Epic",
+      "color": "purple"
+    }
+  },
+
+  "abilities": {
+
+  },
+  
+  "attributes": {
+    "vig": {
+      "name": "Vigor",
+      "color": "#4ade80",
+      "default": 0
+    },
+
+    "end": {
+      "name": "Endurance",
+      "color": "#fbbf24",
+      "default": 0
+    },
+
+    "str": {
+      "name": "Strength",
+      "color": "#f87171",
+      "default": 0
+    },
+
+    "dex": {
+      "name": "Dexterity",
+      "color": "#f0abfc",
+      "default": 0
+    },
+
+    
+    "mnd": {
+      "name": "Mind",
+      "color": "#db2777",
+      "default": 0
+    },
+
+    "int": {
+      "name": "Intelligence",
+      "color": "#67e8f9",
+      "default": 0
+    },
+
+    "fth": {
+      "name": "Faith",
+      "color": "#bef264",
+      "default": 0
+    }
+  },
+
+  "effects": [
+    {
+      "attr": "vig",
+      "affects": "health",
+      "value": 1,
+      "mutations": [
+        {
+          "from": [0, 4],
+          "to": [25, 31]
+        },
+        {
+          "from": [26, 31],
+          "to": [40, 48]
+        },
+
+        {
+          "from": [41, 26],
+          "to": [60, 13]
+        },
+
+        {
+          "from": [61, 6],
+          "to": [99, 3]
+        }
+      ]
+    },
+
+    {
+      "attr": "end",
+      "affects": "stamina",
+      "value": 20
+    },
+
+    {
+      "attr": "str",
+      "affects": "poise",
+      "value": 5,
+      "mutations": [
+        {
+          "from": [0, 0],
+          "to": [25, 1]
+        }
+      ]
+    },
+
+    {
+      "attr": "str",
+      "affects": "equipLoad",
+      "value": 5
+    },
+
+    {
+      "attr": "str",
+      "affects": "damage",
+      "value": [0.5, 1, 0]
+    },
+
+    {
+      "attr": "dex",
+      "affects": "speed",
+      "value": 1.2
+    },
+
+    {
+      "attr": "mnd",
+      "affects": "focus",
+      "value": 20
+    }
+  ],
+
+  "modifiers": {
+    "addToAttributes": {
+      "affects": "attributes",
+      "name": "Add Attributes",
+      "values": [
+        [[5, "vig"], [5, "end"]]
+      ]
+    },
+
+    "addLightningDamage": {
+      "affects": "damage",
+      "name": "Add Lightning Damage",
+      "values": [
+        [1, 4, 3],
+        [1, 8, 3],
+        [1, 12, 3],
+        [1, 16, 3],
+        [1, 20, 3]
+      ]
+    },
+
+    "increaseDamage": {
+      "type": "percentual",
+      "affects": "damage",
+      "name": "Increase Damage",
+      "values": [1.1, 1.2, 1.3, 1.4, 1.5]
+    },
+
+    "increaseOverallDamage": {
+      "scope": "hero",
+      "type": "percentual",
+      "affects": "damage",
+      "name": "Increase Overall Damage",
+      "values": [1.05, 1.1, 1.15, 1.2, 1.25]
+    },
+
+    "decreaseWeight": {
+      "type": "percentual",
+      "affects": "weight",
+      "name": "Decrease Weight",
+      "values": [0.9, 0.8, 0.7, 0.6, 0.5]
+    },
+
+    "addFocus": {
+      "affects": "focus",
+      "name": "Add Focus",
+      "values": [4, 8, 12, 14, 15]
+    },
+
+    "increaseFocus": {
+      "type": "percentual",
+      "affects": "focus",
+      "name": "Increase Focus",
+      "values": [1.2, 1.4, 1.5, 1.6, 1.7]
+    },
+
+    "increaseArmor": {
+      "type": "percentual",
+      "affects": "armor",
+      "name": "Increase Armor",
+      "values": [1.2, 1.4, 1.5, 1.6, 1.7]
+    },
+
+    "addStamina": {
+      "name": "Add Stamina",
+      "affects": "stamina",
+      "values": [4, 8, 12, 14, 15]
+    },
+
+    "addFireResistance": {
+      "name": "Fire Resist",
+      "affects": "resistance",
+      "values": [
+        [5, 1],
+        [10, 1],
+        [15, 1],
+        [20, 1],
+        [25, 1]
+      ]
+    },
+
+    "addPoisonResistance": {
+      "name": "Poison Resist",
+      "affects": "resistance",
+      "values": [
+        [5, 4],
+        [10, 4],
+        [15, 4],
+        [20, 4],
+        [25, 4]
+      ]
+    },
+
+    "addAllResistances": {
+      "name": "All Resistances",
+      "affects": "resistance",
+      "values": [
+        [[5, 0], [5, 1], [5, 2], [5, 3], [5, 4]],
+        [[10, 0], [10, 1], [10, 2], [10, 3], [10, 4]],
+        [[15, 0], [15, 1], [15, 2], [15, 3], [15, 4]],
+        [[20, 0], [20, 1], [20, 2], [20, 3], [20, 4]],
+        [[25, 0], [25, 1], [25, 2], [25, 3], [25, 4]]
+      ]
+    },
+
+    "increaseResistances": {
+      "scope": "hero",
+      "type": "percentual",
+      "affects": "resistance",
+      "name": "Increase Resistances",
+      "values": [1.1, 1.2, 1.3, 1.4, 1.5]
+    },
+
+    "increaseCastSpeed": {
+      "type": "percentual",
+      "affects": "castSpeed",
+      "name": "Increased cast speed",
+      "values": [1.1, 1.2, 1.3, 1.4, 1.5]
+    },
+
+    "increaseAttackSpeed": {
+      "type": "percentual",
+      "affects": "attackSpeed",
+      "name": "Increased attack speed",
+      "values": [1.1, 1.2, 1.3, 1.4, 1.5]
+    },
+
+    "increaseHealth": {
+      "type": "percentual",
+      "affects": "health",
+      "name": "Increased health",
+      "values": [1.05, 1.1, 1.15, 1.2, 1.25]
+    }
+  },
+
+  "models": {
+    "crimsonMedallion": {
+      "type": "talisman",
+      "name": "Crimson Medallion",
+      "caption": "Medallion",
+      "group": "talismans",
+      "tags": ["medallion"],
+      "weight": 0.3,
+      "description": "A primordial life energy resides inside.",
+      "requiredLevel": 1,
+      "iconUrl": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAABIklEQVR4nN3VTytEYRTH8U8pNf4skJ1RFmhSyoadkpdhM2/AytLKSlK8AZmykIUNySuQHVmYndhaKhPybzR1FrdcZsydWYxfnXp6zjnf3zndWw//SRVU0ZeB0R+Mx7TkTSQnMxiMB6PG+qbjSBYzGCwF4zQtuRzJwwwGe8FYSUvm8RYx2gR8GE/4xMRPRfsxwU4TBhvRe/JbUQEvMcXiH+AzsfkH5uoVr8YkD5huAD6Cu+jZbmSaLhxFw32dTWZxG7VnyGlQufjVqnjHARYwhEHMYxevUXOOgUbhyU3W8ByQtKgZbKFbBuWxjosE+BKbGNNiVSPaokLCoHZuqXK4Shhco6eVBqWUD1zqKINelBPwcty1VFPx6lXi3BYVMz5IHagvqDdXXz+PYeIAAAAASUVORK5CYII="
+    },
+
+    "boarskinLeatherHat": {
+      "type": "armor",
+      "name": "Boarskin Leather Hat",
+      "caption": "Leather Helmet",
+      "group": "helmets",
+      "tags": ["armor"],
+      "weight": 5,
+      "armor": 10,
+      "poise": 5,
+      "description": "Any coward can forge a helmet out of metal. For the Boarkskin, true glory comes from the wearing of flesh.",
+      "requiredLevel": 11,
+      "iconUrl": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAACqUlEQVR4nO2WS4iOURjHfwwjRMQYlyESCwuXhW8xspCRmpKFJJmJ3AcLGpcm2YhQFAukkJDJJbkuLCwsKGOEIXJJmi8i14RB8xk99f90er2X835YqPnX6e095/k/53/Oec5zHmjHf4Y+QDVQDzQBL4Ec8Aq4BxwBqmT3VzEI2At8B9o82idgp3h/jBrgixybgAvAUmA0UAp0AEqADLAWuO0I+QDMKXTizsABOfoBHAWGe3IrdER5IeanU1oB+0X+CMxIr5/FjoCNaclrnMnHFTD5Mu2a+ahLSx4KtCi6K2PsxirQ7sreWjNwWZNbW1mAeOql/GDEeC+daX6FUS2bImZ+oR/QqtUM5HeUOlH+Gdih6O8KdAFGaNVZ2bzXuDcWiXg2ZKwIuKpxEzEsxk934IRs3wBlvgJOijQvZGyVxp4AfT18meCL4pz2FXBdhEyIs2cam+rrDOgPvBNvig8hK+PglmXU/9BzYgvUzbLPiXvOh9gs48GB/gUJN8PFAOB+yK1o9XkbGiKOoFb92z0EnJLtY6AcKAYeqW+9bw6oDfQvVP+hBH434Kts54dk1qdAxzgHc2Vo181FubOqJGxznuR1wGRgn3MUscFYAnyT4QT19XZuh7UhCQJsy4/HZEjLD7HYI8NGBdStgIPZ+KFSQZsP7NfyeU2JKhJl2r58QWHfB6qIwuIjCdMdH1a8eKHaWXGT3oAV+t+QUMQEYYXIc3EnplG+W1uWLzDr5KQmZIJpwBndgEvALD1OeWwS93AaAUVAT+f/mJxM0r+9fFuAFxHB9hbYBYzRw5VTbWlZMjWK5dCy2RLgSqAesMy3GhgJLAduBsTcEL9NR5kaVSErbNGVqogIrlHAVkW/y7tTiIAGx0GjCs4enlyLhZnAee2g+RhfiIh28C/wE+4x8LkPtjjhAAAAAElFTkSuQmCC"
+    },
+
+    "cerimHood": {
+      "type": "armor",
+      "name": "Cerim Hood",
+      "caption": "Mesh Helmet",
+      "group": "helmets",
+      "tags": ["armor"],
+      "weight": 5,
+      "armor": 10,
+      "poise": 5,
+      "description": "A protective hood stitched by the Cerim, imbued with the words of the Sayer.",
+      "requiredLevel": 1
+    },
+
+    "druidsEye": {
+      "type": "armor",
+      "name": "Druid’s Eye",
+      "caption": "Cloth Helmet",
+      "group": "helmets",
+      "tags": ["armor"],
+      "armor": 10,
+      "weight": 3,
+      "poise": 5,
+      "description": "Who wears this helmet shall see beyond the now, into the age of trees.",
+      "requiredLevel": 1,
+      "iconUrl": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAACV0lEQVR4nO2XT0tVURTFfy+M/hiY0cRqFJSvqElN6gMUNukjlAmKRWVENKxpX6AgcKBE9IfG1jgJAq2HEBUaWgm+gpqZ1sQbG9aBzeHdxzm8pyMXbHh777PW3vece/e9DzbRGiqyDcdWYBD4IhtUbENwFvgEFJFZ7Mx6Ft4BPHAFZ4GLslnF1oD7WttW7ANmVGQFuBVtuf2+DaxqzYw4bcFhYEHCH4FjTdYe15pCnEOtFt8DzEvwLbA3gbMbeC3Ot0ROQ2wBXknoHdBJOnYCU+K+lFY2bkjgH3BAsTfApFvTzO8R1zSu5xbfBfwW2ReY1Pbm+KbxK3MHuSTiB1rHe2nZ45qMFyKNtKGBq9J6nkP6KtJJFzsPTAN/gJp8n6spNxXlTkjLnqZkrIjU7QrEo9em3jnZWoN8aKJbvjWXjFWRwkidln8T6ALuyf8sKxTr0pQstBNIo5BmMn6ItF/+X/nb5HcAc+5q5xQzbFfMOEjD/KWcBmoinZK/KL/Prel3DdjvgD7Fvss/7YZZMh6LNCT/rjvHgWgX/NUPaI2tvaPYkPxHOQ1cE2nMFRt1VzyuwdIv61Qs5EddU2OK2eOYjKMiLUafXFZs2b0ZO2ThDbgcHUfFHd+RnAaqItWbNGcWEHzLxagrZ5rJGBbpaUm+rIFGeKacaSbjiUiX29DAFeVMMwkVt20Tuot7SxoIA6ZRA73iTrjjTPqE79HQiEfrkq4iHE8jG9aaMr5pJ6PqBMOOxOYnX2x113DWDViGg8AF4KG+9eJ74KdeuSN6i677P6Zqye9NkIP/aa/wrUZg1zUAAAAASUVORK5CYII="
+    },
+
+    "cerimCloak": {
+      "type": "armor",
+      "name": "Cerim Cloak",
+      "caption": "Mesh Body Armor",
+      "group": "bodyArmors",
+      "tags": ["armor"],
+      "weight": 15,
+      "armor": 140,
+      "poise": 10,
+      "description": "A traditional cloak made by the Cerim, imbued with the words of the Sayer.",
+      "requiredLevel": 1
+    },
+
+    "cerimShield": {
+      "type": "armor",
+      "name": "Cerim Shield",
+      "caption": "Medium Shield",
+      "group": "shields",
+      "tags": ["armor"],
+      "weight": 15,
+      "armor": 140,
+      "poise": 10,
+      "description": "A traditional shield made by the Cerim, imbued with the words of the Sayer.",
+      "iconUrl": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAACA0lEQVR4nO2Wz0tUURTHP41vSiVQ2s2ixezkiW2dwPZWVLSwlViggYF7IxhQkBim/oGC0EWrCIaItq1EkNwYjVOILkxRspBWNZRMXDjB4fLem/t+zG4+cBYz953zvt/749wHXZKRA0aABxIj8l/HuAjcAMrAO+AEaFlxImNledbkJOYZUAM2gB8BLzOxC7yU2A155rvUqElNZ1pW7Im7x8BtoBCQU5CxReAV8BFoWnViCxgCeknOJWAnjYCkeMA88DvtDGgmJNrhA+uqxousBNQlolw/BH5J7ldgPKJepjPgB7geaFMvtgBX11fVuNnA1U4J8C3X5uhdUOMlYCvLTRjX9V8Zr2cpwI/h2gioAOeyEOBZ5/oQuGW5rijX28AVB0Oh6IQ4rk+l5/dH1HOiKQmP1FrvA9ci1rohYmzOyrip6cy+tXuXgUHLdUOtdTXiziiqzerMG0k6SOhac0+eNTWdmZakDxGunwB9Dt1yTXJm4gjoB44k8b7l+jNwOSTPvi/uSM63gI3ZlrvWPjACnga4DpuBYeBnEvea50rAFO4U1YfICinIA++l0DEw5pAzqpZvVTphKvqA11LwD7Agwmw86Rv/e8hb4DwZkQOWrON3EzgjcR34pLqhOSE9dICSdbuZL99N9fuL4zKlwgNmpbO1VMOaC1majpEHJiVMv+9CEv4BtHTs/HtjCy8AAAAASUVORK5CYII="
+    },
+
+    "helmsmansJacket": {
+      "type": "armor",
+      "name": "Helmsman’s Jacket",
+      "caption": "Leather Body Armor",
+      "group": "bodyArmors",
+      "tags": ["armor"],
+      "weight": 23,
+      "armor": 140,
+      "poise": 10,
+      "description": "The faded coat of a middle ranking seaman - likely stolen and traded by pirates.",
+      "requiredLevel": 1,
+      "iconUrl": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAACU0lEQVR4nO2Wy0tVURTGf4JGXkmisj+gLKlBJCE9iF7kIHMWEdzoMXUoNQ2CQCkbV0YPsEE0qiwqo3BSw0DLSQ26TSoqDApLGuiRBd+GxeFo+9x7hveDBeesvb5vr/1Ye2+oo4582A9UgPdAyflL8lUUUxgagVPAc+AbkDh7CqwD1gPPUm0WOwaclEZV6ADepoQT+aYz/NOLxE8CG/N2vgH4KoE3wDFgNzAP/AVOAw+An+r4vnyzitkLlIEJaXwB2mM7b3QjsU6WubabbrSHnP+wkrG2G85v3Idu5qKWYxUwJdJ4KoGS9kOY3kfAY/dv696cSmBcbVPSjsKoE73m/A3A7Yx1DnZLMQHDrs1mIgoHRPgN/NKaHgV6gSeurQe4IuuRL1FMrzjz0ghtUSV6R8EDQH/GKK3EDmbwzPc9I940BvU9EpPAJwXvAppcydmOPg+0LcFdq5gJl2yTtOz/Y0wC/xR8FdijsrP/1cSjTRyrjH3SSqT9Xwxp7dJT2ZIjgZUZfNO8FCvQpR38DpirIoE14syp/oelWRUmJbYpB2eb2zc1457EjuTgnBDnbhEJnJPY9RycEXGMWzN2SOwHsD0ivsuV7s4iEtia2sl2TB8HNgOtwAp9l3V5hU1rtqWIBM5K7AMws8Q9EGxGsfZ9pogExiRW1m3Wp5Ha8+uPrKI3QZ9iyuLYS6kmLHcn4VDqql0MzYpNxDWNqtGg0yucjJ8l3q23YIusXb7Lev2EQ+hi6nquqRJeR6x/sFeRFZMbncAF4KVGOiuz7xdqs6qpow5isQDX8e6MVaawjAAAAABJRU5ErkJggg=="
+    },
+
+    "holyPrisonerRags": {
+      "type": "armor",
+      "name": "Holy Prisoner Rags",
+      "caption": "Cloth Body Armor",
+      "group": "bodyArmors",
+      "tags": ["armor"],
+      "weight": 20,
+      "armor": 140,
+      "poise": 10,
+      "description": "A filthy, ragged cape belonging to one who formerly lived and worked in the Nameless Pass.",
+      "requiredLevel": 1
+    },
+
+    "cerimGloves": {
+      "type": "armor",
+      "name": "Cerim Gloves",
+      "caption": "Mesh Gloves",
+      "group": "gloves",
+      "tags": ["armor"],
+      "weight": 4,
+      "armor": 15,
+      "poise": 2,
+      "description": "A pair of gloves crafted by the Cerim, imbued with the words of the sayer.",
+      "requiredLevel": 1,
+      "iconUrl": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAABk0lEQVR4nO2VvUoDQRSFP1CyQsAnyBMooqIoClrY+BraWwgW1v7H+BBiZRMLf9MrgrVoZSNIjBoRhBR2KwsnsCy7mPnJpvHAZffO3HPv2bmzM/APO/QBZeBDtqex3LAFhAnb7GbBArAPvAIvQEtFZ4BZvbc0V9eKRBxvKKd8cWRkjEe261NAPeWL0wTE5yOON4SxgiZ+w1dLQksB3loSZiz5X763loSWAtJ8ZwGmfs8FYCIgACravQ0dPkGeLaik7N5angIaCpwExnXR+OihsYBR+SMJERFugZsYpxO/YwHl2Ak2lCICJb+OcTrxjTZhTcFvwHBChC2MWjgAXInwruJtEbkIQBfHqUhfwAT2GFSeb1NiAFyI3ATGLAUsKMedDTkAzpXgU7+mKS7FX8MSBeBMSe4NuaviPQNFHLCiRIeGvCPx1nHEiRItGfKWxau6Cmgq0ZOSbQBzQH8iLvLnNV9VfHsTOyHMsOic2NZvuiM/K9YZAVACFnVrPmQUegQOFFcSr2uYAo6BHz2n6RGKvSrsjF8UYPq4qCSU4wAAAABJRU5ErkJggg=="
+    },
+
+    "cerimLeggings": {
+      "type": "armor",
+      "name": "Cerim Leggings",
+      "caption": "Mesh Pants",
+      "group": "pants",
+      "tags": ["armor"],
+      "weight": 6,
+      "armor": 25,
+      "description": "A pair of leg guards favored by the Cerim, imbued with the words of the Sayer.",
+      "requiredLevel": 1
+    },
+
+    "arcanistGloves": {
+      "type": "armor",
+      "name": "Arcanist Gloves",
+      "caption": "Cloth Gloves",
+      "group": "gloves",
+      "tags": ["armor"],
+      "weight": 2,
+      "armor": 5,
+      "poise": 1,
+      "requiredLevel": 1,
+      "iconUrl": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAABk0lEQVR4nO2VvUoDQRSFP1CyQsAnyBMooqIoClrY+BraWwgW1v7H+BBiZRMLf9MrgrVoZSNIjBoRhBR2KwsnsCy7mPnJpvHAZffO3HPv2bmzM/APO/QBZeBDtqex3LAFhAnb7GbBArAPvAIvQEtFZ4BZvbc0V9eKRBxvKKd8cWRkjEe261NAPeWL0wTE5yOON4SxgiZ+w1dLQksB3loSZiz5X763loSWAtJ8ZwGmfs8FYCIgACravQ0dPkGeLaik7N5angIaCpwExnXR+OihsYBR+SMJERFugZsYpxO/YwHl2Ak2lCICJb+OcTrxjTZhTcFvwHBChC2MWjgAXInwruJtEbkIQBfHqUhfwAT2GFSeb1NiAFyI3ATGLAUsKMedDTkAzpXgU7+mKS7FX8MSBeBMSe4NuaviPQNFHLCiRIeGvCPx1nHEiRItGfKWxau6Cmgq0ZOSbQBzQH8iLvLnNV9VfHsTOyHMsOic2NZvuiM/K9YZAVACFnVrPmQUegQOFFcSr2uYAo6BHz2n6RGKvSrsjF8UYPq4qCSU4wAAAABJRU5ErkJggg=="
+    },
+
+    "cerimBoots": {
+      "type": "armor",
+      "name": "Cerim Boots",
+      "caption": "Mesh Boots",
+      "group": "boots",
+      "tags": ["armor"],
+      "weight": 4,
+      "armor": 15,
+      "poise": 2,
+      "description": "A pair of boots crafted by the Cerim, imbued with the words of the sayer.",
+      "requiredLevel": 1,
+      "iconUrl": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAAB2klEQVR4nO2WzyumURTHP34XptCsLIc0iYWFzQizHBYSkSyk1GQ9ViKksLFWZCeZjZUFf4KaoogIsaBMLzUhZkKvbn2fuj0987qP99q937qLe57vOfd7z3PvORcyyCA+soE6YAhYBraAS+ABSAJlvAM+AH3ATyChhaLGne+dfgNWgPvQQpcSMwJ0Ad2y7/sUcBRa9JfSXgNkhbit4mz43H0SeAImgKpX+IPiL/gSUKCAN478afHHfAkojjhgqbAkjsmEF5TGFLAuTocvAeUKeOrI3xS/yZeAWgU0RcYFx+J/9iWgKeYvuBbnoy8BfTEF/BXHVEwvmFXA7478XZ+HMA84U8BhzVPBlOsD8Q+BonQFVAJ7VupPgH4g1+LkAD3AtsUz52ASKMFTKe61dpZUb4jqE+fADxUv49emrBSmI+CLUpkTOpABgvkAkC9beyhzD2pOnRHNy6mw/Lbu9YWCNmgEO7dhflGj+sJT6Aatqr84IyHHCs1nIq7l1H98x/X9FhgFrjSfjyPgUU5BevMl4kI7n7K+2fgE/AOegRbZqvVSeo5TKf9IgGlKb6kfpjvamJPdZMQJe3KojylgR35fQ/Ze2ddcAy2meHimMxKuN6L5nQQkVegyyIAAL/4MyC/mHi/YAAAAAElFTkSuQmCC"
+    },
+
+    "huntersAxe": {
+      "type": "weapon",
+      "name": "Hunter’s Axe",
+      "caption": "One Handed Axe",
+      "group": "axes",
+      "weight": 6,
+      "attackSpeed": 1.2,
+      "tags": ["melee"],
+      "damage": [10, 20, 0],
+      "description": "A simple axe carried by hunters to make a fast shelter or a faster kill.",
+      "requiredLevel": 1,
+      "scaling": [
+        {
+          "attr": "dex",
+          "affects": "damage",
+          "value": [1, 5, 0]
+        },
+
+        {
+          "attr": "int",
+          "affects": "damage",
+          "value": [1, 2, 1]
+        }
+      ]
+    },
+
+    "answeredPrayer": {
+      "type": "weapon",
+      "name": "Answered Prayer",
+      "caption": "One Handed Bow",
+      "group": "bows",
+      "weight": 5,
+      "aps": 1.5,
+      "tags": ["ranged"],
+      "damage": [5, 15, 1],
+      "requiredLevel": 1
+    },
+
+    "eternalCompanion": {
+      "type": "weapon",
+      "name": "Eternal Companion",
+      "caption": "Two Handed Great Hammer",
+      "group": "hammers",
+      "tags": ["melee"],
+      "weight": 15,
+      "damage": [25, 45, 0],
+      "requiredLevel": 1
+    },
+
+    "basicSword": {
+      "type": "weapon",
+      "name": "Basic Sword",
+      "caption": "One Handed Sword",
+      "group": "swords",
+      "tags": ["melee"],
+      "attackSpeed": 1.4,
+      "weight": 15,
+      "damage": [25, 45, 0],
+      "requiredLevel": 1,
+      "iconUrl": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAABn0lEQVR4nO2VvUpDQRSEP4xKGk06a0VJGjut/MEf8A2sUgQiaCx8AhsNCKKgtr6ANukUo88QO4OIdRqjgggWKhJZmAuHJYXFbhozsHDZgTtzz5lzLvTwzzACpLshNAUUgF3gHLgF3oG2TETFhoQ6HWciKhaBL4lVgQpQBLZ05yoRDaPAs4QOPK6o+7NY4sNAQyI1IOXxFXE7McRTwLUEGjLjoyreBTM4TvRyV/6xDuYOTQinQ4uv68WfwLzHuUpcinfBLIcWn5NwW6Nn4SpxJ+4VWI6R+JYEjj1uBngS9wjkQ4sPma+7AfoNt2aq4rhsaPE+4EICD0bAhW3fhO0UGAglugpM6vnI9HVcdxnNfhI2F8ygq/Vb/d4zIkvinYl73b8ACwTGoCl5cjbFzZogurDliIQ88COhD7WjbH46V2pDFGTMjn8zJtpmBP29HwRZjVey412fJ4yJtjIRBTmgCdTNjl8xYUva0TLTERQFI+ImYNv85xvKRE2cG9EoKHkmks2WhC2tEY2KkjFR91Zu11CSiWaMvf5XFGIumR56+AULCoiUJC3RKwAAAABJRU5ErkJggg=="
+    },
+
+    "catTalisman": {
+      "type": "talisman",
+      "name": "Longtail Cat",
+      "caption": "Medallion",
+      "group": "talismans",
+      "weight": 0.6,
+      "iconUrl": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAABIklEQVR4nN3VTytEYRTH8U8pNf4skJ1RFmhSyoadkpdhM2/AytLKSlK8AZmykIUNySuQHVmYndhaKhPybzR1FrdcZsydWYxfnXp6zjnf3zndWw//SRVU0ZeB0R+Mx7TkTSQnMxiMB6PG+qbjSBYzGCwF4zQtuRzJwwwGe8FYSUvm8RYx2gR8GE/4xMRPRfsxwU4TBhvRe/JbUQEvMcXiH+AzsfkH5uoVr8YkD5huAD6Cu+jZbmSaLhxFw32dTWZxG7VnyGlQufjVqnjHARYwhEHMYxevUXOOgUbhyU3W8ByQtKgZbKFbBuWxjosE+BKbGNNiVSPaokLCoHZuqXK4Shhco6eVBqWUD1zqKINelBPwcty1VFPx6lXi3BYVMz5IHagvqDdXXz+PYeIAAAAASUVORK5CYII="
+    }
+  },
+  
+  "items": [
+    {
+      "type": "rune",
+      "name": "Godrick’s Great Rune",
+      "caption": "Great Rune",
+      "group": "runes",
+      "affixes": [
+        {
+          "name": "Raise All Attributes",
+          "affects": "attributes",
+          "value": 5
+        }
+      ],
+      "iconUrl": "/godricks_great_rune.png"
+    },
+    {
+      "type": "talisman",
+      "name": "Radagon’s Scarseal",
+      "caption": "Talisman",
+      "group": "talismans",
+      "weight": 0.8,
+      "affixes": [
+        {
+          "name": "Raise Attributes",
+          "affects": "attributes",
+          "value": [[3, "vig"], [3, "end"], [3, "str"]]
+        }
+      ],
+      "effects": [
+        "Increases damage taken by 10%"
+      ],
+      "iconUrl": "/radagons_scarseal_talisman.png"
+    },
+    {
+      "type": "weapon",
+      "name": "Short Sword",
+      "caption": "Straight Sword",
+      "group": "swords",
+      "weight": 3.0,
+      "requirements": { "attributes": { "str": 8, "dex": 10 } },
+      "critBase": 100,
+      "upgrade": {
+        "maxTier": 25,
+        "defaults": {
+          "attack:sta": [45, 90],
+          "guard:rst": [14, 14]
+        },
+        "scaling": {
+          "standard": {
+            "attack:phy": [102, 249],
+            "guard:bst": [28, 33.6]
+          },
+          "heavy": {
+            "attack:phy": [92, 227]
+          },
+          "keen": {
+            "attack:phy": [92, 213],
+            "attack:sta": [42, 99]
+          },
+          "quality": {
+            "attack:phy": [87, 198]
+          },
+          "fire": {
+            "attack:phy": [77, 164],
+            "fire": [77, 164]
+          },
+          "flame": {
+            "attack:phy": [82, 194],
+            "attack:fire": [82, 194]
+          },
+          "lightning": {
+            "attack:phy": [77, 168],
+            "attack:lightning": [77, 168]
+          },
+          "sacred": {
+            "attack:phy": [72, 194],
+            "attack:holy": [72, 194]
+          },
+          "magic": {
+            "attack:phy": [72, 194],
+            "attack:magic": [72, 194]
+          },
+          "cold": {
+            "attack:phy": [82, 174],
+            "attack:magic": [66, 140],
+            "guard:rst": [13.3, 13.3],
+            "frostbite": [66, 105]
+          },
+          "poison": {
+            "attack:phy": [82, 208],
+            "poison": [66, 95]
+          },
+          "blood": {
+            "attack:phy": [82, 208],
+            "hemorrhage": [57, 82]
+          },
+          "occult": {
+            "attack:phy": [87, 218]
+          }
+        }
+      }
+    },
+    {
+      "base": "cerimLeggings",
+      "affixes": [
+        {
+          "modifier": "addAllResistances",
+          "tier": 0
+        }
+      ]
+    },
+    {
+      "base": "arcanistGloves",
+      "rarity": "epic",
+      "quality": 0.1,
+      "affixes": [
+        {
+          "modifier": "addFocus",
+          "tier": 2
+        },
+        {
+          "modifier": "increaseCastSpeed",
+          "tier": 2
+        }
+      ]
+    },
+    {
+      "base": "catTalisman",
+      "effect": "Renders the wearer immune to Fall Damage",
+      "affixes": [
+        {
+          "modifier": "addFireResistance",
+          "tier": 2
+        },
+        {
+          "modifier": "increaseOverallDamage",
+          "tier": 3
+        }
+      ]
+    },
+    {
+      "base": "crimsonMedallion",
+      "affixes": [
+        {
+          "modifier": "health",
+          "tier": 1
+        }
+      ]
+    },
+    {
+      "base": "crimsonMedallion",
+      "affixes": [
+        {
+          "modifier": "increaseHealth",
+          "tier": 2
+        }
+      ]
+    },
+    {
+      "base": "boarskinLeatherHat",
+      "affixes": [
+        {
+          "modifier": "increaseHealth",
+          "tier": 1
+        },
+        {
+          "modifier": "addPoisonResistance",
+          "tier": 3
+        }
+      ]
+    },
+    {
+      "base": "cerimHood",
+      "affixes": []
+    },
+  
+    {
+      "base": "druidsEye",
+      "affixes": []
+    },
+
+    {
+      "base": "cerimCloak",
+      "name": "Healthy Cerim Cloak",
+      "affixes": [
+        {
+          "modifier": "increaseHealth",
+          "tier": 1
+        }
+      ]
+    },
+  
+    {
+      "base": "helmsmansJacket",
+      "affixes": [
+        {
+          "modifier": "decreaseWeight",
+          "tier": 0
+        }
+      ]
+    },
+  
+    {
+      "base": "holyPrisonerRags",
+      "affixes": [
+        {
+          "modifier": "increaseArmor",
+          "tier": 2
+        },
+        {
+          "modifier": "addStamina",
+          "tier": 2
+        }
+      ]
+    },
+
+    {
+      "base": "cerimGloves",
+      "affixes": [
+        {
+          "modifier": "increaseAttackSpeed",
+          "tier": 1
+        },
+        {
+          "modifier": "addStamina",
+          "tier": 1
+        }
+      ]
+    },
+
+    {
+      "base": "cerimBoots",
+      "affixes": [
+        {
+          "modifier": "addPoisonResistance",
+          "tier": 2
+        }
+      ]
+    },
+
+    {
+      "base": "cerimShield",
+      "affixes": [
+        {
+          "modifier": "increaseResistances",
+          "tier": 2
+        },
+        {
+          "modifier": "addPoisonResistance",
+          "tier": 2
+        }
+      ]
+    },
+
+    {
+      "base": "basicSword",
+      "name": "Cerim Sword",
+      "affixes": [
+        {
+          "name": "Raise Vitality",
+          "affects": "vitality",
+          "value": 50
+        }
+      ]
+    },
+
+    {
+      "base": "huntersAxe",
+      "name": "Nailbiter",
+      "affixes": [
+        {
+          "modifier": "addLightningDamage",
+          "tier": 2
+        },
+        {
+          "modifier": "increaseDamage",
+          "tier": 3
+        }
+      ]
+    },
+
+    {
+      "base": "answeredPrayer",
+      "affixes": []
+    },
+
+    {
+      "base": "eternalCompanion",
+      "affixes": []
+    }
+  ]
+}

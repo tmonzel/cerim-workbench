@@ -1,11 +1,31 @@
-import type { Attribute, DataSchema } from './types';
-import { appState } from './state';
+import type { DataSchema } from './types';
+import { appState, type AttributeState } from './state';
 import { registerModifier } from './modifiers';
 import { addEffect } from './effects';
 import { addItem, registerItemBase } from './items';
+import { attributeStore } from './attributes';
 
 export function loadData(data: DataSchema) {
-  const attributes: Record<string, Attribute> = {};
+  // Resolve attributes
+  if(data.attributes) {
+    const attributeState: AttributeState = {};
+    
+    for(const [name, schema] of Object.entries(data.attributes)) {
+      attributeState[name] = {
+        label: schema.name, 
+        value: schema.default ?? 0,
+        color: schema.color,
+        offset: 0
+      }
+    }
+
+    attributeStore.set(attributeState);
+  }
+
+  appState.set({
+    maxLevel: data.maxLevel,
+    attributePointsPerLevel: data.attributePointsPerLevel,
+  });
 
   // Resolve effects
   if(data.effects) {
@@ -30,24 +50,8 @@ export function loadData(data: DataSchema) {
   
   // Resolve items
   if(data.items) {
-    for(const def of data.items) {
-      addItem(def);
+    for(let i = 0; i < data.items.length; i++) {
+      addItem(i, data.items[i]);
     }
   }
-
-  // Resolve attributes
-  if(data.attributes) {
-    for(const [name, schema] of Object.entries(data.attributes)) {
-      attributes[name] = {
-        label: schema.name, 
-        value: schema.default ?? 0
-      }
-    }
-  }
-
-  appState.set({
-    maxLevel: data.maxLevel,
-    attributePointsPerLevel: data.attributePointsPerLevel,
-    attributes
-  })
 }

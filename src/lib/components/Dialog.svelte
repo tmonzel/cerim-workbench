@@ -14,7 +14,7 @@
 
 </script>
 
-<dialog bind:this={dialog} class="rounded-lg max-w-screen-3xl dark:bg-zinc-900 border border-zinc-600" style="margin-top: 1%;">
+<dialog bind:this={dialog} class="rounded-lg dark:bg-zinc-900 border border-zinc-600 mt-5">
   {#if backdropClose}
   <button type="button" on:click={() => close()} class="fixed w-full top-0 left-0 right-0 bottom-0">
     <span class="sr-only">Close modal</span>
@@ -23,7 +23,6 @@
 
   <div class="relative">
     <div class="flex items-center justify-between p-4 md:p-5 z-50 border-zinc-500">
-      <div></div>
       <h3 class="text-xl font-semibold text-gray-900 dark:text-zinc-300">
         {title}
       </h3>

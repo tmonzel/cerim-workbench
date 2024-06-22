@@ -7,7 +7,7 @@
   <slot></slot>
 </span>
 {:else if type === 'alert'}
-<span class="inline-flex items-center rounded-md bg-red-50 dark:bg-red-900/30 px-2 py-1 text-xs font-medium text-red-700 dark:text-red-300/80 ring-1 ring-inset ring-red-600/10 dark:ring-red-400/80">
+<span class="inline-flex items-center rounded-md bg-red-50 dark:bg-red-900/30 px-2 py-1 text-xs font-medium text-red-700 dark:text-red-200/80 ring-1 ring-inset ring-red-600/10 dark:ring-red-500/80">
   <slot></slot>
 </span>
 {:else if type === 'info'}

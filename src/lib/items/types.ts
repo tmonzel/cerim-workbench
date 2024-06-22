@@ -1,11 +1,11 @@
-import type { FlatModifier, PercentualModifier } from '$lib/core';
+import type { AffinityType, AttackBase, AttackDamageType, AttributeType, FlatDamage, FlatResistance, Guard, NumberRange, ScalingBase } from '$lib/core';
+import type { FlatAttribute } from '$lib/core/values/FlatAttribute';
 import type { EffectDef } from '$lib/effects';
-import type { ModifierScope } from '$lib/modifiers';
-import type { DamageValue, HeroStatTypes } from '$lib/types';
+import type { HeroStatTypes, ModifierScope, ModifierType, RawStatValue } from '$lib/types';
 
 export type ItemType = 'weapon' | 'armor' | 'talisman';
 
-export type ItemBaseDef = {
+export type ItemDef = {
   name: string;
   type: ItemType;
   caption: string;
@@ -14,31 +14,59 @@ export type ItemBaseDef = {
   poise?: number;
   weight: number;
   armor?: number;
-  damage?: DamageValue;
+  tiers?: number;
+  tier?: number;
   attackSpeed?: number;
   description?: string;
   requiredLevel: number;
-  effects?: EffectDef[];
+  affinity?: AffinityType;
+  scaling?: EffectDef[];
   iconUrl?: string;
+  effects?: string[];
+  base?: string;
+  quality?: number;
+  affixes?: Partial<ItemAffixDef>[];
+  config: ItemConfig;
+  upgrades?: Record<AffinityType, ItemUpgrade>;
 }
 
-export type ItemDef = {
-  base: string;
-  name: string;
-  quality: number;
-  affixes?: ItemAffixDef[];
-  effect?: string;
+export type ItemConfig = {
+  attack?: Record<AttackDamageType, NumberRange>;
+  scaling?: Record<AttributeType, NumberRange>;
 }
 
-export type ItemModification = {
+export type ItemUpgrade = {
+  attack?: AttackBase;
+  guard?: Guard;
+  scaling?: ScalingBase;
+}
+
+export type PercentualModification = {
+  type: 'percentual';
   name: string;
   tier: number;
   stat: HeroStatTypes;
   scope?: ModifierScope;
-  modifier: PercentualModifier | FlatModifier;
+  value: number;
 }
+
+export type FlatModification = {
+  type: 'flat';
+  name: string;
+  tier: number;
+  stat: HeroStatTypes;
+  scope?: ModifierScope;
+  value: number | FlatDamage | FlatResistance | FlatAttribute;
+}
+
+export type ItemModification = FlatModification | PercentualModification;
  
 export type ItemAffixDef = {
+  type: ModifierType;
+  name: string;
+  affects: HeroStatTypes;
   modifier: string;
   tier: number;
+  scope: ModifierScope;
+  value: RawStatValue;
 }

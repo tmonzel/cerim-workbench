@@ -1,21 +1,48 @@
 <script lang="ts">
-	import { FlatDamage } from '$lib/core';
+	import { AttackDamageType } from '$lib/core';
+	import type { AttackDamage } from '$lib/core/values/AttackDamage';
 
-  export let damage: FlatDamage;
+  export let damage: AttackDamage;
 
+  function getTypeDistribution(value: AttackDamage): Partial<Record<AttackDamageType, number>> {
+    const dist: Partial<Record<AttackDamageType, number>> = {};
+    const total = value.getTotal();
+    
+    const n = 100 / total;
+
+    for(const t of Object.values(AttackDamageType)) {
+      if(value[t] === 0) {
+        continue;
+      }
+
+      dist[t] = Math.round(n * value[t]) / 100;
+    }
+    
+    return dist;
+  }
+// ['#444', '#dc2626', 'blue', '#facc15', 'green']
   let gradient = '';
-  let colorMap = ['#333', '#dc2626', 'blue', '#facc15', 'green'];
+  let colorMap: Record<AttackDamageType, string> = {
+	  [AttackDamageType.PHYSICAL]: '#444',
+	  [AttackDamageType.MAGIC]: 'blue',
+	  [AttackDamageType.FIRE]: 'orange',
+	  [AttackDamageType.LIGHTNING]: 'yellow',
+	  [AttackDamageType.HOLY]: 'purple',
+	  [AttackDamageType.FROSTBITE]: 'cyan',
+	  [AttackDamageType.POISON]: 'green',
+	  [AttackDamageType.HEMORRHAGE]: 'red'
+  };
 
   $: {
     let v = [];
     let lastPercent = 0;
-    let dist = damage.getTypeDistribution();
+    let dist = getTypeDistribution(damage);
 
     for(const [k, d] of Object.entries(dist)) {
       const percent = d * 100;
 
       if(percent > 0) {
-        v.push(colorMap[Number(k)] + ' ' + lastPercent + '% ' + (lastPercent + percent) + '%');
+        v.push(colorMap[k as AttackDamageType] + ' ' + lastPercent + '% ' + (lastPercent + percent) + '%');
         lastPercent = percent;
       }
     }
@@ -27,6 +54,6 @@
     }
   }
 </script>
-<div style="padding: 2px" class="border-2">
+<div style="padding: 2px" class="border border-zinc-300">
   <div style="width: 100%; height: 6px" style:background={gradient}></div>
 </div>

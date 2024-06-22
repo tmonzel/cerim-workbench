@@ -25,3 +25,54 @@ export function roundValue(value: number, decimals: number = 1): number {
   const d = Math.pow(10, decimals);
   return value > 0 ? Math.round(value * d) / d : 0;
 }
+
+export function getAttributeScalingParams(attributeLevel: number): { stat: number[], grow: number[], exp: number[] } {
+  const data = [
+    {
+      breakpoint: 1,
+      grow: 0,
+      exp: 1.2
+    },
+    {
+      breakpoint: 18,
+      grow: 25,
+      exp: -1.2
+    },
+
+    {
+      breakpoint: 60,
+      grow: 75,
+      exp: 1
+    },
+
+    {
+      breakpoint: 80,
+      grow: 90,
+      exp: 1
+    },
+
+    {
+      breakpoint: 150,
+      grow: 110,
+      exp: 1
+    }
+  ];
+
+  for(let i = 1; i < data.length; i++) {
+    const calc = data[i];
+
+    if(calc.breakpoint > attributeLevel) {
+      return {
+        stat: [data[i-1].breakpoint, calc.breakpoint],
+        grow: [data[i-1].grow, calc.grow],
+        exp: [data[i-1].exp, calc.exp]
+      }
+    }
+  }
+
+  return {
+    stat: [data[0].breakpoint, data[1].breakpoint],
+    grow: [data[0].breakpoint, data[1].grow],
+    exp: [data[0].breakpoint, data[1].exp]
+  }
+}
