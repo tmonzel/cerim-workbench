@@ -26,7 +26,7 @@ export type ItemDef = {
   base?: string;
   quality?: number;
   affixes?: Partial<ItemAffixDef>[];
-  config: ItemConfig;
+  config: ItemConfig | string;
   upgrades?: Record<AffinityType, ItemUpgrade>;
 }
 

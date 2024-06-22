@@ -24,13 +24,14 @@
   let gradient = '';
   let colorMap: Record<AttackDamageType, string> = {
 	  [AttackDamageType.PHYSICAL]: '#444',
-	  [AttackDamageType.MAGIC]: 'blue',
-	  [AttackDamageType.FIRE]: 'orange',
-	  [AttackDamageType.LIGHTNING]: 'yellow',
-	  [AttackDamageType.HOLY]: 'purple',
+	  [AttackDamageType.MAGIC]: '#3fbddd',
+	  [AttackDamageType.FIRE]: '#ff9900',
+	  [AttackDamageType.LIGHTNING]: '#ffff00',
+	  [AttackDamageType.HOLY]: '#ffcc99',
 	  [AttackDamageType.FROSTBITE]: 'cyan',
 	  [AttackDamageType.POISON]: 'green',
-	  [AttackDamageType.HEMORRHAGE]: 'red'
+	  [AttackDamageType.HEMORRHAGE]: 'red',
+	  [AttackDamageType.STAMINA]: '#339966'
   };
 
   $: {

@@ -9,6 +9,7 @@ export class AttackDamage {
   [AttackDamageType.FROSTBITE] = 0;
   [AttackDamageType.POISON] = 0;
   [AttackDamageType.HEMORRHAGE] = 0;
+  [AttackDamageType.STAMINA] = 0;
 
   private _origin: Partial<Record<AttackDamageType, number>> = {};
 

@@ -1,6 +1,6 @@
 import type { EffectDef } from './effects';
-import type { ItemDef } from './items/types';
-import type { DynamicDamage, DynamicNumber } from './core';
+import type { ItemConfig, ItemDef } from './items/types';
+import type { AttributeType, DynamicDamage, DynamicNumber } from './core';
 import type { DynamicResistance } from './core/DynamicResistance';
 import type { DynamicAttribute } from './core/DynamicAttribute';
 
@@ -11,10 +11,11 @@ export type DataSchema = {
   masteryPointsPerLevel: number;
 
   effects?: EffectDef[];
-  attributes?: { [name: string]: AttributeDef };
+  attributes?: Record<AttributeType, AttributeDef>;
+  configurations?: Record<string, ItemConfig>;
 
-  models?: { [id: string]: ItemDef };
-  modifiers?: { [name: string]: ModifierDef };
+  models?: Record<string, ItemDef>;
+  modifiers?: Record<string, ModifierDef>;
 
   items?: ItemDef[];
 }

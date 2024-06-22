@@ -4,14 +4,16 @@ import { registerModifier } from './modifiers';
 import { addEffect } from './effects';
 import { addItem, registerItemBase } from './items';
 import { attributeStore } from './attributes';
+import type { AttributeType } from './core';
+import type { ItemConfig } from './items/types';
 
 export function loadData(data: DataSchema) {
   // Resolve attributes
   if(data.attributes) {
-    const attributeState: AttributeState = {};
+    const attributeState: Partial<AttributeState> = {};
     
     for(const [name, schema] of Object.entries(data.attributes)) {
-      attributeState[name] = {
+      attributeState[name as AttributeType] = {
         label: schema.name, 
         value: schema.default ?? 0,
         color: schema.color,
@@ -51,7 +53,13 @@ export function loadData(data: DataSchema) {
   // Resolve items
   if(data.items) {
     for(let i = 0; i < data.items.length; i++) {
-      addItem(i, data.items[i]);
+      const def = data.items[i];
+
+      if(typeof def.config === 'string' && data.configurations && data.configurations[def.config]) {
+        addItem(i, def, data.configurations[def.config]);
+      } else {
+        addItem(i, def, def.config as ItemConfig);
+      }
     }
   }
 }

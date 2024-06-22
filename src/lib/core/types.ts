@@ -42,7 +42,8 @@ export enum AttackDamageType {
 
   FROSTBITE = 'frb',
   POISON = 'poi',
-  HEMORRHAGE = 'hem'
+  HEMORRHAGE = 'hem',
+  STAMINA = 'sta'
 }
 
 export enum AffinityType {

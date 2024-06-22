@@ -26,6 +26,30 @@ export function roundValue(value: number, decimals: number = 1): number {
   return value > 0 ? Math.round(value * d) / d : 0;
 }
 
+export function getScalingId(base: number): string {
+  if(base <= 24) {
+    return "E";
+  }
+
+  if(base <= 59) {
+    return "D";
+  }
+
+  if(base <= 89) {
+    return "C";
+  }
+
+  if(base <= 139) {
+    return "B";
+  }
+
+  if(base <= 174) {
+    return "A";
+  }
+
+  return "S";
+}
+
 export function getAttributeScalingParams(attributeLevel: number): { stat: number[], grow: number[], exp: number[] } {
   const data = [
     {

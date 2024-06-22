@@ -148,6 +148,32 @@
       "value": 20
     }
   ],
+
+  "configurations": {
+    "basic": {
+      "attack": {
+        "phy": [0.85, 1.8],
+        "mag": [0.85, 1.8],
+        "fir": [0.85, 1.8],
+        "lit": [0.85, 1.8],
+        "hol": [0.85, 1.8],
+        "sta": [1, 2]
+      },
+      "scaling": {
+        "str": [1, 1.9],
+        "dex": [1, 1.9],
+        "int": [1, 2],
+        "fth": [1, 1.8],
+        "arc": [1, 1.8]
+      },
+      "distribution": {
+        "str": ["phy"],
+        "dex": ["phy", "lit"],
+        "int": ["mag"],
+        "fth": ["fir", "hol"]
+      }
+    }
+  },
   
   "items": [
     {
@@ -220,6 +246,7 @@
       "name": "Dagger",
       "caption": "Dagger",
       "group": "daggers",
+      "iconUrl": "/images/dagger.png",
       "weight": 1.5,
       "tier": 5,
       "affinity": "cold",
@@ -228,64 +255,38 @@
       },
       "tiers ": 25,
       "crit": 130,
-      "config": {
-        "defaults": {
-          "attack": {
-            "sta": 30
-          },
-          "scaling": {
-            "str": ["phy"],
-            "dex": ["phy", "lit"],
-            "int": ["mag"],
-            "fth": ["fir", "hol"]
-          }
-        },
-        "attack": {
-          "phy": [0.85, 1.8],
-          "mag": [0.85, 1.8],
-          "fir": [0.85, 1.8],
-          "lit": [0.85, 1.8],
-          "hol": [0.85, 1.8]
-        },
-        "scaling": {
-          "str": [1, 1.9],
-          "dex": [1, 1.9],
-          "int": [1, 2],
-          "fth": [1, 1.8],
-          "arc": [1, 1.8]
-        }
-      },
+      "config": "basic",
       "upgrades": {
         "standard": {
           "attack": { "phy": 74 },
-          "scaling": { "str": [35, "phy"], "dex": [65, "phy"] }
+          "scaling": { "str": 35, "dex": 65 }
         },
         "heavy": {
           "attack": { "phy": 71 },
-          "scaling": { "str": [55, "phy"] }
+          "scaling": { "str": 55 }
         },
         "keen": {
           "attack": { "phy": 71 },
-          "scaling": { "str": [20, "phy"], "dex": [70, "phy"] }
+          "scaling": { "str": 20, "dex": 70 }
         },
         "quality": {
           "attack": { "phy": 71 },
-          "scaling": { "str": [63, "phy"], "dex": [63, "phy"] }
+          "scaling": { "str": 63, "dex": 63 }
         },
         "fire": {
           "attack": { "phy": 71, "fir": 71 },
-          "scaling": { "str": [47, ["phy", "fir"]], "dex": [63, "phy"] }
+          "scaling": { "str": [47, ["phy", "fir"]], "dex": 63 }
         },
         "flame": {
           "attack": { "phy": 71, "fir": 71 },
-          "scaling": { "str": [10, "phy"], "dex": [19, "phy"], "fth": [55, "fir"] }
+          "scaling": { "str": 10, "dex": 19, "fth": 55 }
         },
         "lightning": {
           "attack": { "phy": 71, "lit": 71 },
-          "scaling": { "str": [10, "phy"], "dex": [47, ["phy", "lit"]] }
+          "scaling": { "str": 10, "dex": 47 }
         },
         "sacred": {
-          "attack": { "phy": 71, "hol": 71 },
+          "attack": { "phy": 71, "hol": 71, "sta": 30 },
           "scaling": { "str": 10,  "dex": 19, "fth": 55 }
         },
         "magic": {
@@ -293,7 +294,7 @@
           "scaling": { "str": 10, "dex": 19, "int": 56 }
         },
         "cold": {
-          "attack": { "phy": 71, "mag": 60 },
+          "attack": { "phy": 71, "mag": 60, "sta": 30 },
           "scaling": { "str": 31, "dex": 58, "int": 52 }
         },
         "posion": {

@@ -5,7 +5,7 @@ import { getModifierDef } from '$lib/modifiers';
 import type { AttributeValue, DamageValue, HeroStatTypes, RawStatValue, ResistanceValue } from '$lib/types';
 import { get, writable } from 'svelte/store';
 import { Item } from './Item';
-import type { ItemDef, ItemModification } from './types';
+import type { ItemConfig, ItemDef, ItemModification } from './types';
 import { attributeStore } from '$lib/attributes';
 
 const baseItems: Record<string, ItemDef> = {};
@@ -15,8 +15,8 @@ export function registerItemBase(id: string, def: ItemDef): void {
   baseItems[id] = def;
 }
 
-export function addItem(id: number, def: ItemDef): void {
-  itemStore.update((items) => ({ ...items, [id]: createItem(id, def) }));
+export function addItem(id: number, def: ItemDef, config?: ItemConfig): void {
+  itemStore.update((items) => ({ ...items, [id]: createItem(id, def, config) }));
 }
 
 const statValueMap: Record<HeroStatTypes, typeof FlatDamage | typeof FlatResistance | typeof FlatAttribute | typeof Number > = {
@@ -63,12 +63,12 @@ function mapRawStatValue(stat: HeroStatTypes, value: RawStatValue): number | Fla
   return value as number;
 }
 
-export function createItem(id: number, def: ItemDef): Item {
+export function createItem(id: number, def: ItemDef, config?: ItemConfig): Item {
   if(def.base) {
     def = { ...baseItems[def.base], ...def };
   }
 
-  const item = new Item(id, def);
+  const item = new Item(id, def, config);
   
   for(const affixDef of def.affixes ?? []) {
     let mod!: ItemModification | undefined;

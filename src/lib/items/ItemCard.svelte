@@ -77,8 +77,10 @@
           <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e4e4e7">
             <path d="m136-240-56-56 296-298 160 160 208-206H640v-80h240v240h-80v-104L536-320 376-480 136-240Z"/>
           </svg>
-          
-          <span class="ml-1 text-xs font-semibold">{scalingFlags.join(',')}</span>
+          {#each scalingFlags as flag}
+          <span class="ml-1 text-xs">{flag.name}</span>
+          <span class="ml-1 text-xs font-semibold text-emerald-400">({flag.id})</span>
+          {/each}
         </p>
       {/if}
       {#if stats.attackSpeed.getValue() > 0}
