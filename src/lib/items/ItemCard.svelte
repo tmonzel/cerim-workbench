@@ -25,7 +25,7 @@
 </script>
 
 <div class="flex gap-x-3 dark:text-zinc-200">
-  <div class="mt-1 flex h-32 w-32 flex-none items-center justify-center rounded-md bg-neutral-800/50 p-3">
+  <div class="mt-1 flex h-40 w-40 flex-none items-center justify-center rounded-md bg-neutral-800/50 p-3">
     {#if item.iconUrl}
       <img src={item.iconUrl} alt="Item icon" />
     {:else}

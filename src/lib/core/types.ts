@@ -30,7 +30,13 @@ export enum AttributeType {
   DEXTERITY = 'dex',
   MIND = 'mnd',
   INTELLIGENCE = 'int',
-  FAITH = 'fth'
+  FAITH = 'fth',
+  ARCANE = 'arc'
+}
+
+export type Attribute = {
+  name: string;
+  color: string;
 }
 
 export enum AttackDamageType {

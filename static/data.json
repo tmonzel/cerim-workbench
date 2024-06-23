@@ -1,82 +1,11 @@
 {
-  "maxLevel": 30,
+  "maxLevel": 150,
 
-  "attributePointsPerLevel": 3,
-  "masteryPointsPerLevel": 1,
+  "attributePointsPerLevel": 1,
 
   "config": {
     "calcAttackSpeedBasedOnWeaponWeight": false,
-    "alertRequiredItemLevel": true
-  },
-
-  "scalingGrades": {
-    "S": -0.005,
-    "A": -0.01,
-    "B": -0.05,
-    "C": -0.1,
-    "D": -0.15,
-    "E": -0.2
-  },
-
-  "rarities": {
-    "legendary": {
-      "name": "Legendary",
-      "color": "yellow"
-    },
-
-    "epic": {
-      "name": "Epic",
-      "color": "purple"
-    }
-  },
-
-  "abilities": {
-
-  },
-  
-  "attributes": {
-    "vig": {
-      "name": "Vigor",
-      "color": "#4ade80",
-      "default": 0
-    },
-
-    "end": {
-      "name": "Endurance",
-      "color": "#fbbf24",
-      "default": 0
-    },
-
-    "str": {
-      "name": "Strength",
-      "color": "#f87171",
-      "default": 0
-    },
-
-    "dex": {
-      "name": "Dexterity",
-      "color": "#f0abfc",
-      "default": 0
-    },
-
-    
-    "mnd": {
-      "name": "Mind",
-      "color": "#db2777",
-      "default": 0
-    },
-
-    "int": {
-      "name": "Intelligence",
-      "color": "#67e8f9",
-      "default": 0
-    },
-
-    "fth": {
-      "name": "Faith",
-      "color": "#bef264",
-      "default": 0
-    }
+    "alertRequirements": true
   },
 
   "effects": [
@@ -191,6 +120,29 @@
       "iconUrl": "/images/godricks_great_rune.png"
     },
     {
+      "type": "armor",
+      "name": "Veteran’s Armor",
+      "caption": "Chest Armor",
+      "set": "veteran",
+      "group": "bodyArmors",
+      "weight": 18.9,
+      "iconUrl": "/images/veteran-chest.png",
+      "resistance": {
+        "immunity": 63,
+        "robustness": 90,
+        "focus": 46,
+        "vitality": 46,
+        "poise": 38
+      },
+      "negation": {
+        "physical": 18.7,
+        "strike": 17,
+        "slash": 18.7,
+        "pierce": 17.5,
+        "elemental": { "mag": 13.5, "fir": 14.1, "lit": 12.8, "hol": 13.3 }
+      }
+    },
+    {
       "type": "talisman",
       "name": "Radagon’s Scarseal",
       "caption": "Talisman",
@@ -215,28 +167,62 @@
       "group": "swords",
       "weight": 3.0,
       "requirements": { "attributes": { "str": 8, "dex": 10 } },
-      "critBase": 100,
+      "crit": 100,
       "tiers ": 25,
       "iconUrl": "/images/short-sword.png",
-      "defaults": {
-        "attack": { "sta": [45, 90] },
-        "guard": { "rst": [14, 14] }
-      },
-      "attack": {
-        "phy": { 
-          "base": 71, 
-          "scaling": { "str": 31, "dex": 58 }, 
-          "multiplier": [0.85, 1.8] 
-        },
-        "mag": { 
-          "base": 60, 
-          "scaling": { "int": 52 }, 
-          "multiplier": [0.85, 1.8] 
-        }
-      },
+      "config": "basic",
       "upgrades": {
         "standard": {
-          "scaling": { "str": [["D", 25]], "dex": [["D", 12], ["C", 13]] }
+          "attack": { "phy": 102, "sta": 45 },
+          "scaling": { "str": 37, "dex": 48 }
+        },
+        "heavy": {
+          "attack": { "phy": 97, "sta": 45 },
+          "scaling": { "str": 47 }
+        },
+        "keen": {
+          "attack": { "phy": 97, "sta": 45 },
+          "scaling": { "str": 8, "dex": 63 }
+        },
+        "quality": {
+          "attack": { "phy": 97, "sta": 45 },
+          "scaling": { "str": 55, "dex": 55 }
+        },
+        "fire": {
+          "attack": { "phy": 97, "fir": 97, "sta": 45 },
+          "scaling": { "str": [37, ["phy", "fir"]], "dex": 8 }
+        },
+        "flame": {
+          "attack": { "phy": 97, "fir": 97, "sta": 45 },
+          "scaling": { "str": 7, "dex": 9, "fth": 46 }
+        },
+        "lightning": {
+          "attack": { "phy": 97, "lit": 97, "sta": 45 },
+          "scaling": { "str": 8, "dex": 37 }
+        },
+        "sacred": {
+          "attack": { "phy": 97, "hol": 97, "sta": 45 },
+          "scaling": { "str": 7,  "dex": 9, "fth": 46 }
+        },
+        "magic": {
+          "attack": { "phy": 97, "mag": 97, "sta": 45 },
+          "scaling": { "str": 5, "dex": 7, "int": 46 }
+        },
+        "cold": {
+          "attack": { "phy": 97, "mag": 78, "sta": 45 },
+          "scaling": { "str": 33, "dex": 43, "int": 42 }
+        },
+        "posion": {
+          "attack": { "phy": 97, "sta": 45 },
+          "scaling": { "str": 35, "dex": 45, "arc": 30 }
+        },
+        "blood": {
+          "attack": { "phy": 97, "sta": 45 },
+          "scaling": { "str": 35, "dex": 45, "arc": 30 }
+        },
+        "occult": {
+          "attack": { "phy": 97, "sta": 45 },
+          "scaling": { "str": 14, "dex": 19, "arc": 72 }
         }
       }
     },
@@ -248,8 +234,6 @@
       "group": "daggers",
       "iconUrl": "/images/dagger.png",
       "weight": 1.5,
-      "tier": 5,
-      "affinity": "cold",
       "requirements": { 
         "attributes": { "str": 5, "dex": 9 } 
       },

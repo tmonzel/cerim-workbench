@@ -1,11 +1,8 @@
 import { derived, writable } from 'svelte/store';
-import type { Attribute } from './types';
 import { FlatAttribute } from './core/values/FlatAttribute';
 import { equipStore, type EquipState } from './items/state';
 import { attributeStore } from './attributes';
 import type { AttributeType } from './core';
-
-export type AttributeState = Record<AttributeType, Attribute>;
 
 export type AppState = {
   maxLevel: number;

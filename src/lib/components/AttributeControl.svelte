@@ -1,28 +1,27 @@
 <script lang="ts">
-	import type { Attribute } from '$lib/types';
+	import type { Attribute } from '$lib/core';
 	import { createEventDispatcher } from 'svelte';
 
   export let attribute: Attribute;
+  export let value: number;
+  export let offset: number;
 
   const id = crypto.randomUUID();
   const dispatch = createEventDispatcher<{ changeValue: number }>();
-
-  $: value = attribute.value;
-  $: offset = attribute.offset ?? 0;
 
   function changeValue(newValue: number) {
     if(newValue < 0) {
       return;
     }
     
-    attribute.value = newValue;
+    value = newValue;
     dispatch('changeValue', newValue);
   }
 </script>
 
 <label for={id} class="flex items-center text-sm font-medium leading-6 text-gray-900 dark:text-zinc-200">
   {#if attribute.color}<span style:background-color={attribute.color} class="me-2 w-2.5 h-2.5 rounded"></span>{/if}
-  {attribute.label} 
+  {attribute.name} 
 </label>
 <div class="relative mt-2 rounded-md text-lg font-medium">
   <div class="absolute inset-y-0 left-0 flex items-center">

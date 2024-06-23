@@ -27,7 +27,7 @@
           <h3 class="text-base font-semibold leading-7 text-gray-900 dark:text-white">Attributes</h3>
           <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-400/80">Spend attribute points to level up ({data.attributePointsPerLevel})</p>
         </div>
-        <AttributePanel attributes={$attributeState} />
+        <AttributePanel state={$attributeState} />
       </div>
     </div>
     

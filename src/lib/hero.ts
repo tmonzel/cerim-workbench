@@ -96,7 +96,7 @@ export const heroState = derived([attributeState, equipState, appState], (s) => 
   }
 
   for(const effect of findEffects()) {
-    effect.apply(attributes, hero.stats);
+    //effect.apply(attributes, hero.stats);
   }
 
   const attackDamage = hero.attack.getValue();

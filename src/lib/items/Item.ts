@@ -65,13 +65,6 @@ export class Item {
     this.upgrade(this.def.tier ?? 0, this.def.affinity ?? AffinityType.STANDARD);
   }
 
-  clone(): Item {
-    const item = new Item(this.id, this.def);
-    item.upgrade(this.tier, this.affinity);
-
-    return item;
-  }
-
   addModification(mod: ItemModification): void {
     this.modifications.push(mod);
   }

@@ -6,7 +6,7 @@
 </script>
 
 <div class="flex gap-5 rounded-lg">
-  <div class="basis-2/6 gap-5 rounded-lg flex flex-col">
+  <div class="basis-3/6 gap-5 rounded-lg flex flex-col">
     <EquipSlot 
       type="MainHand" 
       item={body.mainHand}  
@@ -14,18 +14,12 @@
       on:itemChange={(e) => equipStore.update((store) => ({ ...store, mainHand: e.detail }))}
     />
   </div>
-  <div class="basis-2/6 gap-5 rounded-lg flex flex-col">
+  <div class="basis-3/6 gap-5 rounded-lg flex flex-col">
     <EquipSlot 
       type="OffHand" 
       item={body.offHand} 
       allowedGroups={['shields']} 
-    />
-  </div>
-  <div class="basis-2/6 gap-5 rounded-lg flex flex-col">
-    <EquipSlot 
-      type="Hands" 
-      item={body.hand} 
-      allowedGroups={['gloves']} 
+      on:itemChange={(e) => equipStore.update((store) => ({ ...store, offHand: e.detail }))}
     />
   </div>
 </div>
@@ -36,24 +30,35 @@
       type="Head" 
       item={body.head} 
       allowedGroups={['helmets']}
+      on:itemChange={(e) => equipStore.update((store) => ({ ...store, head: e.detail }))}
     />
 
     <EquipSlot 
       type="Chest" 
       item={body.chest} 
       allowedGroups={['bodyArmors']}
+      on:itemChange={(e) => equipStore.update((store) => ({ ...store, chest: e.detail }))}
     />
   
     <EquipSlot 
       type="Legs" 
       item={body.legs} 
-      allowedGroups={['pants']} 
+      allowedGroups={['pants']}
+      on:itemChange={(e) => equipStore.update((store) => ({ ...store, legs: e.detail }))} 
+    />
+  
+    <EquipSlot 
+      type="Hands" 
+      item={body.hand} 
+      allowedGroups={['gloves']} 
+      on:itemChange={(e) => equipStore.update((store) => ({ ...store, hand: e.detail }))}
     />
 
     <EquipSlot 
       type="Feet" 
       item={body.feet} 
-      allowedGroups={['boots']} 
+      allowedGroups={['boots']}
+      on:itemChange={(e) => equipStore.update((store) => ({ ...store, feet: e.detail }))} 
     />
   </div>
   <div class="basis-3/6 rounded-lg gap-5 flex flex-col">
@@ -68,9 +73,10 @@
       type="Neck" 
       item={body.neck} 
       allowedGroups={['talismans']} 
+      on:itemChange={(e) => equipStore.update((store) => ({ ...store, neck: e.detail }))}
     />
 
-    <EquipSlot 
+    <!--<EquipSlot 
       type="Waist" 
       allowedGroups={['belts']}
     />
@@ -83,7 +89,7 @@
     <EquipSlot 
       type="Right Finger" 
       allowedGroups={['rings']}
-    />
+    />-->
   </div>
 </div>
 

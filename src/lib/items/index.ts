@@ -1,6 +1,5 @@
 import { FlatDamage, FlatResistance } from '$lib/core';
 import { FlatAttribute } from '$lib/core/values/FlatAttribute';
-import { AttributeEffect } from '$lib/effects';
 import { getModifierDef } from '$lib/modifiers';
 import type { AttributeValue, DamageValue, HeroStatTypes, RawStatValue, ResistanceValue } from '$lib/types';
 import { get, writable } from 'svelte/store';
@@ -56,7 +55,7 @@ function mapRawStatValue(stat: HeroStatTypes, value: RawStatValue): number | Fla
       const attributes = get(attributeStore);
       return new FlatAttribute(Object.entries(attributes).map(([k, attr]) => ([attr.value + value, k])))
     }
-
+    
     return new FlatAttribute(value as AttributeValue[]);
   }
 
@@ -104,10 +103,6 @@ export function createItem(id: number, def: ItemDef, config?: ItemConfig): Item 
     }
 
     item.addModification(mod);
-  }
-
-  for(const effectDef of def.scaling ?? []) {
-    item.addScaling(new AttributeEffect(effectDef));
   }
 
   item.initStats();
