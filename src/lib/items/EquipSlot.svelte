@@ -119,10 +119,10 @@
 
 <Dialog bind:this={selectionDialog} title={`Select ${type} equipment`} backdropClose>
   {#if $availableItems.length > 0}
-    <div class="grid grid-cols-4 gap-5">
+    <div class="grid grid-cols-3 gap-5">
       <button 
         type="button" 
-        class="relative text-left flex gap-x-6 p-5 rounded-lg" 
+        class="relative text-left flex gap-x-6 p-5 rounded-lg hover:bg-zinc-800/50" 
         on:click={() => selectItem(null)}
         class:ring-2={null === item}
         class:bg-stone-800={null === item}

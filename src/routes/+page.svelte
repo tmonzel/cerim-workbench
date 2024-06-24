@@ -15,10 +15,8 @@
   loadData(data);
 </script>
 
-<div class="p-12 bg-white dark:bg-zinc-900">
+<div class="p-12">
   <Header />
-
-  <hr class="my-10 opacity-30">
 
   <div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-7">
     <div class="sm:col-span-1">

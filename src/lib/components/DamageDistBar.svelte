@@ -23,15 +23,15 @@
 // ['#444', '#dc2626', 'blue', '#facc15', 'green']
   let gradient = '';
   let colorMap: Record<AttackDamageType, string> = {
-	  [AttackDamageType.PHYSICAL]: '#444',
-	  [AttackDamageType.MAGIC]: '#3fbddd',
-	  [AttackDamageType.FIRE]: '#ff9900',
-	  [AttackDamageType.LIGHTNING]: '#ffff00',
-	  [AttackDamageType.HOLY]: '#ffcc99',
+	  [AttackDamageType.PHYSICAL]: 'var(--damage-phy)',
+	  [AttackDamageType.MAGIC]: 'var(--damage-mag)',
+	  [AttackDamageType.FIRE]: 'var(--damage-fir)',
+	  [AttackDamageType.LIGHTNING]: 'var(--damage-lit)',
+	  [AttackDamageType.HOLY]: 'var(--damage-hol)',
 	  [AttackDamageType.FROSTBITE]: 'cyan',
 	  [AttackDamageType.POISON]: 'green',
 	  [AttackDamageType.HEMORRHAGE]: 'red',
-	  [AttackDamageType.STAMINA]: '#339966'
+	  [AttackDamageType.STAMINA]: 'var(--damage-sta)'
   };
 
   $: {

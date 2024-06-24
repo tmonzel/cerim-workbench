@@ -1,6 +1,6 @@
-import type { AffinityType, AttackBase, AttackDamageType, AttributeType, DamageNegation, FlatDamage, FlatResistance, Guard, NumberRange, Resistance, ScalingBase } from '$lib/core';
+import type { AffectedStat, AffinityType, AttackBase, AttackDamageType, AttributeType, DamageNegation, FlatDamage, FlatResistance, Guard, NumberRange, Resistance, ScalingBase } from '$lib/core';
 import type { FlatAttribute } from '$lib/core/values/FlatAttribute';
-import type { HeroStatTypes, ModifierScope, ModifierType, RawStatValue } from '$lib/types';
+import type { AttributeMutation, ModifierScope, ModifierType, RawStatValue } from '$lib/types';
 
 export type ItemType = 'weapon' | 'armor' | 'talisman';
 
@@ -19,7 +19,7 @@ export type ItemDef = {
   description?: string;
   requirements: ItemRequirements;
   resistance?: Resistance,
-  negation?: DamageNegation;
+  damageNegation?: DamageNegation;
   affinity?: AffinityType;
   iconUrl?: string;
   effects?: string[];
@@ -31,6 +31,7 @@ export type ItemDef = {
 export type ItemConfig = {
   attack?: Record<AttackDamageType, NumberRange>;
   scaling?: Record<AttributeType, NumberRange>;
+  mutations?: AttributeMutation[];
 }
 
 export type ItemRequirements = { 
@@ -47,7 +48,7 @@ export type PercentualModification = {
   type: 'percentual';
   name: string;
   tier: number;
-  stat: HeroStatTypes;
+  stat: AffectedStat;
   scope?: ModifierScope;
   value: number;
 }
@@ -56,7 +57,7 @@ export type FlatModification = {
   type: 'flat';
   name: string;
   tier: number;
-  stat: HeroStatTypes;
+  stat: AffectedStat;
   scope?: ModifierScope;
   value: number | FlatDamage | FlatResistance | FlatAttribute;
 }
@@ -66,7 +67,7 @@ export type ItemModification = FlatModification | PercentualModification;
 export type ItemAffixDef = {
   type: ModifierType;
   name: string;
-  affects: HeroStatTypes;
+  affects: AffectedStat;
   modifier: string;
   tier: number;
   scope: ModifierScope;

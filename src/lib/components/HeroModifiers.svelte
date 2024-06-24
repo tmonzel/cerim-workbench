@@ -5,23 +5,18 @@
 	import ValueBadge from './ValueBadge.svelte';
 	import { FlatResistance } from '$lib/core';
 	import type { HeroStatTypes } from '$lib/types';
-	import { FlatAttribute } from '$lib/core/values/FlatAttribute';
 
   const statLabelMap: Record<HeroStatTypes, string> = {
 	  stamina: 'Stamina',
-	  focus: 'Focus',
 	  armor: 'Armor',
 	  weight: 'Weight',
-	  poise: 'Poise',
 	  equipLoad: 'Equip Load',
 	  damage: 'Damage',
-	  health: 'Health',
+	  hp: 'Health',
 	  attackSpeed: 'Attack Speed',
 	  resistance: 'Resistance',
-	  robustness: 'Robustness',
-	  immunity: 'Immunity',
-	  vitality: 'Vitality',
-	  attributes: 'Attributes'
+	  attributes: 'Attributes',
+	  fp: 'FP'
   }
 
   const modifiedStats = derived(heroState, (hero) => Object.entries(hero.stats));

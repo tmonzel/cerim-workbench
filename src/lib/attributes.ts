@@ -4,42 +4,42 @@ import type { Attribute, AttributeType } from './core';
 export const attributeRecord: Record<AttributeType, Attribute> = {
   vig: {
     name: "Vigor",
-    color: "#4ade80",
+    color: "var(--attr-vig)",
   },
 
   end: {
     name: "Endurance",
-    color: "#fbbf24",
+    color: "var(--attr-end)",
   },
 
   str: {
     name: "Strength",
-    color: "#f87171",
+    color: "var(--attr-str)",
   },
 
   dex: {
     name: "Dexterity",
-    color: "#f0abfc",
+    color: "var(--attr-dex)",
   },
   
   mnd: {
     name: "Mind",
-    color: "#db2777",
+    color: "var(--attr-mnd)",
   },
 
   int: {
     name: "Intelligence",
-    color: "#67e8f9",
+    color: "var(--attr-int)",
   },
 
   fth: {
     name: "Faith",
-    color: "#bef264",
+    color: "var(--attr-fth)",
   },
 
   arc: {
     name: "Arcane",
-    color: "#f3e8ff",
+    color: "var(--attr-arc)",
   }
 }
 

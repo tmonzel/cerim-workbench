@@ -1,15 +1,28 @@
-import { AffinityType, AttackDamageType, AttributeType, DynamicDamage, DynamicNumber, FlatDamage, FlatResistance, getAttributeScalingParams, getScalingId, type AttackDamageNegation, type DamageNegation, type ElementalDamageNegation, type Resistance } from '$lib/core';
+import { AffinityType, AttackDamageType, AttributeType, DynamicDamage, DynamicNumber, FlatDamage, FlatResistance, calcAttributeScaling, getScalingId, type DamageNegation,type Resistance } from '$lib/core';
 import type { ItemConfig, ItemDef, ItemModification, ItemRequirements, ItemType, ItemUpgrade } from './types';
 import { DynamicResistance } from '$lib/core/DynamicResistance';
-import { type HeroStats } from '$lib/types';
 import { DynamicAttribute } from '$lib/core/DynamicAttribute';
 import type { FlatAttribute } from '$lib/core/values/FlatAttribute';
 import { DynamicAttack } from '$lib/core/DynamicAttack';
 import { AttackDamage } from '$lib/core/values/AttackDamage';
 import type { AttributeState } from '$lib/attributes';
 
+export type ItemStats = {
+  damage: DynamicDamage;
+  hp: DynamicNumber;
+  fp: DynamicNumber;
+  stamina: DynamicNumber;
+  armor: DynamicNumber;
+  weight: DynamicNumber;
+  equipLoad: DynamicNumber;
+  attackSpeed: DynamicNumber;
+  resistance: DynamicResistance;
+  attributes: DynamicAttribute;
+  immunity: DynamicNumber;
+}
+
 export class Item {
-  stats: HeroStats;
+  stats: ItemStats;
   tier = 0;
   
   attack: DynamicAttack = new DynamicAttack();
@@ -25,18 +38,19 @@ export class Item {
     poise: 0
   }
 
-  damageNegation: AttackDamageNegation = {
-    strike: 0,
-    slash: 0,
-    pierce: 0,
-  }
-
-  elementalDamageNegation: ElementalDamageNegation = {
-    phy: 0,
-    mag: 0,
-    fir: 0,
-    lit: 0,
-    hol: 0
+  damageNegation: DamageNegation = {
+    attack: {
+      strike: 0,
+      slash: 0,
+      pierce: 0,
+    },
+    elemental: {
+      phy: 0,
+      mag: 0,
+      fir: 0,
+      lit: 0,
+      hol: 0
+    }
   }
 
   readonly modifications: ItemModification[] = [];
@@ -85,11 +99,7 @@ export class Item {
     this.config = config ?? {};
 
     Object.assign(this.resistance, def.resistance);
-
-    if(def.negation) {
-      Object.assign(this.damageNegation, def.negation.attack);
-      Object.assign(this.elementalDamageNegation, def.negation.elemental);
-    }
+    Object.assign(this.damageNegation, def.damageNegation);
     
 
     this.stats = this.createStats();
@@ -101,11 +111,11 @@ export class Item {
   }
 
   getTotalDamageNegation(): number {
-    return Object.values(this.damageNegation).reduce((p, c) => p + c, 0);
+    return Object.values(this.damageNegation.attack).reduce((p, c) => p + c, 0);
   }
 
   getTotalElementalDamageNegation(): number {
-    return Object.values(this.elementalDamageNegation).reduce((p, c) => p + c, 0);
+    return Object.values(this.damageNegation.elemental).reduce((p, c) => p + c, 0);
   }
 
   addModification(mod: ItemModification): void {
@@ -116,12 +126,21 @@ export class Item {
     const stats = this.createStats();
 
     for(const mod of this.modifications) {
-      if(!stats[mod.stat] || mod.scope === 'hero') {
+      if(mod.scope === 'hero') {
         continue;
       }
 
       if(mod.type === 'percentual') {
-        stats[mod.stat].multiplier += mod.value - 1;
+        switch(mod.stat) {
+          case 'stamina':
+          case 'weight':
+          case 'attackSpeed':
+          case 'hp':
+          case 'fp':
+          case 'equipLoad':
+            stats[mod.stat].multiplier += mod.value - 1;
+        }
+        
         continue;
       }
 
@@ -137,11 +156,10 @@ export class Item {
             stats.attributes.added.add(mod.value as FlatAttribute);
             break;
           case 'stamina':
-          case 'armor':
           case 'weight':
           case 'attackSpeed':
-          case 'health':
-          case 'vitality':
+          case 'hp':
+          case 'fp':
             stats[mod.stat].added += mod.value as number;
         }
       }
@@ -151,6 +169,8 @@ export class Item {
   }
 
   upgrade(tier: number, affinity: AffinityType = AffinityType.STANDARD): void {
+    this.tier = tier;
+
     if(!this.def.upgrades || !this.def.upgrades[affinity]) {
       return;
     }
@@ -220,30 +240,14 @@ export class Item {
     }
 
     this.attack = new DynamicAttack(new AttackDamage(damage));
-    this.tier = tier;
     this.affinity = affinity;
     this.scaling = attributeScaling;
-    
   }
 
   getScalingFlags(): { name: string; id: string }[] {
     return Object.entries(this.scaling ?? {}).map(([attr, s]) => {
       return { name: attr.toUpperCase(), id: getScalingId(s.base) };
     });
-  }
-
-  private calcAttributeScaling(value: number): number {
-    const params = getAttributeScalingParams(value);
-    const ratio = (value - params.stat[0]) / (params.stat[1] - params.stat[0]);
-    let growth = 0;
-
-    if(params.exp[0] > 0) {
-      growth = Math.pow(ratio, params.exp[0]);
-    } else if(params.exp[0] < 0) {
-      growth = 1 - Math.pow(1 - ratio, Math.abs(params.exp[0]));
-    }
-
-    return params.grow[0] + ((params.grow[1] - params.grow[0]) * growth);
   }
 
   applyScaling(attributes: AttributeState): Item {
@@ -271,7 +275,7 @@ export class Item {
           continue;
         }
 
-        const scaledValue = this.calcAttributeScaling(attrTotal);
+        const scaledValue = calcAttributeScaling(attrTotal, this.config.mutations ?? []);
 
         let elementBase = this.attack.base[damageType];
         elementBase *= attrScale.base / 100;
@@ -284,7 +288,7 @@ export class Item {
     return this;
   }
 
-  private createStats(): HeroStats {
+  private createStats(): ItemStats {
     return {
       damage: new DynamicDamage(new FlatDamage()),
       weight: new DynamicNumber(this.def.weight),
@@ -293,12 +297,9 @@ export class Item {
       attackSpeed: new DynamicNumber(this.def.attackSpeed),
       stamina: new DynamicNumber(),
       equipLoad: new DynamicNumber(),
-      health: new DynamicNumber(),
-      poise: new DynamicNumber(),
-      focus: new DynamicNumber(),
-      robustness: new DynamicNumber(),
+      hp: new DynamicNumber(),
+      fp: new DynamicNumber(),
       immunity: new DynamicNumber(),
-      vitality: new DynamicNumber(),
       attributes: new DynamicAttribute()
     }
   }

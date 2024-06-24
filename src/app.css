@@ -2,6 +2,24 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
+:root {
+  --damage-mag: #3fbddd;
+  --damage-fir: #ff9900;
+  --damage-lit: #ffff00;
+  --damage-phy: #444;
+  --damage-hol: #ffcc99;
+  --damage-sta: #339966;
+
+  --attr-vig: #4ade80;
+  --attr-end: #fbbf24;
+  --attr-str: #f87171;
+  --attr-dex: #f0abfc;
+  --attr-mnd: #db2777;
+  --attr-int: #67e8f9;
+  --attr-fth: #bef264;
+  --attr-arc: #f3e8ff;
+}
+
 body {
   font-family: "Inter", sans-serif;
 }

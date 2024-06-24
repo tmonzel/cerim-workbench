@@ -2,25 +2,29 @@ import { writable } from 'svelte/store';
 import type { Item } from './Item';
 
 export type EquipState = {
-  neck: Item | null;
+  rune: Item | null;
+  pouch: Item | null;
+  pouch2: Item | null;
+  pouch3: Item | null;
+  pouch4: Item | null;
   head: Item | null;
   chest: Item | null;
   legs: Item | null;
   hand: Item | null;
-  feet: Item | null;
   mainHand: Item | null;
   offHand: Item | null;
-  pocket: Item | null;
 }
 
 export const equipStore = writable<EquipState>({
-  neck: null,
+  rune: null,
+  pouch: null,
+  pouch2: null,
+  pouch3: null,
+  pouch4: null,
   head: null,
   chest: null,
   legs: null,
   hand: null,
-  feet: null,
   mainHand: null,
   offHand: null,
-  pocket: null
 });

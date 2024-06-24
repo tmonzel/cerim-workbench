@@ -1,28 +1,11 @@
 import type { AttributeState } from './attributes';
-import { AttributeType, DamageMutator, type Mutation } from './core';
-import { NumberMutator } from './core/mutators/NumberMutator';
-import type { DamageValue, HeroStatTypes, HeroStats } from './types';
-
-export type BaseEffect = {
-  attr: string;
-  mutations?: Mutation[];
-}
-
-export interface DefaultEffect extends BaseEffect {
-  affects: Exclude<HeroStatTypes, 'damage'>;
-  value: number;
-}
-
-export interface DamageEffect extends BaseEffect {
-  affects: 'damage';
-  value: DamageValue;
-}
-
-export type EffectDef = DefaultEffect | DamageEffect;
+import { AttributeType, calcAttributeScaling } from './core';
+import type { HeroState } from './hero';
+import type { AttributeEffectDef } from './types';
 
 const list: AttributeEffect[] = [];
 
-export function addEffect(def: EffectDef): void {
+export function addEffect(def: AttributeEffectDef): void {
   list.push(new AttributeEffect(def));
 }
 
@@ -30,39 +13,38 @@ export function findEffects(): AttributeEffect[] {
   return list;
 }
 
-export type Effect = (attributes: AttributeState, stats: HeroStats) => void;
-
 export class AttributeEffect {
   get attributeId(): string {
     return this.def.attr;
   }
 
-  constructor(private def: EffectDef) {}
+  constructor(private def: AttributeEffectDef) {}
 
-  apply(attributes: AttributeState, stats: HeroStats): void {
+  apply(attributes: AttributeState, hero: HeroState): void {
     const attr = attributes[this.def.attr as AttributeType];
-    const base = this.def.value;
 
-    if(!attr) {
-      return;
-    }
-
-    if(typeof base === 'number') {
-      // Mutate normal stat number
-      const mutator = new NumberMutator(base, this.def.mutations ?? []);
-
-      switch(this.def.affects) {
-        case 'health':
-        case 'stamina':
-        case 'equipLoad':
-          stats[this.def.affects].base += mutator.mutate(attr.value + attr.offset);
-      }
-    }
-
-    else if(Array.isArray(base)) {
-      // Mutate damage
-      const mutator = new DamageMutator(base, this.def.mutations ?? []);
-      stats.damage.base.add(mutator.mutate(attr.value));
+    switch(this.def.affects) {
+      case 'def:hol':
+        hero.damageNegation.elemental.hol.base += calcAttributeScaling(attr.value + attr.offset, this.def.mutations);
+        break;
+      case 'def:fir':
+        hero.damageNegation.elemental.fir.base += calcAttributeScaling(attr.value + attr.offset, this.def.mutations);
+        break;
+      case 'def:mag':
+        hero.damageNegation.elemental.mag.base += calcAttributeScaling(attr.value + attr.offset, this.def.mutations);
+        break;
+        case 'def:phy':
+          hero.damageNegation.elemental.phy.base += calcAttributeScaling(attr.value + attr.offset, this.def.mutations);
+          break;
+      case 'res:vitality':
+        hero.resistance.vitality.base += calcAttributeScaling(attr.value + attr.offset, this.def.mutations);
+        break;
+      case 'hp':
+      case 'fp':
+      case 'stamina':
+      case 'equipLoad':
+      case 'discovery':
+        hero.stats[this.def.affects].base += calcAttributeScaling(attr.value + attr.offset, this.def.mutations);
     }
   }
 }

@@ -1,6 +1,5 @@
-import type { EffectDef } from './effects';
 import type { ItemConfig, ItemDef } from './items/types';
-import type { AttributeType, DynamicDamage, DynamicNumber } from './core';
+import type { AffectedStat, AttributeType, DynamicDamage, DynamicNumber } from './core';
 import type { DynamicResistance } from './core/DynamicResistance';
 import type { DynamicAttribute } from './core/DynamicAttribute';
 
@@ -9,13 +8,25 @@ export type DataSchema = {
 
   attributePointsPerLevel: number;
 
-  effects?: EffectDef[];
+  effects?: AttributeEffectDef[];
   configurations?: Record<string, ItemConfig>;
 
   models?: Record<string, ItemDef>;
   modifiers?: Record<string, ModifierDef>;
 
   items?: ItemDef[];
+}
+
+export type AttributeEffectDef = {
+  attr: AttributeType;
+  affects: AffectedStat;
+  mutations: AttributeMutation[];
+};
+
+export type AttributeMutation = {
+  breakpoint: number;
+  grow: number;
+  exp?: number;
 }
 
 export type ModifierScaling = {
@@ -40,8 +51,10 @@ export enum DamageType {
 
 export type HeroStats = {
   damage: DynamicDamage;
-  health: DynamicNumber;
+  hp: DynamicNumber;
+  fp: DynamicNumber;
   stamina: DynamicNumber;
+  discovery: DynamicNumber;
   armor: DynamicNumber;
   weight: DynamicNumber;
   equipLoad: DynamicNumber;

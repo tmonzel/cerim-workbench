@@ -23,6 +23,25 @@ export type Stat<T = number> = {
   value: DynamicValue<T>;
 }
 
+export type AffectedStat = 
+  'hp' |  
+  'fp' | 
+  'damage' |
+  'resistance' |
+  'attributes' |
+  'attackSpeed' |
+  'weight' |
+  'stamina' | 
+  'equipLoad' | 
+  'discovery' | 
+  'def:hol' | 
+  'def:fir' | 
+  'def:mag' | 
+  'def:phy' | 
+  'res:vitality' |
+  'res:poise' |
+  'res:immunity';
+
 export enum AttributeType {
   VIGOR = 'vig',
   ENDURANCE = 'end',

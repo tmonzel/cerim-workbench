@@ -17,11 +17,14 @@
     {roundValue(value.getTotal())}{#if isModified}^{/if}
   </span>
 {:else if value instanceof FlatAttribute}
-  {#each Object.entries(value.getPresentAttributes()) as [t, v]}
-  <span>
-    {t.toUpperCase()}(+{v})
-  </span> 
-  {/each}
+  <div class="grid grid-cols-2">
+    {#each Object.entries(value.getPresentAttributes()) as [t, v]}
+      <div class="flex items-center">
+        <span style:background-color={`var(--attr-${t})`} class="me-1 w-2.5 h-2.5 rounded"></span>
+        <span>+{v}</span>
+      </div>
+    {/each}
+  </div>
 {:else if value instanceof FlatResistance}
   {@const resist = value.value}
   <span class="flex gap-2">

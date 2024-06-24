@@ -39,15 +39,14 @@ export const attributeState = derived([attributeStore, equipStore], ([attributes
 
 export const equipState = derived([attributeState, equipStore], ([attributes, equip]) => {
   const state: EquipState = {
-    neck: null,
     head: null,
     chest: null,
     legs: null,
     hand: null,
-    feet: null,
     mainHand: null,
     offHand: null,
-    pocket: null
+    rune: null,
+    pouch: null
   }
 
   for(const [part, item] of Object.entries(equip)) {

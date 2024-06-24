@@ -1,5 +1,6 @@
 <script lang="ts">
 	import DamageDistBar from '$lib/components/DamageDistBar.svelte';
+	import DamageNegationStat from '$lib/components/DamageNegationStat.svelte';
 	import ValueBadge from '$lib/components/ValueBadge.svelte';
 	import { AffinityType, FlatResistance } from '$lib/core';
 	import { FlatAttribute } from '$lib/core/values/FlatAttribute';
@@ -21,8 +22,6 @@
 
   $: stats = item.stats;
   $: totalResistance = item.getTotalResistance();
-  $: totalElementalNegation = item.getTotalElementalDamageNegation();
-  $: totalDamageNegation = item.getTotalDamageNegation();
   $: scalingFlags = item.getScalingFlags();
   $: weight = stats.weight.getValue();
 </script>
@@ -93,52 +92,50 @@
       </p>
       {/if}
     </div>
-  
+
     <dl class="divide-y divide-gray-100/20 my-3">
       {#if totalResistance > 0}
-      <div class="py-2 sm:grid sm:grid-cols-6 sm:gap-4 sm:px-0">
-        <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-200 sm:col-span-4">Resistance</dt>
-        <dd class="mt-1 text-sm leading-6 text-gray-700 dark:text-zinc-200 sm:col-span-2 sm:mt-0">
-          {#each Object.entries(item.resistance) as [k, v]}
-            <div>
-              <span>{k}</span>(<span>{v}</span>)
-            </div>
-          {/each}
+      <div class="py-2 sm:gap-2 sm:px-0 mb-3">
+        <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-300">Resistance</dt>
+        <dd class="text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2 sm:mt-0"></dd>
+        
+        <dd class="text-sm grid grid-cols-3 leading-6 text-gray-700 dark:text-zinc-200">
+          <div>
+            <span class="text-zinc-400">Immunity</span> <span>{item.resistance.immunity}</span>
+          </div>
+          <div>
+            <span class="text-zinc-400">Robustness</span> <span>{item.resistance.robustness}</span>
+          </div>
+          <div>
+            <span class="text-zinc-400">Focus</span> <span>{item.resistance.focus}</span>
+          </div>
+          <div>
+            <span class="text-zinc-400">Vitality</span> <span>{item.resistance.vitality}</span>
+          </div>
+          <div>
+            <span class="text-zinc-400">Poise</span> <span>{item.resistance.poise}</span>
+          </div>
         </dd>
       </div>
       {/if}
+      
+      {#if item.getTotalDamageNegation() > 0 || item.getTotalElementalDamageNegation() > 0}
+      <div class="px-4 py-4 sm:grid sm:gap-2 sm:px-0">
+        <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-300">Damage Negation</dt>
+        <dd class="mt-1 text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2 sm:mt-0"></dd>
 
-      {#if totalElementalNegation > 0}
-      <div class="py-2 sm:grid sm:grid-cols-6 sm:gap-4 sm:px-0">
-        <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-200 sm:col-span-4">Elemental Damage Negation</dt>
-        <dd class="mt-1 text-sm leading-6 text-gray-700 dark:text-zinc-200 sm:col-span-2 sm:mt-0">
-          {#each Object.entries(item.elementalDamageNegation) as [k, v]}
-            <div>
-              <span>{k}</span>(<span>{v}</span>)
-            </div>
-          {/each}
-        </dd>
+        <DamageNegationStat value={item.damageNegation} />
       </div>
       {/if}
-
-      {#if totalDamageNegation > 0}
-      <div class="py-2 sm:grid sm:grid-cols-6 sm:gap-4 sm:px-0">
-        <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-200 sm:col-span-4">Damage Negation VS</dt>
-        <dd class="mt-1 text-sm leading-6 text-gray-700 dark:text-zinc-200 sm:col-span-2 sm:mt-0">
-          {#each Object.entries(item.damageNegation) as [k, v]}
-            <div>
-              <span>{k}</span>(<span>{v}</span>)
-            </div>
-          {/each}
-        </dd>
-      </div>
-      {/if}
+    </dl>
+    
+    <dl class="divide-y divide-gray-100/20 my-3">
 
       {#each item.modifications as mod}
         {#if mod.type === 'flat'}
           <div class="py-2 sm:grid sm:grid-cols-6 sm:gap-4 sm:px-0">
-            <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-200 sm:col-span-4">{mod.name}{#if mod.tier > 0}({mod.tier}){/if}</dt>
-            <dd class="mt-1 text-sm leading-6 text-gray-700 dark:text-zinc-200 sm:col-span-2 sm:mt-0">
+            <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-200 sm:col-span-3">{mod.name}{#if mod.tier > 0}({mod.tier}){/if}</dt>
+            <dd class="mt-1 text-sm leading-6 text-gray-700 dark:text-zinc-200 sm:col-span-3 sm:mt-0">
               {#if mod.value instanceof FlatResistance || mod.value instanceof FlatAttribute}
                 <ValueBadge value={mod.value} />
               {:else}
@@ -151,8 +148,8 @@
         {#if mod.type === 'percentual'}
           {@const percentage = mod.value - 1}
           <div class="py-2 sm:grid sm:grid-cols-6 sm:gap-4 sm:px-0">
-            <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-200 sm:col-span-4">{mod.name}({mod.tier})</dt>
-            <dd class="mt-1 text-sm leading-6 text-gray-700 dark:text-zinc-200 sm:col-span-2 sm:mt-0">
+            <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-200 sm:col-span-3">{mod.name}{#if mod.tier > 0}({mod.tier}){/if}</dt>
+            <dd class="mt-1 text-sm leading-6 text-gray-700 dark:text-zinc-200 sm:col-span-3 sm:mt-0">
               {#if percentage >= 0}+{/if}{Math.round(percentage * 100)}%
             </dd>
           </div>

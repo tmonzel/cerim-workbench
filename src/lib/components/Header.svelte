@@ -18,21 +18,30 @@
 </script>
 
 <header>
-  <h1 class="text-4xl font-bold mb-8 dark:text-zinc-200"><span>Tarnished</span> Creator</h1>
+  <div class="flex justify-between">
+    <h1 class="text-4xl font-bold mb-8 dark:text-zinc-200">
+      <span>Tarnished</span> Creator
+    </h1>
 
+    <div class="leading-3 text-right">
+      <span class="text-zinc-500 text-xs">Developed by Thomas Monzel</span><br>
+      <span class="text-zinc-600 text-xs">ELDEN RING is a trademark of FromSoftware.</span>
+    </div>
+  </div>
+  
   <div class="flex gap-20 mb-10 items-end">
     <div>
-      <h3 class="text-lg text-gray-400/80">Level</h3>
+      <h3 class="text-lg text-zinc-500">Level</h3>
       <p class="mt-2 text-5xl dark:text-zinc-200">{$heroState.level}</p>
     </div>
 
     <div>
-      <h3 class="text-lg  text-gray-400/80">Attribute Points</h3>
+      <h3 class="text-lg text-zinc-500">Attribute Points</h3>
       <p class="mt-2 text-5xl dark:text-zinc-200">{$heroState.attributePoints}</p>
     </div>
 
     <div>
-      <h3 class="text-lg  text-gray-400/80">Damage Per Second</h3>
+      <h3 class="text-lg text-zinc-500">Damage Per Second</h3>
       <p class="mt-2 text-5xl dark:text-zinc-200">
         {Math.round($heroState.dps * 10) / 10}
       </p>
@@ -46,5 +55,10 @@
           Import
       </button>
     </div>
+  </div>
+
+  <div class="my-10">
+    <hr class="h-1 bg-amber-300 border-amber-300 transition-all" style:width={$heroState.progress * 100 + "%"}>
+    <hr class="opacity-30">
   </div>
 </header>

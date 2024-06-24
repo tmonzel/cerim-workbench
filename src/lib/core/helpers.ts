@@ -1,3 +1,5 @@
+import type { AttributeMutation } from '$lib/types';
+
 export function scaleValue(value: number, span: number[] = [1, 1], rate: number = -0.01) {
   let v = 0;
 
@@ -50,53 +52,40 @@ export function getScalingId(base: number): string {
   return "S";
 }
 
-export function getAttributeScalingParams(attributeLevel: number): { stat: number[], grow: number[], exp: number[] } {
-  const data = [
-    {
-      breakpoint: 1,
-      grow: 0,
-      exp: 1.2
-    },
-    {
-      breakpoint: 18,
-      grow: 25,
-      exp: -1.2
-    },
-
-    {
-      breakpoint: 60,
-      grow: 75,
-      exp: 1
-    },
-
-    {
-      breakpoint: 80,
-      grow: 90,
-      exp: 1
-    },
-
-    {
-      breakpoint: 150,
-      grow: 110,
-      exp: 1
-    }
-  ];
-
-  for(let i = 1; i < data.length; i++) {
-    const calc = data[i];
+export function getAttributeScalingParams(attributeLevel: number, mutations: AttributeMutation[]): { stat: number[], grow: number[], exp: number[] } {
+  for(let i = 1; i < mutations.length; i++) {
+    const calc = mutations[i];
 
     if(calc.breakpoint > attributeLevel) {
       return {
-        stat: [data[i-1].breakpoint, calc.breakpoint],
-        grow: [data[i-1].grow, calc.grow],
-        exp: [data[i-1].exp, calc.exp]
+        stat: [mutations[i-1].breakpoint, calc.breakpoint],
+        grow: [mutations[i-1].grow, calc.grow],
+        exp: [mutations[i-1].exp ?? 1, calc.exp ?? 1]
       }
     }
   }
 
   return {
-    stat: [data[0].breakpoint, data[1].breakpoint],
-    grow: [data[0].breakpoint, data[1].grow],
-    exp: [data[0].breakpoint, data[1].exp]
+    stat: [mutations[0].breakpoint, mutations[1].breakpoint],
+    grow: [mutations[0].breakpoint, mutations[1].grow],
+    exp: [mutations[0].breakpoint, mutations[1].exp ?? 1]
   }
+}
+
+export function calcAttributeScaling(value: number, mutations: AttributeMutation[]): number {
+  if(value === 0) {
+    return 0;
+  }
+
+  const params = getAttributeScalingParams(value, mutations);
+  const ratio = (value - params.stat[0]) / (params.stat[1] - params.stat[0]);
+  let growth = 0;
+
+  if(params.exp[0] > 0) {
+    growth = Math.pow(ratio, params.exp[0]);
+  } else if(params.exp[0] < 0) {
+    growth = 1 - Math.pow(1 - ratio, Math.abs(params.exp[0]));
+  }
+
+  return params.grow[0] + ((params.grow[1] - params.grow[0]) * growth);
 }
