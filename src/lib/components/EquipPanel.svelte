@@ -1,6 +1,6 @@
 <script lang="ts">
-  import EquipSlot from './EquipSlot.svelte';
-	import { equipStore, type EquipState } from './state';
+	import { equipStore, type EquipState } from '../items/state';
+	import EquipSlot from './EquipSlot.svelte';
 	
   export let body: EquipState;
 </script>

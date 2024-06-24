@@ -1,13 +1,13 @@
 <script lang="ts">
 	import ItemCard from './ItemCard.svelte';
   import Dialog from '../components/Dialog.svelte';
-	import type { Item } from './Item';
 	import Badge from '$lib/components/Badge.svelte';
 	import { writable, derived } from 'svelte/store';
 	import { AffinityType, AttributeType } from '$lib/core';
-	import { itemStore } from '.';
 	import { createEventDispatcher } from 'svelte';
 	import { attributeStore, type AttributeState } from '$lib/attributes';
+	import type { Item } from '$lib/items/Item';
+	import { itemStore } from '$lib/items';
 
   export let type: string;
   export let item: Item | null = null; 

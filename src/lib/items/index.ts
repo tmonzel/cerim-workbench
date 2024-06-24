@@ -2,10 +2,9 @@ import { AttributeType, FlatDamage, FlatResistance } from '$lib/core';
 import { FlatAttribute } from '$lib/core/values/FlatAttribute';
 import { getModifierDef } from '$lib/modifiers';
 import type { AttributeValue, DamageValue, HeroStatTypes, RawStatValue, ResistanceValue } from '$lib/types';
-import { get, writable } from 'svelte/store';
+import { writable } from 'svelte/store';
 import { Item } from './Item';
 import type { ItemConfig, ItemDef, ItemModification } from './types';
-import { attributeRecord, attributeStore } from '$lib/attributes';
 
 const baseItems: Record<string, ItemDef> = {};
 export const itemStore = writable<Record<number, Item>>({});
@@ -22,17 +21,14 @@ const statValueMap: Record<HeroStatTypes, typeof FlatDamage | typeof FlatResista
   damage: FlatDamage,
   resistance: FlatResistance,
   stamina: Number,
-  focus: Number,
   armor: Number,
   weight: Number,
-  poise: Number,
   equipLoad: Number,
-  health: Number,
   attackSpeed: Number,
-  robustness: Number,
-  immunity: Number,
-  vitality: Number,
-  attributes: FlatAttribute
+  attributes: FlatAttribute,
+  hp: Number,
+  fp: Number,
+  discovery: Number
 }
 
 function mapRawStatValue(stat: HeroStatTypes, value: RawStatValue): number | FlatDamage | FlatResistance | FlatAttribute {

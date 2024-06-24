@@ -4,7 +4,7 @@
 	import ValueBadge from '$lib/components/ValueBadge.svelte';
 	import { AffinityType, FlatResistance } from '$lib/core';
 	import { FlatAttribute } from '$lib/core/values/FlatAttribute';
-	import type { Item } from './Item';
+	import type { Item } from '$lib/items/Item';
 
   export let item: Item;
   export let slotted = false;
