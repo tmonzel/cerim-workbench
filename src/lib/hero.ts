@@ -1,6 +1,6 @@
 import { derived } from 'svelte/store';
 import { appState, attributeState, equipState } from './state';
-import { DynamicDamage, DynamicNumber, FlatResistance } from './core';
+import { AttackDamageType, DynamicDamage, DynamicNumber, FlatResistance } from './core';
 import { findEffects } from './effects';
 import { DynamicResistance } from './core/DynamicResistance';
 import type { HeroStats } from './types';
@@ -13,6 +13,27 @@ export type HeroState = {
   dps: number;
   stats: HeroStats;
   attack: DynamicAttack;
+  
+  resistance: {
+    immunity: DynamicNumber;
+    robustness: DynamicNumber;
+    focus: DynamicNumber;
+    vitality: DynamicNumber;
+    poise: DynamicNumber;
+  },
+
+  damageNegation: {
+    strike: DynamicNumber;
+    slash: DynamicNumber;
+    pierce: DynamicNumber;
+    elemental: {
+      [AttackDamageType.PHYSICAL]: DynamicNumber,
+      [AttackDamageType.MAGIC]: DynamicNumber; 
+      [AttackDamageType.FIRE]: DynamicNumber;
+      [AttackDamageType.LIGHTNING]: DynamicNumber; 
+      [AttackDamageType.HOLY]: DynamicNumber;
+    }
+  },
   effects: string[];
 }
 
@@ -29,18 +50,27 @@ export const heroState = derived([attributeState, equipState, appState], (s) => 
       stamina: new DynamicNumber() ,
       armor: new DynamicNumber(),
       weight: new DynamicNumber(),
-      poise: new DynamicNumber(),
       equipLoad: new DynamicNumber(),
-      focus: new DynamicNumber(),
       attackSpeed: new DynamicNumber(),
       resistance: new DynamicResistance(),
-      robustness: new DynamicNumber(),
-      immunity: new DynamicNumber(),
-      vitality: new DynamicNumber(),
       attributes: new DynamicAttribute()
     },
     
     attack: new DynamicAttack(),
+    resistance: {
+      immunity: new DynamicNumber(),
+      robustness: new DynamicNumber(),
+      focus: new DynamicNumber(),
+      vitality: new DynamicNumber(),
+      poise: new DynamicNumber(),
+    },
+    damageNegation: {
+      immunity: new DynamicNumber(),
+      robustness: new DynamicNumber(),
+      focus: new DynamicNumber(),
+      vitality: new DynamicNumber(),
+      poise: new DynamicNumber(),
+    },
     effects: []
   };
 
@@ -48,6 +78,12 @@ export const heroState = derived([attributeState, equipState, appState], (s) => 
     if(!item) {
       continue;
     }
+
+    hero.resistance.immunity.base += item.resistance.immunity;
+    hero.resistance.robustness.base += item.resistance.robustness;
+    hero.resistance.focus.base += item.resistance.focus;
+    hero.resistance.vitality.base += item.resistance.vitality;
+    hero.resistance.poise.base += item.resistance.poise;
 
     const itemStats = item.stats;
   
@@ -63,8 +99,6 @@ export const heroState = derived([attributeState, equipState, appState], (s) => 
         case 'stamina':
         case 'health':
         case 'armor':
-        case 'focus':
-        case 'vitality':
           hero.stats[stat].added += value.added as number;
           hero.stats[stat].multiplier += value.multiplier - 1;
       }
@@ -96,7 +130,7 @@ export const heroState = derived([attributeState, equipState, appState], (s) => 
   }
 
   for(const effect of findEffects()) {
-    //effect.apply(attributes, hero.stats);
+    effect.apply(attributes, hero.stats);
   }
 
   const attackDamage = hero.attack.getValue();

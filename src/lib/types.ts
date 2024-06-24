@@ -1,6 +1,6 @@
 import type { EffectDef } from './effects';
 import type { ItemConfig, ItemDef } from './items/types';
-import type { DynamicDamage, DynamicNumber } from './core';
+import type { AttributeType, DynamicDamage, DynamicNumber } from './core';
 import type { DynamicResistance } from './core/DynamicResistance';
 import type { DynamicAttribute } from './core/DynamicAttribute';
 
@@ -27,7 +27,7 @@ export type DamageValue = { [0]: number; [1]: number; [2]: number } | number;
 export type ResistanceValue = { [0]: number; [1]: number; };
 export type AttributeValue = {
   [0]: number;
-  [1]: string;
+  [1]: AttributeType;
 }
 
 export enum DamageType {
@@ -44,14 +44,9 @@ export type HeroStats = {
   stamina: DynamicNumber;
   armor: DynamicNumber;
   weight: DynamicNumber;
-  poise: DynamicNumber;
   equipLoad: DynamicNumber;
-  focus: DynamicNumber;
-  robustness: DynamicNumber;
-  immunity: DynamicNumber;
   attackSpeed: DynamicNumber;
   resistance: DynamicResistance;
-  vitality: DynamicNumber;
   attributes: DynamicAttribute;
 }
 

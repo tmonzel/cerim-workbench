@@ -27,12 +27,12 @@ export const attributeState = derived([attributeStore, equipStore], ([attributes
   }
   
   for(const [n, attr] of Object.entries(attributes)) {
-    attributes[n as AttributeType] = { 
+    const t = n as AttributeType;
+    attributes[t] = { 
       ...attr, 
-      offset: offsetAttribute.value[n] ?? 0
+      offset: offsetAttribute[t] ?? 0
     };
   }
-
 
   return attributes;
 });

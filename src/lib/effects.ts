@@ -1,6 +1,6 @@
-import { DamageMutator, type Mutation } from './core';
+import type { AttributeState } from './attributes';
+import { AttributeType, DamageMutator, type Mutation } from './core';
 import { NumberMutator } from './core/mutators/NumberMutator';
-import type { AttributeState } from './state';
 import type { DamageValue, HeroStatTypes, HeroStats } from './types';
 
 export type BaseEffect = {
@@ -40,7 +40,7 @@ export class AttributeEffect {
   constructor(private def: EffectDef) {}
 
   apply(attributes: AttributeState, stats: HeroStats): void {
-    const attr = attributes[this.def.attr];
+    const attr = attributes[this.def.attr as AttributeType];
     const base = this.def.value;
 
     if(!attr) {
@@ -54,9 +54,7 @@ export class AttributeEffect {
       switch(this.def.affects) {
         case 'health':
         case 'stamina':
-        case 'poise':
         case 'equipLoad':
-        case 'focus':
           stats[this.def.affects].base += mutator.mutate(attr.value + attr.offset);
       }
     }

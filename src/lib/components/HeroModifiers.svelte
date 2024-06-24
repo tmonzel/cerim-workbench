@@ -42,12 +42,6 @@
           <dd class="mt-1 text-sm leading 6 text-gray-700 dark:text-zinc-300 sm:col-span-1 sm:mt-0">
             {#if value instanceof FlatResistance}
               <ValueBadge value={value} />
-            {:else if value instanceof FlatAttribute}
-              {#each Object.entries(value.value) as [k, v]}
-              <div>
-                {k.toUpperCase()} +{v}
-              </div> 
-              {/each}
             {:else}
               +<ValueBadge value={value} />
             {/if}

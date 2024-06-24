@@ -1,11 +1,15 @@
 import type { AttributeValue } from '$lib/types';
+import { AttributeType } from '../types';
 
 export class FlatAttribute {
-  private _value: Record<string, number> = {};
-
-  get value(): Record<string, number> {
-    return this._value;
-  }
+  [AttributeType.VIGOR] = 0;
+  [AttributeType.ENDURANCE] = 0;
+  [AttributeType.STRENGTH] = 0;
+  [AttributeType.DEXTERITY] = 0;
+  [AttributeType.MIND] = 0;
+  [AttributeType.INTELLIGENCE] = 0;
+  [AttributeType.FAITH] = 0;
+  [AttributeType.ARCANE] = 0;
   
   constructor(value: AttributeValue[] = []) {
     this.set(value);
@@ -13,23 +17,41 @@ export class FlatAttribute {
 
   clone(): FlatAttribute {
     return new FlatAttribute(
-      Object.entries(this._value).map(([attr, num]) => ([num, attr]))
+      Object.values(AttributeType).map(t => ([this[t], t]))
     );
   }
 
   set(value: AttributeValue[]): void {
     for(const a of value) {
-      this._value[a[1]] = a[0];
+      this[a[1]] = a[0];
     }
   }
 
   add(attr: FlatAttribute): void {
-    for(const [k, v] of Object.entries(attr.value)) {
-      if(!this._value[k]) {
-        this._value[k] = 0;
+    for(const t of Object.values(AttributeType)) {
+      if(!this[t]) {
+        this[t] = 0;
       }
       
-      this._value[k] += v;
+      this[t] += attr[t];
     }
+  }
+
+  getPresentAttributes(): Partial<Record<AttributeType, number>> {
+    const attributes: Partial<Record<AttributeType, number>> = {};
+
+    for(const t of Object.values(AttributeType)) {
+      if(this[t] === 0) {
+        continue;
+      }
+
+      attributes[t] = this[t];
+    }
+
+    return attributes;
+  }
+
+  getTotal(): number {
+    return Object.values(AttributeType).map(t => this[t]).reduce((p, c) => p + c, 0);
   }
 }

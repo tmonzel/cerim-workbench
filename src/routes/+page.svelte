@@ -15,7 +15,7 @@
   loadData(data);
 </script>
 
-<div class="p-12 bg-white dark:bg-zinc-800">
+<div class="p-12 bg-white dark:bg-zinc-900">
   <Header />
 
   <hr class="my-10 opacity-30">

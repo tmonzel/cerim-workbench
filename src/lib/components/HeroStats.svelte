@@ -49,8 +49,8 @@
     <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-300">Focus</dt>
     <dd class="mt-1 text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2 sm:mt-0">
       <ValueBadge 
-        value={$stats.focus.getValue()} 
-        isModified={$stats.focus.isModified()}
+        value={$heroState.resistance.focus.getValue()} 
+        isModified={$heroState.resistance.focus.isModified()}
       />
     </dd>
   </div>
@@ -58,8 +58,8 @@
     <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-300">Robustness</dt>
     <dd class="mt-1 text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2 sm:mt-0">
       <ValueBadge 
-        value={$stats.robustness.getValue()} 
-        isModified={$stats.robustness.isModified()}
+        value={$heroState.resistance.robustness.getValue()} 
+        isModified={$heroState.resistance.robustness.isModified()}
       />
     </dd>
   </div>
@@ -67,8 +67,8 @@
     <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-300">Immunity</dt>
     <dd class="mt-1 text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2 sm:mt-0">
       <ValueBadge 
-        value={$stats.immunity.getValue()} 
-        isModified={$stats.immunity.isModified()}
+        value={$heroState.resistance.immunity.getValue()} 
+        isModified={$heroState.resistance.immunity.isModified()}
       />
     </dd>
   </div>
@@ -76,8 +76,8 @@
     <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-300">Vitality</dt>
     <dd class="mt-1 text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2 sm:mt-0">
       <ValueBadge 
-        value={$stats.vitality.getValue()} 
-        isModified={$stats.vitality.isModified()}
+        value={$heroState.resistance.vitality.getValue()} 
+        isModified={$heroState.resistance.vitality.isModified()}
       />
     </dd>
   </div>
@@ -103,8 +103,8 @@
     <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-300">Poise Defense</dt>
     <dd class="mt-1 text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2 sm:mt-0">
       <ValueBadge 
-        value={$stats.poise.getValue()} 
-        isModified={$stats.poise.isModified()}
+        value={$heroState.resistance.poise.getValue()} 
+        isModified={$heroState.resistance.poise.isModified()}
       />
     </dd>
   </div>

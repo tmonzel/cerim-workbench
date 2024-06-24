@@ -1,6 +1,5 @@
-import type { AffinityType, AttackBase, AttackDamageType, AttributeType, FlatDamage, FlatResistance, Guard, NumberRange, ScalingBase } from '$lib/core';
+import type { AffinityType, AttackBase, AttackDamageType, AttributeType, DamageNegation, FlatDamage, FlatResistance, Guard, NumberRange, Resistance, ScalingBase } from '$lib/core';
 import type { FlatAttribute } from '$lib/core/values/FlatAttribute';
-import type { EffectDef } from '$lib/effects';
 import type { HeroStatTypes, ModifierScope, ModifierType, RawStatValue } from '$lib/types';
 
 export type ItemType = 'weapon' | 'armor' | 'talisman';
@@ -18,13 +17,12 @@ export type ItemDef = {
   tier?: number;
   attackSpeed?: number;
   description?: string;
-  requiredLevel: number;
+  requirements: ItemRequirements;
+  resistance?: Resistance,
+  negation?: DamageNegation;
   affinity?: AffinityType;
-  scaling?: EffectDef[];
   iconUrl?: string;
   effects?: string[];
-  base?: string;
-  quality?: number;
   affixes?: Partial<ItemAffixDef>[];
   config: ItemConfig | string;
   upgrades?: Record<AffinityType, ItemUpgrade>;
@@ -33,6 +31,10 @@ export type ItemDef = {
 export type ItemConfig = {
   attack?: Record<AttackDamageType, NumberRange>;
   scaling?: Record<AttributeType, NumberRange>;
+}
+
+export type ItemRequirements = { 
+  attributes?: Partial<Record<AttributeType, number>> 
 }
 
 export type ItemUpgrade = {

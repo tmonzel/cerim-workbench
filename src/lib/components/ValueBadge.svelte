@@ -17,9 +17,9 @@
     {roundValue(value.getTotal())}{#if isModified}^{/if}
   </span>
 {:else if value instanceof FlatAttribute}
-  {#each Object.entries(value.value) as [k, v]}
+  {#each Object.entries(value.getPresentAttributes()) as [t, v]}
   <span>
-    {k.toUpperCase()}(+{v})
+    {t.toUpperCase()}(+{v})
   </span> 
   {/each}
 {:else if value instanceof FlatResistance}

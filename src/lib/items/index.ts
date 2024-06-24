@@ -1,11 +1,11 @@
-import { FlatDamage, FlatResistance } from '$lib/core';
+import { AttributeType, FlatDamage, FlatResistance } from '$lib/core';
 import { FlatAttribute } from '$lib/core/values/FlatAttribute';
 import { getModifierDef } from '$lib/modifiers';
 import type { AttributeValue, DamageValue, HeroStatTypes, RawStatValue, ResistanceValue } from '$lib/types';
 import { get, writable } from 'svelte/store';
 import { Item } from './Item';
 import type { ItemConfig, ItemDef, ItemModification } from './types';
-import { attributeStore } from '$lib/attributes';
+import { attributeRecord, attributeStore } from '$lib/attributes';
 
 const baseItems: Record<string, ItemDef> = {};
 export const itemStore = writable<Record<number, Item>>({});
@@ -52,21 +52,16 @@ function mapRawStatValue(stat: HeroStatTypes, value: RawStatValue): number | Fla
 
   if(valueClass === FlatAttribute) {
     if(typeof value === 'number') {
-      const attributes = get(attributeStore);
-      return new FlatAttribute(Object.entries(attributes).map(([k, attr]) => ([attr.value + value, k])))
+      return new FlatAttribute(Object.values(AttributeType).map(type => ([value, type])))
     }
     
-    return new FlatAttribute(value as AttributeValue[]);
+    return new FlatAttribute(value as AttributeValue[]); 
   }
 
   return value as number;
 }
 
 export function createItem(id: number, def: ItemDef, config?: ItemConfig): Item {
-  if(def.base) {
-    def = { ...baseItems[def.base], ...def };
-  }
-
   const item = new Item(id, def, config);
   
   for(const affixDef of def.affixes ?? []) {

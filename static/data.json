@@ -120,29 +120,6 @@
       "iconUrl": "/images/godricks_great_rune.png"
     },
     {
-      "type": "armor",
-      "name": "Veteran’s Armor",
-      "caption": "Chest Armor",
-      "set": "veteran",
-      "group": "bodyArmors",
-      "weight": 18.9,
-      "iconUrl": "/images/veteran-chest.png",
-      "resistance": {
-        "immunity": 63,
-        "robustness": 90,
-        "focus": 46,
-        "vitality": 46,
-        "poise": 38
-      },
-      "negation": {
-        "physical": 18.7,
-        "strike": 17,
-        "slash": 18.7,
-        "pierce": 17.5,
-        "elemental": { "mag": 13.5, "fir": 14.1, "lit": 12.8, "hol": 13.3 }
-      }
-    },
-    {
       "type": "talisman",
       "name": "Radagon’s Scarseal",
       "caption": "Talisman",
@@ -158,7 +135,49 @@
       "effects": [
         "Increases damage taken by 10%"
       ],
-      "iconUrl": "/images/radagons_scarseal_talisman.png"
+      "iconUrl": "/images/talisman-radagons-scarseal.png"
+    },
+    {
+      "type": "talisman",
+      "name": "Daedicar’s Woe",
+      "caption": "Talisman",
+      "group": "talismans",
+      "weight": 0.8,
+      "effects": [
+        "Doubles damage taken"
+      ],
+      "iconUrl": "/images/talisman-daedicars-woe.png"
+    },
+    {
+      "type": "talisman",
+      "name": "Crucible Scale Talisman",
+      "caption": "Talisman",
+      "group": "talismans",
+      "weight": 1.1,
+      "effects": [
+        "Reduces critical damage taken by 30%"
+      ],
+      "iconUrl": "/images/talisman-crucible-scale.png"
+    },
+    {
+      "type": "armor",
+      "name": "Veteran’s Armor",
+      "caption": "Chest Armor",
+      "set": "veteran",
+      "group": "bodyArmors",
+      "weight": 18.9,
+      "iconUrl": "/images/veteran-chest.png",
+      "resistance": {
+        "immunity": 63,
+        "robustness": 90,
+        "focus": 46,
+        "vitality": 46,
+        "poise": 38
+      },
+      "negation": {
+        "attack": { "strike": 17, "slash": 18.7, "pierce": 17.5 },
+        "elemental": { "phy": 18.7, "mag": 13.5, "fir": 14.1, "lit": 12.8, "hol": 13.3 }
+      }
     },
     {
       "type": "weapon",

@@ -16,7 +16,7 @@ export class DynamicAttribute implements DynamicValue<FlatAttribute> {
   }
 
   hasAdded(): boolean {
-    return Object.values(this.added.value).length > 0;
+    return this.added.getTotal() > 0;
   }
 
   getValue(): FlatAttribute {

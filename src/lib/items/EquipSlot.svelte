@@ -1,13 +1,13 @@
 <script lang="ts">
 	import ItemCard from './ItemCard.svelte';
   import Dialog from '../components/Dialog.svelte';
-	import { heroState } from '../hero';
 	import type { Item } from './Item';
 	import Badge from '$lib/components/Badge.svelte';
 	import { writable, derived } from 'svelte/store';
-	import { AffinityType } from '$lib/core';
+	import { AffinityType, AttributeType } from '$lib/core';
 	import { itemStore } from '.';
 	import { createEventDispatcher } from 'svelte';
+	import { attributeStore, type AttributeState } from '$lib/attributes';
 
   export let type: string;
   export let item: Item | null = null; 
@@ -19,6 +19,23 @@
   
   const dispatch = createEventDispatcher<{ itemChange: Item | null }>();
   const itemForm = writable({ tier: 0, affinity: AffinityType.STANDARD });
+
+  function checkRequirements(target: Item, attributes: AttributeState): boolean {
+    if(!target.requirements.attributes) {
+      return true;
+    }
+
+    for(const [k, v] of Object.entries(target.requirements.attributes)) {
+      const type = k as AttributeType;
+      const attrValue = attributes[type].value + attributes[type].offset;
+
+      if(attrValue < v) {
+        return false;
+      }
+    }
+
+    return true;
+  }
 
   function applyChanges(itm: Item): void {
     itm.upgrade($itemForm.tier, $itemForm.affinity);
@@ -49,7 +66,7 @@
   }
 </script>
 
-<div class="relative dark:bg-stone-600/20">
+<div class="relative dark:bg-stone-600/20 rounded-md">
   {#if item && item.upgrades}
     <button class="absolute top-5 right-5 z-40" on:click={() => craftingDialog.open()}>
       <svg class="fill-indigo-100 hover:fill-amber-300 scale-125 hover:scale-150 transition-transform hover:rotate-12" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368"><path d="M360-520v-120H160q0-83 58.5-141.5T360-840h240v120l120-120h80v320h-80L600-640v120H360Zm40 400q-17 0-28.5-11.5T360-160v-280h240v280q0 17-11.5 28.5T560-120H400Z"/></svg>
@@ -70,9 +87,9 @@
         <ItemCard {item} slotted />
       </div>
 
-      {#if $heroState.level < item.requiredLevel}
+      {#if !checkRequirements(item, $attributeStore)}
         <div class="flex justify-end">
-          <Badge type="alert">Required Level ({item.requiredLevel})</Badge>
+          <Badge type="alert">Requirements not met</Badge>
         </div>
       {/if}
 

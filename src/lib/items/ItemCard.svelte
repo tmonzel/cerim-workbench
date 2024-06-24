@@ -20,12 +20,15 @@
   }
 
   $: stats = item.stats;
+  $: totalResistance = item.getTotalResistance();
+  $: totalElementalNegation = item.getTotalElementalDamageNegation();
+  $: totalDamageNegation = item.getTotalDamageNegation();
   $: scalingFlags = item.getScalingFlags();
   $: weight = stats.weight.getValue();
 </script>
 
 <div class="flex gap-x-3 dark:text-zinc-200">
-  <div class="mt-1 flex h-40 w-40 flex-none items-center justify-center rounded-md bg-neutral-800/50 p-3">
+  <div class="mt-1 flex h-40 w-40 flex-none items-center justify-center rounded-lg bg-stone-700/50 p-3">
     {#if item.iconUrl}
       <img src={item.iconUrl} alt="Item icon" />
     {:else}
@@ -46,12 +49,12 @@
         </p>
       {/if}
 
-      {#if item.type === 'armor'}
+      {#if totalResistance > 0}
         <p class="text-xl font-light flex items-center gap-x-1">
           <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#ddd">
             <path d="M480-80q-139-35-229.5-159.5T160-516v-244l320-120 320 120v244q0 152-90.5 276.5T480-80Zm0-84q104-33 172-132t68-220v-189l-240-90-240 90v189q0 121 68 220t172 132Zm0-316Z"/>
           </svg>
-          <ValueBadge value={stats.armor.getValue()} isModified={stats.armor.isModified()} />
+          <ValueBadge value={totalResistance} />
         </p>
       {/if}
 
@@ -92,6 +95,45 @@
     </div>
   
     <dl class="divide-y divide-gray-100/20 my-3">
+      {#if totalResistance > 0}
+      <div class="py-2 sm:grid sm:grid-cols-6 sm:gap-4 sm:px-0">
+        <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-200 sm:col-span-4">Resistance</dt>
+        <dd class="mt-1 text-sm leading-6 text-gray-700 dark:text-zinc-200 sm:col-span-2 sm:mt-0">
+          {#each Object.entries(item.resistance) as [k, v]}
+            <div>
+              <span>{k}</span>(<span>{v}</span>)
+            </div>
+          {/each}
+        </dd>
+      </div>
+      {/if}
+
+      {#if totalElementalNegation > 0}
+      <div class="py-2 sm:grid sm:grid-cols-6 sm:gap-4 sm:px-0">
+        <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-200 sm:col-span-4">Elemental Damage Negation</dt>
+        <dd class="mt-1 text-sm leading-6 text-gray-700 dark:text-zinc-200 sm:col-span-2 sm:mt-0">
+          {#each Object.entries(item.elementalDamageNegation) as [k, v]}
+            <div>
+              <span>{k}</span>(<span>{v}</span>)
+            </div>
+          {/each}
+        </dd>
+      </div>
+      {/if}
+
+      {#if totalDamageNegation > 0}
+      <div class="py-2 sm:grid sm:grid-cols-6 sm:gap-4 sm:px-0">
+        <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-200 sm:col-span-4">Damage Negation VS</dt>
+        <dd class="mt-1 text-sm leading-6 text-gray-700 dark:text-zinc-200 sm:col-span-2 sm:mt-0">
+          {#each Object.entries(item.damageNegation) as [k, v]}
+            <div>
+              <span>{k}</span>(<span>{v}</span>)
+            </div>
+          {/each}
+        </dd>
+      </div>
+      {/if}
+
       {#each item.modifications as mod}
         {#if mod.type === 'flat'}
           <div class="py-2 sm:grid sm:grid-cols-6 sm:gap-4 sm:px-0">

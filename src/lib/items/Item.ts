@@ -1,12 +1,12 @@
-import { AffinityType, AttackDamageType, AttributeType, DynamicDamage, DynamicNumber, FlatDamage, FlatResistance, getAttributeScalingParams, getScalingId } from '$lib/core';
-import type { AttributeState } from '$lib/state';
-import type { ItemConfig, ItemDef, ItemModification, ItemType, ItemUpgrade } from './types';
+import { AffinityType, AttackDamageType, AttributeType, DynamicDamage, DynamicNumber, FlatDamage, FlatResistance, getAttributeScalingParams, getScalingId, type AttackDamageNegation, type DamageNegation, type ElementalDamageNegation, type Resistance } from '$lib/core';
+import type { ItemConfig, ItemDef, ItemModification, ItemRequirements, ItemType, ItemUpgrade } from './types';
 import { DynamicResistance } from '$lib/core/DynamicResistance';
 import { type HeroStats } from '$lib/types';
 import { DynamicAttribute } from '$lib/core/DynamicAttribute';
 import type { FlatAttribute } from '$lib/core/values/FlatAttribute';
 import { DynamicAttack } from '$lib/core/DynamicAttack';
 import { AttackDamage } from '$lib/core/values/AttackDamage';
+import type { AttributeState } from '$lib/attributes';
 
 export class Item {
   stats: HeroStats;
@@ -16,6 +16,28 @@ export class Item {
   affinity: AffinityType = AffinityType.STANDARD;
   scaling?: Partial<Record<AttributeType, { base: number, allowedDamageTypes: AttackDamageType[] }>>;
   config: ItemConfig;
+
+  resistance: Resistance = {
+    immunity: 0,
+    robustness: 0,
+    focus: 0,
+    vitality: 0,
+    poise: 0
+  }
+
+  damageNegation: AttackDamageNegation = {
+    strike: 0,
+    slash: 0,
+    pierce: 0,
+  }
+
+  elementalDamageNegation: ElementalDamageNegation = {
+    phy: 0,
+    mag: 0,
+    fir: 0,
+    lit: 0,
+    hol: 0
+  }
 
   readonly modifications: ItemModification[] = [];
 
@@ -39,8 +61,8 @@ export class Item {
     return this.def.type;
   }
 
-  get requiredLevel(): number {
-    return this.def.requiredLevel;
+  get requirements(): ItemRequirements {
+    return this.def.requirements ?? {};
   }
 
   get iconUrl(): string | undefined {
@@ -61,8 +83,29 @@ export class Item {
     config?: ItemConfig
   ) {
     this.config = config ?? {};
+
+    Object.assign(this.resistance, def.resistance);
+
+    if(def.negation) {
+      Object.assign(this.damageNegation, def.negation.attack);
+      Object.assign(this.elementalDamageNegation, def.negation.elemental);
+    }
+    
+
     this.stats = this.createStats();
     this.upgrade(this.def.tier ?? 0, this.def.affinity ?? AffinityType.STANDARD);
+  }
+
+  getTotalResistance(): number {
+    return Object.values(this.resistance).reduce((p, c) => p + c, 0);
+  }
+
+  getTotalDamageNegation(): number {
+    return Object.values(this.damageNegation).reduce((p, c) => p + c, 0);
+  }
+
+  getTotalElementalDamageNegation(): number {
+    return Object.values(this.elementalDamageNegation).reduce((p, c) => p + c, 0);
   }
 
   addModification(mod: ItemModification): void {

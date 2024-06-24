@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { loadData } from '$lib/data';
 	import { heroState } from '$lib/hero';
-	import ValueBadge from './ValueBadge.svelte';
 
   function importData() {
     let input = document.createElement('input');

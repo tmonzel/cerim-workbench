@@ -52,6 +52,16 @@ export enum AttackDamageType {
   STAMINA = 'sta'
 }
 
+export type ResistanceType = 'immunity' | 'robustness' | 'focus' | 'vitality' | 'poise'; 
+
+export enum DamageNegationType {
+  PHYSICAL = 'physical',
+  STRIKE = 'strike',
+  SLASH = 'slash',
+  PIERCE = 'pierce',
+  ELEMENTAL = 'elemental'
+}
+
 export enum AffinityType {
   STANDARD = 'standard',
   HEAVY = 'heavy',
@@ -61,6 +71,33 @@ export enum AffinityType {
   LIGHTNING = 'lightning',
   SACRED = 'sacred',
   COLD = 'cold',
+}
+
+export type Resistance = {
+  immunity: number;
+  robustness: number;
+  focus: number;
+  vitality: number;
+  poise: number;
+}
+
+export type DamageNegation = {
+  attack: AttackDamageNegation;
+  elemental: ElementalDamageNegation;
+}
+
+export type AttackDamageNegation = {
+  strike: number;
+  slash: number;
+  pierce: number;
+}
+
+export type ElementalDamageNegation = {
+  [AttackDamageType.PHYSICAL]: number;
+  [AttackDamageType.MAGIC]: number; 
+  [AttackDamageType.FIRE]: number;
+  [AttackDamageType.LIGHTNING]: number; 
+  [AttackDamageType.HOLY]: number;
 }
 
 export type BaseScalingValue = { [0]: number; [1]: string | string[] } | number;
