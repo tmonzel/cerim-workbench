@@ -1,14 +1,14 @@
+import { AttributeStat } from './stats';
 import type { DynamicValue } from './types';
-import { FlatAttribute } from './values/FlatAttribute';
 
-export class DynamicAttribute implements DynamicValue<FlatAttribute> {
+export class DynamicAttribute implements DynamicValue<AttributeStat> {
   multiplier = 1;
-  readonly added: FlatAttribute;
+  readonly added: AttributeStat;
 
   constructor(
-    readonly base: FlatAttribute = new FlatAttribute()
+    readonly base: AttributeStat = new AttributeStat()
   ) {
-    this.added = new FlatAttribute();
+    this.added = new AttributeStat();
   }
 
   isModified(): boolean {
@@ -19,8 +19,8 @@ export class DynamicAttribute implements DynamicValue<FlatAttribute> {
     return this.added.getTotal() > 0;
   }
 
-  getValue(): FlatAttribute {
-    const attr = this.base.clone();
+  getValue(): AttributeStat {
+    const attr = this.base;
     attr.add(this.added);
 
     return attr;

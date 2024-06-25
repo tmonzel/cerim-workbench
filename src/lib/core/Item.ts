@@ -1,33 +1,10 @@
-import { AffinityType, AttackDamageType, AttributeType, type DamageNegation, type ItemAffix, type ItemConfig, type ItemDef, type ItemModification, type ItemRequirements, type ItemType, type ItemUpgrade, type Resistance } from './types';
-import { DynamicResistance } from './DynamicResistance';
-import { DynamicAttribute } from './DynamicAttribute';
-import { FlatAttribute } from './values/FlatAttribute';
+import { AffinityType, AttackDamageType, AttributeType, type DamageNegation, type ItemConfig, type ItemDef, type ItemModifier, type ItemRequirements, type ItemType, type ItemUpgrade, type Resistance } from './types';
 import { DynamicAttack } from './DynamicAttack';
-import { AttackDamage } from './values/AttackDamage';
 import type { AttributeState } from '$lib/attributes';
-import type { AttributeValue, DamageValue, ResistanceValue } from '$lib/types';
-import { DynamicDamage } from './DynamicDamage';
-import { DynamicNumber } from './DynamicNumber';
-import { FlatDamage } from './values/FlatDamage';
-import { FlatResistance } from './values/FlatResistance';
 import { calcAttributeScaling, getScalingId } from './helpers';
-
-export type ItemStats = {
-  damage: DynamicDamage;
-  hp: DynamicNumber;
-  fp: DynamicNumber;
-  stamina: DynamicNumber;
-  armor: DynamicNumber;
-  weight: DynamicNumber;
-  equipLoad: DynamicNumber;
-  attackSpeed: DynamicNumber;
-  resistance: DynamicResistance;
-  attributes: DynamicAttribute;
-  immunity: DynamicNumber;
-}
+import { AttackDamageStat } from './stats';
 
 export class Item {
-  stats!: ItemStats;
   tier = 0;
   
   attack: DynamicAttack = new DynamicAttack();
@@ -58,10 +35,12 @@ export class Item {
     }
   }
 
-  readonly modifications: ItemModification[] = [];
+  get weight(): number {
+    return this.def.weight ?? 0;
+  }
 
-  get modifiers(): ItemAffix[] {
-    return this.def.affixes ?? [];
+  get modifiers(): ItemModifier[] {
+    return this.def.modifiers ?? [];
   }
 
   get group(): string {
@@ -110,7 +89,6 @@ export class Item {
     Object.assign(this.resistance, def.resistance);
     Object.assign(this.damageNegation, def.damageNegation);
 
-    this.initialize();
     this.upgrade(this.def.tier ?? 0, this.def.affinity ?? AffinityType.STANDARD);
   }
 
@@ -124,64 +102,6 @@ export class Item {
 
   getTotalElementalDamageNegation(): number {
     return Object.values(this.damageNegation.elemental).reduce((p, c) => p + c, 0);
-  }
-
-  initialize(): void {
-    const stats = {
-      damage: new DynamicDamage(new FlatDamage()),
-      weight: new DynamicNumber(this.def.weight),
-      armor: new DynamicNumber(this.def.armor),
-      resistance: new DynamicResistance(),
-      attackSpeed: new DynamicNumber(this.def.attackSpeed),
-      stamina: new DynamicNumber(),
-      equipLoad: new DynamicNumber(),
-      hp: new DynamicNumber(),
-      fp: new DynamicNumber(),
-      immunity: new DynamicNumber(),
-      attributes: new DynamicAttribute()
-    };
-
-    for(const affix of this.modifiers) {
-      if(affix.scope === 'hero') {
-        continue;
-      }
-
-      if(affix.type === 'percentual') {
-        switch(affix.affects) {
-          case 'stamina':
-          case 'weight':
-          case 'attackSpeed':
-          case 'hp':
-          case 'fp':
-          case 'equipLoad':
-            stats[affix.affects].multiplier += (affix.value as number) - 1;
-        }
-        
-        continue;
-      }
-
-      if(affix.type === 'flat') {
-        switch(affix.affects) {
-          case 'damage':
-            stats.damage.added.add(new FlatDamage(affix.value as DamageValue[]));
-            break;
-          case 'resistance':
-            stats.resistance.added.add(new FlatResistance(affix.value as ResistanceValue[]));
-            break;
-          case 'attributes':
-            stats.attributes.added.add(new FlatAttribute(affix.value as AttributeValue[]));
-            break;
-          case 'stamina':
-          case 'weight':
-          case 'attackSpeed':
-          case 'hp':
-          case 'fp':
-            stats[affix.affects].added += affix.value as number;
-        }
-      }
-    }
-
-    this.stats = stats;
   }
 
   upgrade(tier: number, affinity: AffinityType = AffinityType.STANDARD): void {
@@ -255,7 +175,7 @@ export class Item {
       };
     }
 
-    this.attack = new DynamicAttack(new AttackDamage(damage));
+    this.attack = new DynamicAttack(new AttackDamageStat(damage), this.def.attackSpeed);
     this.affinity = affinity;
     this.scaling = attributeScaling;
   }
@@ -297,7 +217,7 @@ export class Item {
         elementBase *= attrScale.base / 100;
         elementBase *= scaledValue / 100;
 
-        this.attack.base.add(new AttackDamage({ [damageType]: elementBase }));
+        this.attack.base.add(new AttackDamageStat({ [damageType]: elementBase }));
       }
     }
 

@@ -1,7 +1,7 @@
 import type { AttributeValue } from '$lib/types';
 import { AttributeType } from '../types';
 
-export class FlatAttribute {
+export class AttributeStat {
   [AttributeType.VIGOR] = 0;
   [AttributeType.ENDURANCE] = 0;
   [AttributeType.STRENGTH] = 0;
@@ -15,19 +15,13 @@ export class FlatAttribute {
     this.set(value);
   }
 
-  clone(): FlatAttribute {
-    return new FlatAttribute(
-      Object.values(AttributeType).map(t => ([this[t], t]))
-    );
-  }
-
   set(value: AttributeValue[]): void {
     for(const a of value) {
       this[a[1]] = a[0];
     }
   }
 
-  add(attr: FlatAttribute): void {
+  add(attr: AttributeStat): void {
     for(const t of Object.values(AttributeType)) {
       if(!this[t]) {
         this[t] = 0;

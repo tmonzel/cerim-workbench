@@ -1,29 +1,42 @@
 import { derived, writable } from 'svelte/store';
-import { FlatAttribute } from './core/values/FlatAttribute';
 import { attributeStore } from './attributes';
-import type { AttributeType } from './core';
+import { AttributeType, type Item } from './core';
 import { equipStore, type EquipState } from './stores';
+import type { AttributeEffect, AttributeValue } from './types';
+import { AttributeStat } from './core/stats';
 
 export type AppState = {
   maxLevel: number;
   attributePointsPerLevel: number;
+  effects: AttributeEffect[]
 }
 
 export const appState = writable<AppState>({
   maxLevel: 0,
   attributePointsPerLevel: 0,
+  effects: []
 });
 
 export const attributeState = derived([attributeStore, equipStore], ([attributes, equip]) => {
-  const offsetAttribute = new FlatAttribute();
+  const offsetAttribute = new AttributeStat();
 
   for(const item of Object.values(equip)) {
     if(!item) {
       continue;
     }
 
-    const attribute = item.stats.attributes.getValue();
-    offsetAttribute.add(attribute);
+    for(const mod of item.modifiers) {
+      if(mod.affects !== 'attributes') {
+        continue;
+      }
+
+      if(typeof mod.value === 'number') {
+        offsetAttribute.add(new AttributeStat(Object.values(AttributeType).map(t => ([mod.value as number, t]))));
+      } else {
+        offsetAttribute.add(new AttributeStat(mod.value as AttributeValue[]));
+      }
+      
+    }
   }
   
   for(const [n, attr] of Object.entries(attributes)) {
@@ -52,7 +65,7 @@ export const equipState = derived([attributeState, equipStore], ([attributes, eq
     pouch4: null
   }
 
-  for(const [part, item] of Object.entries(equip)) {
+  for(const [part, item] of Object.entries(equip) as [keyof EquipState, Item | null][]) {
     if(!item) {
       continue;
     }

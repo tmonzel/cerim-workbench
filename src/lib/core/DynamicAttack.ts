@@ -1,14 +1,17 @@
+import { AttackDamageStat } from './stats';
 import type { DynamicValue } from './types';
-import { AttackDamage } from './values/AttackDamage';
 
-export class DynamicAttack implements DynamicValue<AttackDamage> {
-  readonly base: AttackDamage;
-  added: AttackDamage;
+export class DynamicAttack implements DynamicValue<AttackDamageStat> {
+  readonly base: AttackDamageStat;
+  added: AttackDamageStat;
   multiplier = 1;
 
-  constructor(base?: AttackDamage) {
-    this.base = base ?? new AttackDamage();
-    this.added = new AttackDamage();
+  constructor(
+    base?: AttackDamageStat, 
+    readonly attackSpeed: number = 1
+  ) {
+    this.base = base ?? new AttackDamageStat();
+    this.added = new AttackDamageStat();
   }
 
   reset(): void {
@@ -24,8 +27,8 @@ export class DynamicAttack implements DynamicValue<AttackDamage> {
     return this.added.getTotal() > 0;
   }
 
-  getValue(): AttackDamage {
-    const damage = new AttackDamage(this.base);
+  getValue(): AttackDamageStat {
+    const damage = new AttackDamageStat(this.base);
     damage.add(this.added);
     damage.multiply(this.multiplier);
 

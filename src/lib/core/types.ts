@@ -1,7 +1,4 @@
-import type { AttributeMutation, ModifierScope, ModifierType, RawStatValue } from '$lib/types';
-import type { FlatAttribute } from './values/FlatAttribute';
-import type { FlatDamage } from './values/FlatDamage';
-import type { FlatResistance } from './values/FlatResistance';
+import type { AttributeMutation, AttributeValue } from '$lib/types';
 
 export type Mutation = {
   from: { [0]: number; [1]: number };
@@ -10,7 +7,7 @@ export type Mutation = {
 
 export type Maybe<T> = T | null | undefined;
 
-export type DynamicValue<T = number | FlatDamage | FlatResistance> = {
+export type DynamicValue<T = number> = {
   base: T;
   added: T;
   multiplier: number;
@@ -124,11 +121,8 @@ export type ElementalDamageNegation = {
 export type BaseScalingValue = { [0]: number; [1]: string | string[] } | number;
 export type AttackBase = Partial<Record<AttackDamageType, number>>;
 export type ScalingBase = Partial<Record<AttributeType, BaseScalingValue>>;
-
 export type Guard = Record<string, NumberRange>;
-
 export type NumberRange = { [0]: number, [1]: number };
-
 export type ItemType = 'weapon' | 'armor' | 'talisman';
 
 export type ItemDef = {
@@ -138,7 +132,7 @@ export type ItemDef = {
   group: string;
   tags: string[];
   poise?: number;
-  weight: number;
+  weight?: number;
   armor?: number;
   tiers?: number;
   tier?: number;
@@ -150,18 +144,25 @@ export type ItemDef = {
   affinity?: AffinityType;
   iconUrl?: string;
   effects?: string[];
-  affixes?: ItemAffix[];
+  modifiers?: ItemModifier[];
   config: ItemConfig | string;
   upgrades?: Record<AffinityType, ItemUpgrade>;
 }
  
-export type ItemAffix = {
+export type ItemModifier = {
   type?: ModifierType;
   name: string;
   affects: AffectedStat;
   scope: ModifierScope;
-  value: RawStatValue;
+  value: number | AttributeValue[];
 }
+
+export type ModifierScaling = {
+  range: { [0]: number; [1]: number };
+  scale: { [0]: number; [1]: number };
+}
+export type ModifierScope = 'item' | 'hero';
+export type ModifierType = 'flat' | 'percentual';
 
 export type ItemConfig = {
   attack?: Record<AttackDamageType, NumberRange>;
@@ -178,22 +179,3 @@ export type ItemUpgrade = {
   guard?: Guard;
   scaling?: ScalingBase;
 }
-
-export type PercentualModification = {
-  type: 'percentual';
-  name: string;
-  tier: number;
-  stat: AffectedStat;
-  scope?: ModifierScope;
-  value: number;
-}
-
-export type FlatModification = {
-  type: 'flat';
-  name: string;
-  stat: AffectedStat;
-  scope?: ModifierScope;
-  value: number | FlatDamage | FlatResistance | FlatAttribute;
-}
-
-export type ItemModification = FlatModification | PercentualModification;

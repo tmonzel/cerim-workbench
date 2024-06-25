@@ -1,6 +1,6 @@
 import { AttackDamageType } from '../types';
 
-export class AttackDamage {
+export class AttackDamageStat {
   [AttackDamageType.PHYSICAL] = 0;
   [AttackDamageType.MAGIC] = 0;
   [AttackDamageType.FIRE] = 0;
@@ -27,7 +27,7 @@ export class AttackDamage {
     }
   }
 
-  add(damage: AttackDamage): void {
+  add(damage: AttackDamageStat): void {
     for(const t of Object.values(AttackDamageType)) {
       this[t] += damage[t] ?? 0;
     }

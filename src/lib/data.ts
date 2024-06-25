@@ -1,17 +1,11 @@
 import type { DataSchema } from './types';
 import { appState } from './state';
-import { addEffect } from './effects';
-import { itemStore } from './stores';
-import { Item } from './core';
+import { equipStore, itemStore, type EquipState } from './stores';
+import { AttributeType, Item } from './core';
+import { attributeStore } from './attributes';
+import { get } from 'svelte/store';
 
 export function loadData(data: DataSchema) {
-  // Resolve effects
-  if(data.effects) {
-    for(const def of data.effects) {
-      addEffect(def);
-    }
-  }
-  
   // Resolve items
   if(data.items) {
     const items: Record<string, Item> = {};
@@ -32,5 +26,42 @@ export function loadData(data: DataSchema) {
   appState.set({
     maxLevel: data.maxLevel,
     attributePointsPerLevel: data.attributePointsPerLevel,
+    effects: data.effects ?? []
   });
+  
+  // Apply attribute defaults
+  attributeStore.update(state => {
+    if(!data.defaults || !data.defaults.attributes) {
+      return { ...state };
+    }
+
+    for(const t of Object.values(AttributeType)) {
+      if(!data.defaults.attributes[t]) {
+        continue;
+      }
+
+      state[t].value = data.defaults.attributes[t];
+    }
+
+    return { ...state };
+  });
+
+  // Apply equip defaults
+  equipStore.update(state => {
+    if(!data.defaults || !data.defaults.equip) {
+      return { ...state };
+    }
+
+    const items = get(itemStore);
+
+    for(const [slot, itemId] of Object.entries(data.defaults.equip)) {
+      if(!items[itemId]) {
+        continue;
+      }
+
+      state[slot as keyof EquipState] = items[itemId];
+    }
+
+    return { ...state };
+  })
 }

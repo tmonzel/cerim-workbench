@@ -7,6 +7,19 @@
     "alertItemRequirements": true
   },
 
+  "defaults": {
+    "attributes": { 
+      "vig": 5, 
+      "end": 10, 
+      "str": 40 
+    },
+    "equip": {
+      "mainHand": "weapon:short-sword",
+      "head": "armor:navy-hood",
+      "pouch": "talisman:crimson-amber#1"
+    }
+  },
+
   "effects": [
     {
       "attr": "vig",
@@ -186,7 +199,7 @@
       "caption": "Great Rune",
       "description": "Its blessing raises all attributes",
       "group": "runes",
-      "affixes": [
+      "modifiers": [
         {
           "name": "Raise All Attributes",
           "affects": "attributes",
@@ -210,7 +223,7 @@
       "name": "Radahn’s Great Rune",
       "caption": "Great Rune",
       "group": "runes",
-      "affixes": [
+      "modifiers": [
         {
           "name": "Increase Health",
           "type": "percentual",
@@ -238,7 +251,7 @@
       "caption": "Great Rune",
       "description": "Its blessing greatly raises maximum HP.",
       "group": "runes",
-      "affixes": [
+      "modifiers": [
         {
           "name": "Increase Health",
           "affects": "hp",
@@ -297,7 +310,7 @@
       "caption": "Talisman",
       "group": "talismans",
       "weight": 0.8,
-      "affixes": [
+      "modifiers": [
         {
           "name": "Raise Attributes",
           "affects": "attributes",
@@ -327,7 +340,7 @@
       "group": "talismans",
       "weight": 0.3,
       "iconUrl": "/images/talisman-crimson-amber.png",
-      "affixes": [
+      "modifiers": [
         {
           "type": "percentual",
           "name": "Increase Health",
@@ -344,7 +357,7 @@
       "tier": 1,
       "weight": 0.3,
       "iconUrl": "/images/talisman-crimson-amber-1.png",
-      "affixes": [
+      "modifiers": [
         {
           "type": "percentual",
           "name": "Increase Health",
@@ -360,7 +373,7 @@
       "group": "talismans",
       "weight": 0.6,
       "iconUrl": "/images/talisman-immunizing-horn-charm.png",
-      "affixes": [
+      "modifiers": [
         {
           "type": "flat",
           "name": "Add Immunity",
@@ -376,7 +389,7 @@
       "group": "talismans",
       "weight": 1.5,
       "iconUrl": "/images/talisman-arsenal-charm.png",
-      "affixes": [
+      "modifiers": [
         {
           "type": "percentual",
           "name": "Increase equip load",
@@ -393,7 +406,7 @@
       "tier": 1,
       "weight": 1.5,
       "iconUrl": "/images/talisman-arsenal-charm-1.png",
-      "affixes": [
+      "modifiers": [
         {
           "type": "percentual",
           "name": "Increase Equip Load",
@@ -409,7 +422,7 @@
       "group": "talismans",
       "weight": 1.5,
       "iconUrl": "/images/talisman-great-jars-arsenal.png",
-      "affixes": [
+      "modifiers": [
         {
           "type": "percentual",
           "name": "Increase Equip Load",
@@ -425,7 +438,7 @@
       "group": "talismans",
       "weight": 1.5,
       "iconUrl": "/images/talisman-erdtrees-favor.png",
-      "affixes": [
+      "modifiers": [
         {
           "type": "percentual",
           "name": "Increase Health",
@@ -455,7 +468,7 @@
       "group": "talismans",
       "weight": 0.8,
       "iconUrl": "/images/talisman-starscourge-heirloom.png",
-      "affixes": [
+      "modifiers": [
         {
           "name": "Raise Strength",
           "affects": "attributes",
@@ -470,7 +483,7 @@
       "group": "talismans",
       "weight": 0.5,
       "iconUrl": "/images/talisman-bullgoats.png",
-      "affixes": [
+      "modifiers": [
         {
           "name": "Increase Poise",
           "affects": "res:poise",
@@ -509,7 +522,7 @@
         "attack": { "strike": 2.1, "slash": 1.8, "pierce": 0.9 },
         "elemental": { "phy": 1.4, "mag": 4.6, "fir": 4.7, "lit": 4.4, "hol": 4.5 }
       },
-      "affixes": [
+      "modifiers": [
         {
           "name": "Attributes",
           "affects": "attributes",

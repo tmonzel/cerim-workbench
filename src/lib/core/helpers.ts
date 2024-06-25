@@ -1,4 +1,6 @@
-import type { AttributeMutation } from '$lib/types';
+import type { AttributeMutation, AttributeValue } from '$lib/types';
+import { AttributeStat, type AttackDamageStat } from './stats';
+import { AttributeType, type AffectedStat } from './types';
 
 export function scaleValue(value: number, span: number[] = [1, 1], rate: number = -0.01) {
   let v = 0;
@@ -26,6 +28,19 @@ export function humanize(v: string) {
 export function roundValue(value: number, decimals: number = 1): number {
   const d = Math.pow(10, decimals);
   return value > 0 ? Math.round(value * d) / d : 0;
+}
+
+export function mapModifierValue(stat: AffectedStat, value: number | AttributeValue[]): number | AttributeStat | AttackDamageStat {
+  switch(stat) {
+    case 'attributes':
+      if(typeof value === 'number') {
+        return new AttributeStat(Object.values(AttributeType).map(t => ([value as number, t])));
+      }
+      
+      return new AttributeStat(value as AttributeValue[]);
+  }
+
+  return value as number;
 }
 
 export function getScalingId(base: number): string {

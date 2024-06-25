@@ -1,9 +1,6 @@
 import { derived } from 'svelte/store';
 import { appState, attributeState, equipState } from './state';
-import { AttackDamageType, DynamicDamage, DynamicNumber, FlatResistance } from './core';
-import { findEffects } from './effects';
-import { DynamicResistance } from './core/DynamicResistance';
-import type { HeroStats } from './types';
+import { AttackDamageType, AttributeType, DynamicNumber, calcAttributeScaling } from './core';
 import { DynamicAttribute } from './core/DynamicAttribute';
 import { DynamicAttack } from './core/DynamicAttack';
 
@@ -12,7 +9,17 @@ export type HeroState = {
   progress: number;
   attributePoints: number;
   dps: number;
-  stats: HeroStats;
+  stats: {
+    hp: DynamicNumber;
+    fp: DynamicNumber;
+    stamina: DynamicNumber;
+    discovery: DynamicNumber;
+    weight: DynamicNumber;
+    equipLoad: DynamicNumber;
+    attackSpeed: DynamicNumber;
+    attributes: DynamicAttribute;
+  };
+
   attack: DynamicAttack;
   
   resistance: {
@@ -47,16 +54,13 @@ export const heroState = derived([attributeState, equipState, appState], (s) => 
     attributePoints: 0,
     dps: 0,
     stats: {
-      damage: new DynamicDamage(),
       hp: new DynamicNumber(),
       fp: new DynamicNumber(),
       stamina: new DynamicNumber(),
       discovery: new DynamicNumber(),
-      armor: new DynamicNumber(),
       weight: new DynamicNumber(),
       equipLoad: new DynamicNumber(),
       attackSpeed: new DynamicNumber(),
-      resistance: new DynamicResistance(),
       attributes: new DynamicAttribute()
     },
     
@@ -107,34 +111,20 @@ export const heroState = derived([attributeState, equipState, appState], (s) => 
     hero.damageNegation.elemental.lit.base +=  item.damageNegation.elemental.lit;
     hero.damageNegation.elemental.hol.base +=  item.damageNegation.elemental.hol;
 
-    const itemStats = item.stats;
-  
-    for(const [stat, value] of Object.entries(itemStats)) {
-      switch(stat) {
-        case 'resistance':
-          hero.stats.resistance.base.add(value.getValue() as FlatResistance);
-          break;
-        case 'attackSpeed':
-          hero.stats.attackSpeed.base += value.getValue() as number;
-          hero.stats.attackSpeed.multiplier += value.multiplier - 1;
-          break;
-        case 'stamina':
-        case 'hp':
-        case 'fp':
-        case 'discovery':
-        case 'equipLoad':
-          hero.stats[stat].added += value.added as number;
-          hero.stats[stat].multiplier += value.multiplier - 1;
-      }
-    }
-
-    for(const mod of item.modifications) {
-      if(mod.scope === 'hero') {
+    for(const mod of item.modifiers) {
+      if(typeof mod.value !== 'number') {
         continue;
       }
 
       if(mod.type === 'percentual') {
-        switch(mod.stat) {
+        switch(mod.affects) {
+          case 'stamina':
+          case 'hp':
+          case 'fp':
+          case 'discovery':
+          case 'equipLoad':
+            hero.stats[mod.affects].multiplier += mod.value - 1;
+            break;
           case 'res:immunity':
             hero.resistance.immunity.multiplier += mod.value - 1;
             break;
@@ -150,19 +140,12 @@ export const heroState = derived([attributeState, equipState, appState], (s) => 
         }
       }
     }
-
-    if(item.effects) {
-      hero.effects = [ ...hero.effects, ...item.effects ];
-    }
     
     // Sum item damage
     hero.attack.base.add(item.attack.getValue());
 
     // Sum item weights
-    hero.stats.weight.base += itemStats.weight.getValue();
-
-    // Sum item armors
-    hero.stats.armor.base += itemStats.armor.getValue();
+    hero.stats.weight.base += item.weight;
   }
 
   if(hero.stats.attackSpeed.base === 0) {
@@ -170,8 +153,33 @@ export const heroState = derived([attributeState, equipState, appState], (s) => 
     hero.stats.attackSpeed.base = 1;
   }
 
-  for(const effect of findEffects()) {
-    effect.apply(attributes, hero);
+  // Apply effects
+  for(const effect of state.effects) {
+    const attr = attributes[effect.attr as AttributeType];
+
+    switch(effect.affects) {
+      case 'def:hol':
+        hero.damageNegation.elemental.hol.base += calcAttributeScaling(attr.value + attr.offset, effect.mutations);
+        break;
+      case 'def:fir':
+        hero.damageNegation.elemental.fir.base += calcAttributeScaling(attr.value + attr.offset, effect.mutations);
+        break;
+      case 'def:mag':
+        hero.damageNegation.elemental.mag.base += calcAttributeScaling(attr.value + attr.offset, effect.mutations);
+        break;
+        case 'def:phy':
+          hero.damageNegation.elemental.phy.base += calcAttributeScaling(attr.value + attr.offset, effect.mutations);
+          break;
+      case 'res:vitality':
+        hero.resistance.vitality.base += calcAttributeScaling(attr.value + attr.offset, effect.mutations);
+        break;
+      case 'hp':
+      case 'fp':
+      case 'stamina':
+      case 'equipLoad':
+      case 'discovery':
+        hero.stats[effect.affects].base += calcAttributeScaling(attr.value + attr.offset, effect.mutations);
+    }
   }
 
   const attackDamage = hero.attack.getValue();

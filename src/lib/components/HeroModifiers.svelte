@@ -3,10 +3,8 @@
 	import { derived } from 'svelte/store';
 	import Badge from './Badge.svelte';
 	import ValueBadge from './ValueBadge.svelte';
-	import { FlatResistance } from '$lib/core';
-	import type { HeroStatTypes } from '$lib/types';
 
-  const statLabelMap: Record<HeroStatTypes, string> = {
+  const statLabelMap: Record<string, string> = {
 	  stamina: 'Stamina',
 	  armor: 'Armor',
 	  weight: 'Weight',
@@ -36,11 +34,7 @@
         <div class="py-3 sm:grid sm:grid-cols-2 sm:gap-4 sm:px-0">
           <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-300">{statLabelMap[stat]}</dt>
           <dd class="mt-1 text-sm leading 6 text-gray-700 dark:text-zinc-300 sm:col-span-1 sm:mt-0">
-            {#if value instanceof FlatResistance}
-              <ValueBadge value={value} />
-            {:else}
-              +<ValueBadge value={value} />
-            {/if}
+            +<ValueBadge value={value} />
           </dd>
         </div>
       {/if}

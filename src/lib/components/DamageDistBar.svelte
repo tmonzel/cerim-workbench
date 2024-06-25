@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { AttackDamageType } from '$lib/core';
-	import type { AttackDamage } from '$lib/core/values/AttackDamage';
+	import type { AttackDamageStat } from '$lib/core/stats/AttackDamageStat';
 
-  export let damage: AttackDamage;
+  export let damage: AttackDamageStat;
 
-  function getTypeDistribution(value: AttackDamage): Partial<Record<AttackDamageType, number>> {
+  function getTypeDistribution(value: AttackDamageStat): Partial<Record<AttackDamageType, number>> {
     const dist: Partial<Record<AttackDamageType, number>> = {};
     const total = value.getTotal();
     

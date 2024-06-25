@@ -13,7 +13,6 @@
 
   // TODOS
   // Implement local storage
-  // Set Attribute defaults via json
   // UI: Little white gradient shine from top
   // UI: Show weapon damage types
 
