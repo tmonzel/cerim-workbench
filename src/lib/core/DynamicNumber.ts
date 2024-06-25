@@ -5,7 +5,7 @@ export class DynamicNumber implements DynamicValue<number> {
   added: number = 0;
   base: number = 0;
 
-  constructor(base: number = 0) {
+  constructor(readonly name: string, base: number = 0) {
     this.base = base;
   }
 

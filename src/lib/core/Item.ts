@@ -1,5 +1,4 @@
 import { AffinityType, AttackDamageType, AttributeType, type DamageNegation, type ItemConfig, type ItemDef, type ItemModifier, type ItemRequirements, type ItemType, type ItemUpgrade, type Resistance } from './types';
-import { DynamicAttack } from './DynamicAttack';
 import type { AttributeState } from '$lib/attributes';
 import { calcAttributeScaling, getScalingId } from './helpers';
 import { AttackDamageStat } from './stats';
@@ -7,7 +6,7 @@ import { AttackDamageStat } from './stats';
 export class Item {
   tier = 0;
   
-  attack: DynamicAttack = new DynamicAttack();
+  attack: AttackDamageStat;
   affinity: AffinityType = AffinityType.STANDARD;
   scaling?: Partial<Record<AttributeType, { base: number, allowedDamageTypes: AttackDamageType[] }>>;
   config: ItemConfig;
@@ -79,12 +78,17 @@ export class Item {
     return this.def.effects;
   }
 
+  get attackSpeed(): number | undefined {
+    return this.def.attackSpeed;
+  }
+
   constructor(
     readonly id: string, 
     protected def: ItemDef,
     config?: ItemConfig
   ) {
     this.config = config ?? {};
+    this.attack = new AttackDamageStat();
 
     Object.assign(this.resistance, def.resistance);
     Object.assign(this.damageNegation, def.damageNegation);
@@ -175,7 +179,7 @@ export class Item {
       };
     }
 
-    this.attack = new DynamicAttack(new AttackDamageStat(damage), this.def.attackSpeed);
+    this.attack = new AttackDamageStat(damage);
     this.affinity = affinity;
     this.scaling = attributeScaling;
   }
@@ -207,17 +211,17 @@ export class Item {
       }
 
       for(const damageType of Object.values(AttackDamageType)) {
-        if(!this.attack.base[damageType] || !attrScale.allowedDamageTypes.includes(damageType)) {
+        if(!this.attack[damageType] || !attrScale.allowedDamageTypes.includes(damageType)) {
           continue;
         }
 
         const scaledValue = calcAttributeScaling(attrTotal, this.config.mutations ?? []);
 
-        let elementBase = this.attack.base[damageType];
+        let elementBase = this.attack[damageType];
         elementBase *= attrScale.base / 100;
         elementBase *= scaledValue / 100;
 
-        this.attack.base.add(new AttackDamageStat({ [damageType]: elementBase }));
+        this.attack.add(new AttackDamageStat({ [damageType]: elementBase }));
       }
     }
 

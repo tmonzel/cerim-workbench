@@ -6,6 +6,7 @@ export class DynamicAttribute implements DynamicValue<AttributeStat> {
   readonly added: AttributeStat;
 
   constructor(
+    readonly name: string,
     readonly base: AttributeStat = new AttributeStat()
   ) {
     this.added = new AttributeStat();

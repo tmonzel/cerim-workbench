@@ -1,8 +1,8 @@
 import { derived, writable } from 'svelte/store';
 import { attributeStore } from './attributes';
-import { AttributeType, type Item } from './core';
+import { AttributeType, mapModifierValue, type Item } from './core';
 import { equipStore, type EquipState } from './stores';
-import type { AttributeEffect, AttributeValue } from './types';
+import type { AttributeEffect } from './types';
 import { AttributeStat } from './core/stats';
 
 export type AppState = {
@@ -30,12 +30,7 @@ export const attributeState = derived([attributeStore, equipStore], ([attributes
         continue;
       }
 
-      if(typeof mod.value === 'number') {
-        offsetAttribute.add(new AttributeStat(Object.values(AttributeType).map(t => ([mod.value as number, t]))));
-      } else {
-        offsetAttribute.add(new AttributeStat(mod.value as AttributeValue[]));
-      }
-      
+      offsetAttribute.add(mapModifierValue('attributes', mod.value) as AttributeStat);
     }
   }
   

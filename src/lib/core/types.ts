@@ -1,4 +1,7 @@
 import type { AttributeMutation, AttributeValue } from '$lib/types';
+import type { DynamicAttack } from './DynamicAttack';
+import type { DynamicAttribute } from './DynamicAttribute';
+import type { DynamicNumber } from './DynamicNumber';
 
 export type Mutation = {
   from: { [0]: number; [1]: number };
@@ -11,6 +14,7 @@ export type DynamicValue<T = number> = {
   base: T;
   added: T;
   multiplier: number;
+  name: string;
 
   hasAdded(): boolean;
   isModified(): boolean;
@@ -22,24 +26,32 @@ export type Stat<T = number> = {
   value: DynamicValue<T>;
 }
 
-export type AffectedStat = 
-  'hp' |  
-  'fp' | 
-  'damage' |
-  'resistance' |
-  'attributes' |
-  'attackSpeed' |
-  'weight' |
-  'stamina' | 
-  'equipLoad' | 
-  'discovery' | 
-  'def:hol' | 
-  'def:fir' | 
-  'def:mag' | 
-  'def:phy' | 
-  'res:vitality' |
-  'res:poise' |
-  'res:immunity';
+export type HeroStats = {
+  'hp': DynamicNumber;
+  'fp': DynamicNumber;
+  'stamina': DynamicNumber;
+  'discovery': DynamicNumber;
+  'weight': DynamicNumber;
+  'equipLoad': DynamicNumber;
+  'damage': DynamicAttack;
+  'attackSpeed': DynamicNumber;
+  'res:immunity': DynamicNumber;
+  'res:robustness': DynamicNumber;
+  'res:focus': DynamicNumber;
+  'res:vitality': DynamicNumber;
+  'res:poise': DynamicNumber;
+  'def:strike': DynamicNumber;
+  'def:slash': DynamicNumber;
+  'def:pierce': DynamicNumber;
+  'def:phy': DynamicNumber;
+  'def:hol': DynamicNumber;
+  'def:lit': DynamicNumber;
+  'def:fir': DynamicNumber;
+  'def:mag': DynamicNumber;
+  'attributes': DynamicAttribute;
+};
+
+export type AffectedStat = keyof HeroStats;
 
 export enum AttributeType {
   VIGOR = 'vig',

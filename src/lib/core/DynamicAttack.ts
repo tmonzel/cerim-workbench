@@ -7,8 +7,8 @@ export class DynamicAttack implements DynamicValue<AttackDamageStat> {
   multiplier = 1;
 
   constructor(
-    base?: AttackDamageStat, 
-    readonly attackSpeed: number = 1
+    readonly name: string,
+    base?: AttackDamageStat
   ) {
     this.base = base ?? new AttackDamageStat();
     this.added = new AttackDamageStat();

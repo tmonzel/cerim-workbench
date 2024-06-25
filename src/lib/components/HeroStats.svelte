@@ -10,16 +10,16 @@
 
   $: damageNegation = {
     attack: {
-      strike: $heroState.damageNegation.strike.getValue(),
-      slash: $heroState.damageNegation.slash.getValue(),
-      pierce: $heroState.damageNegation.pierce.getValue()
+      strike: $heroState.stats['def:strike'].getValue(),
+      slash: $heroState.stats['def:slash'].getValue(),
+      pierce: $heroState.stats['def:pierce'].getValue()
     },
     elemental: {
-      [AttackDamageType.PHYSICAL]: $heroState.damageNegation.elemental.phy.getValue(),
-      [AttackDamageType.MAGIC]: $heroState.damageNegation.elemental.mag.getValue(),
-      [AttackDamageType.FIRE]: $heroState.damageNegation.elemental.fir.getValue(),
-      [AttackDamageType.LIGHTNING]: $heroState.damageNegation.elemental.lit.getValue(),
-      [AttackDamageType.HOLY]: $heroState.damageNegation.elemental.hol.getValue()
+      [AttackDamageType.PHYSICAL]: $heroState.stats['def:phy'].getValue(),
+      [AttackDamageType.MAGIC]: $heroState.stats['def:mag'].getValue(),
+      [AttackDamageType.FIRE]: $heroState.stats['def:fir'].getValue(),
+      [AttackDamageType.LIGHTNING]: $heroState.stats['def:lit'].getValue(),
+      [AttackDamageType.HOLY]: $heroState.stats['def:hol'].getValue()
     }
   };
 
@@ -39,10 +39,10 @@
     <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-300">Damage</dt>
     <dd class="mt-1 text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2 sm:mt-0">
       <ValueBadge 
-        value={$heroState.attack.getValue()} 
-        isModified={$heroState.attack.isModified()} 
+        value={$heroState.stats['damage'].getValue()} 
+        isModified={$heroState.stats['damage'].isModified()} 
       />
-      <DamageDistBar damage={$heroState.attack.getValue()} />
+      <DamageDistBar damage={$heroState.stats['damage'].getValue()} />
     </dd>
   </div>
   <div class="px-4 py-3 text-sm sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
@@ -104,51 +104,51 @@
     <dd class="mt-1 text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2 sm:mt-0"></dd>
     
     <div>
-      <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">Immunity</dt>
+      <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">{$heroState.stats['res:immunity'].name}</dt>
       <dd class="text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2 sm:mt-0">
         <ValueBadge 
-          value={$heroState.resistance.immunity.getValue()} 
-          isModified={$heroState.resistance.immunity.isModified()}
+          value={$heroState.stats['res:immunity'].getValue()} 
+          isModified={$heroState.stats['res:immunity'].isModified()}
         />
       </dd>
     </div>
 
     <div>
-      <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">Robustness</dt>
+      <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">{$heroState.stats['res:robustness'].name}</dt>
       <dd class="text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2 sm:mt-0">
         <ValueBadge 
-          value={$heroState.resistance.robustness.getValue()} 
-          isModified={$heroState.resistance.robustness.isModified()}
+          value={$heroState.stats['res:robustness'].getValue()} 
+          isModified={$heroState.stats['res:robustness'].isModified()}
         />
       </dd>
     </div>
 
     <div>
-      <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">Focus</dt>
+      <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">{$heroState.stats['res:focus'].name}</dt>
       <dd class="text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2">
         <ValueBadge 
-          value={$heroState.resistance.focus.getValue()} 
-          isModified={$heroState.resistance.focus.isModified()}
+          value={$heroState.stats['res:focus'].getValue()} 
+          isModified={$heroState.stats['res:focus'].isModified()}
         />
       </dd>
     </div>
 
     <div>
-      <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">Vitality</dt>
+      <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">{$heroState.stats['res:vitality'].name}</dt>
       <dd class="text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2 sm:mt-0">
         <ValueBadge 
-          value={$heroState.resistance.vitality.getValue()} 
-          isModified={$heroState.resistance.vitality.isModified()}
+          value={$heroState.stats['res:vitality'].getValue()} 
+          isModified={$heroState.stats['res:vitality'].isModified()}
         />
       </dd>
     </div>
 
     <div>
-      <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">Poise</dt>
+      <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">{$heroState.stats['res:poise'].name}</dt>
       <dd class="text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2">
         <ValueBadge 
-          value={$heroState.resistance.poise.getValue()} 
-          isModified={$heroState.resistance.poise.isModified()}
+          value={$heroState.stats['res:poise'].getValue()} 
+          isModified={$heroState.stats['res:poise'].isModified()}
         />
       </dd>
     </div>
