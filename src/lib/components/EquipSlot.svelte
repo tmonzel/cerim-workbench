@@ -3,11 +3,10 @@
   import Dialog from '../components/Dialog.svelte';
 	import Badge from '$lib/components/Badge.svelte';
 	import { writable, derived } from 'svelte/store';
-	import { AffinityType, AttributeType } from '$lib/core';
+	import { AffinityType, AttributeType, Item } from '$lib/core';
 	import { createEventDispatcher } from 'svelte';
 	import { attributeStore, type AttributeState } from '$lib/attributes';
-	import type { Item } from '$lib/items/Item';
-	import { itemStore } from '$lib/items';
+	import { itemStore } from '$lib/stores';
 
   export let type: string;
   export let item: Item | null = null; 
@@ -94,7 +93,7 @@
       {/if}
 
     {:else}
-    <div class="my-16">
+    <div class="my-5">
       <p class="text-lg text-zinc-500 dark:text-amber-300 text-center font-semibold">{type}</p>
       <p class="text-xs text-center text-zinc-400 dark:text-zinc-200">({allowedGroups.join(', ')})</p>
     </div>

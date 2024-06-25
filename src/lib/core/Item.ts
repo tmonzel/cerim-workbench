@@ -1,11 +1,16 @@
-import { AffinityType, AttackDamageType, AttributeType, DynamicDamage, DynamicNumber, FlatDamage, FlatResistance, calcAttributeScaling, getScalingId, type DamageNegation,type Resistance } from '$lib/core';
-import type { ItemConfig, ItemDef, ItemModification, ItemRequirements, ItemType, ItemUpgrade } from './types';
-import { DynamicResistance } from '$lib/core/DynamicResistance';
-import { DynamicAttribute } from '$lib/core/DynamicAttribute';
-import type { FlatAttribute } from '$lib/core/values/FlatAttribute';
-import { DynamicAttack } from '$lib/core/DynamicAttack';
-import { AttackDamage } from '$lib/core/values/AttackDamage';
+import { AffinityType, AttackDamageType, AttributeType, type DamageNegation, type ItemAffix, type ItemConfig, type ItemDef, type ItemModification, type ItemRequirements, type ItemType, type ItemUpgrade, type Resistance } from './types';
+import { DynamicResistance } from './DynamicResistance';
+import { DynamicAttribute } from './DynamicAttribute';
+import { FlatAttribute } from './values/FlatAttribute';
+import { DynamicAttack } from './DynamicAttack';
+import { AttackDamage } from './values/AttackDamage';
 import type { AttributeState } from '$lib/attributes';
+import type { AttributeValue, DamageValue, ResistanceValue } from '$lib/types';
+import { DynamicDamage } from './DynamicDamage';
+import { DynamicNumber } from './DynamicNumber';
+import { FlatDamage } from './values/FlatDamage';
+import { FlatResistance } from './values/FlatResistance';
+import { calcAttributeScaling, getScalingId } from './helpers';
 
 export type ItemStats = {
   damage: DynamicDamage;
@@ -22,7 +27,7 @@ export type ItemStats = {
 }
 
 export class Item {
-  stats: ItemStats;
+  stats!: ItemStats;
   tier = 0;
   
   attack: DynamicAttack = new DynamicAttack();
@@ -54,6 +59,10 @@ export class Item {
   }
 
   readonly modifications: ItemModification[] = [];
+
+  get modifiers(): ItemAffix[] {
+    return this.def.affixes ?? [];
+  }
 
   get group(): string {
     return this.def.group;
@@ -92,7 +101,7 @@ export class Item {
   }
 
   constructor(
-    readonly id: number, 
+    readonly id: string, 
     protected def: ItemDef,
     config?: ItemConfig
   ) {
@@ -100,9 +109,8 @@ export class Item {
 
     Object.assign(this.resistance, def.resistance);
     Object.assign(this.damageNegation, def.damageNegation);
-    
 
-    this.stats = this.createStats();
+    this.initialize();
     this.upgrade(this.def.tier ?? 0, this.def.affinity ?? AffinityType.STANDARD);
   }
 
@@ -118,49 +126,57 @@ export class Item {
     return Object.values(this.damageNegation.elemental).reduce((p, c) => p + c, 0);
   }
 
-  addModification(mod: ItemModification): void {
-    this.modifications.push(mod);
-  }
+  initialize(): void {
+    const stats = {
+      damage: new DynamicDamage(new FlatDamage()),
+      weight: new DynamicNumber(this.def.weight),
+      armor: new DynamicNumber(this.def.armor),
+      resistance: new DynamicResistance(),
+      attackSpeed: new DynamicNumber(this.def.attackSpeed),
+      stamina: new DynamicNumber(),
+      equipLoad: new DynamicNumber(),
+      hp: new DynamicNumber(),
+      fp: new DynamicNumber(),
+      immunity: new DynamicNumber(),
+      attributes: new DynamicAttribute()
+    };
 
-  initStats(): void {
-    const stats = this.createStats();
-
-    for(const mod of this.modifications) {
-      if(mod.scope === 'hero') {
+    for(const affix of this.modifiers) {
+      if(affix.scope === 'hero') {
         continue;
       }
 
-      if(mod.type === 'percentual') {
-        switch(mod.stat) {
+      if(affix.type === 'percentual') {
+        switch(affix.affects) {
           case 'stamina':
           case 'weight':
           case 'attackSpeed':
           case 'hp':
           case 'fp':
           case 'equipLoad':
-            stats[mod.stat].multiplier += mod.value - 1;
+            stats[affix.affects].multiplier += (affix.value as number) - 1;
         }
         
         continue;
       }
 
-      if(mod.type === 'flat') {
-        switch(mod.stat) {
+      if(affix.type === 'flat') {
+        switch(affix.affects) {
           case 'damage':
-            stats.damage.added.add(mod.value as FlatDamage);
+            stats.damage.added.add(new FlatDamage(affix.value as DamageValue[]));
             break;
           case 'resistance':
-            stats.resistance.added.add(mod.value as FlatResistance);
+            stats.resistance.added.add(new FlatResistance(affix.value as ResistanceValue[]));
             break;
           case 'attributes':
-            stats.attributes.added.add(mod.value as FlatAttribute);
+            stats.attributes.added.add(new FlatAttribute(affix.value as AttributeValue[]));
             break;
           case 'stamina':
           case 'weight':
           case 'attackSpeed':
           case 'hp':
           case 'fp':
-            stats[mod.stat].added += mod.value as number;
+            stats[affix.affects].added += affix.value as number;
         }
       }
     }
@@ -286,21 +302,5 @@ export class Item {
     }
 
     return this;
-  }
-
-  private createStats(): ItemStats {
-    return {
-      damage: new DynamicDamage(new FlatDamage()),
-      weight: new DynamicNumber(this.def.weight),
-      armor: new DynamicNumber(this.def.armor),
-      resistance: new DynamicResistance(),
-      attackSpeed: new DynamicNumber(this.def.attackSpeed),
-      stamina: new DynamicNumber(),
-      equipLoad: new DynamicNumber(),
-      hp: new DynamicNumber(),
-      fp: new DynamicNumber(),
-      immunity: new DynamicNumber(),
-      attributes: new DynamicAttribute()
-    }
   }
 }

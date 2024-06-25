@@ -11,6 +11,12 @@
 
 	export let data: DataSchema;
 
+  // TODOS
+  // Implement local storage
+  // Set Attribute defaults via json
+  // UI: Little white gradient shine from top
+  // UI: Show weapon damage types
+
   // Initial data load
   loadData(data);
 </script>

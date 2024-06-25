@@ -179,8 +179,8 @@
     }
   },
   
-  "items": [
-    {
+  "items": {
+    "rune:godrik": {
       "type": "rune",
       "name": "Godrick’s Great Rune",
       "caption": "Great Rune",
@@ -195,7 +195,7 @@
       ],
       "iconUrl": "/images/rune-godrik.png"
     },
-    {
+    "rune:rykard": {
       "type": "rune",
       "name": "Rykard’s Great Rune",
       "caption": "Great Rune",
@@ -205,7 +205,7 @@
       ],
       "iconUrl": "/images/rune-rykard.png"
     },
-    {
+    "rune:radahn": {
       "type": "rune",
       "name": "Radahn’s Great Rune",
       "caption": "Great Rune",
@@ -232,7 +232,7 @@
       ],
       "iconUrl": "/images/rune-radahn.png"
     },
-    {
+    "rune:morgott": {
       "type": "rune",
       "name": "Morgott’s Great Rune",
       "caption": "Great Rune",
@@ -248,7 +248,7 @@
       ],
       "iconUrl": "/images/rune-morgott.png"
     },
-    {
+    "rune:mohg": {
       "type": "rune",
       "name": "Mohg’s Great Rune",
       "caption": "Great Rune",
@@ -259,7 +259,7 @@
       ],
       "iconUrl": "/images/rune-mohg.png"
     },
-    {
+    "rune:malenia": {
       "type": "rune",
       "name": "Malenia’s Great Rune",
       "caption": "Great Rune",
@@ -270,7 +270,7 @@
       ],
       "iconUrl": "/images/rune-malenia.png"
     },
-    {
+    "rune:unborn": {
       "type": "rune",
       "name": "Great Rune of the Unborn",
       "caption": "Great Rune",
@@ -281,7 +281,7 @@
       ],
       "iconUrl": "/images/rune-unborn.png"
     },
-    {
+    "rune:phantom": {
       "type": "rune",
       "name": "Phantom Great Rune",
       "caption": "Great Rune",
@@ -291,7 +291,7 @@
       ],
       "iconUrl": "/images/rune-mohg.png"
     },
-    {
+    "talisman:radagon": {
       "type": "talisman",
       "name": "Radagon’s Scarseal",
       "caption": "Talisman",
@@ -309,7 +309,7 @@
       ],
       "iconUrl": "/images/talisman-radagons-scarseal.png"
     },
-    {
+    "talisman:daedicar": {
       "type": "talisman",
       "name": "Daedicar’s Woe",
       "caption": "Talisman",
@@ -320,7 +320,7 @@
       ],
       "iconUrl": "/images/talisman-daedicars-woe.png"
     },
-    {
+    "talisman:crimson-amber": {
       "type": "talisman",
       "name": "Crimson Amber Medallion",
       "caption": "Talisman",
@@ -336,7 +336,7 @@
         }
       ]
     },
-    {
+    "talisman:crimson-amber#1": {
       "type": "talisman",
       "name": "Crimson Amber Medallion",
       "caption": "Talisman",
@@ -353,7 +353,7 @@
         }
       ]
     },
-    {
+    "talisman:horn-charm": {
       "type": "talisman",
       "name": "Immunizing Horn Charm",
       "caption": "Talisman",
@@ -369,7 +369,7 @@
         }
       ]
     },
-    {
+    "talisman:arsenal-charm": {
       "type": "talisman",
       "name": "Arsenal Charm",
       "caption": "Talisman",
@@ -385,7 +385,7 @@
         }
       ]
     },
-    {
+    "talisman:arsenal-charm#1": {
       "type": "talisman",
       "name": "Arsenal Charm",
       "caption": "Talisman",
@@ -402,7 +402,7 @@
         }
       ]
     },
-    {
+    "talisman:great-arsenal": {
       "type": "talisman",
       "name": "Great-Jar’s Arsenal",
       "caption": "Talisman",
@@ -418,8 +418,7 @@
         }
       ]
     },
-
-    {
+    "talisman:erdtree-favor": {
       "type": "talisman",
       "name": "Erdtree’s Favor",
       "caption": "Talisman",
@@ -449,7 +448,7 @@
         }
       ]
     },
-    {
+    "talisman:starscourge": {
       "type": "talisman",
       "name": "Starscourge Heirloom",
       "caption": "Talisman",
@@ -464,7 +463,7 @@
         }
       ]
     },
-    {
+    "talisman:bull-goat": {
       "type": "talisman",
       "name": "Bull-Goat’s Talisman",
       "caption": "Talisman",
@@ -480,7 +479,18 @@
         }
       ]
     },
-    {
+    "talisman:crucible-scale": {
+      "type": "talisman",
+      "name": "Crucible Scale Talisman",
+      "caption": "Talisman",
+      "group": "talismans",
+      "weight": 1.1,
+      "effects": [
+        "Reduces critical damage taken by 30%"
+      ],
+      "iconUrl": "/images/talisman-crucible-scale.png"
+    },
+    "armor:navy-hood": {
       "type": "armor",
       "name": "Navy Hood",
       "caption": "Helm",
@@ -507,18 +517,7 @@
         }
       ]
     },
-    {
-      "type": "talisman",
-      "name": "Crucible Scale Talisman",
-      "caption": "Talisman",
-      "group": "talismans",
-      "weight": 1.1,
-      "effects": [
-        "Reduces critical damage taken by 30%"
-      ],
-      "iconUrl": "/images/talisman-crucible-scale.png"
-    },
-    {
+    "armor:briar-helm": {
       "type": "armor",
       "name": "Briar Helm",
       "caption": "Helm",
@@ -538,7 +537,7 @@
         "elemental": { "phy": 4.6, "mag": 3.8, "fir": 4.4, "lit": 3.1, "hol": 3.8 }
       }
     },
-    {
+    "armor:briar": {
       "type": "armor",
       "name": "Briar Armor",
       "caption": "Chest Armor",
@@ -558,7 +557,7 @@
         "elemental": { "phy": 12.9, "mag": 10.9, "fir": 12.4, "lit": 8.8, "hol": 10.9 }
       }
     },
-    {
+    "armor:briar-gauntlets": {
       "type": "armor",
       "name": "Briar Gauntlets",
       "caption": "Gauntlet",
@@ -578,7 +577,7 @@
         "elemental": { "phy": 3.2, "mag": 2.7, "fir": 3.1, "lit": 2.1, "hol": 2.7 }
       }
     },
-    {
+    "armor:briar-greaves": {
       "type": "armor",
       "name": "Briar Greaves",
       "caption": "Leg Armor",
@@ -598,7 +597,7 @@
         "elemental": { "phy": 7.4, "mag": 6.2, "fir": 7.1, "lit": 5, "hol": 6.2 }
       }
     },
-    {
+    "armor:veteran": {
       "type": "armor",
       "name": "Veteran’s Armor",
       "caption": "Chest Armor",
@@ -618,7 +617,7 @@
         "elemental": { "phy": 18.7, "mag": 13.5, "fir": 14.1, "lit": 12.8, "hol": 13.3 }
       }
     },
-    {
+    "weapon:short-sword": {
       "type": "weapon",
       "name": "Short Sword",
       "caption": "Straight Sword",
@@ -684,8 +683,7 @@
         }
       }
     },
-
-    {
+    "weapon:dagger": {
       "type": "weapon",
       "name": "Dagger",
       "caption": "Dagger",
@@ -753,5 +751,5 @@
         }
       }
     }
-  ]
+  }
 }

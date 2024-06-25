@@ -1,6 +1,5 @@
 <script lang="ts">
 	import type { Attribute } from '$lib/core';
-	import { heroState } from '$lib/hero';
 	import { appState } from '$lib/state';
 	import { createEventDispatcher } from 'svelte';
 

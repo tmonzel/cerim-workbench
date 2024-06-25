@@ -11,10 +11,7 @@ export type DataSchema = {
   effects?: AttributeEffectDef[];
   configurations?: Record<string, ItemConfig>;
 
-  models?: Record<string, ItemDef>;
-  modifiers?: Record<string, ModifierDef>;
-
-  items?: ItemDef[];
+  items?: Record<string, ItemDef>;
 }
 
 export type AttributeEffectDef = {

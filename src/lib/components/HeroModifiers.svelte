@@ -16,7 +16,8 @@
 	  attackSpeed: 'Attack Speed',
 	  resistance: 'Resistance',
 	  attributes: 'Attributes',
-	  fp: 'FP'
+	  fp: 'FP',
+	  discovery: 'Discovery'
   }
 
   const modifiedStats = derived(heroState, (hero) => Object.entries(hero.stats));

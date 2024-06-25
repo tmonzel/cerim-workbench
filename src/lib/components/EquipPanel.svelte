@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { equipStore, type EquipState } from '../items/state';
+	import { equipStore, type EquipState } from '$lib/stores';
 	import EquipSlot from './EquipSlot.svelte';
 	
   export let body: EquipState;

@@ -1,8 +1,8 @@
 import { derived, writable } from 'svelte/store';
 import { FlatAttribute } from './core/values/FlatAttribute';
-import { equipStore, type EquipState } from './items/state';
 import { attributeStore } from './attributes';
 import type { AttributeType } from './core';
+import { equipStore, type EquipState } from './stores';
 
 export type AppState = {
   maxLevel: number;
@@ -46,7 +46,10 @@ export const equipState = derived([attributeState, equipStore], ([attributes, eq
     mainHand: null,
     offHand: null,
     rune: null,
-    pouch: null
+    pouch: null,
+    pouch2: null,
+    pouch3: null,
+    pouch4: null
   }
 
   for(const [part, item] of Object.entries(equip)) {

@@ -2,9 +2,8 @@
 	import DamageDistBar from '$lib/components/DamageDistBar.svelte';
 	import DamageNegationStat from '$lib/components/DamageNegationStat.svelte';
 	import ValueBadge from '$lib/components/ValueBadge.svelte';
-	import { AffinityType, FlatResistance } from '$lib/core';
+	import { AffinityType, FlatResistance, Item } from '$lib/core';
 	import { FlatAttribute } from '$lib/core/values/FlatAttribute';
-	import type { Item } from '$lib/items/Item';
 
   export let item: Item;
   export let slotted = false;
@@ -131,24 +130,24 @@
     
     <dl class="divide-y divide-gray-100/20 my-3">
 
-      {#each item.modifications as mod}
-        {#if mod.type === 'flat'}
+      {#each item.modifiers as modifier}
+        {#if modifier.type === 'flat'}
           <div class="py-2 sm:grid sm:grid-cols-6 sm:gap-4 sm:px-0">
-            <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-200 sm:col-span-3">{mod.name}{#if mod.tier > 0}({mod.tier}){/if}</dt>
+            <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-200 sm:col-span-3">{modifier.name}</dt>
             <dd class="mt-1 text-sm leading-6 text-gray-700 dark:text-zinc-200 sm:col-span-3 sm:mt-0">
-              {#if mod.value instanceof FlatResistance || mod.value instanceof FlatAttribute}
-                <ValueBadge value={mod.value} />
-              {:else}
-                +<ValueBadge value={mod.value} />
+              {#if modifier.value instanceof FlatResistance || modifier.value instanceof FlatAttribute}
+                <ValueBadge value={modifier.value} />
+              {:else if typeof modifier.value === 'number'}
+                +<ValueBadge value={modifier.value} />
               {/if}
             </dd>
           </div>
         {/if}
 
-        {#if mod.type === 'percentual'}
-          {@const percentage = mod.value - 1}
+        {#if modifier.type === 'percentual' && typeof modifier.value === 'number'}
+          {@const percentage = modifier.value - 1}
           <div class="py-2 sm:grid sm:grid-cols-6 sm:gap-4 sm:px-0">
-            <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-200 sm:col-span-3">{mod.name}{#if mod.tier > 0}({mod.tier}){/if}</dt>
+            <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-200 sm:col-span-3">{modifier.name}</dt>
             <dd class="mt-1 text-sm leading-6 text-gray-700 dark:text-zinc-200 sm:col-span-3 sm:mt-0">
               {#if percentage >= 0}+{/if}{Math.round(percentage * 100)}%
             </dd>

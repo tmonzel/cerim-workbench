@@ -1,9 +1,8 @@
 import type { DataSchema } from './types';
 import { appState } from './state';
-import { registerModifier } from './modifiers';
 import { addEffect } from './effects';
-import { addItem } from './items';
-import type { ItemConfig } from './items/types';
+import { itemStore } from './stores';
+import { Item } from './core';
 
 export function loadData(data: DataSchema) {
   // Resolve effects
@@ -12,25 +11,22 @@ export function loadData(data: DataSchema) {
       addEffect(def);
     }
   }
-
-  // Resolve affix modifiers
-  if(data.modifiers) {
-    for(const [id, def] of Object.entries(data.modifiers)) {
-      registerModifier(id, def);
-    }
-  }
   
   // Resolve items
   if(data.items) {
-    for(let i = 0; i < data.items.length; i++) {
-      const def = data.items[i];
+    const items: Record<string, Item> = {};
+
+    for(const id in data.items) {
+      const def = data.items[id];
 
       if(typeof def.config === 'string' && data.configurations && data.configurations[def.config]) {
-        addItem(i, def, data.configurations[def.config]);
+        items[id] = new Item(id, def, data.configurations[def.config]);
       } else {
-        addItem(i, def, def.config as ItemConfig);
+        items[id] = new Item(id, def);
       }
     }
+
+    itemStore.set(items);
   }
   
   appState.set({

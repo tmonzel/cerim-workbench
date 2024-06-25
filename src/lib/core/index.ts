@@ -7,3 +7,4 @@ export * from './DynamicDamage';
 export * from './DynamicNumber';
 
 export * from './mutators/DamageMutator';
+export * from './Item';

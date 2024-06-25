@@ -1,3 +1,5 @@
+import type { AttributeMutation, ModifierScope, ModifierType, RawStatValue } from '$lib/types';
+import type { FlatAttribute } from './values/FlatAttribute';
 import type { FlatDamage } from './values/FlatDamage';
 import type { FlatResistance } from './values/FlatResistance';
 
@@ -126,3 +128,72 @@ export type ScalingBase = Partial<Record<AttributeType, BaseScalingValue>>;
 export type Guard = Record<string, NumberRange>;
 
 export type NumberRange = { [0]: number, [1]: number };
+
+export type ItemType = 'weapon' | 'armor' | 'talisman';
+
+export type ItemDef = {
+  name: string;
+  type: ItemType;
+  caption: string;
+  group: string;
+  tags: string[];
+  poise?: number;
+  weight: number;
+  armor?: number;
+  tiers?: number;
+  tier?: number;
+  attackSpeed?: number;
+  description?: string;
+  requirements: ItemRequirements;
+  resistance?: Resistance,
+  damageNegation?: DamageNegation;
+  affinity?: AffinityType;
+  iconUrl?: string;
+  effects?: string[];
+  affixes?: ItemAffix[];
+  config: ItemConfig | string;
+  upgrades?: Record<AffinityType, ItemUpgrade>;
+}
+ 
+export type ItemAffix = {
+  type?: ModifierType;
+  name: string;
+  affects: AffectedStat;
+  scope: ModifierScope;
+  value: RawStatValue;
+}
+
+export type ItemConfig = {
+  attack?: Record<AttackDamageType, NumberRange>;
+  scaling?: Record<AttributeType, NumberRange>;
+  mutations?: AttributeMutation[];
+}
+
+export type ItemRequirements = { 
+  attributes?: Partial<Record<AttributeType, number>> 
+}
+
+export type ItemUpgrade = {
+  attack?: AttackBase;
+  guard?: Guard;
+  scaling?: ScalingBase;
+}
+
+export type PercentualModification = {
+  type: 'percentual';
+  name: string;
+  tier: number;
+  stat: AffectedStat;
+  scope?: ModifierScope;
+  value: number;
+}
+
+export type FlatModification = {
+  type: 'flat';
+  name: string;
+  stat: AffectedStat;
+  scope?: ModifierScope;
+  value: number | FlatDamage | FlatResistance | FlatAttribute;
+}
+
+export type ItemModification = FlatModification | PercentualModification;

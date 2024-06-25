@@ -1,5 +1,7 @@
 import { writable } from 'svelte/store';
-import type { Item } from './Item';
+import type { Item } from './core/Item';
+
+export const itemStore = writable<Record<string, Item>>({});
 
 export type EquipState = {
   rune: Item | null;
