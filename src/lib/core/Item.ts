@@ -2,6 +2,7 @@ import { AffinityType, AttackDamageType, AttributeType, type DamageNegation, typ
 import type { AttributeState } from '$lib/attributes';
 import { calcAttributeScaling, getScalingId } from './helpers';
 import { ComplexDamage } from './values';
+import { upgradeSchemata } from '$lib/data';
 
 export class Item {
   tier = 0;
@@ -89,9 +90,9 @@ export class Item {
   constructor(
     readonly id: string, 
     protected def: ItemDef,
-    config?: ItemConfig
+    protected options: { config?: ItemConfig } = {}
   ) {
-    this.config = config ?? {};
+    this.config = options.config ?? {};
     this.attack = new ComplexDamage();
 
     Object.assign(this.resistance, def.resistance);
@@ -120,29 +121,32 @@ export class Item {
     }
 
     const upgrade = this.def.upgrades[affinity];
+    const schemaId = upgrade.schema ?? '0';
+    const schema = upgradeSchemata[affinity] ? upgradeSchemata[affinity] : upgradeSchemata[schemaId];
+    
     const damage: Partial<Record<AttackDamageType, number>> = {};
-    const maxTiers = this.def.tiers ?? 25;
+    const maxTiers = this.possibleUpgrades;
     const attributeScaling: Partial<Record<AttributeType, { base: number, allowedDamageTypes: AttackDamageType[] }>> = {};
     
-    if(!upgrade.attack || !this.config.attack) {
+    if(!upgrade.attack || !schema.attack) {
       return;
     }
 
     for(const t of Object.values(AttackDamageType)) {
-      if(!upgrade.attack[t] || !this.config.attack[t]) {
+      if(!upgrade.attack[t] || !schema.attack[t]) {
         continue;
       }
 
       const base = upgrade.attack[t]!;
-      const multiplierRange = this.config.attack[t];
+      const multiplierRange = schema.attack[t];
       const diff = multiplierRange[1] - multiplierRange[0];
+
       const multiplier = multiplierRange[0] + tier * (diff / maxTiers);
-      
       damage[t] = base * multiplier;
     }
 
     for(const attrType of Object.values(AttributeType)) {
-      if(!this.config.scaling || !this.config.scaling[attrType] || !upgrade.scaling || !upgrade.scaling[attrType]) {
+      if(!schema.scaling || !schema.scaling[attrType] || !upgrade.scaling || !upgrade.scaling[attrType]) {
         continue
       }
 
@@ -172,11 +176,16 @@ export class Item {
         }
       }
 
-      const multiplierRange = this.config.scaling[attrType];
-      const tiers = this.possibleUpgrades;
-      const diff = multiplierRange[1] - multiplierRange[0];
-      const multiplier = multiplierRange[0] + this.tier * (diff / tiers);
+      const multiplierRange = schema.scaling[attrType];
+      let multiplier = 1;
 
+      if(multiplierRange.length > 2) {
+        multiplier = multiplierRange[tier];
+      } else {
+        const diff = multiplierRange[1] - multiplierRange[0];
+        multiplier = multiplierRange[0] + tier * (diff / maxTiers);
+      }
+      
       attributeScaling[attrType] = {
         base: base * multiplier,
         allowedDamageTypes
@@ -184,8 +193,6 @@ export class Item {
     }
     
     this.attack = new ComplexDamage(damage);
-    //console.log(this.attack, damage, this.name);
-    
     this.affinity = affinity;
     this.scaling = attributeScaling;
   }
@@ -215,7 +222,6 @@ export class Item {
       if(attrTotal === 0) {
         continue;
       }
-      
       
       for(const damageType of Object.values(AttackDamageType)) {
         

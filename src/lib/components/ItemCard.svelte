@@ -1,29 +1,18 @@
 <script lang="ts">
 	import DamageNegationStat from '$lib/components/DamageNegationStat.svelte';
 	import ValueBadge from '$lib/components/ValueBadge.svelte';
-	import { AffinityType, Item, mapModifierValue } from '$lib/core';
+	import { AFFINITY_NAME_MAP, Item, mapModifierValue } from '$lib/core';
 	import DamageDetail from './DamageDetail.svelte';
 
   export let item: Item;
   export let slotted = false;
-
-  const affinityNameMap: Record<AffinityType, string> = {
-	  [AffinityType.STANDARD]: 'Standard',
-	  [AffinityType.HEAVY]: 'Heavy',
-	  [AffinityType.KEEN]: 'Keen',
-	  [AffinityType.QUALITY]: 'Quality',
-	  [AffinityType.FIRE]: 'Fire',
-	  [AffinityType.LIGHTNING]: 'Lightning',
-	  [AffinityType.SACRED]: 'Sacred',
-	  [AffinityType.COLD]: 'Cold'
-  }
   
   $: totalResistance = item.getTotalResistance();
   $: scalingFlags = item.getScalingFlags();
 </script>
 
 <div class="flex gap-x-3 dark:text-zinc-200">
-  <div class="mt-1 flex h-48 w-48 flex-none items-center justify-center rounded-lg bg-stone-700/40 p-5 ">
+  <div class="mt-1 flex h-48 w-48 flex-none items-center justify-center rounded-lg bg-stone-700/40 p-5">
     {#if item.iconUrl}
       <img src={item.iconUrl} alt="Item icon" class="transition-all group-hover:brightness-150" />
     {:else}
@@ -33,7 +22,7 @@
   <div class="grow">
     <div class="font-medium relative text-lg">
       {#if item.affinity && item.upgrades}
-        <span class="font-bold">{affinityNameMap[item.affinity]}</span>
+        <span class="font-bold">{AFFINITY_NAME_MAP[item.affinity]}</span>
       {/if} 
       {item.name} {#if item.tier > 0}(+{item.tier}){/if}
       <span class="absolute inset-0"></span>

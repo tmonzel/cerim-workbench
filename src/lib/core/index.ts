@@ -5,3 +5,4 @@ export * from './DamageStat';
 export * from './AttributeStat';
 export * from './Item';
 export * from './values';
+export * from './maps';

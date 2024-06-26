@@ -9,7 +9,7 @@
     <EquipSlot 
       type="MainHand" 
       item={body.mainHand}  
-      allowedGroups={['axes', 'bows', 'hammers', 'swords', 'daggers']} 
+      allowedGroups={['axes', 'bows', 'hammers', 'swords', 'daggers', 'halberds']} 
       on:itemChange={(e) => equipStore.update((store) => ({ ...store, mainHand: e.detail }))}
     />
     <EquipSlot 

@@ -47,23 +47,25 @@ export function mapModifierValue(stat: AffectedStat, value: number | AttributeVa
 }
 
 export function getScalingId(base: number): string {
-  if(base <= 24) {
+  const b = Math.floor(base);
+
+  if(b <= 24) {
     return "E";
   }
 
-  if(base <= 59) {
+  if(b <= 59) {
     return "D";
   }
 
-  if(base <= 89) {
+  if(b <= 89) {
     return "C";
   }
 
-  if(base <= 139) {
+  if(b <= 139) {
     return "B";
   }
 
-  if(base <= 174) {
+  if(b <= 175) {
     return "A";
   }
 

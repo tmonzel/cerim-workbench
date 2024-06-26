@@ -100,9 +100,14 @@ export enum AffinityType {
   KEEN = 'keen',
   QUALITY = 'quality',
   FIRE = 'fire',
+  FLAME = 'flame',
   LIGHTNING = 'lightning',
   SACRED = 'sacred',
+  MAGIC = 'magic',
   COLD = 'cold',
+  POISON = 'poison',
+  BLOOD = 'blood',
+  OCCULT = 'occult',
 }
 
 export type Resistance = {
@@ -184,6 +189,11 @@ export type ItemConfig = {
   mutations?: AttributeMutation[];
 }
 
+export type UpgradeSchema = {
+  attack?: Record<AttackDamageType, NumberRange>;
+  scaling?: Record<AttributeType, number[]>;
+}
+
 export type ItemRequirements = { 
   attributes?: Partial<Record<AttributeType, number>> 
 }
@@ -192,4 +202,5 @@ export type ItemUpgrade = {
   attack?: AttackBase;
   guard?: Guard;
   scaling?: ScalingBase;
+  schema?: string;
 }

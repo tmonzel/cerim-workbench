@@ -1,11 +1,19 @@
 import type { DataSchema } from './types';
 import { appState } from './state';
 import { equipStore, itemStore, type EquipState } from './stores';
-import { AttributeType, Item } from './core';
+import { AttributeType, Item, type UpgradeSchema } from './core';
 import { attributeStore } from './attributes';
 import { get } from 'svelte/store';
 
+export const upgradeSchemata: Record<string, UpgradeSchema> = {};
+
 export function loadData(data: DataSchema) {
+  if(data.upgradeSchemata) {
+    for(const name in data.upgradeSchemata) {
+      upgradeSchemata[name] = data.upgradeSchemata[name];
+    }
+  }
+
   // Resolve items
   if(data.items) {
     const items: Record<string, Item> = {};
@@ -14,7 +22,7 @@ export function loadData(data: DataSchema) {
       const def = data.items[id];
 
       if(typeof def.config === 'string' && data.configurations && data.configurations[def.config]) {
-        items[id] = new Item(id, def, data.configurations[def.config]);
+        items[id] = new Item(id, def, { config: data.configurations[def.config] });
       } else {
         items[id] = new Item(id, def);
       }

@@ -22,7 +22,7 @@
   {#each dist as d}
     <div style:width={`${d.amount * 100}%`}>
       <div style:background-color={colorMap[d.key]} class="h-1"></div>
-      {Math.round(d.value * 10) / 10}
+      {(Math.floor(d.value))}
     </div>
   {/each}
 </div>
