@@ -1,6 +1,6 @@
-import type { DynamicValue } from './types';
+import type { Stat } from './types';
 
-export class DynamicNumber implements DynamicValue<number> {
+export class NumericStat implements Stat<number> {
   multiplier = 1;
   added: number = 0;
   base: number = 0;

@@ -1,18 +1,18 @@
 <script lang="ts">
 	import { roundValue } from '$lib/core';
-	import { AttackDamageStat, AttributeStat } from '$lib/core/stats';
+	import { ComplexAttributes, ComplexDamage } from '$lib/core/values';
 
-  export let value: AttributeStat | AttackDamageStat | number;
+  export let value: ComplexDamage | ComplexAttributes | number;
   export let isModified = false;
 </script>
 
-{#if value instanceof AttackDamageStat}
+{#if value instanceof ComplexDamage}
   <span class:text-amber-300={isModified} class:font-semibold={isModified}>
     {roundValue(value.getTotal())}{#if isModified}^{/if}
   </span>
-{:else if value instanceof AttributeStat}
+{:else if value instanceof ComplexAttributes}
   <div class="grid grid-cols-2">
-    {#each Object.entries(value.getPresentAttributes()) as [t, v]}
+    {#each Object.entries(value.getPresentValues()) as [t, v]}
       <div class="flex items-center">
         <span style:background-color={`var(--attr-${t})`} class="me-1 w-2.5 h-2.5 rounded"></span>
         <span>+{v}</span>

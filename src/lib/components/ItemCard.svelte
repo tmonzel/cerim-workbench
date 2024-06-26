@@ -1,8 +1,8 @@
 <script lang="ts">
-	import DamageDistBar from '$lib/components/DamageDistBar.svelte';
 	import DamageNegationStat from '$lib/components/DamageNegationStat.svelte';
 	import ValueBadge from '$lib/components/ValueBadge.svelte';
 	import { AffinityType, Item, mapModifierValue } from '$lib/core';
+	import DamageDetail from './DamageDetail.svelte';
 
   export let item: Item;
   export let slotted = false;
@@ -17,22 +17,25 @@
 	  [AffinityType.SACRED]: 'Sacred',
 	  [AffinityType.COLD]: 'Cold'
   }
-
+  
   $: totalResistance = item.getTotalResistance();
   $: scalingFlags = item.getScalingFlags();
 </script>
 
 <div class="flex gap-x-3 dark:text-zinc-200">
-  <div class="mt-1 flex h-40 w-40 flex-none items-center justify-center rounded-lg bg-stone-700/50 p-3">
+  <div class="mt-1 flex h-48 w-48 flex-none items-center justify-center rounded-lg bg-stone-700/40 p-5 ">
     {#if item.iconUrl}
-      <img src={item.iconUrl} alt="Item icon" />
+      <img src={item.iconUrl} alt="Item icon" class="transition-all group-hover:brightness-150" />
     {:else}
       <svg xmlns="http://www.w3.org/2000/svg" height="30px" viewBox="0 -960 960 960" width="30px" fill="#5f6368"><path d="M440-183v-274L200-596v274l240 139Zm80 0 240-139v-274L520-457v274Zm-80 92L160-252q-19-11-29.5-29T120-321v-318q0-22 10.5-40t29.5-29l280-161q19-11 40-11t40 11l280 161q19 11 29.5 29t10.5 40v318q0 22-10.5 40T800-252L520-91q-19 11-40 11t-40-11Zm200-528 77-44-237-137-78 45 238 136Zm-160 93 78-45-237-137-78 45 237 137Z"/></svg>
     {/if}
   </div>
   <div class="grow">
     <div class="font-medium relative text-lg">
-      {#if item.affinity && item.upgrades}<span class="font-bold">{affinityNameMap[item.affinity]}</span>{/if} {item.name} {#if item.tier > 0}(+{item.tier}){/if}
+      {#if item.affinity && item.upgrades}
+        <span class="font-bold">{affinityNameMap[item.affinity]}</span>
+      {/if} 
+      {item.name} {#if item.tier > 0}(+{item.tier}){/if}
       <span class="absolute inset-0"></span>
     </div>
     <p class="text-sm dark:text-zinc-400">{item.caption}</p>
@@ -64,20 +67,25 @@
     </div>
 
     {#if item.type === 'weapon'}
-      <div class="mb-3 max-w-16">
-        <DamageDistBar damage={item.attack} />
+      <div class="mb-3">
+        <DamageDetail damage={item.attack} />
       </div>
+      <!--<div class="mb-3 max-w-16">
+        <DamageDistBar damage={item.attack} />
+      </div>-->
     {/if}
 
     <div class="flex gap-x-4 items-center">
       {#if scalingFlags.length > 0}
-        <p class="text-xs flex items-center">
+        <p class="text-sm">
           <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e4e4e7">
             <path d="m136-240-56-56 296-298 160 160 208-206H640v-80h240v240h-80v-104L536-320 376-480 136-240Z"/>
           </svg>
           {#each scalingFlags as flag}
-          <span class="ml-1 text-xs">{flag.name}</span>
-          <span class="ml-1 text-xs font-semibold text-emerald-400">({flag.id})</span>
+          <div>
+            <span class="ml-1">{flag.name}</span>
+            <span class="ml-1 text-teal-400">{flag.id}</span>
+          </div>
           {/each}
         </p>
       {/if}

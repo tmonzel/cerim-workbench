@@ -1,6 +1,5 @@
-import type { AttributeMutation, AttributeValue } from '$lib/types';
-import { AttributeStat, type AttackDamageStat } from './stats';
-import { AttributeType, type AffectedStat } from './types';
+import { AttributeType, type AffectedStat, type AttributeMutation, type AttributeValue } from './types';
+import { ComplexAttributes, type ComplexDamage } from './values';
 
 export function scaleValue(value: number, span: number[] = [1, 1], rate: number = -0.01) {
   let v = 0;
@@ -30,14 +29,18 @@ export function roundValue(value: number, decimals: number = 1): number {
   return value > 0 ? Math.round(value * d) / d : 0;
 }
 
-export function mapModifierValue(stat: AffectedStat, value: number | AttributeValue[]): number | AttributeStat | AttackDamageStat {
+export function mapModifierValue(stat: AffectedStat, value: number | AttributeValue[]): number | ComplexAttributes | ComplexDamage {
+  const attributes: Partial<Record<AttributeType, number>> = {}
+
   switch(stat) {
     case 'attributes':
       if(typeof value === 'number') {
-        return new AttributeStat(Object.values(AttributeType).map(t => ([value as number, t])));
+        Object.values(AttributeType).forEach(t => attributes[t] = value);
+      } else {
+        value.forEach((v) => attributes[v[1]] = v[0]);
       }
       
-      return new AttributeStat(value as AttributeValue[]);
+      return new ComplexAttributes(attributes);
   }
 
   return value as number;

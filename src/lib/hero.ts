@@ -1,8 +1,6 @@
 import { derived } from 'svelte/store';
 import { appState, attributeState, equipState } from './state';
-import { AttributeType, DynamicNumber, calcAttributeScaling, type HeroStats } from './core';
-import { DynamicAttribute } from './core/DynamicAttribute';
-import { DynamicAttack } from './core/DynamicAttack';
+import { AttributeStat, AttributeType, DamageStat, NumericStat, calcAttributeScaling, type HeroStats } from './core';
 
 export type HeroState = {
   level: number;
@@ -22,28 +20,29 @@ export const heroState = derived([attributeState, equipState, appState], (s) => 
     attributePoints: 0,
     dps: 0,
     stats: {
-      'hp': new DynamicNumber("Health"),
-      'fp': new DynamicNumber("FP"),
-      'stamina': new DynamicNumber("Stamina"),
-      'discovery': new DynamicNumber("Discovery"),
-      'weight': new DynamicNumber("Weight"),
-      'equipLoad': new DynamicNumber("Equip Load"),
-      'damage': new DynamicAttack("Attack Power"),
-      'attackSpeed': new DynamicNumber("Attack Speed"),
-      'res:immunity': new DynamicNumber("Immunity"),
-      'res:robustness': new DynamicNumber("Robustness"),
-      'res:focus': new DynamicNumber("Focus"),
-      'res:vitality': new DynamicNumber("Vitality"),
-      'res:poise': new DynamicNumber("Poise"),
-      'def:strike': new DynamicNumber("Strike Defense"),
-      'def:slash': new DynamicNumber("Slash Defense"),
-      'def:pierce': new DynamicNumber("Pierce Defense"),
-      'def:phy': new DynamicNumber("Physical Defense"),
-      'def:hol': new DynamicNumber("Holy Defense"),
-      'def:lit': new DynamicNumber("Lightning Defense"),
-      'def:fir': new DynamicNumber("Fire Defense"),
-      'def:mag': new DynamicNumber("Magic Defense"),
-      'attributes': new DynamicAttribute("Attributes"),
+      'hp': new NumericStat("Health"),
+      'fp': new NumericStat("FP"),
+      'stamina': new NumericStat("Stamina"),
+      'discovery': new NumericStat("Discovery"),
+      'weight': new NumericStat("Weight"),
+      'equipLoad': new NumericStat("Equip Load"),
+      'attackSpeed': new NumericStat("Attack Speed"),
+      'res:immunity': new NumericStat("Immunity"),
+      'res:robustness': new NumericStat("Robustness"),
+      'res:focus': new NumericStat("Focus"),
+      'res:vitality': new NumericStat("Vitality"),
+      'res:poise': new NumericStat("Poise"),
+      'def:strike': new NumericStat("Strike Defense"),
+      'def:slash': new NumericStat("Slash Defense"),
+      'def:pierce': new NumericStat("Pierce Defense"),
+      'def:phy': new NumericStat("Physical Defense"),
+      'def:hol': new NumericStat("Holy Defense"),
+      'def:lit': new NumericStat("Lightning Defense"),
+      'def:fir': new NumericStat("Fire Defense"),
+      'def:mag': new NumericStat("Magic Defense"),
+
+      'attributes': new AttributeStat("Attributes"),
+      'damage': new DamageStat("Attack Power"),
     },
     effects: []
   };
@@ -95,7 +94,7 @@ export const heroState = derived([attributeState, equipState, appState], (s) => 
     }
     
     // Sum item damage
-    hero.stats['damage'].base.add(item.attack);
+    hero.stats['damage'].base.add(item.attack.value);
 
     // Sum item weights
     hero.stats.weight.base += item.weight;

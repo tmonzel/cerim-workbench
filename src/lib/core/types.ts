@@ -1,7 +1,6 @@
-import type { AttributeMutation, AttributeValue } from '$lib/types';
-import type { DynamicAttack } from './DynamicAttack';
-import type { DynamicAttribute } from './DynamicAttribute';
-import type { DynamicNumber } from './DynamicNumber';
+import type { AttributeStat } from './AttributeStat';
+import type { DamageStat } from './DamageStat';
+import type { NumericStat } from './NumericStat';
 
 export type Mutation = {
   from: { [0]: number; [1]: number };
@@ -10,48 +9,56 @@ export type Mutation = {
 
 export type Maybe<T> = T | null | undefined;
 
-export type DynamicValue<T = number> = {
+export type Stat<T = number> = {
+  name: string;
   base: T;
   added: T;
   multiplier: number;
-  name: string;
 
   hasAdded(): boolean;
   isModified(): boolean;
   getValue(): T;
 }
 
-export type Stat<T = number> = {
-  label: string;
-  value: DynamicValue<T>;
+export type DamageValue = { [0]: number; [1]: number; [2]: number } | number;
+export type ResistanceValue = { [0]: number; [1]: number; };
+export type AttributeValue = {
+  [0]: number;
+  [1]: AttributeType;
 }
 
 export type HeroStats = {
-  'hp': DynamicNumber;
-  'fp': DynamicNumber;
-  'stamina': DynamicNumber;
-  'discovery': DynamicNumber;
-  'weight': DynamicNumber;
-  'equipLoad': DynamicNumber;
-  'damage': DynamicAttack;
-  'attackSpeed': DynamicNumber;
-  'res:immunity': DynamicNumber;
-  'res:robustness': DynamicNumber;
-  'res:focus': DynamicNumber;
-  'res:vitality': DynamicNumber;
-  'res:poise': DynamicNumber;
-  'def:strike': DynamicNumber;
-  'def:slash': DynamicNumber;
-  'def:pierce': DynamicNumber;
-  'def:phy': DynamicNumber;
-  'def:hol': DynamicNumber;
-  'def:lit': DynamicNumber;
-  'def:fir': DynamicNumber;
-  'def:mag': DynamicNumber;
-  'attributes': DynamicAttribute;
+  'hp': NumericStat;
+  'fp': NumericStat;
+  'stamina': NumericStat;
+  'discovery': NumericStat;
+  'weight': NumericStat;
+  'equipLoad': NumericStat;
+  'damage': DamageStat;
+  'attackSpeed': NumericStat;
+  'res:immunity': NumericStat;
+  'res:robustness': NumericStat;
+  'res:focus': NumericStat;
+  'res:vitality': NumericStat;
+  'res:poise': NumericStat;
+  'def:strike': NumericStat;
+  'def:slash': NumericStat;
+  'def:pierce': NumericStat;
+  'def:phy': NumericStat;
+  'def:hol': NumericStat;
+  'def:lit': NumericStat;
+  'def:fir': NumericStat;
+  'def:mag': NumericStat;
+  'attributes': AttributeStat;
 };
 
 export type AffectedStat = keyof HeroStats;
+
+export type AttributeMutation = {
+  breakpoint: number;
+  grow: number;
+  exp?: number;
+}
 
 export enum AttributeType {
   VIGOR = 'vig',
@@ -62,11 +69,6 @@ export enum AttributeType {
   INTELLIGENCE = 'int',
   FAITH = 'fth',
   ARCANE = 'arc'
-}
-
-export type Attribute = {
-  name: string;
-  color: string;
 }
 
 export enum AttackDamageType {

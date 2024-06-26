@@ -15,6 +15,8 @@
   // Implement local storage
   // UI: Little white gradient shine from top
   // UI: Show weapon damage types
+  // UI: Scrolling Header
+  // UI: Compact mode for equipslots (3 modes maybe)
 
   // Initial data load
   loadData(data);

@@ -1,12 +1,12 @@
 import { AffinityType, AttackDamageType, AttributeType, type DamageNegation, type ItemConfig, type ItemDef, type ItemModifier, type ItemRequirements, type ItemType, type ItemUpgrade, type Resistance } from './types';
 import type { AttributeState } from '$lib/attributes';
 import { calcAttributeScaling, getScalingId } from './helpers';
-import { AttackDamageStat } from './stats';
+import { ComplexDamage } from './values';
 
 export class Item {
   tier = 0;
   
-  attack: AttackDamageStat;
+  attack: ComplexDamage;
   affinity: AffinityType = AffinityType.STANDARD;
   scaling?: Partial<Record<AttributeType, { base: number, allowedDamageTypes: AttackDamageType[] }>>;
   config: ItemConfig;
@@ -82,13 +82,17 @@ export class Item {
     return this.def.attackSpeed;
   }
 
+  get possibleUpgrades(): number {
+    return this.def.tiers ?? 25;
+  }
+
   constructor(
     readonly id: string, 
     protected def: ItemDef,
     config?: ItemConfig
   ) {
     this.config = config ?? {};
-    this.attack = new AttackDamageStat();
+    this.attack = new ComplexDamage();
 
     Object.assign(this.resistance, def.resistance);
     Object.assign(this.damageNegation, def.damageNegation);
@@ -169,7 +173,7 @@ export class Item {
       }
 
       const multiplierRange = this.config.scaling[attrType];
-      const tiers = this.def.tiers ?? 25;
+      const tiers = this.possibleUpgrades;
       const diff = multiplierRange[1] - multiplierRange[0];
       const multiplier = multiplierRange[0] + this.tier * (diff / tiers);
 
@@ -178,8 +182,10 @@ export class Item {
         allowedDamageTypes
       };
     }
-
-    this.attack = new AttackDamageStat(damage);
+    
+    this.attack = new ComplexDamage(damage);
+    //console.log(this.attack, damage, this.name);
+    
     this.affinity = affinity;
     this.scaling = attributeScaling;
   }
@@ -209,19 +215,22 @@ export class Item {
       if(attrTotal === 0) {
         continue;
       }
-
+      
+      
       for(const damageType of Object.values(AttackDamageType)) {
-        if(!this.attack[damageType] || !attrScale.allowedDamageTypes.includes(damageType)) {
+        
+        if(!this.attack.isPresent(damageType) || !attrScale.allowedDamageTypes.includes(damageType)) {
           continue;
         }
-
+        
         const scaledValue = calcAttributeScaling(attrTotal, this.config.mutations ?? []);
 
-        let elementBase = this.attack[damageType];
+        let elementBase = this.attack.get(damageType);
+        
         elementBase *= attrScale.base / 100;
         elementBase *= scaledValue / 100;
-
-        this.attack.add(new AttackDamageStat({ [damageType]: elementBase }));
+        
+        this.attack.add({ [damageType]: elementBase });
       }
     }
 

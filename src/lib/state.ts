@@ -1,9 +1,9 @@
 import { derived, writable } from 'svelte/store';
 import { attributeStore } from './attributes';
 import { AttributeType, mapModifierValue, type Item } from './core';
-import { equipStore, type EquipState } from './stores';
+import { equipStore, itemStore, type EquipState } from './stores';
 import type { AttributeEffect } from './types';
-import { AttributeStat } from './core/stats';
+import { ComplexAttributes } from './core/values';
 
 export type AppState = {
   maxLevel: number;
@@ -18,7 +18,7 @@ export const appState = writable<AppState>({
 });
 
 export const attributeState = derived([attributeStore, equipStore], ([attributes, equip]) => {
-  const offsetAttribute = new AttributeStat();
+  const offsetAttribute = new ComplexAttributes();
 
   for(const item of Object.values(equip)) {
     if(!item) {
@@ -30,7 +30,7 @@ export const attributeState = derived([attributeStore, equipStore], ([attributes
         continue;
       }
 
-      offsetAttribute.add(mapModifierValue('attributes', mod.value) as AttributeStat);
+      offsetAttribute.add((mapModifierValue('attributes', mod.value) as ComplexAttributes).value);
     }
   }
   
@@ -38,14 +38,14 @@ export const attributeState = derived([attributeStore, equipStore], ([attributes
     const t = n as AttributeType;
     attributes[t] = { 
       ...attr, 
-      offset: offsetAttribute[t] ?? 0
+      offset: offsetAttribute.value[t] ?? 0
     };
   }
 
   return attributes;
 });
 
-export const equipState = derived([attributeState, equipStore], ([attributes, equip]) => {
+export const equipState = derived([attributeState, equipStore, itemStore], ([attributes, equip]) => {
   const state: EquipState = {
     head: null,
     chest: null,
