@@ -1,7 +1,6 @@
 <script lang="ts">
 	import ItemCard from './ItemCard.svelte';
   import Dialog from '../components/Dialog.svelte';
-	import Badge from '$lib/components/Badge.svelte';
 	import { writable, derived } from 'svelte/store';
 	import { AffinityType, AttributeType, Item } from '$lib/core';
 	import { createEventDispatcher } from 'svelte';
@@ -55,7 +54,7 @@
 </script>
 
 <div class="relative dark:bg-stone-600/20 rounded-md">
-  {#if item && item.upgrades && item.tier >= 0}
+  {#if item && item.possibleUpgrades > 0}
     <div class="absolute top-5 right-5">
       <ItemUpgradeBar {item} />
     </div>

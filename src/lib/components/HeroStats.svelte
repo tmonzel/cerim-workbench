@@ -143,9 +143,16 @@
     <dd class="mt-1 text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2 sm:mt-0"></dd>
     
     <div>
-      <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">Boost</dt>
+      <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">Stability</dt>
       <dd class="text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2 sm:mt-0">
-        <ValueBadge value={$heroState.stats['guard:boost'].value} />
+        <ValueBadge value={$heroState.stats['guard:sta'].value} />
+      </dd>
+    </div>
+
+    <div>
+      <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">Resistance</dt>
+      <dd class="text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2 sm:mt-0">
+        <ValueBadge value={$heroState.stats['guard:res'].value} />
       </dd>
     </div>
     

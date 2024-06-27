@@ -1,7 +1,7 @@
-import { AffinityType, DamageType, AttributeType, type Defense, type ItemConfig, type ItemDef, type ItemModifier, type ItemRequirements, type ItemType, type ItemUpgrade, type Resistance, type Damage, type Guard } from './types';
+import { AffinityType, DamageType, AttributeType, type Defense, type ItemDef, type ItemModifier, type ItemRequirements, type ItemType, type Resistance, type Damage, type Guard, type ItemConfig, type AttributeMutation, type ItemPreset, type UpgradeSchema, GuardType } from './types';
 import type { AttributeState } from '$lib/attributes';
 import { calcAttributeScaling, getScalingId } from './helpers';
-import { upgradeSchemata } from '$lib/data';
+import { mutationRecord, presetRecord, upgradeSchemata } from '$lib/data';
 
 export class Item {
   tier = 0;
@@ -10,17 +10,19 @@ export class Item {
   scaledDamage: Partial<Damage>;
   affinity: AffinityType = AffinityType.STANDARD;
   scaling?: Partial<Record<AttributeType, { base: number, allowedDamageTypes: DamageType[] }>>;
-  config: ItemConfig;
+  config!: ItemConfig;
   guard?: Guard;
   resistance?: Resistance;
   defense?: Defense;
+  affinities?: Record<AffinityType, ItemConfig>;
+  possibleUpgrades: number = 0;
+  mutations: AttributeMutation[] = [];
+  upgradeSchema?: UpgradeSchema;
+  modifiers: ItemModifier[] = [];
+  iconUrl?: string;
 
   get weight(): number {
     return this.def.weight ?? 0;
-  }
-
-  get modifiers(): ItemModifier[] {
-    return this.def.modifiers ?? [];
   }
 
   get group(): string {
@@ -35,20 +37,12 @@ export class Item {
     return this.def.caption;
   }
 
-  get upgrades(): Record<AffinityType, ItemUpgrade> | undefined {
-    return this.def.upgrades;
-  }
-
   get type(): ItemType {
     return this.def.type;
   }
 
   get requirements(): ItemRequirements {
     return this.def.requirements ?? {};
-  }
-
-  get iconUrl(): string | undefined {
-    return this.def.iconUrl;
   }
 
   get description(): string | undefined {
@@ -63,18 +57,16 @@ export class Item {
     return this.def.attackSpeed;
   }
 
-  get possibleUpgrades(): number {
-    return this.def.tiers ?? 25;
-  }
-
   constructor(
     readonly id: string, 
     protected def: ItemDef,
-    protected options: { config?: ItemConfig } = {}
   ) {
-    this.config = options.config ?? {};
     this.damage = {};
     this.scaledDamage = {};
+    this.tier = this.def.tier ?? 0;
+    this.possibleUpgrades = def.maxTiers ?? 0;
+    this.modifiers = def.modifiers ?? [];
+    this.iconUrl = this.def.iconUrl;
 
     if(def.resistance) {
       this.resistance = def.resistance;
@@ -88,91 +80,191 @@ export class Item {
       this.guard = def.guard;
     }
 
-    this.upgrade(this.def.tier ?? 0, this.def.affinity ?? AffinityType.STANDARD);
+    if(def.affinities) {
+      this.affinities = def.affinities;
+    }
+
+    if(def.upgrades) {
+      this.possibleUpgrades = def.upgrades.length;
+    }
+
+    if(def.defaults) {
+      if(typeof def.defaults === 'string') {
+        this.applyPreset(presetRecord[def.defaults]);
+      } else {
+        this.applyPreset(def.defaults);
+      }
+    }
+
+    if(def.config) {
+      this.applyConfig(def.config);
+    } else {
+      this.changeAffinity(AffinityType.STANDARD);
+    }
   }
 
-  upgrade(tier: number, affinity: AffinityType = AffinityType.STANDARD): void {
+  changeAffinity(affinity: AffinityType): void {
+    if(!this.def.affinities || !this.def.affinities[affinity]) {
+      return;
+    }
+
+    this.affinity = affinity;
+    this.applyConfig(this.def.affinities[affinity]);
+  }
+
+  applyPreset(preset: ItemPreset): void {
+    if(preset.affinities) {
+      for(const k in preset.affinities) {
+        if(this.affinities && this.affinities[k as AffinityType]) {
+          this.affinities[k as AffinityType] = { ...preset.affinities[k], ...this.affinities[k as AffinityType] }
+        }
+      }
+    }
+
+    this.possibleUpgrades = preset.maxTiers ?? 25;
+  }
+
+  applyConfig(config: ItemConfig): void {
+    this.config = config;
+    this.update();
+  }
+
+  upgrade(tier: number): void {
     this.tier = tier;
 
-    if(!this.def.upgrades || !this.def.upgrades[affinity]) {
+    if(this.def.upgrades && this.tier > 0) {
+      const upgrade = this.def.upgrades[this.tier - 1];
+      this.modifiers = upgrade.modifiers ?? []
+      this.iconUrl = upgrade.iconUrl;
+
+    } else {
+      this.modifiers = this.def.modifiers ?? [];
+      this.iconUrl = this.def.iconUrl;
+    }
+
+    this.update();
+  }
+
+  update(): void {
+    if(!this.config) {
+      console.log("No item config given");
       return;
     }
 
-    const upgrade = this.def.upgrades[affinity];
-    const schemaId = upgrade.schema ?? '0';
-    const schema = upgradeSchemata[affinity] ? upgradeSchemata[affinity] : upgradeSchemata[schemaId];
+    if(this.config.guard) {
+      this.guard = this.config.guard;
+    }
+
+    if(this.config.mutations) {
+      if(typeof this.config.mutations === 'string') {
+        this.mutations = mutationRecord[this.config.mutations];
+      } else {
+        this.mutations = this.config.mutations as AttributeMutation[];
+      }
+    } else {
+      this.mutations = mutationRecord['weapon:default'];
+    }
+
+    let schema: UpgradeSchema = {};
+
+    if(this.config.schema) {
+      schema = upgradeSchemata[this.config.schema];
+    } else {
+      schema = upgradeSchemata['0'];
+    }
     
+    if(!this.config.attack || !schema.attack) {
+      return;
+    }
+
     const damage: Partial<Damage> = {};
+    const guard: Partial<Guard> = {};
     const maxTiers = this.possibleUpgrades;
     const attributeScaling: Partial<Record<AttributeType, { base: number, allowedDamageTypes: DamageType[] }>> = {};
-    
-    if(!upgrade.attack || !schema.attack) {
-      return;
-    }
 
-    for(const t of Object.values(DamageType)) {
-      if(!upgrade.attack[t] || !schema.attack[t]) {
-        continue;
+    if(this.possibleUpgrades > 0) {
+      for(const t of Object.values(DamageType)) {
+        if(!this.config.attack[t] || !schema.attack[t] || maxTiers === 0) {
+          continue;
+        }
+        
+        const base = this.config.attack[t]!;
+        const multiplierRange = schema.attack[t];
+        const diff = multiplierRange[1] - multiplierRange[0];
+
+        const multiplier = multiplierRange[0] + this.tier * (diff / maxTiers);
+        damage[t] = base * multiplier;
       }
 
-      const base = upgrade.attack[t]!;
-      const multiplierRange = schema.attack[t];
-      const diff = multiplierRange[1] - multiplierRange[0];
+      if(schema.guard && this.config.guard) {
+        for(const t of Object.values(GuardType)) {
+          if(!this.config.guard[t] || maxTiers === 0 || !schema.guard[t]) {
+            continue;
+          }
+          
+          const base = this.config.guard[t];
+          const multiplierRange = schema.guard[t];
+          const diff = multiplierRange[1] - multiplierRange[0];
+  
+          const multiplier = multiplierRange[0] + this.tier * (diff / maxTiers);
+          guard[t] = base * multiplier;
+        }
 
-      const multiplier = multiplierRange[0] + tier * (diff / maxTiers);
-      damage[t] = base * multiplier;
-    }
-
-    for(const attrType of Object.values(AttributeType)) {
-      if(!schema.scaling || !schema.scaling[attrType] || !upgrade.scaling || !upgrade.scaling[attrType]) {
-        continue
-      }
-
-      const scalingVal = upgrade.scaling[attrType];
-
-      let base = 0;
-      let allowedDamageTypes: DamageType[] = [];
-
-      if(Array.isArray(scalingVal)) {
-        base = scalingVal[0];
-        allowedDamageTypes = typeof scalingVal[1] === 'string' ? [scalingVal[1]] : scalingVal[1];
-      } else {
-        base = scalingVal as number;
-
-        switch(attrType) {
-          case AttributeType.STRENGTH:
-            allowedDamageTypes = [DamageType.PHYSICAL];
-            break;
-          case AttributeType.DEXTERITY:
-            allowedDamageTypes = [DamageType.PHYSICAL, DamageType.LIGHTNING];
-          break;
-          case AttributeType.INTELLIGENCE:
-            allowedDamageTypes = [DamageType.MAGIC];
-          break;
-          case AttributeType.FAITH:
-            allowedDamageTypes = [DamageType.FIRE, DamageType.HOLY];
+        if(this.guard) {
+          this.guard = { ...this.guard, ...guard }
         }
       }
 
-      const multiplierRange = schema.scaling[attrType];
-      let multiplier = 1;
+      for(const attrType of Object.values(AttributeType)) {
+        if(!schema.scaling || !schema.scaling[attrType] || !this.config.scaling || !this.config.scaling[attrType]) {
+          continue
+        }
 
-      if(multiplierRange.length > 2) {
-        multiplier = multiplierRange[tier];
-      } else {
-        const diff = multiplierRange[1] - multiplierRange[0];
-        multiplier = multiplierRange[0] + tier * (diff / maxTiers);
+        const scalingVal = this.config.scaling[attrType];
+
+        let base = 0;
+        let allowedDamageTypes: DamageType[] = [];
+
+        if(Array.isArray(scalingVal)) {
+          base = scalingVal[0];
+          allowedDamageTypes = typeof scalingVal[1] === 'string' ? [scalingVal[1]] : scalingVal[1];
+        } else {
+          base = scalingVal as number;
+
+          switch(attrType) {
+            case AttributeType.STRENGTH:
+              allowedDamageTypes = [DamageType.PHYSICAL];
+              break;
+            case AttributeType.DEXTERITY:
+              allowedDamageTypes = [DamageType.PHYSICAL, DamageType.LIGHTNING];
+            break;
+            case AttributeType.INTELLIGENCE:
+              allowedDamageTypes = [DamageType.MAGIC];
+            break;
+            case AttributeType.FAITH:
+              allowedDamageTypes = [DamageType.FIRE, DamageType.HOLY];
+          }
+        }
+
+        const multiplierRange = schema.scaling[attrType];
+        let multiplier = 1;
+
+        if(multiplierRange.length > 2) {
+          multiplier = multiplierRange[this.tier];
+        } else {
+          const diff = multiplierRange[1] - multiplierRange[0];
+          multiplier = multiplierRange[0] + this.tier * (diff / maxTiers);
+        }
+        
+        attributeScaling[attrType] = {
+          base: base * multiplier,
+          allowedDamageTypes
+        };
       }
-      
-      attributeScaling[attrType] = {
-        base: base * multiplier,
-        allowedDamageTypes
-      };
     }
     
     this.damage = damage;
     this.scaledDamage = { ...this.damage };
-    this.affinity = affinity;
     this.scaling = attributeScaling;
   }
 
@@ -207,7 +299,7 @@ export class Item {
           continue;
         }
         
-        const scaledValue = calcAttributeScaling(attrTotal, this.config.mutations ?? []);
+        const scaledValue = calcAttributeScaling(attrTotal, this.mutations ?? []);
 
         let elementBase = this.damage[damageType] ?? 0;
         

@@ -1,16 +1,30 @@
 import type { DataSchema } from './types';
 import { appState } from './state';
 import { equipStore, itemStore, type EquipState } from './stores';
-import { AttributeType, Item, type UpgradeSchema } from './core';
+import { AttributeType, Item, type AttributeMutation, type ItemPreset, type UpgradeSchema } from './core';
 import { attributeStore } from './attributes';
 import { get } from 'svelte/store';
 
+export const mutationRecord: Record<string, AttributeMutation[]> = {};
+export const presetRecord: Record<string, ItemPreset> = {};
 export const upgradeSchemata: Record<string, UpgradeSchema> = {};
 
 export function loadData(data: DataSchema) {
+  if(data.mutations) {
+    for(const name in data.mutations) {
+      mutationRecord[name] = data.mutations[name];
+    }
+  }
+
   if(data.upgradeSchemata) {
     for(const name in data.upgradeSchemata) {
       upgradeSchemata[name] = data.upgradeSchemata[name];
+    }
+  }
+
+  if(data.presets) {
+    for(const name in data.presets) {
+      presetRecord[name] = data.presets[name];
     }
   }
 
@@ -20,12 +34,7 @@ export function loadData(data: DataSchema) {
 
     for(const id in data.items) {
       const def = data.items[id];
-
-      if(typeof def.config === 'string' && data.configurations && data.configurations[def.config]) {
-        items[id] = new Item(id, def, { config: data.configurations[def.config] });
-      } else {
-        items[id] = new Item(id, def);
-      }
+      items[id] = new Item(id, def);
     }
 
     itemStore.set(items);

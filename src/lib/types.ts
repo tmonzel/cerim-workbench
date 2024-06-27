@@ -1,4 +1,4 @@
-import type { AffectedStat, AttributeMutation, AttributeType, ItemConfig, ItemDef, UpgradeSchema } from './core';
+import type { AffectedStat, AttributeMutation, AttributeType, ItemDef, ItemPreset, UpgradeSchema } from './core';
 import type { EquipState } from './stores';
 
 export type DataSchema = {
@@ -10,11 +10,12 @@ export type DataSchema = {
     equip?: Record<keyof EquipState, string>;
   };
 
+  items?: Record<string, ItemDef>;
+
   effects?: AttributeEffect[];
   upgradeSchemata?: Record<string, UpgradeSchema>; 
-  configurations?: Record<string, ItemConfig>;
-
-  items?: Record<string, ItemDef>;
+  presets?: Record<string, ItemPreset>;
+  mutations?: Record<string, AttributeMutation[]>;
 }
 
 export type AttributeEffect = {

@@ -48,7 +48,8 @@ export type HeroStats = {
   'def:fir': NumericStat;
   'def:mag': NumericStat;
 
-  'guard:boost': NumericStat;
+  'guard:sta': NumericStat;
+  'guard:res': NumericStat;
   'guard:phy': NumericStat;
   'guard:mag': NumericStat;
   'guard:fir': NumericStat;
@@ -100,6 +101,17 @@ export enum DamageNegationType {
   ELEMENTAL = 'elemental'
 }
 
+export enum GuardType {
+  PHYSICAL = 'phy',
+  MAGIC = 'mag',
+  FIRE = 'fir',
+  LIGHTNING = 'lit',
+  HOLY = 'hol',
+
+  STABILITY = 'sta',
+  RESISTANCE = 'res'
+}
+
 export enum AffinityType {
   STANDARD = 'standard',
   HEAVY = 'heavy',
@@ -128,17 +140,7 @@ export type Resistance = {
   poise: number;
 }
 
-export type Guard = {
-  negation: {
-    [DamageType.PHYSICAL]: number;
-    [DamageType.MAGIC]: number; 
-    [DamageType.FIRE]: number;
-    [DamageType.LIGHTNING]: number; 
-    [DamageType.HOLY]: number;
-  };
-
-  boost: number;
-};
+export type Guard = Record<GuardType, number>;
 
 export type Defense = {
   attack: AttackDamageNegation;
@@ -166,6 +168,12 @@ export type ScalingBase = Partial<Record<AttributeType, BaseScalingValue>>;
 export type NumberRange = { [0]: number, [1]: number };
 export type ItemType = 'weapon' | 'armor' | 'talisman' | 'shield';
 
+export type UpgradeSchema = {
+  attack?: Record<DamageType, number[]>;
+  scaling?: Record<AttributeType, number[]>;
+  guard?: Record<GuardType, number[]>;
+}
+
 export type ItemDef = {
   name: string;
   type: ItemType;
@@ -175,20 +183,32 @@ export type ItemDef = {
   poise?: number;
   weight?: number;
   armor?: number;
-  tiers?: number;
+  maxTiers?: number;
   tier?: number;
   attackSpeed?: number;
   description?: string;
-  requirements: ItemRequirements;
-  resistance?: Resistance,
+  requirements?: ItemRequirements;
+  resistance?: Resistance;
   defense?: Defense;
   guard?: Guard;
   affinity?: AffinityType;
   iconUrl?: string;
   effects?: string[];
   modifiers?: ItemModifier[];
-  config: ItemConfig | string;
-  upgrades?: Record<AffinityType, ItemUpgrade>;
+  config?: ItemConfig;
+  affinities?: Record<AffinityType, ItemConfig>;
+  defaults?: string | ItemPreset;
+  upgrades?: ItemUpgrade[];
+}
+
+export type ItemUpgrade = {
+  iconUrl?: string;
+  modifiers?: ItemModifier[];
+}
+
+export type ItemPreset = {
+  maxTiers?: number;
+  affinities?: Record<AffinityType, ItemConfig>;
 }
  
 export type ItemModifier = {
@@ -206,24 +226,20 @@ export type ModifierScaling = {
 export type ModifierScope = 'item' | 'hero';
 export type ModifierType = 'flat' | 'percentual';
 
-export type ItemConfig = {
+export type ItemOpts = {
   attack?: Record<DamageType, NumberRange>;
   scaling?: Record<AttributeType, NumberRange>;
   mutations?: AttributeMutation[];
-}
-
-export type UpgradeSchema = {
-  attack?: Record<DamageType, NumberRange>;
-  scaling?: Record<AttributeType, number[]>;
 }
 
 export type ItemRequirements = { 
   attributes?: Partial<Record<AttributeType, number>> 
 }
 
-export type ItemUpgrade = {
+export type ItemConfig = {
   attack?: Partial<Record<DamageType, number>>;
   guard?: Guard;
   scaling?: ScalingBase;
   schema?: string;
+  mutations?: AttributeMutation[] | string;
 }

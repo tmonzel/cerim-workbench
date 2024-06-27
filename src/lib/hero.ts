@@ -47,7 +47,8 @@ export const heroState = derived([attributeState, equipState, appState], (s) => 
       'attributes': new AttributeStat("Attributes"),
       'damage': new DamageStat("Attack Power"),
       
-      'guard:boost': new NumericStat("Guard Boost"),
+      'guard:sta': new NumericStat("Stability"),
+      'guard:res': new NumericStat("Resistance"),
       'guard:phy': new NumericStat("Physical Guard"),
       'guard:mag': new NumericStat("Magic Guard"),
       'guard:fir': new NumericStat("Fire Guard"),
@@ -86,13 +87,14 @@ export const heroState = derived([attributeState, equipState, appState], (s) => 
 
     // Summarize guard
     if(item.guard) {
-      hero.stats['guard:boost'].value.add(item.guard.boost);
+      hero.stats['guard:sta'].value.add(item.guard.sta);
+      hero.stats['guard:res'].value.add(item.guard.res);
       
-      hero.stats['guard:phy'].value.add(item.guard.negation.phy);
-      hero.stats['guard:mag'].value.add(item.guard.negation.mag);
-      hero.stats['guard:fir'].value.add(item.guard.negation.fir);
-      hero.stats['guard:lit'].value.add(item.guard.negation.lit);
-      hero.stats['guard:hol'].value.add(item.guard.negation.hol);
+      hero.stats['guard:phy'].value.add(item.guard.phy);
+      hero.stats['guard:mag'].value.add(item.guard.mag);
+      hero.stats['guard:fir'].value.add(item.guard.fir);
+      hero.stats['guard:lit'].value.add(item.guard.lit);
+      hero.stats['guard:hol'].value.add(item.guard.hol);
     }
 
     if(item.effects) {

@@ -287,29 +287,36 @@
       "group": "talismans",
       "weight": 0.3,
       "iconUrl": "/images/talisman-crimson-amber.png",
+      "upgrades": [
+        {
+          "iconUrl": "/images/talisman-crimson-amber-1.png",
+          "modifiers": [
+            {
+              "type": "percentual",
+              "name": "Increase Health",
+              "affects": "hp",
+              "value": 1.07
+            }
+          ]
+        },
+        {
+          "iconUrl": "/images/talisman-crimson-amber-2.png",
+          "modifiers": [
+            {
+              "type": "percentual",
+              "name": "Increase Health",
+              "affects": "hp",
+              "value": 1.08
+            }
+          ]
+        }
+      ],
       "modifiers": [
         {
           "type": "percentual",
           "name": "Increase Health",
           "affects": "hp",
           "value": 1.06
-        }
-      ]
-    },
-    "talisman:crimson-amber#1": {
-      "type": "talisman",
-      "name": "Crimson Amber Medallion",
-      "caption": "Talisman",
-      "group": "talismans",
-      "tier": 1,
-      "weight": 0.3,
-      "iconUrl": "/images/talisman-crimson-amber-1.png",
-      "modifiers": [
-        {
-          "type": "percentual",
-          "name": "Increase Health",
-          "affects": "hp",
-          "value": 1.07
         }
       ]
     },
@@ -336,29 +343,25 @@
       "group": "talismans",
       "weight": 1.5,
       "iconUrl": "/images/talisman-arsenal-charm.png",
+      "upgrades": [
+        {
+          "iconUrl": "/images/talisman-arsenal-charm-1.png",
+          "modifiers": [
+            {
+              "type": "percentual",
+              "name": "Increase equip load",
+              "affects": "equipLoad",
+              "value": 1.17
+            }
+          ]
+        }
+      ],
       "modifiers": [
         {
           "type": "percentual",
           "name": "Increase equip load",
           "affects": "equipLoad",
           "value": 1.15
-        }
-      ]
-    },
-    "talisman:arsenal-charm#1": {
-      "type": "talisman",
-      "name": "Arsenal Charm",
-      "caption": "Talisman",
-      "group": "talismans",
-      "tier": 1,
-      "weight": 1.5,
-      "iconUrl": "/images/talisman-arsenal-charm-1.png",
-      "modifiers": [
-        {
-          "type": "percentual",
-          "name": "Increase Equip Load",
-          "affects": "equipLoad",
-          "value": 1.17
         }
       ]
     },
@@ -466,6 +469,21 @@
         }
       ]
     },
+    "talisman:prince-of-death": {
+      "type": "talisman",
+      "name": "Prince of Death’s Cyst",
+      "caption": "Talisman",
+      "group": "talismans",
+      "weight": 0.6,
+      "iconUrl": "/images/talisman-prince-of-death.png",
+      "modifiers": [
+        {
+          "name": "Raise Vitality",
+          "affects": "res:vitality",
+          "value": 140
+        }
+      ]
+    },
     "armor:navy-hood": {
       "type": "armor",
       "name": "Navy Hood",
@@ -547,7 +565,7 @@
         "focus": 8,
         "vitality": 8,
         "poise": 5
-      },
+      }, 
       "defense": {
         "attack": { "strike": 2.8, "slash": 3.3, "pierce": 3.1 },
         "negation": { "phy": 3.2, "mag": 2.7, "fir": 3.1, "lit": 2.1, "hol": 2.7 }
@@ -599,24 +617,26 @@
       "caption": "Greatshield",
       "group": "shields",
       "weight": 11.5,
+      "maxTiers": 10,
       "requirements": { "attributes": { "str": 22 } },
       "iconUrl": "/images/shield-icon.png",
-      "config": "basic",
-      "guard": {
-        "negation": {
+      "crit": 100,
+      "config": {
+        "guard": {
           "phy": 95,
           "mag": 49,
           "fir": 45,
           "lit": 51,
-          "hol": 48
+          "hol": 48,
+          "sta": 59,
+          "res": 27
         },
-        "boost": 59
-      },
-      "upgrades": {
-        "standard": {
-          "attack": { "phy": 133, "sta": 84 },
-          "scaling": { "str": 20 } 
-        }
+        "attack": { 
+          "phy": 111, 
+          "sta": 70 
+        },
+        "scaling": { "str": 50 },
+        "schema": "8300"
       }
     },
     "weapon:nightrider-glaive": {
@@ -628,8 +648,8 @@
       "requirements": { "attributes": { "str": 26, "dex": 10 } },
       "crit": 100,
       "iconUrl": "/images/weapon-nightrider-glaive.png",
-      "config": "basic",
-      "upgrades": {
+      "defaults": "weapon:basic",
+      "affinities": {
         "standard": {
           "attack": { "phy": 129, "sta": 70 },
           "scaling": { "str": 79, "dex": 5 }
@@ -655,18 +675,17 @@
       "requirements": { "attributes": { "str": 8, "dex": 11 } },
       "crit": 100,
       "iconUrl": "/images/weapon-cane-sword.png",
-      "config": "basic",
+      "defaults": "weapon:basic",
       "guard": {
-        "negation": {
-          "phy": 41,
-          "mag": 27,
-          "fir": 27,
-          "lit": 27,
-          "hol": 27
-        },
-        "boost": 27
+        "phy": 41,
+        "mag": 27,
+        "fir": 27,
+        "lit": 27,
+        "hol": 27,
+        "sta": 27,
+        "res": 13
       },
-      "upgrades": {
+      "affinities": {
         "standard": {
           "attack": { "phy": 96, "sta": 43 },
           "scaling": { "str": 20, "dex": 55 }
@@ -682,8 +701,8 @@
       "requirements": { "attributes": { "str": 8, "dex": 10 } },
       "crit": 100,
       "iconUrl": "/images/weapon-short-sword.png",
-      "config": "basic",
-      "upgrades": {
+      "defaults": "weapon:basic",
+      "affinities": {
         "standard": {
           "attack": { "phy": 102, "sta": 45 },
           "scaling": { "str": 37, "dex": 48 }
@@ -761,10 +780,10 @@
       "requirements": { 
         "attributes": { "str": 5, "dex": 9 } 
       },
-      "tiers ": 25,
+      "maxTiers ": 25,
       "crit": 130,
-      "config": "basic",
-      "upgrades": {
+      "defaults": "weapon:basic",
+      "affinities": {
         "standard": {
           "attack": { "phy": 74, "sta": 30 },
           "scaling": { "str": 35, "dex": 65 }
@@ -1232,38 +1251,6 @@
 				]
 			}
 		},
-		"6000": {
-			"attack": {
-				"phy": [0.95, 2.2],
-				"mag": [0.95, 2.2],
-				"fir": [0.95, 2.2],
-				"lit": [0.95, 2.2],
-				"hol": [0.95, 2.2],
-				"sta": [0.95, 2.2]
-			},
-			"scaling": {
-				"str": [
-					1.4, 1.46, 1.52, 1.58, 1.64, 1.7, 1.76, 1.82, 1.88, 1.94, 2, 2.05, 2.1, 2.15, 2.2, 2.25,
-					2.3, 2.35, 2.4, 2.45, 2.5, 2.52, 2.54, 2.56, 2.58, 2.6
-				],
-				"dex": [
-					0.5, 0.53, 0.56, 0.59, 0.62, 0.65, 0.68, 0.71, 0.74, 0.77, 0.8, 0.83, 0.86, 0.89, 0.92,
-					0.95, 0.98, 1.01, 1.04, 1.07, 1.1, 1.12, 1.14, 1.16, 1.18, 1.2
-				],
-				"int": [
-					1, 1.04, 1.08, 1.12, 1.16, 1.2, 1.24, 1.28, 1.32, 1.36, 1.4, 1.43, 1.46, 1.49, 1.52, 1.55,
-					1.58, 1.61, 1.64, 1.67, 1.7, 1.72, 1.74, 1.76, 1.78, 1.8
-				],
-				"fth": [
-					1, 1.04, 1.08, 1.12, 1.16, 1.2, 1.24, 1.28, 1.32, 1.36, 1.4, 1.43, 1.46, 1.49, 1.52, 1.55,
-					1.58, 1.61, 1.64, 1.67, 1.7, 1.72, 1.74, 1.76, 1.78, 1.8
-				],
-				"arc": [
-					1, 1.04, 1.08, 1.12, 1.16, 1.2, 1.24, 1.28, 1.32, 1.36, 1.4, 1.43, 1.46, 1.49, 1.52, 1.55,
-					1.58, 1.61, 1.64, 1.67, 1.7, 1.72, 1.74, 1.76, 1.78, 1.8
-				]
-			}
-		},
 		"5000": {
 			"attack": {
 				"phy": [0.95, 2.2],
@@ -1295,56 +1282,124 @@
 					1.58, 1.61, 1.64, 1.67, 1.7, 1.72, 1.74, 1.76, 1.78, 1.8
 				]
 			}
+		},
+    "6000": {
+			"attack": {
+				"phy": [0.95, 2.2],
+				"mag": [0.95, 2.2],
+				"fir": [0.95, 2.2],
+				"lit": [0.95, 2.2],
+				"hol": [0.95, 2.2],
+				"sta": [0.95, 2.2]
+			},
+			"scaling": {
+				"str": [
+					1.4, 1.46, 1.52, 1.58, 1.64, 1.7, 1.76, 1.82, 1.88, 1.94, 2, 2.05, 2.1, 2.15, 2.2, 2.25,
+					2.3, 2.35, 2.4, 2.45, 2.5, 2.52, 2.54, 2.56, 2.58, 2.6
+				],
+				"dex": [
+					0.5, 0.53, 0.56, 0.59, 0.62, 0.65, 0.68, 0.71, 0.74, 0.77, 0.8, 0.83, 0.86, 0.89, 0.92,
+					0.95, 0.98, 1.01, 1.04, 1.07, 1.1, 1.12, 1.14, 1.16, 1.18, 1.2
+				],
+				"int": [
+					1, 1.04, 1.08, 1.12, 1.16, 1.2, 1.24, 1.28, 1.32, 1.36, 1.4, 1.43, 1.46, 1.49, 1.52, 1.55,
+					1.58, 1.61, 1.64, 1.67, 1.7, 1.72, 1.74, 1.76, 1.78, 1.8
+				],
+				"fth": [
+					1, 1.04, 1.08, 1.12, 1.16, 1.2, 1.24, 1.28, 1.32, 1.36, 1.4, 1.43, 1.46, 1.49, 1.52, 1.55,
+					1.58, 1.61, 1.64, 1.67, 1.7, 1.72, 1.74, 1.76, 1.78, 1.8
+				],
+				"arc": [
+					1, 1.04, 1.08, 1.12, 1.16, 1.2, 1.24, 1.28, 1.32, 1.36, 1.4, 1.43, 1.46, 1.49, 1.52, 1.55,
+					1.58, 1.61, 1.64, 1.67, 1.7, 1.72, 1.74, 1.76, 1.78, 1.8
+				]
+			}
+		},
+    "8300": {
+			"attack": {
+				"phy": [1.2, 2.3],
+				"mag": [1.2, 2.3],
+				"fir": [1.2, 2.3],
+				"lit": [1.2, 2.3],
+				"hol": [1.2, 2.3],
+				"sta": [1.2, 2]
+			},
+			"scaling": {
+				"str": [1, 1.08, 1.16, 1.24, 1.32, 1.4, 1.48, 1.56, 1.64, 1.72, 1.8],
+				"dex": [1, 1.08, 1.16, 1.24, 1.32, 1.4, 1.48, 1.56, 1.64, 1.72, 1.8],
+				"int": [1, 1.08, 1.16, 1.24, 1.32, 1.4, 1.48, 1.56, 1.64, 1.72, 1.8],
+				"fth": [1, 1.08, 1.16, 1.24, 1.32, 1.4, 1.48, 1.56, 1.64, 1.72, 1.8],
+				"arc": [1, 1.08, 1.16, 1.24, 1.32, 1.4, 1.48, 1.56, 1.64, 1.72, 1.8]
+			},
+      "guard": {
+        "phy": [1, 1],
+        "mag": [1, 1],
+        "fir": [1, 1],
+        "lit": [1, 1],
+        "hol": [1, 1],
+				"sta": [1, 1.1],
+        "res": [1, 1]
+      }
 		}
 	},
 
-  "configurations": {
-    "basic": {
-      "attack": {
-        "phy": [0.85, 1.8],
-        "mag": [0.85, 1.8],
-        "fir": [0.85, 1.8],
-        "lit": [0.85, 1.8],
-        "hol": [0.85, 1.8],
-        "sta": [1, 2]
-      },
-      "scaling": {
-        "str": [1, 1.9],
-        "dex": [1, 1.9],
-        "int": [1, 2],
-        "fth": [1, 1.8],
-        "arc": [1, 1.8]
-      },
-      "distribution": {
-        "str": ["phy"],
-        "dex": ["phy", "lit"],
-        "int": ["mag"],
-        "fth": ["fir", "hol"]
-      },
-      "mutations": [
-        {
-          "breakpoint": 1,
-          "grow": 0,
-          "exp": 1.2
-        },
-        {
-          "breakpoint": 18,
-          "grow": 25,
-          "exp": -1.2
-        },
-        {
-          "breakpoint": 60,
-          "grow": 75
-        },
-        {
-          "breakpoint": 80,
-          "grow": 90
-        },
-        {
-          "breakpoint": 150,
-          "grow": 110
-        }
-      ]
+  "presets": {
+    "weapon:basic": {
+      "maxTiers": 25,
+
+      "affinities": {
+        "standard": { "mutations": "weapon:default" },
+        "heavy": { "mutations": "weapon:heavy_keen", "schema": "100" },
+        "keen": { "mutations": "weapon:heavy_keen", "schema": "200" },
+        "quality": { "mutations": "weapon:quality", "schema": "300" },
+        "fire": { "mutations": "weapon:default", "schema": "400" },
+        "flame": { "mutations": "weapon:default", "schema": "500" },
+        "lightning": { "mutations": "weapon:default", "schema": "600" },
+        "sacred": { "mutations": "weapon:default", "schema": "700" },
+        "magic": { "mutations": "weapon:default", "schema": "800" },
+        "cold": { "mutations": "weapon:default", "schema": "900" },
+        "poison": { "mutations": "weapon:default", "schema": "1000" },
+        "blood": { "mutations": "weapon:default", "schema": "1100" },
+        "occult": { "mutations": "weapon:occult", "schema": "1200" }
+      }
     }
+  },
+
+  "mutations": {
+    "weapon:default": [
+      { "breakpoint": 1, "grow": 0, "exp": 1.2 },
+      { "breakpoint": 18, "grow": 25, "exp": -1.2 },
+      { "breakpoint": 60, "grow": 75 },
+      { "breakpoint": 80, "grow": 90 },
+      { "breakpoint": 150, "grow": 110 }
+    ],
+    "weapon:heavy_keen": [
+      { "breakpoint": 1, "grow": 0, "exp": 1.2 },
+      { "breakpoint": 20, "grow": 35, "exp": -1.2 },
+      { "breakpoint": 60, "grow": 75 },
+      { "breakpoint": 80, "grow": 90 },
+      { "breakpoint": 150, "grow": 110 }
+    ],
+    "weapon:elemental": [
+      { "breakpoint": 1, "grow": 0 },
+      { "breakpoint": 20, "grow": 40 },
+      { "breakpoint": 50, "grow": 80 },
+      { "breakpoint": 80, "grow": 95 },
+      { "breakpoint": 99, "grow": 100 }
+    ],
+    "weapon:occult": [
+      { "breakpoint": 1, "grow": 0, "exp": 1.2 },
+      { "breakpoint": 20, "grow": 35, "exp": -1.2 },
+      { "breakpoint": 60, "grow": 75 },
+      { "breakpoint": 80, "grow": 90 },
+      { "breakpoint": 150, "grow": 110 }
+    ],
+    "weapon:quality": [
+      { "breakpoint": 1, "grow": 0, "exp": 1.2 },
+      { "breakpoint": 16, "grow": 25, "exp": -1.2 },
+      { "breakpoint": 60, "grow": 75 },
+      { "breakpoint": 80, "grow": 90 },
+      { "breakpoint": 150, "grow": 110 }
+    ]
   }
 }

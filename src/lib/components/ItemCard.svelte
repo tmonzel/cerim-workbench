@@ -28,7 +28,7 @@
   </div>
   <div class="grow">
     <div class="font-medium relative text-lg">
-      {#if item.affinity && item.upgrades}
+      {#if item.affinity && item.affinities}
         <span class="font-bold">{AFFINITY_NAME_MAP[item.affinity]}</span>
       {/if} 
       {item.name} {#if item.tier > 0}(+{item.tier}){/if}
@@ -175,15 +175,27 @@
 
           <div class="flex gap-5">
             <div class="basis-1/3">
-              <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">Boost</dt>
+              <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">Stability</dt>
               <dd class="text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2 sm:mt-0">
-                {item.guard.boost}
+                {Math.round(item.guard.sta * 10) / 10}
+              </dd>
+            </div>
+            <div class="basis-1/3">
+              <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">Resistance</dt>
+              <dd class="text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2 sm:mt-0">
+                {Math.round(item.guard.res * 10) / 10}
               </dd>
             </div>
             <div class="basis-2/3">
               <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">Elemental</dt>
               <dd class="text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2 sm:mt-0">
-                <ElementalGrid value={item.guard.negation} />
+                <ElementalGrid value={ { 
+                  phy: item.guard.phy, 
+                  mag: item.guard.mag, 
+                  fir: item.guard.fir, 
+                  lit: item.guard.lit, 
+                  hol: item.guard.hol 
+                }} />
               </dd>
             </div>
           </div>
