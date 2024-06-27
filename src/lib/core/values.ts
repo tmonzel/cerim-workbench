@@ -1,47 +1,48 @@
 import { ComplexValue } from './ComplexValue';
-import { AttackDamageType, AttributeType, type ResistanceType } from './types';
+import { DynamicNumber } from './DynamicNumber';
+import { DamageType, AttributeType, type ResistanceType } from './types';
 
-export class ComplexDamage extends ComplexValue<AttackDamageType> {
-  constructor(value?: Partial<Record<AttackDamageType, number>>) {
+export class ComplexDamage extends ComplexValue<DamageType> {
+  constructor(value?: Partial<Record<DamageType, DynamicNumber>>) {
     super({
-      [AttackDamageType.PHYSICAL]: 0,
-      [AttackDamageType.MAGIC]: 0,
-      [AttackDamageType.FIRE]: 0,
-      [AttackDamageType.LIGHTNING]: 0,
-      [AttackDamageType.HOLY]: 0,
-      [AttackDamageType.FROSTBITE]: 0,
-      [AttackDamageType.POISON]: 0,
-      [AttackDamageType.HEMORRHAGE]: 0,
-      [AttackDamageType.STAMINA]: 0,
+      [DamageType.PHYSICAL]: new DynamicNumber(),
+      [DamageType.MAGIC]: new DynamicNumber(),
+      [DamageType.FIRE]: new DynamicNumber(),
+      [DamageType.LIGHTNING]: new DynamicNumber(),
+      [DamageType.HOLY]: new DynamicNumber(),
+      [DamageType.FROSTBITE]: new DynamicNumber(),
+      [DamageType.POISON]: new DynamicNumber(),
+      [DamageType.HEMORRHAGE]: new DynamicNumber(),
+      [DamageType.STAMINA]: new DynamicNumber(),
       ...value
     });
   }
 }
 
 export class ComplexAttributes extends ComplexValue<AttributeType> {
-  constructor(value?: Partial<Record<AttributeType, number>>) {
+  constructor(value?: Partial<Record<AttributeType, DynamicNumber>>) {
     super({
-      [AttributeType.VIGOR]: 0,
-      [AttributeType.ENDURANCE]: 0,
-      [AttributeType.STRENGTH]: 0,
-      [AttributeType.DEXTERITY]: 0,
-      [AttributeType.MIND]: 0,
-      [AttributeType.INTELLIGENCE]: 0,
-      [AttributeType.FAITH]: 0,
-      [AttributeType.ARCANE]: 0,
+      [AttributeType.VIGOR]: new DynamicNumber(),
+      [AttributeType.ENDURANCE]: new DynamicNumber(),
+      [AttributeType.STRENGTH]: new DynamicNumber(),
+      [AttributeType.DEXTERITY]: new DynamicNumber(),
+      [AttributeType.MIND]: new DynamicNumber(),
+      [AttributeType.INTELLIGENCE]: new DynamicNumber(),
+      [AttributeType.FAITH]: new DynamicNumber(),
+      [AttributeType.ARCANE]: new DynamicNumber(),
       ...value
     });
   }
 }
 
 export class ComplexResistance extends ComplexValue<ResistanceType> {
-  constructor(value?: Partial<Record<ResistanceType, number>>) {
+  constructor(value?: Partial<Record<ResistanceType, DynamicNumber>>) {
     super({
-      immunity: 0,
-      robustness: 0,
-      focus: 0,
-      vitality: 0,
-      poise: 0,
+      immunity: new DynamicNumber(),
+      robustness: new DynamicNumber(),
+      focus: new DynamicNumber(),
+      vitality: new DynamicNumber(),
+      poise: new DynamicNumber(),
       ...value
     });
   }

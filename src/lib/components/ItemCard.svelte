@@ -1,14 +1,21 @@
 <script lang="ts">
-	import DamageNegationStat from '$lib/components/DamageNegationStat.svelte';
-	import ValueBadge from '$lib/components/ValueBadge.svelte';
-	import { AFFINITY_NAME_MAP, Item, mapModifierValue } from '$lib/core';
+	import { AFFINITY_NAME_MAP, ComplexAttributes, ComplexDamage, Item, attributeRecord, mapModifierValue, roundValue, sum } from '$lib/core';
+	import DamageBadge from './DamageBadge.svelte';
 	import DamageDetail from './DamageDetail.svelte';
+	import ElementalGrid from './ElementalGrid.svelte';
 
   export let item: Item;
   export let slotted = false;
+
+  let protection: number;
   
-  $: totalResistance = item.getTotalResistance();
   $: scalingFlags = item.getScalingFlags();
+  $: {
+
+    if(item.defense) {
+      protection = sum(item.defense.negation);
+    }
+  }
 </script>
 
 <div class="flex gap-x-3 dark:text-zinc-200">
@@ -30,18 +37,18 @@
     <p class="text-sm dark:text-zinc-400">{item.caption}</p>
   
     <div class="flex items-center gap-x-12 mt-3 mb-2">
-      {#if item.type === 'weapon'}
+      {#if item.type === 'weapon' || item.type === 'shield'}
         <p class="text-xl flex gap-2">
-          <ValueBadge value={item.attack} />
+          <DamageBadge damage={item.scaledDamage} />
         </p>
       {/if}
 
-      {#if totalResistance > 0}
+      {#if protection}
         <p class="text-xl font-light flex items-center gap-x-1">
           <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#ddd">
             <path d="M480-80q-139-35-229.5-159.5T160-516v-244l320-120 320 120v244q0 152-90.5 276.5T480-80Zm0-84q104-33 172-132t68-220v-189l-240-90-240 90v189q0 121 68 220t172 132Zm0-316Z"/>
           </svg>
-          <ValueBadge value={totalResistance} />
+          {protection}
         </p>
       {/if}
 
@@ -57,27 +64,41 @@
 
     {#if item.type === 'weapon'}
       <div class="mb-3">
-        <DamageDetail damage={item.attack} />
+        <DamageDetail damage={item.scaledDamage} />
       </div>
-      <!--<div class="mb-3 max-w-16">
-        <DamageDistBar damage={item.attack} />
-      </div>-->
     {/if}
 
-    <div class="flex gap-x-4 items-center">
+    <div class="flex gap-x-8 items-center">
+      {#if item.requirements && item.requirements.attributes}
+        <div class="flex items-start text-sm">
+          <svg class="me-2" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e4e4e7"><path d="M655-200 513-342l56-56 85 85 170-170 56 57-225 226Zm0-320L513-662l56-56 85 85 170-170 56 57-225 226ZM80-280v-80h360v80H80Zm0-320v-80h360v80H80Z"/></svg>
+          <div>
+          {#each Object.entries(item.requirements.attributes) as [k, v]}
+            <div class="flex items-center">
+              <span style:background-color={attributeRecord[k].color} class="me-2 w-2.5 h-2.5 rounded"></span>
+              <span class="text-white">{v}</span>
+            </div>
+          {/each}
+          </div>
+        </div>
+      {/if}
+
       {#if scalingFlags.length > 0}
-        <p class="text-sm">
-          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e4e4e7">
+        <div class="flex items-start text-sm">
+          <svg class="me-2" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e4e4e7">
             <path d="m136-240-56-56 296-298 160 160 208-206H640v-80h240v240h-80v-104L536-320 376-480 136-240Z"/>
           </svg>
-          {#each scalingFlags as flag}
           <div>
-            <span class="ml-1">{flag.name}</span>
-            <span class="ml-1 text-teal-400">{flag.id}</span>
-          </div>
+          {#each scalingFlags as flag}
+            <div class="flex items-center">
+              <span style:background-color={attributeRecord[flag.attr].color} class="me-2 w-2.5 h-2.5 rounded"></span>
+              <span class="text-white">{flag.id}</span>
+            </div>
           {/each}
-        </p>
+          </div>
+        </div>
       {/if}
+
       {#if item.attackSpeed !== undefined}
       <p class="text-xs flex items-center">
         <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e4e4e7"><path d="M418-340q24 24 62 23.5t56-27.5l224-336-336 224q-27 18-28.5 55t22.5 61Zm62-460q59 0 113.5 16.5T696-734l-76 48q-33-17-68.5-25.5T480-720q-133 0-226.5 93.5T160-400q0 42 11.5 83t32.5 77h552q23-38 33.5-79t10.5-85q0-36-8.5-70T766-540l48-76q30 47 47.5 100T880-406q1 57-13 109t-41 99q-11 18-30 28t-40 10H204q-21 0-40-10t-30-28q-26-45-40-95.5T80-400q0-83 31.5-155.5t86-127Q252-737 325-768.5T480-800Zm7 313Z"/></svg>
@@ -87,7 +108,7 @@
     </div>
 
     <dl class="divide-y divide-gray-100/20 my-3">
-      {#if totalResistance > 0}
+      {#if item.resistance}
       <div class="py-2 sm:gap-2 sm:px-0 mb-3">
         <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-300">Resistance</dt>
         <dd class="text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2 sm:mt-0"></dd>
@@ -112,12 +133,62 @@
       </div>
       {/if}
       
-      {#if item.getTotalDamageNegation() > 0 || item.getTotalElementalDamageNegation() > 0}
+      {#if item.defense}
       <div class="px-4 py-4 sm:grid sm:gap-2 sm:px-0">
-        <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-300">Damage Negation</dt>
+        <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-300">Defense</dt>
         <dd class="mt-1 text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2 sm:mt-0"></dd>
 
-        <DamageNegationStat value={item.damageNegation} />
+        <div>
+          <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">Strike</dt>
+          <dd class="text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2 sm:mt-0">
+            {item.defense.attack.strike}
+          </dd>
+        </div>
+        
+        <div>
+          <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">Slash</dt>
+          <dd class="text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2 sm:mt-0">
+            {item.defense.attack.slash}
+          </dd>
+        </div>
+        
+        <div>
+          <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">Pierce</dt>
+          <dd class="text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2 sm:mt-0">
+            {item.defense.attack.pierce}
+          </dd>
+        </div>
+        
+        <div>
+          <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">Elemental</dt>
+          <dd class="text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2 sm:mt-0">
+            <ElementalGrid value={item.defense.negation} />
+          </dd>
+        </div>
+      </div>
+      {/if}
+
+      {#if item.guard}
+      <div class="px-4 py-4 sm:grid sm:gap-2 sm:px-0">
+        <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-300">Guard</dt>
+        <dd class="mt-1 text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2 sm:mt-0">
+
+          <div class="flex gap-5">
+            <div class="basis-1/3">
+              <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">Boost</dt>
+              <dd class="text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2 sm:mt-0">
+                {item.guard.boost}
+              </dd>
+            </div>
+            <div class="basis-2/3">
+              <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">Elemental</dt>
+              <dd class="text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2 sm:mt-0">
+                <ElementalGrid value={item.guard.negation} />
+              </dd>
+            </div>
+          </div>
+
+        </dd>
       </div>
       {/if}
     </dl>
@@ -133,10 +204,25 @@
             </dd>
           </div>
         {:else}
+          {@const val = mapModifierValue(modifier.affects, modifier.value)}
+          
           <div class="py-2 sm:grid sm:grid-cols-6 sm:gap-4 sm:px-0">
             <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-200 sm:col-span-3">{modifier.name}</dt>
             <dd class="mt-1 text-sm leading-6 text-gray-700 dark:text-zinc-200 sm:col-span-3 sm:mt-0">
-              <ValueBadge value={mapModifierValue(modifier.affects, modifier.value)} />
+              {#if val instanceof ComplexDamage}
+                {roundValue(val.getTotal())}
+              {:else if val instanceof ComplexAttributes}
+                <div class="grid grid-cols-2">
+                  {#each Object.entries(val.getPresentValues()) as [t, v]}
+                    <div class="flex items-center">
+                      <span style:background-color={attributeRecord[t].color} class="me-1 w-2.5 h-2.5 rounded"></span>
+                      <span>+{v.total}</span>
+                    </div>
+                  {/each}
+                </div>
+              {:else if typeof modifier.value === 'number'}
+                +{modifier.value}
+              {/if}
             </dd>
           </div>
         {/if}

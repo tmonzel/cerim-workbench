@@ -9,15 +9,11 @@ export type Mutation = {
 
 export type Maybe<T> = T | null | undefined;
 
-export type Stat<T = number> = {
+export type Stat = {
   name: string;
-  base: T;
-  added: T;
-  multiplier: number;
-
-  hasAdded(): boolean;
-  isModified(): boolean;
-  getValue(): T;
+  value: {
+    modified: boolean;
+  };
 }
 
 export type DamageValue = { [0]: number; [1]: number; [2]: number } | number;
@@ -36,11 +32,13 @@ export type HeroStats = {
   'equipLoad': NumericStat;
   'damage': DamageStat;
   'attackSpeed': NumericStat;
+  
   'res:immunity': NumericStat;
   'res:robustness': NumericStat;
   'res:focus': NumericStat;
   'res:vitality': NumericStat;
   'res:poise': NumericStat;
+  
   'def:strike': NumericStat;
   'def:slash': NumericStat;
   'def:pierce': NumericStat;
@@ -49,6 +47,14 @@ export type HeroStats = {
   'def:lit': NumericStat;
   'def:fir': NumericStat;
   'def:mag': NumericStat;
+
+  'guard:boost': NumericStat;
+  'guard:phy': NumericStat;
+  'guard:mag': NumericStat;
+  'guard:fir': NumericStat;
+  'guard:lit': NumericStat;
+  'guard:hol': NumericStat;
+
   'attributes': AttributeStat;
 };
 
@@ -71,7 +77,7 @@ export enum AttributeType {
   ARCANE = 'arc'
 }
 
-export enum AttackDamageType {
+export enum DamageType {
   PHYSICAL = 'phy',
   MAGIC = 'mag',
   FIRE = 'fir',
@@ -110,6 +116,10 @@ export enum AffinityType {
   OCCULT = 'occult',
 }
 
+export type Affinity = {
+  name: string;
+}
+
 export type Resistance = {
   immunity: number;
   robustness: number;
@@ -118,9 +128,21 @@ export type Resistance = {
   poise: number;
 }
 
-export type DamageNegation = {
+export type Guard = {
+  negation: {
+    [DamageType.PHYSICAL]: number;
+    [DamageType.MAGIC]: number; 
+    [DamageType.FIRE]: number;
+    [DamageType.LIGHTNING]: number; 
+    [DamageType.HOLY]: number;
+  };
+
+  boost: number;
+};
+
+export type Defense = {
   attack: AttackDamageNegation;
-  elemental: ElementalDamageNegation;
+  negation: DamageNegation;
 }
 
 export type AttackDamageNegation = {
@@ -129,20 +151,20 @@ export type AttackDamageNegation = {
   pierce: number;
 }
 
-export type ElementalDamageNegation = {
-  [AttackDamageType.PHYSICAL]: number;
-  [AttackDamageType.MAGIC]: number; 
-  [AttackDamageType.FIRE]: number;
-  [AttackDamageType.LIGHTNING]: number; 
-  [AttackDamageType.HOLY]: number;
+export type DamageNegation = {
+  [DamageType.PHYSICAL]: number;
+  [DamageType.MAGIC]: number; 
+  [DamageType.FIRE]: number;
+  [DamageType.LIGHTNING]: number; 
+  [DamageType.HOLY]: number;
 }
 
+export type Damage = Partial<Record<DamageType, number>>;
+
 export type BaseScalingValue = { [0]: number; [1]: string | string[] } | number;
-export type AttackBase = Partial<Record<AttackDamageType, number>>;
 export type ScalingBase = Partial<Record<AttributeType, BaseScalingValue>>;
-export type Guard = Record<string, NumberRange>;
 export type NumberRange = { [0]: number, [1]: number };
-export type ItemType = 'weapon' | 'armor' | 'talisman';
+export type ItemType = 'weapon' | 'armor' | 'talisman' | 'shield';
 
 export type ItemDef = {
   name: string;
@@ -159,7 +181,8 @@ export type ItemDef = {
   description?: string;
   requirements: ItemRequirements;
   resistance?: Resistance,
-  damageNegation?: DamageNegation;
+  defense?: Defense;
+  guard?: Guard;
   affinity?: AffinityType;
   iconUrl?: string;
   effects?: string[];
@@ -184,13 +207,13 @@ export type ModifierScope = 'item' | 'hero';
 export type ModifierType = 'flat' | 'percentual';
 
 export type ItemConfig = {
-  attack?: Record<AttackDamageType, NumberRange>;
+  attack?: Record<DamageType, NumberRange>;
   scaling?: Record<AttributeType, NumberRange>;
   mutations?: AttributeMutation[];
 }
 
 export type UpgradeSchema = {
-  attack?: Record<AttackDamageType, NumberRange>;
+  attack?: Record<DamageType, NumberRange>;
   scaling?: Record<AttributeType, number[]>;
 }
 
@@ -199,7 +222,7 @@ export type ItemRequirements = {
 }
 
 export type ItemUpgrade = {
-  attack?: AttackBase;
+  attack?: Partial<Record<DamageType, number>>;
   guard?: Guard;
   scaling?: ScalingBase;
   schema?: string;

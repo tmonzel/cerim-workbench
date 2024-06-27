@@ -1,9 +1,8 @@
 <script lang="ts">
-	import type { Attribute } from '$lib/core';
 	import { appState } from '$lib/state';
 	import { createEventDispatcher } from 'svelte';
 
-  export let attribute: Attribute;
+  export let attribute: { color: string; name: string };
   export let value: number;
   export let offset: number;
 

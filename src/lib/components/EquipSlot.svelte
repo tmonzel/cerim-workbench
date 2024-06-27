@@ -56,7 +56,7 @@
 
 <div class="relative dark:bg-stone-600/20 rounded-md">
   {#if item && item.upgrades && item.tier >= 0}
-    <div class="absolute top-5 right-5 z-40">
+    <div class="absolute top-5 right-5">
       <ItemUpgradeBar {item} />
     </div>
   {/if}
@@ -76,9 +76,11 @@
       </div>
 
       {#if !checkRequirements(item, $attributeStore)}
-        <div class="flex justify-end">
-          <Badge type="alert">Requirements not met</Badge>
-        </div>
+      <div class="flex justify-center mt-5">
+        <span class="text-xs rounded-md bg-pink-600/10 px-1.5 py-0.5 font-medium text-pink-400 ring-1 ring-inset ring-pink-400">
+          Requirements not met
+        </span>
+      </div>
       {/if}
 
     {:else}

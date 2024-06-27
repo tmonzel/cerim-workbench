@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { AFFINITY_NAME_MAP, AffinityType } from '$lib/core';
+	import { AFFINITY_NAME_MAP, AffinityType, affinityRecord } from '$lib/core';
 	import { createEventDispatcher } from 'svelte';
 
   export let value: AffinityType = AffinityType.STANDARD;
@@ -19,7 +19,7 @@
 
 <div class="relative">
   <button type="button" class="inline-flex items-center hover:text-amber-300" aria-expanded={show} on:click={() => show = !show}>
-    <span>{AFFINITY_NAME_MAP[value]}</span>
+    <span>{affinityRecord[value].name}</span>
     <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
       <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
     </svg>

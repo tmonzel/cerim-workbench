@@ -38,7 +38,7 @@ export const attributeState = derived([attributeStore, equipStore], ([attributes
     const t = n as AttributeType;
     attributes[t] = { 
       ...attr, 
-      offset: offsetAttribute.value[t] ?? 0
+      offset: offsetAttribute.value[t].total
     };
   }
 

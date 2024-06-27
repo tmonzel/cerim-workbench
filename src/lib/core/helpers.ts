@@ -1,5 +1,41 @@
+import { DynamicNumber } from './DynamicNumber';
 import { AttributeType, type AffectedStat, type AttributeMutation, type AttributeValue } from './types';
 import { ComplexAttributes, type ComplexDamage } from './values';
+
+export function sum<T extends string>(v: Partial<Record<T, number>>): number {
+  let s = 0;
+
+  for(const k in v) {
+    s += v[k] ?? 0;
+  }
+
+  return s;
+}
+
+export function getValueDistribution<T extends string = string>(v: Partial<Record<T, number>>): { amount: number; value: number; key: T; }[] {
+  const dist: { amount: number; value: number; key: T }[] = [];
+  const total = sum(v);
+  const n = 100 / total;
+
+  for(const k in v) {
+    const b = v[k];
+
+    if(b === 0) {
+      continue;
+    }
+
+    if(b !== undefined) {
+      dist.push({ 
+        key: k,
+        value: b,
+        amount: Math.round(n * b) / 100 
+      });
+    }
+    
+  }
+  
+  return dist;
+}
 
 export function scaleValue(value: number, span: number[] = [1, 1], rate: number = -0.01) {
   let v = 0;
@@ -29,21 +65,21 @@ export function roundValue(value: number, decimals: number = 1): number {
   return value > 0 ? Math.round(value * d) / d : 0;
 }
 
-export function mapModifierValue(stat: AffectedStat, value: number | AttributeValue[]): number | ComplexAttributes | ComplexDamage {
-  const attributes: Partial<Record<AttributeType, number>> = {}
+export function mapModifierValue(stat: AffectedStat, value: number | AttributeValue[]): DynamicNumber | ComplexAttributes | ComplexDamage {
+  const attributes: Partial<Record<AttributeType, DynamicNumber>> = {}
 
   switch(stat) {
     case 'attributes':
       if(typeof value === 'number') {
-        Object.values(AttributeType).forEach(t => attributes[t] = value);
+        Object.values(AttributeType).forEach(t => attributes[t] = new DynamicNumber(value));
       } else {
-        value.forEach((v) => attributes[v[1]] = v[0]);
+        value.forEach((v) => attributes[v[1]] = new DynamicNumber(v[0]));
       }
       
       return new ComplexAttributes(attributes);
   }
 
-  return value as number;
+  return new DynamicNumber(value as number);
 }
 
 export function getScalingId(base: number): string {

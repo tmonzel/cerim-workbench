@@ -41,7 +41,7 @@
     </div>
 
     <div>
-      <h3 class="text-lg text-zinc-500">Damage Per Second</h3>
+      <h3 class="text-lg text-zinc-500">Attack Power</h3>
       <p class="mt-2 text-5xl dark:text-zinc-200">
         {Math.round($heroState.dps * 10) / 10}
       </p>

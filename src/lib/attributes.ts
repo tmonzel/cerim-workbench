@@ -1,47 +1,5 @@
 import { writable } from 'svelte/store';
-import type { Attribute, AttributeType } from './core';
-
-export const attributeRecord: Record<AttributeType, Attribute> = {
-  vig: {
-    name: "Vigor",
-    color: "var(--attr-vig)",
-  },
-
-  end: {
-    name: "Endurance",
-    color: "var(--attr-end)",
-  },
-
-  str: {
-    name: "Strength",
-    color: "var(--attr-str)",
-  },
-
-  dex: {
-    name: "Dexterity",
-    color: "var(--attr-dex)",
-  },
-  
-  mnd: {
-    name: "Mind",
-    color: "var(--attr-mnd)",
-  },
-
-  int: {
-    name: "Intelligence",
-    color: "var(--attr-int)",
-  },
-
-  fth: {
-    name: "Faith",
-    color: "var(--attr-fth)",
-  },
-
-  arc: {
-    name: "Arcane",
-    color: "var(--attr-arc)",
-  }
-}
+import { AttributeType } from './core';
 
 export type AttributeState = Record<AttributeType, { value: number; offset: number }>;
 

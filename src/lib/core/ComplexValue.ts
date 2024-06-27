@@ -1,4 +1,6 @@
-type ValueRecord<T extends string> = Record<T, number>;
+import type { DynamicNumber } from './DynamicNumber';
+
+type ValueRecord<T extends string> = Record<T, DynamicNumber>;
 
 export type ComplexValueInterface<T extends string> = {
   add(value: ValueRecord<T>): void;
@@ -7,19 +9,17 @@ export type ComplexValueInterface<T extends string> = {
 
 export class ComplexValue<T extends string> implements ComplexValueInterface<T> {
   protected _value: ValueRecord<T>;
-  protected _origin: ValueRecord<T>;
 
   get value(): ValueRecord<T> {
     return this._value;
   }
+
+  get modified(): boolean {
+    return false;
+  }
   
   constructor(value: ValueRecord<T>) {
     this._value = { ...value };
-    this._origin = { ...value };
-  }
-
-  reset(): void {
-    this._value = { ...this._origin };
   }
 
   values(): number[] {
@@ -32,25 +32,25 @@ export class ComplexValue<T extends string> implements ComplexValueInterface<T> 
 
   add(value: Partial<ValueRecord<T>>): void {
     for(const k in value) {
-      this._value[k] += value[k] ?? 0;
+      this._value[k].add(value[k]?.flat ?? 0);
     }
   }
 
   multiply(amount: number): void {
     for(const k in this._value) {
-      this._value[k] *= amount;
+      this._value[k].addMultiplier(amount - 1);
     }
   }
 
   isPresent(key: T): boolean {
-    return this._value[key] > 0;
+    return this._value[key].isPresent();
   }
 
   getPresentValues(): Partial<ValueRecord<T>> {
     const values: Partial<ValueRecord<T>> = {};
 
     for(const k in this._value) {
-      if(this._value[k] === 0) {
+      if(!this._value[k].isPresent()) {
         continue;
       }
 
@@ -66,14 +66,16 @@ export class ComplexValue<T extends string> implements ComplexValueInterface<T> 
     const n = 100 / total;
 
     for(const k in this._value) {
-      if(this._value[k] === 0) {
+      if(!this._value[k].isPresent()) {
         continue;
       }
 
+      const total = this._value[k].total;
+
       dist.push({ 
         key: k,
-        value: this._value[k],
-        amount: Math.round(n * this._value[k]) / 100 
+        value: total,
+        amount: Math.round(n * total) / 100 
       });
     }
     
@@ -81,16 +83,15 @@ export class ComplexValue<T extends string> implements ComplexValueInterface<T> 
   }
 
   get(key: T): number {
-    return this._value[key];
+    return this._value[key].total;
   }
 
   getTotal(): number {
     let total = 0;
 
     for(const k in this._value) {
-      total += this._value[k];
+      total += this._value[k].total;
     }
-    
 
     return total;
   }

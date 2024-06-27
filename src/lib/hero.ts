@@ -1,6 +1,7 @@
 import { derived } from 'svelte/store';
 import { appState, attributeState, equipState } from './state';
-import { AttributeStat, AttributeType, DamageStat, NumericStat, calcAttributeScaling, type HeroStats } from './core';
+import { AttributeStat, AttributeType, DamageStat, DamageType, NumericStat, calcAttributeScaling, type HeroStats } from './core';
+import { DynamicNumber } from './core/DynamicNumber';
 
 export type HeroState = {
   level: number;
@@ -27,11 +28,13 @@ export const heroState = derived([attributeState, equipState, appState], (s) => 
       'weight': new NumericStat("Weight"),
       'equipLoad': new NumericStat("Equip Load"),
       'attackSpeed': new NumericStat("Attack Speed"),
+
       'res:immunity': new NumericStat("Immunity"),
       'res:robustness': new NumericStat("Robustness"),
       'res:focus': new NumericStat("Focus"),
       'res:vitality': new NumericStat("Vitality"),
       'res:poise': new NumericStat("Poise"),
+
       'def:strike': new NumericStat("Strike Defense"),
       'def:slash': new NumericStat("Slash Defense"),
       'def:pierce': new NumericStat("Pierce Defense"),
@@ -43,6 +46,13 @@ export const heroState = derived([attributeState, equipState, appState], (s) => 
 
       'attributes': new AttributeStat("Attributes"),
       'damage': new DamageStat("Attack Power"),
+      
+      'guard:boost': new NumericStat("Guard Boost"),
+      'guard:phy': new NumericStat("Physical Guard"),
+      'guard:mag': new NumericStat("Magic Guard"),
+      'guard:fir': new NumericStat("Fire Guard"),
+      'guard:lit': new NumericStat("Lightning Guard"),
+      'guard:hol': new NumericStat("Holy Guard")
     },
     effects: []
   };
@@ -52,23 +62,42 @@ export const heroState = derived([attributeState, equipState, appState], (s) => 
       continue;
     }
 
-    // Resistance summary
-    hero.stats['res:immunity'].base += item.resistance.immunity;
-    hero.stats['res:robustness'].base += item.resistance.robustness;
-    hero.stats['res:focus'].base += item.resistance.focus;
-    hero.stats['res:vitality'].base += item.resistance.vitality;
-    hero.stats['res:poise'].base += item.resistance.poise;
+    // Summarize resistance
+    if(item.resistance) {
+      hero.stats['res:immunity'].value.add(item.resistance.immunity);
+      hero.stats['res:robustness'].value.add(item.resistance.robustness);
+      hero.stats['res:focus'].value.add(item.resistance.focus);
+      hero.stats['res:vitality'].value.add(item.resistance.vitality);
+      hero.stats['res:poise'].value.add(item.resistance.poise);
+    }
 
-    // Defense summary
-    hero.stats['def:strike'].base += item.damageNegation.attack.strike;
-    hero.stats['def:slash'].base += item.damageNegation.attack.slash;
-    hero.stats['def:pierce'].base += item.damageNegation.attack.pierce;
-    
-    hero.stats['def:phy'].base +=  item.damageNegation.elemental.phy;
-    hero.stats['def:mag'].base +=  item.damageNegation.elemental.mag;
-    hero.stats['def:fir'].base +=  item.damageNegation.elemental.fir;
-    hero.stats['def:lit'].base +=  item.damageNegation.elemental.lit;
-    hero.stats['def:hol'].base +=  item.damageNegation.elemental.hol;
+    // Summarize defense
+    if(item.defense) {
+      hero.stats['def:strike'].value.add(item.defense.attack.strike);
+      hero.stats['def:slash'].value.add(item.defense.attack.slash);
+      hero.stats['def:pierce'].value.add(item.defense.attack.pierce);
+      
+      hero.stats['def:phy'].value.add(item.defense.negation.phy);
+      hero.stats['def:mag'].value.add(item.defense.negation.mag);
+      hero.stats['def:fir'].value.add(item.defense.negation.fir);
+      hero.stats['def:lit'].value.add(item.defense.negation.lit);
+      hero.stats['def:hol'].value.add(item.defense.negation.hol);
+    }
+
+    // Summarize guard
+    if(item.guard) {
+      hero.stats['guard:boost'].value.add(item.guard.boost);
+      
+      hero.stats['guard:phy'].value.add(item.guard.negation.phy);
+      hero.stats['guard:mag'].value.add(item.guard.negation.mag);
+      hero.stats['guard:fir'].value.add(item.guard.negation.fir);
+      hero.stats['guard:lit'].value.add(item.guard.negation.lit);
+      hero.stats['guard:hol'].value.add(item.guard.negation.hol);
+    }
+
+    if(item.effects) {
+      hero.effects.push( ...item.effects);
+    }
 
     for(const mod of item.modifiers) {
       if(typeof mod.value !== 'number') {
@@ -85,30 +114,33 @@ export const heroState = derived([attributeState, equipState, appState], (s) => 
         case 'res:poise':
         case 'res:vitality':
         case 'def:phy':
+        case 'def:hol':
           if(mod.type === 'percentual') {
-            hero.stats[mod.affects].multiplier += mod.value - 1;
+            hero.stats[mod.affects].value.addMultiplier(mod.value - 1);
           } else {
-            hero.stats[mod.affects].added += mod.value;
+            hero.stats[mod.affects].value.addOffset(mod.value);
           }
       }
     }
-    
+
     // Sum item damage
-    hero.stats['damage'].base.add(item.attack.value);
+    for(const damageType in item.scaledDamage) {
+      hero.stats['damage'].value.add({ [damageType]: new DynamicNumber(item.scaledDamage[damageType as DamageType]) })
+    }
 
     // Sum item weights
-    hero.stats.weight.base += item.weight;
+    hero.stats.weight.value.add(item.weight);
   }
 
-  if(hero.stats.attackSpeed.base === 0) {
+  if(!hero.stats.attackSpeed.value.isPresent()) {
     // Set attacks per second to one if no weapon equipped
-    hero.stats.attackSpeed.base = 1;
+    hero.stats.attackSpeed.value.set(1);
   }
 
   // Apply effects
   for(const effect of state.effects) {
     const attr = attributes[effect.attr as AttributeType];
-
+    
     switch(effect.affects) {
       case 'hp':
       case 'fp':
@@ -120,11 +152,11 @@ export const heroState = derived([attributeState, equipState, appState], (s) => 
       case 'def:mag':
       case 'def:fir':
       case 'def:hol':
-        hero.stats[effect.affects].base += calcAttributeScaling(attr.value + attr.offset, effect.mutations);
+        hero.stats[effect.affects].value.add(calcAttributeScaling(attr.value + attr.offset, effect.mutations));
     }
   }
 
-  const attackDamage = hero.stats['damage'].getValue();
+  const attackDamage = hero.stats['damage'].value;
   const numDistributedPoints = Object.values(attributes).reduce((p, c) => p + c.value, 0);
 
   hero.level = Math.floor(numDistributedPoints / state.attributePointsPerLevel);
@@ -132,7 +164,7 @@ export const heroState = derived([attributeState, equipState, appState], (s) => 
   hero.progress = (hero.level / state.maxLevel);
 
   hero.dps += attackDamage.getTotal();
-  hero.dps *= hero.stats.attackSpeed.getValue();
+  hero.dps *= hero.stats.attackSpeed.value.total;
 
   return hero;
 });

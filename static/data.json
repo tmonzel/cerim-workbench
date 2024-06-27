@@ -14,8 +14,6 @@
       "str": 0 
     },
     "equip": {
-      "mainHand": "weapon:dagger",
-      "pouch": "talisman:crimson-amber#1"
     }
   },
 
@@ -452,6 +450,22 @@
       ],
       "iconUrl": "/images/talisman-crucible-scale.png"
     },
+    "talisman:haligdrake": {
+      "type": "talisman",
+      "name": "Haligdrake Talisman",
+      "caption": "Talisman",
+      "group": "talismans",
+      "weight": 0.6,
+      "iconUrl": "/images/talisman-haligdrake.png",
+      "modifiers": [
+        {
+          "name": "Increase Holy Defense",
+          "affects": "def:hol",
+          "type": "percentual",
+          "value": 1.13
+        }
+      ]
+    },
     "armor:navy-hood": {
       "type": "armor",
       "name": "Navy Hood",
@@ -467,9 +481,9 @@
         "vitality": 27,
         "poise": 3
       },
-      "damageNegation": {
+      "defense": {
         "attack": { "strike": 2.1, "slash": 1.8, "pierce": 0.9 },
-        "elemental": { "phy": 1.4, "mag": 4.6, "fir": 4.7, "lit": 4.4, "hol": 4.5 }
+        "negation": { "phy": 1.4, "mag": 4.6, "fir": 4.7, "lit": 4.4, "hol": 4.5 }
       },
       "modifiers": [
         {
@@ -494,9 +508,9 @@
         "vitality": 33,
         "poise": 9
       },
-      "damageNegation": {
+      "defense": {
         "attack": { "strike": 4, "slash": 4.8, "pierce": 4.4 },
-        "elemental": { "phy": 4.6, "mag": 3.8, "fir": 4.4, "lit": 3.1, "hol": 3.8 }
+        "negation": { "phy": 4.6, "mag": 3.8, "fir": 4.4, "lit": 3.1, "hol": 3.8 }
       }
     },
     "armor:briar": {
@@ -514,9 +528,9 @@
         "vitality": 24,
         "poise": 21
       },
-      "damageNegation": {
+      "defense": {
         "attack": { "strike": 11.4, "slash": 13.5, "pierce": 12.4 },
-        "elemental": { "phy": 12.9, "mag": 10.9, "fir": 12.4, "lit": 8.8, "hol": 10.9 }
+        "negation": { "phy": 12.9, "mag": 10.9, "fir": 12.4, "lit": 8.8, "hol": 10.9 }
       }
     },
     "armor:briar-gauntlets": {
@@ -534,9 +548,9 @@
         "vitality": 8,
         "poise": 5
       },
-      "damageNegation": {
+      "defense": {
         "attack": { "strike": 2.8, "slash": 3.3, "pierce": 3.1 },
-        "elemental": { "phy": 3.2, "mag": 2.7, "fir": 3.1, "lit": 2.1, "hol": 2.7 }
+        "negation": { "phy": 3.2, "mag": 2.7, "fir": 3.1, "lit": 2.1, "hol": 2.7 }
       }
     },
     "armor:briar-greaves": {
@@ -554,9 +568,9 @@
         "vitality": 15,
         "poise": 12
       },
-      "damageNegation": {
+      "defense": {
         "attack": { "strike": 6.5, "slash": 7.7, "pierce": 7.1 },
-        "elemental": { "phy": 7.4, "mag": 6.2, "fir": 7.1, "lit": 5, "hol": 6.2 }
+        "negation": { "phy": 7.4, "mag": 6.2, "fir": 7.1, "lit": 5, "hol": 6.2 }
       }
     },
     "armor:veteran": {
@@ -574,26 +588,34 @@
         "vitality": 46,
         "poise": 38
       },
-      "damageNegation": {
+      "defense": {
         "attack": { "strike": 17, "slash": 18.7, "pierce": 17.5 },
-        "elemental": { "phy": 18.7, "mag": 13.5, "fir": 14.1, "lit": 12.8, "hol": 13.3 }
+        "negation": { "phy": 18.7, "mag": 13.5, "fir": 14.1, "lit": 12.8, "hol": 13.3 }
       }
     },
-    "weapon:cane-sword": {
+    "shield:icon": {
       "type": "weapon",
-      "name": "Cane Sword",
-      "caption": "Straight Sword",
-      "group": "swords",
-      "weight": 2.5,
-      "requirements": { "attributes": { "str": 8, "dex": 11 } },
-      "crit": 100,
-      "iconUrl": "/images/weapon-cane-sword.png",
+      "name": "Icon Shield",
+      "caption": "Greatshield",
+      "group": "shields",
+      "weight": 11.5,
+      "requirements": { "attributes": { "str": 22 } },
+      "iconUrl": "/images/shield-icon.png",
       "config": "basic",
+      "guard": {
+        "negation": {
+          "phy": 95,
+          "mag": 49,
+          "fir": 45,
+          "lit": 51,
+          "hol": 48
+        },
+        "boost": 59
+      },
       "upgrades": {
         "standard": {
-          "attack": { "phy": 96, "sta": 43 },
-          "scaling": { "str": 20, "dex": 55 },
-          "schema": "0" 
+          "attack": { "phy": 133, "sta": 84 },
+          "scaling": { "str": 20 } 
         }
       }
     },
@@ -621,6 +643,33 @@
           "attack": { "phy": 123, "sta": 70 },
           "scaling": { "str": 16, "dex": 52 },
           "schema": "200"
+        }
+      }
+    },
+    "weapon:cane-sword": {
+      "type": "weapon",
+      "name": "Cane Sword",
+      "caption": "Straight Sword",
+      "group": "swords",
+      "weight": 2.5,
+      "requirements": { "attributes": { "str": 8, "dex": 11 } },
+      "crit": 100,
+      "iconUrl": "/images/weapon-cane-sword.png",
+      "config": "basic",
+      "guard": {
+        "negation": {
+          "phy": 41,
+          "mag": 27,
+          "fir": 27,
+          "lit": 27,
+          "hol": 27
+        },
+        "boost": 27
+      },
+      "upgrades": {
+        "standard": {
+          "attack": { "phy": 96, "sta": 43 },
+          "scaling": { "str": 20, "dex": 55 }
         }
       }
     },
