@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { AFFINITY_NAME_MAP, ComplexAttributes, ComplexDamage, Item, attributeRecord, mapModifierValue, roundValue, sum } from '$lib/core';
+	import { AFFINITY_NAME_MAP, ComplexDamage, Item, attributeRecord, list, roundValue, sum } from '$lib/core';
+	import AttributeGrid from './AttributeGrid.svelte';
 	import DamageBadge from './DamageBadge.svelte';
 	import DamageDetail from './DamageDetail.svelte';
 	import ElementalGrid from './ElementalGrid.svelte';
@@ -13,7 +14,7 @@
   $: {
 
     if(item.defense) {
-      protection = sum(item.defense.negation);
+      protection = Math.round(sum({ ...item.defense.elemental, ...item.defense.physical }) * 10) / 10;
     }
   }
 </script>
@@ -73,10 +74,10 @@
         <div class="flex items-start text-sm">
           <svg class="me-2" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e4e4e7"><path d="M655-200 513-342l56-56 85 85 170-170 56 57-225 226Zm0-320L513-662l56-56 85 85 170-170 56 57-225 226ZM80-280v-80h360v80H80Zm0-320v-80h360v80H80Z"/></svg>
           <div>
-          {#each Object.entries(item.requirements.attributes) as [k, v]}
+          {#each list(item.requirements.attributes) as attr}
             <div class="flex items-center">
-              <span style:background-color={attributeRecord[k].color} class="me-2 w-2.5 h-2.5 rounded"></span>
-              <span class="text-white">{v}</span>
+              <span style:background-color={attributeRecord[attr.key].color} class="me-2 w-2.5 h-2.5 rounded"></span>
+              <span class="text-white">{attr.value}</span>
             </div>
           {/each}
           </div>
@@ -109,24 +110,22 @@
 
     <dl class="divide-y divide-gray-100/20 my-3">
       {#if item.resistance}
-      <div class="py-2 sm:gap-2 sm:px-0 mb-3">
-        <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-300">Resistance</dt>
-        <dd class="text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2 sm:mt-0"></dd>
-        
-        <dd class="text-sm grid grid-cols-3 leading-6 text-gray-700 dark:text-zinc-200">
-          <div>
+      <div class="px-4 py-4 sm:px-0">
+        <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-300 mb-2">Resistance</dt>
+        <dd class="text-sm grid grid-cols-3 gap-x-5 gap-y-1">
+          <div class="flex justify-between">
             <span class="text-zinc-400">Immunity</span> <span>{item.resistance.immunity}</span>
           </div>
-          <div>
+          <div class="flex justify-between">
             <span class="text-zinc-400">Robustness</span> <span>{item.resistance.robustness}</span>
           </div>
-          <div>
+          <div class="flex justify-between">
             <span class="text-zinc-400">Focus</span> <span>{item.resistance.focus}</span>
           </div>
-          <div>
+          <div class="flex justify-between">
             <span class="text-zinc-400">Vitality</span> <span>{item.resistance.vitality}</span>
           </div>
-          <div>
+          <div class="flex justify-between">
             <span class="text-zinc-400">Poise</span> <span>{item.resistance.poise}</span>
           </div>
         </dd>
@@ -134,37 +133,44 @@
       {/if}
       
       {#if item.defense}
-      <div class="px-4 py-4 sm:grid sm:gap-2 sm:px-0">
-        <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-300">Defense</dt>
-        <dd class="mt-1 text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2 sm:mt-0"></dd>
-
-        <div>
-          <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">Strike</dt>
-          <dd class="text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2 sm:mt-0">
-            {item.defense.attack.strike}
-          </dd>
-        </div>
-        
-        <div>
-          <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">Slash</dt>
-          <dd class="text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2 sm:mt-0">
-            {item.defense.attack.slash}
-          </dd>
-        </div>
-        
-        <div>
-          <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">Pierce</dt>
-          <dd class="text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2 sm:mt-0">
-            {item.defense.attack.pierce}
-          </dd>
-        </div>
-        
-        <div>
-          <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">Elemental</dt>
-          <dd class="text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2 sm:mt-0">
-            <ElementalGrid value={item.defense.negation} />
-          </dd>
-        </div>
+      <div class="px-4 py-4 sm:px-0">
+        <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-300 mb-2">Defense</dt>
+        <dd class="grid grid-cols-3 gap-3">
+          <div>
+            <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">Standard</dt>
+            <dd class="text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2 sm:mt-0">
+              {item.defense.physical.standard}
+            </dd>
+          </div>
+          
+          <div>
+            <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">Strike</dt>
+            <dd class="text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2 sm:mt-0">
+              {item.defense.physical.strike}
+            </dd>
+          </div>
+          
+          <div>
+            <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">Slash</dt>
+            <dd class="text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2 sm:mt-0">
+              {item.defense.physical.slash}
+            </dd>
+          </div>
+          
+          <div>
+            <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">Pierce</dt>
+            <dd class="text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2 sm:mt-0">
+              {item.defense.physical.pierce}
+            </dd>
+          </div>
+          
+          <div class="col-span-2">
+            <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">Elemental</dt>
+            <dd class="text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2 sm:mt-0">
+              <ElementalGrid value={item.defense.elemental} />
+            </dd>
+          </div>
+        </dd>
       </div>
       {/if}
 
@@ -172,25 +178,29 @@
       <div class="px-4 py-4 sm:grid sm:gap-2 sm:px-0">
         <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-300">Guard</dt>
         <dd class="mt-1 text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2 sm:mt-0">
-
-          <div class="flex gap-5">
-            <div class="basis-1/3">
+          <div class="grid grid-cols-3 gap-5">
+            <div>
+              <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">Standard</dt>
+              <dd class="text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2 sm:mt-0">
+                {Math.round(item.guard.phy * 10) / 10}
+              </dd>
+            </div>
+            <div>
               <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">Stability</dt>
               <dd class="text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2 sm:mt-0">
                 {Math.round(item.guard.sta * 10) / 10}
               </dd>
             </div>
-            <div class="basis-1/3">
+            <div>
               <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">Resistance</dt>
               <dd class="text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2 sm:mt-0">
                 {Math.round(item.guard.res * 10) / 10}
               </dd>
             </div>
-            <div class="basis-2/3">
+            <div class="col-span-3">
               <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">Elemental</dt>
               <dd class="text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2 sm:mt-0">
                 <ElementalGrid value={ { 
-                  phy: item.guard.phy, 
                   mag: item.guard.mag, 
                   fir: item.guard.fir, 
                   lit: item.guard.lit, 
@@ -199,7 +209,6 @@
               </dd>
             </div>
           </div>
-
         </dd>
       </div>
       {/if}
@@ -216,22 +225,11 @@
             </dd>
           </div>
         {:else}
-          {@const val = mapModifierValue(modifier.affects, modifier.value)}
-          
           <div class="py-2 sm:grid sm:grid-cols-6 sm:gap-4 sm:px-0">
             <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-200 sm:col-span-3">{modifier.name}</dt>
             <dd class="mt-1 text-sm leading-6 text-gray-700 dark:text-zinc-200 sm:col-span-3 sm:mt-0">
-              {#if val instanceof ComplexDamage}
-                {roundValue(val.getTotal())}
-              {:else if val instanceof ComplexAttributes}
-                <div class="grid grid-cols-2">
-                  {#each Object.entries(val.getPresentValues()) as [t, v]}
-                    <div class="flex items-center">
-                      <span style:background-color={attributeRecord[t].color} class="me-1 w-2.5 h-2.5 rounded"></span>
-                      <span>+{v.total}</span>
-                    </div>
-                  {/each}
-                </div>
+              {#if modifier.affects === 'attributes' && typeof modifier.value !== 'number'}
+                <AttributeGrid value={modifier.value} />
               {:else if typeof modifier.value === 'number'}
                 +{modifier.value}
               {/if}

@@ -3,7 +3,7 @@ import type { DynamicNumber } from './DynamicNumber';
 type ValueRecord<T extends string> = Record<T, DynamicNumber>;
 
 export type ComplexValueInterface<T extends string> = {
-  add(value: ValueRecord<T>): void;
+  add(value: Partial<Record<T, number>>): void;
   get value(): ValueRecord<T>;
 }
 
@@ -30,9 +30,9 @@ export class ComplexValue<T extends string> implements ComplexValueInterface<T> 
     return Object.keys(this._value) as T[];
   }
 
-  add(value: Partial<ValueRecord<T>>): void {
+  add(value: Partial<Record<T, number>>): void {
     for(const k in value) {
-      this._value[k].add(value[k]?.flat ?? 0);
+      this._value[k].add(value[k] ?? 0);
     }
   }
 

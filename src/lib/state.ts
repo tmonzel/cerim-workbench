@@ -1,6 +1,6 @@
 import { derived, writable } from 'svelte/store';
 import { attributeStore } from './attributes';
-import { AttributeType, mapModifierValue, type Item } from './core';
+import { AttributeType, type Item } from './core';
 import { equipStore, itemStore, type EquipState } from './stores';
 import type { AttributeEffect } from './types';
 import { ComplexAttributes } from './core/values';
@@ -29,8 +29,8 @@ export const attributeState = derived([attributeStore, equipStore], ([attributes
       if(mod.affects !== 'attributes') {
         continue;
       }
-
-      offsetAttribute.add((mapModifierValue('attributes', mod.value) as ComplexAttributes).value);
+      
+      offsetAttribute.add(mod.value as Partial<Record<AttributeType, number>>);
     }
   }
   

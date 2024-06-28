@@ -18,10 +18,7 @@ export type Stat = {
 
 export type DamageValue = { [0]: number; [1]: number; [2]: number } | number;
 export type ResistanceValue = { [0]: number; [1]: number; };
-export type AttributeValue = {
-  [0]: number;
-  [1]: AttributeType;
-}
+export type AttributeValue = Partial<Record<AttributeType, number>>;
 
 export type HeroStats = {
   'hp': NumericStat;
@@ -39,10 +36,10 @@ export type HeroStats = {
   'res:vitality': NumericStat;
   'res:poise': NumericStat;
   
+  'def:standard': NumericStat;
   'def:strike': NumericStat;
   'def:slash': NumericStat;
   'def:pierce': NumericStat;
-  'def:phy': NumericStat;
   'def:hol': NumericStat;
   'def:lit': NumericStat;
   'def:fir': NumericStat;
@@ -93,12 +90,11 @@ export enum DamageType {
 
 export type ResistanceType = 'immunity' | 'robustness' | 'focus' | 'vitality' | 'poise'; 
 
-export enum DamageNegationType {
-  PHYSICAL = 'physical',
+export enum PhysicalDamageType {
+  STANDARD = 'standard',
   STRIKE = 'strike',
   SLASH = 'slash',
   PIERCE = 'pierce',
-  ELEMENTAL = 'elemental'
 }
 
 export enum GuardType {
@@ -128,6 +124,13 @@ export enum AffinityType {
   OCCULT = 'occult',
 }
 
+export enum ElementalDamageType {
+  MAGIC = 'mag',
+  FIRE = 'fir',
+  LIGHTNING = 'lit',
+  HOLY = 'hol'
+}
+
 export type Affinity = {
   name: string;
 }
@@ -143,22 +146,8 @@ export type Resistance = {
 export type Guard = Record<GuardType, number>;
 
 export type Defense = {
-  attack: AttackDamageNegation;
-  negation: DamageNegation;
-}
-
-export type AttackDamageNegation = {
-  strike: number;
-  slash: number;
-  pierce: number;
-}
-
-export type DamageNegation = {
-  [DamageType.PHYSICAL]: number;
-  [DamageType.MAGIC]: number; 
-  [DamageType.FIRE]: number;
-  [DamageType.LIGHTNING]: number; 
-  [DamageType.HOLY]: number;
+  physical: Record<PhysicalDamageType, number>;
+  elemental: Record<ElementalDamageType, number>;
 }
 
 export type Damage = Partial<Record<DamageType, number>>;
@@ -216,7 +205,7 @@ export type ItemModifier = {
   name: string;
   affects: AffectedStat;
   scope: ModifierScope;
-  value: number | AttributeValue[];
+  value: number | AttributeValue;
 }
 
 export type ModifierScaling = {

@@ -1,6 +1,4 @@
-import { DynamicNumber } from './DynamicNumber';
-import { AttributeType, type AffectedStat, type AttributeMutation, type AttributeValue } from './types';
-import { ComplexAttributes, type ComplexDamage } from './values';
+import type { AttributeMutation } from './types';
 
 export function sum<T extends string>(v: Partial<Record<T, number>>): number {
   let s = 0;
@@ -10,6 +8,19 @@ export function sum<T extends string>(v: Partial<Record<T, number>>): number {
   }
 
   return s;
+}
+
+export function list<TValue, TKey extends string | number | symbol>(obj: Partial<Record<TKey, TValue>>): { key: TKey, value: TValue }[] {
+  const r: { key: TKey, value: TValue }[] = [];
+
+  for(const k in obj) {
+    r.push({
+      key: k,
+      value: obj[k] as TValue
+    })
+  }
+
+  return r;
 }
 
 export function getValueDistribution<T extends string = string>(v: Partial<Record<T, number>>): { amount: number; value: number; key: T; }[] {
@@ -63,23 +74,6 @@ export function humanize(v: string) {
 export function roundValue(value: number, decimals: number = 1): number {
   const d = Math.pow(10, decimals);
   return value > 0 ? Math.round(value * d) / d : 0;
-}
-
-export function mapModifierValue(stat: AffectedStat, value: number | AttributeValue[]): DynamicNumber | ComplexAttributes | ComplexDamage {
-  const attributes: Partial<Record<AttributeType, DynamicNumber>> = {}
-
-  switch(stat) {
-    case 'attributes':
-      if(typeof value === 'number') {
-        Object.values(AttributeType).forEach(t => attributes[t] = new DynamicNumber(value));
-      } else {
-        value.forEach((v) => attributes[v[1]] = new DynamicNumber(v[0]));
-      }
-      
-      return new ComplexAttributes(attributes);
-  }
-
-  return new DynamicNumber(value as number);
 }
 
 export function getScalingId(base: number): string {

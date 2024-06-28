@@ -1,6 +1,6 @@
 import { AffinityType, DamageType, AttributeType, type Defense, type ItemDef, type ItemModifier, type ItemRequirements, type ItemType, type Resistance, type Damage, type Guard, type ItemConfig, type AttributeMutation, type ItemPreset, type UpgradeSchema, GuardType } from './types';
 import type { AttributeState } from '$lib/attributes';
-import { calcAttributeScaling, getScalingId } from './helpers';
+import { calcAttributeScaling, getScalingId, list } from './helpers';
 import { mutationRecord, presetRecord, upgradeSchemata } from '$lib/data';
 
 export class Item {
@@ -114,9 +114,9 @@ export class Item {
 
   applyPreset(preset: ItemPreset): void {
     if(preset.affinities) {
-      for(const k in preset.affinities) {
-        if(this.affinities && this.affinities[k as AffinityType]) {
-          this.affinities[k as AffinityType] = { ...preset.affinities[k], ...this.affinities[k as AffinityType] }
+      for(const aff of list(preset.affinities)) {
+        if(this.affinities && this.affinities[aff.key]) {
+          this.affinities[aff.key] = { ...preset.affinities[aff.key], ...this.affinities[aff.key] }
         }
       }
     }
@@ -147,7 +147,6 @@ export class Item {
 
   update(): void {
     if(!this.config) {
-      console.log("No item config given");
       return;
     }
 
@@ -243,6 +242,9 @@ export class Item {
             break;
             case AttributeType.FAITH:
               allowedDamageTypes = [DamageType.FIRE, DamageType.HOLY];
+              break;
+            case AttributeType.ARCANE:
+              allowedDamageTypes = [DamageType.PHYSICAL];
           }
         }
 
@@ -268,9 +270,9 @@ export class Item {
     this.scaling = attributeScaling;
   }
 
-  getScalingFlags(): { attr: string; id: string }[] {
-    return Object.entries(this.scaling ?? {}).map(([attr, s]) => {
-      return { attr, id: getScalingId(s.base) };
+  getScalingFlags(): { attr: AttributeType; id: string }[] {
+    return list(this.scaling ?? {}).map(s => {
+      return { attr: s.key as AttributeType, id: getScalingId(s.value.base) };
     });
   }
 

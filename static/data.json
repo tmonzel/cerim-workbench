@@ -150,7 +150,7 @@
         {
           "name": "Raise All Attributes",
           "affects": "attributes",
-          "value": 5
+          "value": { "vig": 5, "end": 5, "str": 5, "dex": 5, "mnd": 5, "int": 5, "fth": 5, "arc": 5 }
         }
       ],
       "iconUrl": "/images/rune-godrik.png"
@@ -261,7 +261,7 @@
         {
           "name": "Raise Attributes",
           "affects": "attributes",
-          "value": [[3, "vig"], [3, "end"], [3, "str"]]
+          "value": { "vig": 3, "end": 3, "str": 3 }
         }
       ],
       "effects": [
@@ -422,7 +422,7 @@
         {
           "name": "Raise Strength",
           "affects": "attributes",
-          "value": [[5, "str"]]
+          "value": { "str": 5 }
         }
       ]
     },
@@ -460,10 +460,74 @@
       "group": "talismans",
       "weight": 0.6,
       "iconUrl": "/images/talisman-haligdrake.png",
+      "upgrades": [
+        {
+          "iconUrl": "/images/talisman-haligdrake-1.png",
+          "modifiers": [
+            {
+              "name": "Increase Holy Defense",
+              "affects": "def:hol",
+              "type": "percentual",
+              "value": 1.17
+            }
+          ]
+        },
+        {
+          "iconUrl": "/images/talisman-haligdrake-2.png",
+          "modifiers": [
+            {
+              "name": "Increase Holy Defense",
+              "affects": "def:hol",
+              "type": "percentual",
+              "value": 1.20
+            }
+          ]
+        }
+      ],
       "modifiers": [
         {
           "name": "Increase Holy Defense",
           "affects": "def:hol",
+          "type": "percentual",
+          "value": 1.13
+        }
+      ]
+    },
+    "talisman:boltdrake": {
+      "type": "talisman",
+      "name": "Boltdrake Talisman",
+      "caption": "Talisman",
+      "group": "talismans",
+      "weight": 0.6,
+      "iconUrl": "/images/talisman-boltdrake.png",
+      "upgrades": [
+        {
+          "iconUrl": "/images/talisman-boltdrake-1.png",
+          "modifiers": [
+            {
+              "name": "Increase Lightning Defense",
+              "affects": "def:lit",
+              "type": "percentual",
+              "value": 1.17
+            }
+          ]
+        },
+        {
+          "iconUrl": "/images/talisman-boltdrake-2.png",
+          "modifiers": [
+            {
+              "name": "Increase Lightning Defense",
+              "affects": "def:lit",
+              "type": "percentual",
+              "value": 1.20
+            }
+          ]
+        }
+      ],
+      "modifiers": [
+        {
+          "name": "Increase Lightning Defense",
+          "affects": "def:lit",
           "type": "percentual",
           "value": 1.13
         }
@@ -500,14 +564,14 @@
         "poise": 3
       },
       "defense": {
-        "attack": { "strike": 2.1, "slash": 1.8, "pierce": 0.9 },
-        "negation": { "phy": 1.4, "mag": 4.6, "fir": 4.7, "lit": 4.4, "hol": 4.5 }
+        "physical": { "standard": 1.4, "strike": 2.1, "slash": 1.8, "pierce": 0.9 },
+        "elemental": { "mag": 4.6, "fir": 4.7, "lit": 4.4, "hol": 4.5 }
       },
       "modifiers": [
         {
           "name": "Attributes",
           "affects": "attributes",
-          "value": [[1, "mnd"]]
+          "value": { "mnd": 1 }
         }
       ]
     },
@@ -527,8 +591,8 @@
         "poise": 9
       },
       "defense": {
-        "attack": { "strike": 4, "slash": 4.8, "pierce": 4.4 },
-        "negation": { "phy": 4.6, "mag": 3.8, "fir": 4.4, "lit": 3.1, "hol": 3.8 }
+        "physical": { "standard": 4.6, "strike": 4, "slash": 4.8, "pierce": 4.4 },
+        "elemental": { "mag": 3.8, "fir": 4.4, "lit": 3.1, "hol": 3.8 }
       }
     },
     "armor:briar": {
@@ -547,8 +611,8 @@
         "poise": 21
       },
       "defense": {
-        "attack": { "strike": 11.4, "slash": 13.5, "pierce": 12.4 },
-        "negation": { "phy": 12.9, "mag": 10.9, "fir": 12.4, "lit": 8.8, "hol": 10.9 }
+        "physical": { "standard": 12.9, "strike": 11.4, "slash": 13.5, "pierce": 12.4 },
+        "elemental": { "mag": 10.9, "fir": 12.4, "lit": 8.8, "hol": 10.9 }
       }
     },
     "armor:briar-gauntlets": {
@@ -567,8 +631,8 @@
         "poise": 5
       }, 
       "defense": {
-        "attack": { "strike": 2.8, "slash": 3.3, "pierce": 3.1 },
-        "negation": { "phy": 3.2, "mag": 2.7, "fir": 3.1, "lit": 2.1, "hol": 2.7 }
+        "physical": { "standard": 3.2, "strike": 2.8, "slash": 3.3, "pierce": 3.1 },
+        "elemental": { "mag": 2.7, "fir": 3.1, "lit": 2.1, "hol": 2.7 }
       }
     },
     "armor:briar-greaves": {
@@ -587,8 +651,8 @@
         "poise": 12
       },
       "defense": {
-        "attack": { "strike": 6.5, "slash": 7.7, "pierce": 7.1 },
-        "negation": { "phy": 7.4, "mag": 6.2, "fir": 7.1, "lit": 5, "hol": 6.2 }
+        "physical": { "standard": 7.4, "strike": 6.5, "slash": 7.7, "pierce": 7.1 },
+        "elemental": { "mag": 6.2, "fir": 7.1, "lit": 5, "hol": 6.2 }
       }
     },
     "armor:veteran": {
@@ -607,8 +671,8 @@
         "poise": 38
       },
       "defense": {
-        "attack": { "strike": 17, "slash": 18.7, "pierce": 17.5 },
-        "negation": { "phy": 18.7, "mag": 13.5, "fir": 14.1, "lit": 12.8, "hol": 13.3 }
+        "physical": { "standard": 18.7, "strike": 17, "slash": 18.7, "pierce": 17.5 },
+        "elemental": { "mag": 13.5, "fir": 14.1, "lit": 12.8, "hol": 13.3 }
       }
     },
     "shield:icon": {
@@ -780,7 +844,6 @@
       "requirements": { 
         "attributes": { "str": 5, "dex": 9 } 
       },
-      "maxTiers ": 25,
       "crit": 130,
       "defaults": "weapon:basic",
       "affinities": {
@@ -794,7 +857,7 @@
           "schema": "100"
         },
         "keen": {
-          "attack": { "phy": 71, "sta": 30 },
+          "attack": { "phy": 71, "sta": 30 },  
           "scaling": { "str": 20, "dex": 70 },
           "schema": "5000"
         },

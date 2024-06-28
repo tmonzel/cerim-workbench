@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { DamageType, damageRecord } from '$lib/core';
+	import { DamageType, ElementalDamageType, damageRecord } from '$lib/core';
 
-  export let value: Partial<Record<DamageType, number>>;
+  export let value: Partial<Record<ElementalDamageType, number>>;
 
   $: elements = Object.entries(value) as { [0]: DamageType; [1]: number }[]
 </script>

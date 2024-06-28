@@ -35,10 +35,10 @@ export const heroState = derived([attributeState, equipState, appState], (s) => 
       'res:vitality': new NumericStat("Vitality"),
       'res:poise': new NumericStat("Poise"),
 
+      'def:standard': new NumericStat("Standard Defense"),
       'def:strike': new NumericStat("Strike Defense"),
       'def:slash': new NumericStat("Slash Defense"),
       'def:pierce': new NumericStat("Pierce Defense"),
-      'def:phy': new NumericStat("Physical Defense"),
       'def:hol': new NumericStat("Holy Defense"),
       'def:lit': new NumericStat("Lightning Defense"),
       'def:fir': new NumericStat("Fire Defense"),
@@ -74,15 +74,15 @@ export const heroState = derived([attributeState, equipState, appState], (s) => 
 
     // Summarize defense
     if(item.defense) {
-      hero.stats['def:strike'].value.add(item.defense.attack.strike);
-      hero.stats['def:slash'].value.add(item.defense.attack.slash);
-      hero.stats['def:pierce'].value.add(item.defense.attack.pierce);
+      hero.stats['def:standard'].value.add(item.defense.physical.standard);
+      hero.stats['def:strike'].value.add(item.defense.physical.strike);
+      hero.stats['def:slash'].value.add(item.defense.physical.slash);
+      hero.stats['def:pierce'].value.add(item.defense.physical.pierce);
       
-      hero.stats['def:phy'].value.add(item.defense.negation.phy);
-      hero.stats['def:mag'].value.add(item.defense.negation.mag);
-      hero.stats['def:fir'].value.add(item.defense.negation.fir);
-      hero.stats['def:lit'].value.add(item.defense.negation.lit);
-      hero.stats['def:hol'].value.add(item.defense.negation.hol);
+      hero.stats['def:mag'].value.add(item.defense.elemental.mag);
+      hero.stats['def:fir'].value.add(item.defense.elemental.fir);
+      hero.stats['def:lit'].value.add(item.defense.elemental.lit);
+      hero.stats['def:hol'].value.add(item.defense.elemental.hol);
     }
 
     // Summarize guard
@@ -98,7 +98,7 @@ export const heroState = derived([attributeState, equipState, appState], (s) => 
     }
 
     if(item.effects) {
-      hero.effects.push( ...item.effects);
+      hero.effects.push(...item.effects);
     }
 
     for(const mod of item.modifiers) {
@@ -115,8 +115,11 @@ export const heroState = derived([attributeState, equipState, appState], (s) => 
         case 'res:immunity':
         case 'res:poise':
         case 'res:vitality':
-        case 'def:phy':
+        case 'def:standard':
         case 'def:hol':
+        case 'def:lit':
+        case 'def:mag':
+        case 'def:fir':
           if(mod.type === 'percentual') {
             hero.stats[mod.affects].value.addMultiplier(mod.value - 1);
           } else {
@@ -127,7 +130,7 @@ export const heroState = derived([attributeState, equipState, appState], (s) => 
 
     // Sum item damage
     for(const damageType in item.scaledDamage) {
-      hero.stats['damage'].value.add({ [damageType]: new DynamicNumber(item.scaledDamage[damageType as DamageType]) })
+      hero.stats['damage'].value.add({ [damageType]: item.scaledDamage[damageType as DamageType] })
     }
 
     // Sum item weights
@@ -150,7 +153,7 @@ export const heroState = derived([attributeState, equipState, appState], (s) => 
       case 'equipLoad':
       case 'discovery':
       case 'res:vitality':
-      case 'def:phy':
+      case 'def:standard':
       case 'def:mag':
       case 'def:fir':
       case 'def:hol':
