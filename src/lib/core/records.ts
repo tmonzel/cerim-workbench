@@ -1,4 +1,4 @@
-import { AffinityType, AttributeType, DamageType, type Affinity } from './types';
+import { AffinityType, AttributeType, DamageType, DefenseType, type Affinity, type HeroStat, type HeroStatType, type ResistanceType } from './types';
 
 export const attributeRecord: Record<AttributeType, { name: string; color: string }> = {
   [AttributeType.VIGOR]: {
@@ -88,6 +88,76 @@ export const damageRecord: Record<DamageType, { name: string; color: string }> =
     color: '#339966'
   }
 }
+
+export const statRecord: Record<HeroStatType, HeroStat> = {
+  hp: {
+    name: 'Health'
+  },
+  fp: {
+    name: 'FP'
+  },
+  stamina: {
+    name: 'Stamina'
+  },
+  discovery: {
+    name: 'Discovery'
+  },
+  weight: {
+    name: 'Weight'
+  },
+  equipLoad: {
+    name: 'Equip Load'
+  },
+  attackSpeed: {
+    name: 'Attack Speed'
+  }
+}
+
+export const resistanceRecord: Record<ResistanceType, { name: string }> = {
+  immunity: {
+    name: 'Immunity'
+  },
+  robustness: {
+    name: 'Robustness'
+  },
+  focus: {
+    name: 'Focus'
+  },
+  vitality: {
+    name: 'Vitality'
+  },
+  poise: {
+    name: 'Poise'
+  }
+}
+
+export const defenseRecord: Record<DefenseType, { name: string }> = {
+  [DefenseType.STANDARD]: {
+    name: 'Standard'
+  },
+  [DefenseType.STRIKE]: {
+    name: 'Strike'
+  },
+  [DefenseType.SLASH]: {
+    name: 'Slash'
+  },
+  [DefenseType.PIERCE]: {
+    name: 'Pierce'
+  },
+  [DefenseType.HOLY]: {
+    name: 'Holy'
+  },
+  [DefenseType.LIGHTNING]: {
+    name: 'Lightning'
+  },
+  [DefenseType.FIRE]: {
+    name: 'Fire'
+  },
+  [DefenseType.MAGIC]: {
+    name: 'Magic'
+  }
+}
+
 
 export const affinityRecord: Record<AffinityType, Affinity> = {
   [AffinityType.STANDARD]: {

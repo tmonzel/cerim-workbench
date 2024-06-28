@@ -16,9 +16,10 @@ export type Stat = {
   };
 }
 
-export type DamageValue = { [0]: number; [1]: number; [2]: number } | number;
-export type ResistanceValue = { [0]: number; [1]: number; };
-export type AttributeValue = Partial<Record<AttributeType, number>>;
+export type HeroStatType = 'hp' | 'fp' | 'stamina' | 'discovery' | 'weight' | 'equipLoad' | 'attackSpeed';
+export type HeroStat = {
+  name: string;
+} 
 
 export type HeroStats = {
   'hp': NumericStat;
@@ -55,6 +56,17 @@ export type HeroStats = {
 
   'attributes': AttributeStat;
 };
+
+export enum DefenseType {
+  STANDARD = 'standard',
+  STRIKE = 'strike',
+  SLASH = 'slash',
+  PIERCE = 'pierce',
+  HOLY = 'hol',
+  LIGHTNING = 'lit',
+  FIRE = 'fir',
+  MAGIC = 'mag'
+}
 
 export type AffectedStat = keyof HeroStats;
 
@@ -183,7 +195,7 @@ export type ItemDef = {
   affinity?: AffinityType;
   iconUrl?: string;
   effects?: string[];
-  modifiers?: ItemModifier[];
+  modifiers?: Record<ModifierType, ItemModifierDef>;
   config?: ItemConfig;
   affinities?: Record<AffinityType, ItemConfig>;
   defaults?: string | ItemPreset;
@@ -192,7 +204,7 @@ export type ItemDef = {
 
 export type ItemUpgrade = {
   iconUrl?: string;
-  modifiers?: ItemModifier[];
+  modifiers?: Record<ModifierType, ItemModifierDef>;
 }
 
 export type ItemPreset = {
@@ -200,13 +212,9 @@ export type ItemPreset = {
   affinities?: Record<AffinityType, ItemConfig>;
 }
  
-export type ItemModifier = {
-  type?: ModifierType;
-  name: string;
-  affects: AffectedStat;
-  scope: ModifierScope;
-  value: number | AttributeValue;
-}
+export type ItemModifierDef = Record<string, ItemModifierConfig>;
+export type ItemModifierConfig = { name?: string; modify: ItemModifierValue };
+export type ItemModifierValue = Record<string, number>;
 
 export type ModifierScaling = {
   range: { [0]: number; [1]: number };

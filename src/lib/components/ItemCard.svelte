@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { AFFINITY_NAME_MAP, ComplexDamage, Item, attributeRecord, list, roundValue, sum } from '$lib/core';
-	import AttributeGrid from './AttributeGrid.svelte';
+	import { Item, affinityRecord, attributeRecord, list, sum } from '$lib/core';
 	import DamageBadge from './DamageBadge.svelte';
 	import DamageDetail from './DamageDetail.svelte';
 	import ElementalGrid from './ElementalGrid.svelte';
+	import ModifierList from './ModifierList.svelte';
 
   export let item: Item;
   export let slotted = false;
@@ -30,7 +30,7 @@
   <div class="grow">
     <div class="font-medium relative text-lg">
       {#if item.affinity && item.affinities}
-        <span class="font-bold">{AFFINITY_NAME_MAP[item.affinity]}</span>
+        <span class="font-bold">{affinityRecord[item.affinity].name}</span>
       {/if} 
       {item.name} {#if item.tier > 0}(+{item.tier}){/if}
       <span class="absolute inset-0"></span>
@@ -214,30 +214,7 @@
       {/if}
     </dl>
     
-    <dl class="divide-y divide-gray-100/20 my-3">
-      {#each item.modifiers as modifier}
-        {#if modifier.type === 'percentual' && typeof modifier.value === 'number'}
-          {@const percentage = modifier.value - 1}
-          <div class="py-2 sm:grid sm:grid-cols-6 sm:gap-4 sm:px-0">
-            <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-200 sm:col-span-3">{modifier.name}</dt>
-            <dd class="mt-1 text-sm leading-6 text-gray-700 dark:text-zinc-200 sm:col-span-3 sm:mt-0">
-              {#if percentage >= 0}+{/if}{Math.round(percentage * 100)}%
-            </dd>
-          </div>
-        {:else}
-          <div class="py-2 sm:grid sm:grid-cols-6 sm:gap-4 sm:px-0">
-            <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-200 sm:col-span-3">{modifier.name}</dt>
-            <dd class="mt-1 text-sm leading-6 text-gray-700 dark:text-zinc-200 sm:col-span-3 sm:mt-0">
-              {#if modifier.affects === 'attributes' && typeof modifier.value !== 'number'}
-                <AttributeGrid value={modifier.value} />
-              {:else if typeof modifier.value === 'number'}
-                +{modifier.value}
-              {/if}
-            </dd>
-          </div>
-        {/if}
-      {/each}
-    </dl>
+    <ModifierList data={item.modifiers} />
 
     {#if item.effects}
       <p class="text-sm font-medium">Effects</p>

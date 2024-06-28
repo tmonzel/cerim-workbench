@@ -1,7 +1,9 @@
-import { AffinityType, DamageType, AttributeType, type Defense, type ItemDef, type ItemModifier, type ItemRequirements, type ItemType, type Resistance, type Damage, type Guard, type ItemConfig, type AttributeMutation, type ItemPreset, type UpgradeSchema, GuardType } from './types';
+import { AffinityType, DamageType, AttributeType, type Defense, type ItemDef, type ItemRequirements, type ItemType, type Resistance, type Damage, type Guard, type ItemConfig, type AttributeMutation, type ItemPreset, type UpgradeSchema, GuardType, type ModifierType, type ItemModifierDef } from './types';
 import type { AttributeState } from '$lib/attributes';
 import { calcAttributeScaling, getScalingId, list } from './helpers';
 import { mutationRecord, presetRecord, upgradeSchemata } from '$lib/data';
+import { PercentualModifier } from './modifiers/PercentualModifier';
+import { FlatModifier } from './modifiers/FlatModifier';
 
 export class Item {
   tier = 0;
@@ -18,7 +20,7 @@ export class Item {
   possibleUpgrades: number = 0;
   mutations: AttributeMutation[] = [];
   upgradeSchema?: UpgradeSchema;
-  modifiers: ItemModifier[] = [];
+  modifiers: (PercentualModifier | FlatModifier)[] = [];
   iconUrl?: string;
 
   get weight(): number {
@@ -65,8 +67,11 @@ export class Item {
     this.scaledDamage = {};
     this.tier = this.def.tier ?? 0;
     this.possibleUpgrades = def.maxTiers ?? 0;
-    this.modifiers = def.modifiers ?? [];
     this.iconUrl = this.def.iconUrl;
+
+    if(def.modifiers) {
+      this.setModifiers(def.modifiers);
+    }
 
     if(def.resistance) {
       this.resistance = def.resistance;
@@ -129,16 +134,40 @@ export class Item {
     this.update();
   }
 
+  setModifiers(modifiers: Record<ModifierType, ItemModifierDef>): void {
+    const newModifiers: (FlatModifier | PercentualModifier)[] = [];
+
+    for(const mod of list(modifiers)) {
+      switch(mod.key) {
+        case 'percentual':
+          newModifiers.push(new PercentualModifier(mod.value));
+          break;
+        case 'flat':
+        default:
+          newModifiers.push(new FlatModifier(mod.value));
+      }
+    }
+
+    this.modifiers = newModifiers;
+  }
+
   upgrade(tier: number): void {
     this.tier = tier;
 
     if(this.def.upgrades && this.tier > 0) {
       const upgrade = this.def.upgrades[this.tier - 1];
-      this.modifiers = upgrade.modifiers ?? []
+
+      if(upgrade.modifiers) {
+        this.setModifiers(upgrade.modifiers);
+      }
+      
       this.iconUrl = upgrade.iconUrl;
 
     } else {
-      this.modifiers = this.def.modifiers ?? [];
+      if(this.def.modifiers) {
+        this.setModifiers(this.def.modifiers);
+      }
+
       this.iconUrl = this.def.iconUrl;
     }
 

@@ -146,13 +146,14 @@
       "caption": "Great Rune",
       "description": "Its blessing raises all attributes",
       "group": "runes",
-      "modifiers": [
-        {
-          "name": "Raise All Attributes",
-          "affects": "attributes",
-          "value": { "vig": 5, "end": 5, "str": 5, "dex": 5, "mnd": 5, "int": 5, "fth": 5, "arc": 5 }
+      "modifiers": {
+        "flat": {
+          "attributes": {
+            "name": "Raise all attributes",
+            "modify": { "vig": 5, "end": 5, "str": 5, "dex": 5, "mnd": 5, "int": 5, "fth": 5, "arc": 5 }
+          }
         }
-      ],
+      },
       "iconUrl": "/images/rune-godrik.png"
     },
     "rune:rykard": {
@@ -170,26 +171,14 @@
       "name": "Radahn’s Great Rune",
       "caption": "Great Rune",
       "group": "runes",
-      "modifiers": [
-        {
-          "name": "Increase Health",
-          "type": "percentual",
-          "affects": "hp",
-          "value": 1.15
-        },
-        {
-          "name": "Increase FP",
-          "type": "percentual",
-          "affects": "fp",
-          "value": 1.15
-        },
-        {
-          "name": "Increase Stamina",
-          "type": "percentual",
-          "affects": "stamina",
-          "value": 1.15
+      "modifiers": {
+        "percentual": {
+          "stats": {
+            "name": "Increase Health, FP and Stamina",
+            "modify": { "hp": 1.15, "fp": 1.15, "stamina": 1.15 }
+          }
         }
-      ],
+      },
       "iconUrl": "/images/rune-radahn.png"
     },
     "rune:morgott": {
@@ -198,14 +187,11 @@
       "caption": "Great Rune",
       "description": "Its blessing greatly raises maximum HP.",
       "group": "runes",
-      "modifiers": [
-        {
-          "name": "Increase Health",
-          "affects": "hp",
-          "type": "percentual",
-          "value": 1.25
+      "modifiers": {
+        "percentual": {
+          "stats": { "hp": 1.25 }
         }
-      ],
+      },
       "iconUrl": "/images/rune-morgott.png"
     },
     "rune:mohg": {
@@ -257,13 +243,11 @@
       "caption": "Talisman",
       "group": "talismans",
       "weight": 0.8,
-      "modifiers": [
-        {
-          "name": "Raise Attributes",
-          "affects": "attributes",
-          "value": { "vig": 3, "end": 3, "str": 3 }
+      "modifiers": {
+        "flat": {
+          "attributes": { "vig": 3, "end": 3, "str": 3 }
         }
-      ],
+      },
       "effects": [
         "Increases damage taken by 10%"
       ],
@@ -290,35 +274,35 @@
       "upgrades": [
         {
           "iconUrl": "/images/talisman-crimson-amber-1.png",
-          "modifiers": [
-            {
-              "type": "percentual",
-              "name": "Increase Health",
-              "affects": "hp",
-              "value": 1.07
+          "modifiers": {
+            "percentual": {
+              "stats": {
+                "name": "Increase Health",
+                "modify": { "hp": 1.07 }
+              }
             }
-          ]
+          }
         },
         {
           "iconUrl": "/images/talisman-crimson-amber-2.png",
-          "modifiers": [
-            {
-              "type": "percentual",
-              "name": "Increase Health",
-              "affects": "hp",
-              "value": 1.08
+          "modifiers": {
+            "percentual": {
+              "stats": {
+                "name": "Increase Health",
+                "modify": { "hp": 1.08 }
+              }
             }
-          ]
+          }
         }
       ],
-      "modifiers": [
-        {
-          "type": "percentual",
-          "name": "Increase Health",
-          "affects": "hp",
-          "value": 1.06
+      "modifiers": {
+        "percentual": {
+          "stats": {
+            "name": "Increase Health",
+            "modify": { "hp": 1.06 }
+          }
         }
-      ]
+      }
     },
     "talisman:horn-charm": {
       "type": "talisman",
@@ -327,14 +311,14 @@
       "group": "talismans",
       "weight": 0.6,
       "iconUrl": "/images/talisman-immunizing-horn-charm.png",
-      "modifiers": [
-        {
-          "type": "flat",
-          "name": "Add Immunity",
-          "affects": "res:immunity",
-          "value": 90
+      "modifiers": {
+        "flat": {
+          "resistance": {
+            "name": "Raise Immunity",
+            "modify": { "immunity": 90 }
+          }
         }
-      ]
+      }
     },
     "talisman:arsenal-charm": {
       "type": "talisman",
@@ -346,24 +330,18 @@
       "upgrades": [
         {
           "iconUrl": "/images/talisman-arsenal-charm-1.png",
-          "modifiers": [
-            {
-              "type": "percentual",
-              "name": "Increase equip load",
-              "affects": "equipLoad",
-              "value": 1.17
+          "modifiers": {
+            "percentual": {
+              "stats": { "equipLoad": 1.17 }
             }
-          ]
+          }
         }
       ],
-      "modifiers": [
-        {
-          "type": "percentual",
-          "name": "Increase equip load",
-          "affects": "equipLoad",
-          "value": 1.15
+      "modifiers": {
+        "percentual": {
+          "stats": { "equipLoad": 1.15 }
         }
-      ]
+      }
     },
     "talisman:great-arsenal": {
       "type": "talisman",
@@ -372,14 +350,14 @@
       "group": "talismans",
       "weight": 1.5,
       "iconUrl": "/images/talisman-great-jars-arsenal.png",
-      "modifiers": [
-        {
-          "type": "percentual",
-          "name": "Increase Equip Load",
-          "affects": "equipLoad",
-          "value": 1.19
+      "modifiers": {
+        "percentual": {
+          "stats": {
+            "name": "Greatly increases Equip Load",
+            "modify": { "equipLoad": 1.19 }
+          }
         }
-      ]
+      }
     },
     "talisman:erdtree-favor": {
       "type": "talisman",
@@ -388,28 +366,14 @@
       "group": "talismans",
       "weight": 1.5,
       "iconUrl": "/images/talisman-erdtrees-favor.png",
-      "modifiers": [
-        {
-          "type": "percentual",
-          "name": "Increase Health",
-          "affects": "hp",
-          "value": 1.03
-        },
-
-        {
-          "type": "percentual",
-          "name": "Increase Stamina",
-          "affects": "stamina",
-          "value": 1.07
-        },
-
-        {
-          "type": "percentual",
-          "name": "Increase Equip Load",
-          "affects": "equipLoad",
-          "value": 1.05
+      "modifiers": {
+        "percentual": {
+          "stats": {
+            "name": "Increase Health, Stamina and Equipload",
+            "modify": { "hp": 1.03, "stamina": 1.07, "equipLoad": 1.05 }
+          }
         }
-      ]
+      }
     },
     "talisman:starscourge": {
       "type": "talisman",
@@ -418,13 +382,14 @@
       "group": "talismans",
       "weight": 0.8,
       "iconUrl": "/images/talisman-starscourge-heirloom.png",
-      "modifiers": [
-        {
-          "name": "Raise Strength",
-          "affects": "attributes",
-          "value": { "str": 5 }
+      "modifiers": {
+        "flat": {
+          "attributes": {
+            "name": "Raise Strength",
+            "modify": { "str": 5 }
+          }
         }
-      ]
+      }
     },
     "talisman:bull-goat": {
       "type": "talisman",
@@ -433,14 +398,14 @@
       "group": "talismans",
       "weight": 0.5,
       "iconUrl": "/images/talisman-bullgoats.png",
-      "modifiers": [
-        {
-          "name": "Increase Poise",
-          "affects": "res:poise",
-          "type": "percentual",
-          "value": 1.33
+      "modifiers": {
+        "percentual": {
+          "resistance": {
+            "name": "Increase Equip Load",
+            "modify": { "poise": 1.33 }
+          }
         }
-      ]
+      }
     },
     "talisman:crucible-scale": {
       "type": "talisman",
@@ -463,35 +428,35 @@
       "upgrades": [
         {
           "iconUrl": "/images/talisman-haligdrake-1.png",
-          "modifiers": [
-            {
-              "name": "Increase Holy Defense",
-              "affects": "def:hol",
-              "type": "percentual",
-              "value": 1.17
+          "modifiers": {
+            "percentual": {
+              "defense": {
+                "name": "Increase Holy Defense",
+                "modify": { "hol": 1.17 }
+              }
             }
-          ]
+          }
         },
         {
           "iconUrl": "/images/talisman-haligdrake-2.png",
-          "modifiers": [
-            {
-              "name": "Increase Holy Defense",
-              "affects": "def:hol",
-              "type": "percentual",
-              "value": 1.20
+          "modifiers": {
+            "percentual": {
+              "defense": {
+                "name": "Increase Holy Defense",
+                "modify": { "hol": 1.20 }
+              }
             }
-          ]
+          }
         }
       ],
-      "modifiers": [
-        {
-          "name": "Increase Holy Defense",
-          "affects": "def:hol",
-          "type": "percentual",
-          "value": 1.13
+      "modifiers": {
+        "percentual": {
+          "defense": {
+            "name": "Increase Holy Defense",
+            "modify": { "hol": 1.13 }
+          }
         }
-      ]
+      }
     },
     "talisman:boltdrake": {
       "type": "talisman",
@@ -503,35 +468,75 @@
       "upgrades": [
         {
           "iconUrl": "/images/talisman-boltdrake-1.png",
-          "modifiers": [
-            {
-              "name": "Increase Lightning Defense",
-              "affects": "def:lit",
-              "type": "percentual",
-              "value": 1.17
+          "modifiers": {
+            "percentual": {
+              "defense": {
+                "name": "Increase Lightning Defense",
+                "modify": { "lit": 1.17 }
+              }
             }
-          ]
+          }
         },
         {
           "iconUrl": "/images/talisman-boltdrake-2.png",
-          "modifiers": [
-            {
-              "name": "Increase Lightning Defense",
-              "affects": "def:lit",
-              "type": "percentual",
-              "value": 1.20
+          "modifiers": {
+            "percentual": {
+              "defense": {
+                "name": "Increase Lightning Defense",
+                "modify": { "lit": 1.20 }
+              }
             }
-          ]
+          }
         }
       ],
-      "modifiers": [
-        {
-          "name": "Increase Lightning Defense",
-          "affects": "def:lit",
-          "type": "percentual",
-          "value": 1.13
+      "modifiers": {
+        "percentual": {
+          "defense": {
+            "name": "Increase Lightning Defense",
+            "modify": { "lit": 1.13 }
+          }
         }
-      ]
+      }
+    },
+    "talisman:pearldrake": {
+      "type": "talisman",
+      "name": "Pearldrake Talisman",
+      "caption": "Talisman",
+      "group": "talismans",
+      "weight": 0.9,
+      "iconUrl": "/images/talisman-pearldrake.png",
+      "upgrades": [
+        {
+          "iconUrl": "/images/talisman-pearldrake-1.png",
+          "modifiers": {
+            "percentual": {
+              "defense": { 
+                "name": "Increase Elemental Defense", 
+                "modify": { "mag": 1.07, "fir": 1.07, "lit": 1.07, "hol": 1.07 } 
+              }
+            }
+          }
+        },
+        {
+          "iconUrl": "/images/talisman-pearldrake-2.png",
+          "modifiers": {
+            "percentual": {
+              "defense": { 
+                "name": "Increase Elemental Defense", 
+                "modify": { "mag": 1.09, "fir": 1.09, "lit": 1.09, "hol": 1.09 } 
+              }
+            }
+          }
+        }
+      ],
+      "modifiers": {
+        "percentual": {
+          "defense": { 
+            "name": "Increase Elemental Defense", 
+            "modify": { "mag": 1.05, "fir": 1.05, "lit": 1.05, "hol": 1.05 } 
+          }
+        }
+      }
     },
     "talisman:prince-of-death": {
       "type": "talisman",
@@ -540,13 +545,14 @@
       "group": "talismans",
       "weight": 0.6,
       "iconUrl": "/images/talisman-prince-of-death.png",
-      "modifiers": [
-        {
-          "name": "Raise Vitality",
-          "affects": "res:vitality",
-          "value": 140
+      "modifiers": {
+        "flat": {
+          "resistance": { 
+            "name": "Add Vitality",
+            "modify": { "vitality": 140 }
+          }
         }
-      ]
+      }
     },
     "armor:navy-hood": {
       "type": "armor",
@@ -567,13 +573,14 @@
         "physical": { "standard": 1.4, "strike": 2.1, "slash": 1.8, "pierce": 0.9 },
         "elemental": { "mag": 4.6, "fir": 4.7, "lit": 4.4, "hol": 4.5 }
       },
-      "modifiers": [
-        {
-          "name": "Attributes",
-          "affects": "attributes",
-          "value": { "mnd": 1 }
+      "modifiers": {
+        "flat": {
+          "attributes": {
+            "name": "Raise Mind",
+            "modify": { "mnd": 1 }
+          }
         }
-      ]
+      }
     },
     "armor:briar-helm": {
       "type": "armor",

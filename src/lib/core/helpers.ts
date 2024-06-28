@@ -1,4 +1,4 @@
-import type { AttributeMutation } from './types';
+import { type AttributeMutation } from './types';
 
 export function sum<T extends string>(v: Partial<Record<T, number>>): number {
   let s = 0;

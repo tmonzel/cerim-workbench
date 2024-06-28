@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { AFFINITY_NAME_MAP, AffinityType, affinityRecord } from '$lib/core';
+	import { AffinityType, affinityRecord } from '$lib/core';
 	import { createEventDispatcher } from 'svelte';
 
   export let value: AffinityType = AffinityType.STANDARD;
@@ -37,7 +37,7 @@
             class:bg-stone-800={t === value}
             class:ring-amber-300={t === value}
             >
-            {AFFINITY_NAME_MAP[t]}
+            {affinityRecord[t].name}
             <span class="absolute inset-0"></span>
           </button>
         {/each}
