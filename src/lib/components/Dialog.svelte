@@ -3,13 +3,18 @@
   export let backdropClose = false;
 
   let dialog: HTMLDialogElement;
+  let opened = false;
 
   export function open(): void {
     dialog.showModal();
+    opened = true;
+    document.body.classList.add('dialog-open');
   }
 
   export function close(): void {
     dialog.close();
+    opened = false;
+    document.body.classList.remove('dialog-open');
   }
 
 </script>
