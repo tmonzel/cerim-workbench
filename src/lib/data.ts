@@ -3,6 +3,7 @@ import { equipStore, itemStore, type EquipState } from './stores';
 import { AttributeType, Item, type AttributeEffect, type AttributeMutation, type ItemDef, type ItemPreset, type UpgradeSchema } from './core';
 import { attributeStore } from './attributes';
 import { get } from 'svelte/store';
+import { mutationRecord, presetRecord } from './records';
 
 export type DataSchema = {
   maxLevel: number;
@@ -21,8 +22,7 @@ export type DataSchema = {
   mutations?: Record<string, AttributeMutation[]>;
 }
 
-export const mutationRecord: Record<string, AttributeMutation[]> = {};
-export const presetRecord: Record<string, ItemPreset> = {};
+
 export const upgradeSchemata: Record<string, UpgradeSchema> = {};
 
 export function loadData(data: DataSchema) {

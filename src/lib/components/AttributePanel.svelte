@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { attributeStore, type AttributeState } from '$lib/attributes';
-	import { AttributeType, attributeRecord } from '$lib/core';
+	import { AttributeType } from '$lib/core';
+	import { attributeRecord } from '$lib/records';
 	import AttributeControl from './AttributeControl.svelte';
 
   export let state: AttributeState;

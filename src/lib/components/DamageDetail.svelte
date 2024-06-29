@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { damageRecord, getValueDistribution, type Damage } from '$lib/core';
+	import { getValueDistribution, type Damage } from '$lib/core';
+	import { damageRecord } from '$lib/records';
 
   export let damage: Damage;
 

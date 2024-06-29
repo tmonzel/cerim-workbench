@@ -1,7 +1,8 @@
 <script lang="ts">
-	import { attributeRecord, defenseRecord, list, resistanceRecord, statRecord } from '$lib/core';
+	import { list } from '$lib/core';
 	import { FlatModifier } from '$lib/core/modifiers/FlatModifier';
 	import { PercentualModifier } from '$lib/core/modifiers/PercentualModifier';
+	import { attributeRecord, defenseRecord, resistanceRecord, statRecord } from '$lib/records';
 
   export let data: (FlatModifier | PercentualModifier)[] = [];
 </script>

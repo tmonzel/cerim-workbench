@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { AffinityType, affinityRecord } from '$lib/core';
+	import { AffinityType } from '$lib/core';
+	import { affinityRecord } from '$lib/records';
 	import { createEventDispatcher } from 'svelte';
 
   export let value: AffinityType = AffinityType.STANDARD;

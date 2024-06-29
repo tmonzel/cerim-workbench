@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { DamageType, ElementalDamageType, damageRecord } from '$lib/core';
+	import { DamageType, ElementalDamageType } from '$lib/core';
+	import { damageRecord } from '$lib/records';
 
   export let value: Partial<Record<ElementalDamageType, number>>;
 

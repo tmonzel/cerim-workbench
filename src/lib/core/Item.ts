@@ -1,9 +1,10 @@
 import { AffinityType, DamageType, AttributeType, type Defense, type ItemDef, type ItemRequirements, type Resistance, type Damage, type Guard, type ItemConfig, type AttributeMutation, type ItemPreset, type UpgradeSchema, GuardType, type ModifierType, type ItemModifierDef } from './types';
 import type { AttributeState } from '$lib/attributes';
 import { calcAttributeScaling, getScalingId, list } from './helpers';
-import { mutationRecord, presetRecord, upgradeSchemata } from '$lib/data';
+import { upgradeSchemata } from '$lib/data';
 import { PercentualModifier } from './modifiers/PercentualModifier';
 import { FlatModifier } from './modifiers/FlatModifier';
+import { mutationRecord, presetRecord } from '$lib/records';
 
 export class Item {
   tier = 0;

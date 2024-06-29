@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { damageRecord } from '$lib/core';
+	import { damageRecord } from '$lib/records';
 	import type { ComplexDamage } from '$lib/core/values';
 
   export let damage: ComplexDamage;

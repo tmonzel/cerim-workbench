@@ -1,4 +1,8 @@
-import { AffinityType, AttributeType, DamageType, DefenseType, type Affinity, type HeroStat, type HeroStatType, type ResistanceType } from './types';
+import type { AttributeMutation, ItemPreset } from './core';
+import { AffinityType, AttributeType, DamageType, DefenseType, type Affinity, type HeroStat, type HeroStatType, type ResistanceType } from './core';
+
+export const mutationRecord: Record<string, AttributeMutation[]> = {};
+export const presetRecord: Record<string, ItemPreset> = {};
 
 export const attributeRecord: Record<AttributeType, { name: string; color: string }> = {
   [AttributeType.VIGOR]: {

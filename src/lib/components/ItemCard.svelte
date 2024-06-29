@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { Item, affinityRecord, attributeRecord, equipRecord, list, sum } from '$lib/core';
+	import { Item, list, sum } from '$lib/core';
+	import { affinityRecord, attributeRecord, equipRecord } from '$lib/records';
 	import DamageBadge from './DamageBadge.svelte';
 	import DamageDetail from './DamageDetail.svelte';
 	import ElementalGrid from './ElementalGrid.svelte';

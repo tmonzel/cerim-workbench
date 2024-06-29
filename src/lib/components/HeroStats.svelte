@@ -2,7 +2,8 @@
 	import DamageDistBar from './DamageDistBar.svelte';
 	import ValueBadge from './ValueBadge.svelte';
 	import { heroState } from '$lib/hero';
-	import { ComplexDamage, damageRecord, statRecord } from '$lib/core';
+	import { ComplexDamage } from '$lib/core';
+	import { damageRecord, statRecord } from '$lib/records';
 
   const displayedStats: string[] = [
     'attackSpeed', 
