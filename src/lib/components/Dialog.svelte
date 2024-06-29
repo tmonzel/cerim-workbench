@@ -19,7 +19,7 @@
 
 </script>
 
-<dialog bind:this={dialog} class="rounded-lg dark:bg-zinc-900 border border-zinc-600 mt-5">
+<dialog bind:this={dialog} class="bg-zinc-900/90 m-0">
   {#if backdropClose}
   <button type="button" on:click={() => close()} class="fixed w-full top-0 left-0 right-0 bottom-0">
     <span class="sr-only">Close modal</span>
@@ -54,7 +54,13 @@
 
 <style>
 dialog {
+  width: 100%;
   animation: fade-out 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+dialog:modal {
+  max-width: 100vw;
+  min-height: 100vh;
 }
 
 dialog[open] {
@@ -68,7 +74,7 @@ dialog[open]::backdrop {
 @keyframes fade-in {
   0% {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(0px);
     display: none;
   }
 
@@ -88,7 +94,7 @@ dialog[open]::backdrop {
 
   100% {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(0);
     display: none;
   }
 }

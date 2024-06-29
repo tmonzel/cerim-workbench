@@ -30,17 +30,19 @@ export const heroState = derived([heroStatsState, attributeState, equipState, ap
       hero.effects.push(...item.effects);
     }
     
-    for(const damageType in item.scaledDamage) {
-      hero.stats['damage'].value.add({ [damageType]: item.scaledDamage[damageType as DamageType] })
+    if(item.scaledDamage) {
+      for(const damageType in item.scaledDamage) {
+        hero.stats['damage'].add({ [damageType]: item.scaledDamage[damageType as DamageType] })
+      }
     }
   }
 
-  if(!hero.stats.attackSpeed.value.isPresent()) {
+  if(!hero.stats.attackSpeed.isPresent()) {
     // Set attacks per second to one if no weapon equipped
-    hero.stats.attackSpeed.value.set(1);
+    hero.stats.attackSpeed.set(1);
   }
 
-  const attackDamage = hero.stats['damage'].value;
+  const attackDamage = hero.stats['damage'];
   const numDistributedPoints = Object.values(attributes).reduce((p, c) => p + c.value, 0);
 
   hero.level = Math.floor(numDistributedPoints / app.attributePointsPerLevel);
@@ -48,7 +50,7 @@ export const heroState = derived([heroStatsState, attributeState, equipState, ap
   hero.progress = (hero.level / app.maxLevel);
 
   hero.dps += attackDamage.getTotal();
-  hero.dps *= hero.stats.attackSpeed.value.total;
+  hero.dps *= hero.stats.attackSpeed.total;
 
   return hero;
 });

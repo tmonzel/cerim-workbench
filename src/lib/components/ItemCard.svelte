@@ -7,6 +7,7 @@
 
   export let item: Item;
   export let slotted = false;
+  export let displayMode: 'list' | 'showAll' = 'showAll';
 
   let protection: number;
   
@@ -19,7 +20,7 @@
   }
 </script>
 
-<div class="flex gap-x-3 dark:text-zinc-200">
+<div class="flex gap-x-3 dark:text-zinc-200 w-full">
   <div class="mt-1 flex h-48 w-48 flex-none items-center justify-center rounded-lg bg-stone-700/40 p-5">
     {#if item.iconUrl}
       <img src={item.iconUrl} alt="Item icon" class="transition-all group-hover:brightness-150" />
@@ -38,7 +39,11 @@
     <p class="text-sm dark:text-zinc-400">{equipRecord[item.type].name}</p>
   
     <div class="flex items-center gap-x-12 mt-3 mb-2">
-      {#if item.type === 'weapon' || item.type === 'shield'}
+      {#if displayMode === 'list' && item.damage}
+        <p class="text-xl flex gap-2">
+          <DamageBadge damage={item.damage} />
+        </p>
+      {:else if item.scaledDamage}
         <p class="text-xl flex gap-2">
           <DamageBadge damage={item.scaledDamage} />
         </p>
@@ -63,7 +68,11 @@
       {/if}
     </div>
 
-    {#if item.type === 'weapon'}
+    {#if displayMode === 'list' && item.damage}
+      <div class="mb-3">
+        <DamageDetail damage={item.damage} />
+      </div>
+    {:else if item.scaledDamage}
       <div class="mb-3">
         <DamageDetail damage={item.scaledDamage} />
       </div>
@@ -107,6 +116,8 @@
       </p>
       {/if}
     </div>
+
+    {#if displayMode === 'showAll'}
 
     <dl class="divide-y divide-gray-100/20 my-3">
       {#if item.resistance}
@@ -213,6 +224,8 @@
       </div>
       {/if}
     </dl>
+
+    {/if}
     
     <ModifierList data={item.modifiers} />
 

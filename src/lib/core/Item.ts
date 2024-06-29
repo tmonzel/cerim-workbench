@@ -8,8 +8,8 @@ import { FlatModifier } from './modifiers/FlatModifier';
 export class Item {
   tier = 0;
   
-  damage: Partial<Damage>;
-  scaledDamage: Partial<Damage>;
+  damage?: Partial<Damage>;
+  scaledDamage?: Partial<Damage>;
   affinity: AffinityType = AffinityType.STANDARD;
   scaling?: Partial<Record<AttributeType, { base: number, allowedDamageTypes: DamageType[] }>>;
   config!: ItemConfig;
@@ -22,6 +22,8 @@ export class Item {
   upgradeSchema?: UpgradeSchema;
   modifiers: (PercentualModifier | FlatModifier)[] = [];
   iconUrl?: string;
+
+  slotted = false;
 
   get weight(): number {
     return this.def.weight ?? 0;
@@ -59,8 +61,6 @@ export class Item {
     readonly id: string, 
     protected def: ItemDef,
   ) {
-    this.damage = {};
-    this.scaledDamage = {};
     this.tier = this.def.tier ?? 0;
     this.possibleUpgrades = def.maxTiers ?? 0;
     this.iconUrl = this.def.iconUrl;
@@ -102,6 +102,10 @@ export class Item {
     } else {
       this.changeAffinity(AffinityType.STANDARD);
     }
+  }
+
+  isWeapon(): boolean {
+    return this.damage !== undefined;
   }
 
   changeAffinity(affinity: AffinityType): void {
@@ -265,7 +269,7 @@ export class Item {
               allowedDamageTypes = [DamageType.PHYSICAL, DamageType.LIGHTNING];
             break;
             case AttributeType.INTELLIGENCE:
-              allowedDamageTypes = [DamageType.MAGIC];
+              allowedDamageTypes = [DamageType.MAGIC, DamageType.PHYSICAL];
             break;
             case AttributeType.FAITH:
               allowedDamageTypes = [DamageType.FIRE, DamageType.HOLY];
@@ -293,7 +297,6 @@ export class Item {
     }
     
     this.damage = damage;
-    this.scaledDamage = { ...this.damage };
     this.scaling = attributeScaling;
   }
 
@@ -301,6 +304,23 @@ export class Item {
     return list(this.scaling ?? {}).map(s => {
       return { attr: s.key as AttributeType, id: getScalingId(s.value.base) };
     });
+  }
+
+  checkRequirements(attributes: AttributeState): boolean {
+    if(!this.requirements.attributes) {
+      return true;
+    }
+
+    for(const [k, v] of Object.entries(this.requirements.attributes)) {
+      const type = k as AttributeType;
+      const attrValue = attributes[type].value + attributes[type].offset;
+
+      if(attrValue < v) {
+        return false;
+      }
+    }
+
+    return true;
   }
 
   applyScaling(attributes: AttributeState): Item {
@@ -319,23 +339,33 @@ export class Item {
       
       const attrTotal = attributes[attrType].value + attributes[attrType].offset;
 
-      if(attrTotal === 0) {
-        continue;
-      }
+      
       
       for(const damageType of Object.values(DamageType)) {
         if(!this.damage[damageType] || !attrScale.allowedDamageTypes.includes(damageType)) {
           continue;
         }
         
-        const scaledValue = calcAttributeScaling(attrTotal, this.mutations ?? []);
+        const attrScaling = calcAttributeScaling(attrTotal, this.mutations ?? []) / 100;
+        const upgradeScaling = attrScale.base / 100;
+
 
         let elementBase = this.damage[damageType] ?? 0;
-        
-        elementBase *= attrScale.base / 100;
-        elementBase *= scaledValue / 100;
-        
-        if(this.scaledDamage[damageType] !== undefined) {
+        elementBase *= attrScaling + upgradeScaling;
+
+        if(this.config.cast === 'sorceries' && attrType === AttributeType.INTELLIGENCE) {
+          if(this.checkRequirements(attributes)) {
+            this.scaledDamage[DamageType.SORCERY] = (1 + (upgradeScaling * attrScaling)) * 100;
+          } else {
+            this.scaledDamage[DamageType.SORCERY] = 60;
+          }
+        } else if(this.config.cast === 'incantations' && attrType === AttributeType.FAITH) {
+          if(this.checkRequirements(attributes)) {
+            this.scaledDamage[DamageType.INCANTATION] = (1 + (upgradeScaling * attrScaling)) * 100;
+          } else {
+            this.scaledDamage[DamageType.INCANTATION] = 60;
+          }
+        } else if(this.scaledDamage[damageType] !== undefined) {
           this.scaledDamage[damageType]! += elementBase;
         }
       }

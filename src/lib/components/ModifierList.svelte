@@ -78,7 +78,7 @@
         {:else if t.key === 'attributes'}
         <div class="py-2">
           <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-200 sm:col-span-3">{modifier.def[t.key].name ?? 'Raise Attributes'}</dt>
-          <dd class="flex gap-x-4">
+          <dd class="flex flex-wrap gap-x-4">
             {#each list(modifier.def[t.key].modify) as attr}
               <div class="flex items-center">
                 <span style:background-color={attributeRecord[attr.key].color} class="me-1 w-2.5 h-2.5 rounded"></span>

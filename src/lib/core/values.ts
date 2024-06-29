@@ -14,6 +14,8 @@ export class ComplexDamage extends ComplexValue<DamageType> {
       [DamageType.POISON]: new DynamicNumber(),
       [DamageType.HEMORRHAGE]: new DynamicNumber(),
       [DamageType.STAMINA]: new DynamicNumber(),
+      [DamageType.SORCERY]: new DynamicNumber(),
+      [DamageType.INCANTATION]: new DynamicNumber(),
       ...value
     });
   }

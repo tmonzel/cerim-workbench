@@ -11,7 +11,8 @@
     "attributes": { 
       "vig": 0, 
       "end": 0, 
-      "str": 0 
+      "str": 0,
+      "int": 16
     },
     "equip": {
     }
@@ -185,7 +186,10 @@
       "group": "runes",
       "modifiers": {
         "percentual": {
-          "stats": { "hp": 1.25 }
+          "stats": {
+            "name": "Greatly increase health",
+            "modify": { "hp": 1.25 }
+          }
         }
       },
       "iconUrl": "/images/rune-morgott.png"
@@ -644,7 +648,7 @@
         "elemental": { "mag": 6.2, "fir": 7.1, "lit": 5, "hol": 6.2 }
       }
     },
-    "armor:veteran": {
+    "veteran-armor": {
       "type": "armor",
       "name": "Veteran’s Armor",
       "caption": "Chest Armor",
@@ -664,7 +668,7 @@
         "elemental": { "mag": 13.5, "fir": 14.1, "lit": 12.8, "hol": 13.3 }
       }
     },
-    "shield:icon": {
+    "icon-shield": {
       "type": "greatshield",
       "name": "Icon Shield",
       "group": "shields",
@@ -689,6 +693,284 @@
         },
         "scaling": { "str": 50 },
         "schema": "8300"
+      }
+    },
+    "rickety-shield": {
+      "type": "small-shield",
+      "name": "Rickety Shield",
+      "group": "shields",
+      "weight": 1.0,
+      "maxTiers": 25,
+      "requirements": { "attributes": { "str": 8 } },
+      "iconUrl": "/images/shield-rickety.png",
+      "crit": 100,
+      "affinities": {
+        "standard": {
+          "attack": { 
+            "phy": 70, 
+            "sta": 54 
+          },
+          "guard": {
+            "phy": 61,
+            "mag": 29,
+            "fir": 24,
+            "lit": 34,
+            "hol": 34,
+            "sta": 37,
+            "res": 20
+          },
+          "scaling": { "str": 24 },
+          "schema": "8000"
+        }
+      }
+    },
+    "riveted-wooden-shield": {
+      "type": "small-shield",
+      "name": "Riveted Wooden Shield",
+      "group": "shields",
+      "weight": 2.0,
+      "maxTiers": 25,
+      "requirements": { "attributes": { "str": 8 } },
+      "iconUrl": "/images/riveted-wooden-shield.png",
+      "crit": 100,
+      "affinities": {
+        "standard": {
+          "attack": { 
+            "phy": 72, 
+            "sta": 56 
+          },
+          "guard": {
+            "phy": 74,
+            "mag": 43,
+            "fir": 31,
+            "lit": 24,
+            "hol": 45,
+            "sta": 39,
+            "res": 21
+          },
+          "scaling": { "str": 24 },
+          "schema": "8000"
+        }
+      }
+    },
+    "blue-white-wooden-shield": {
+      "type": "small-shield",
+      "name": "Blue-White Wooden Shield",
+      "group": "shields",
+      "weight": 2.0,
+      "maxTiers": 25,
+      "requirements": { "attributes": { "str": 8 } },
+      "iconUrl": "/images/blue-white-wooden-shield.png",
+      "crit": 100,
+      "affinities": {
+        "standard": {
+          "attack": { 
+            "phy": 72, 
+            "sta": 56 
+          },
+          "guard": {
+            "phy": 73,
+            "mag": 45,
+            "fir": 35,
+            "lit": 22,
+            "hol": 42,
+            "sta": 39,
+            "res": 21
+          },
+          "scaling": { "str": 24 },
+          "schema": "8000"
+        }
+      }
+    },
+    "sun-realm-shield": {
+      "type": "shield",
+      "name": "Sun Realm Shield",
+      "group": "shields",
+      "weight": 3.5,
+      "maxTiers": 25,
+      "requirements": { "attributes": { "str": 8 } },
+      "iconUrl": "/images/sun-realm-shield.png",
+      "crit": 100,
+      "affinities": {
+        "standard": {
+          "attack": { 
+            "phy": 74, 
+            "sta": 58 
+          },
+          "guard": {
+            "phy": 86,
+            "mag": 44,
+            "fir": 27,
+            "lit": 40,
+            "hol": 56,
+            "sta": 48,
+            "res": 22
+          },
+          "scaling": { "str": 40 },
+          "schema": "8100"
+        }
+      }
+    },
+    "astrologers-staff": { 
+      "type": "glintstone-staff",
+      "name": "Astrologer’s Staff",
+      "group": "staffs",
+      "weight": 3,
+      "maxTiers": 25,
+      "requirements": { "attributes": { "str": 7, "int": 16 } },
+      "crit": 100,
+      "iconUrl": "/images/astrologers-staff.png",
+      "config": {
+        "guard": {
+          "phy": 25,
+          "mag": 15,
+          "fir": 15,
+          "lit": 15,
+          "hol": 15,
+          "sta": 15,
+          "res": 10
+        },
+        "cast": "sorceries",
+        "attack": { "phy": 25, "sta": 20 },
+        "scaling": { "str": 12, "int": 89 },
+        "schema": "1900",
+        "mutations": "catalysts"
+      }
+    },
+    "glintstone-staff": { 
+      "type": "glintstone-staff",
+      "name": "Glintstone Staff",
+      "group": "staffs",
+      "weight": 3,
+      "maxTiers": 25,
+      "requirements": { "attributes": { "str": 6, "int": 10 } },
+      "crit": 100,
+      "iconUrl": "/images/glintstone-staff.png",
+      "config": {
+        "guard": {
+          "phy": 25,
+          "mag": 15,
+          "fir": 15,
+          "lit": 15,
+          "hol": 15,
+          "sta": 15,
+          "res": 10
+        },
+        "cast": "sorceries",
+        "attack": { "phy": 25, "sta": 20 },
+        "scaling": { "str": 12, "int": 85 },
+        "schema": "1900",
+        "mutations": "catalysts"
+      }
+    },
+    "academy-glintstone-staff": { 
+      "type": "glintstone-staff",
+      "name": "Academy Glintstone Staff",
+      "group": "staffs",
+      "weight": 3,
+      "maxTiers": 25,
+      "requirements": { "attributes": { "str": 6, "int": 28 } },
+      "crit": 100,
+      "iconUrl": "/images/academy-glintstone-staff.png",
+      "config": {
+        "guard": {
+          "phy": 25,
+          "mag": 15,
+          "fir": 15,
+          "lit": 15,
+          "hol": 15,
+          "sta": 15,
+          "res": 10
+        },
+        "cast": "sorceries",
+        "attack": { "phy": 25, "sta": 20 },
+        "scaling": { "str": 12, "int": 91 },
+        "schema": "1900",
+        "mutations": "catalysts"
+      }
+    },
+    "diggers-staff": { 
+      "type": "glintstone-staff",
+      "name": "Digger’s Staff",
+      "group": "staffs",
+      "weight": 4.5,
+      "maxTiers": 25,
+      "requirements": { "attributes": { "str": 8, "int": 12 } },
+      "crit": 100,
+      "iconUrl": "/images/diggers-staff.png",
+      "config": {
+        "guard": {
+          "phy": 28,
+          "mag": 17,
+          "fir": 17,
+          "lit": 17,
+          "hol": 17,
+          "sta": 17,
+          "res": 11
+        },
+        "cast": "sorceries",
+        "attack": { "phy": 38, "sta": 23 },
+        "scaling": { "str": 25, "int": 76 },
+        "schema": "1900",
+        "mutations": "catalysts"
+      }
+    },
+    "demi-human-queens-staff": { 
+      "type": "glintstone-staff",
+      "name": "Demi-Human Queen’s Staff",
+      "group": "staffs",
+      "weight": 3.0,
+      "maxTiers": 25,
+      "requirements": { "attributes": { "str": 6, "int": 10 } },
+      "crit": 100,
+      "iconUrl": "/images/demi-human-queens-staff.png",
+      "config": {
+        "guard": {
+          "phy": 25,
+          "mag": 15,
+          "fir": 15,
+          "lit": 15,
+          "hol": 15,
+          "sta": 15,
+          "res": 10
+        },
+        "cast": "sorceries",
+        "attack": { "phy": 31, "sta": 20 },
+        "scaling": { "str": 25, "int": 75 },
+        "schema": "1900",
+        "mutations": [
+          { "breakpoint": 1, "grow": 0 },
+          { "breakpoint": 20, "grow": 40 },
+          { "breakpoint": 40, "grow": 60 },
+          { "breakpoint": 80, "grow": 85 },
+          { "breakpoint": 99, "grow": 100 }
+        ]
+      }
+    },
+    "erdtree-seal": { 
+      "type": "sacred-seal",
+      "name": "Erdtree Seal",
+      "group": "seals",
+      "weight": 0,
+      "maxTiers": 10,
+      "requirements": { "attributes": { "fth": 40 } },
+      "crit": 100,
+      "iconUrl": "/images/erdtree-seal.png",
+      "config": {
+        "guard": {
+          "phy": 25,
+          "mag": 15,
+          "fir": 15,
+          "lit": 15,
+          "hol": 15,
+          "sta": 15,
+          "res": 10
+        },
+        "cast": "incantations",
+        "attack": { "phy": 25, "hol": 15, "sta": 20 },
+        "scaling": { "fth": 89 },
+        "schema": "2400",
+        "mutations": "catalysts#15"
       }
     },
     "weapon:sword-st-trina": {
@@ -808,6 +1090,126 @@
         },
         "attack": { "phy": 87, "mag": 56, "fir": 56, "sta": 47 },
         "scaling": { "str": 14, "dex": 14, "int": 50, "fth": 50 },
+        "schema": "2200"
+      }
+    },
+    "weapon:coded-sword": {
+      "type": "straight-sword",
+      "name": "Coded Sword",
+      "group": "swords",
+      "weight": 2.5,
+      "maxTiers": 10,
+      "requirements": { "attributes": { "fth": 20 } },
+      "crit": 100,
+      "iconUrl": "/images/weapon-coded-sword.png",
+      "config": {
+        "guard": {
+          "phy": 13,
+          "mag": 22,
+          "fir": 22,
+          "lit": 22,
+          "hol": 58,
+          "sta": 27,
+          "res": 13
+        },
+        "attack": { "hol": 85, "sta": 38 },
+        "scaling": { "fth": 95 },
+        "schema": "2200"
+      }
+    },
+    "weapon:inseparable-sword": {
+      "type": "greatsword",
+      "name": "Inseparable Sword",
+      "group": "swords",
+      "weight": 10.0,
+      "maxTiers": 10,
+      "requirements": { "attributes": { "str": 18, "dex": 18, "fth": 20 } },
+      "crit": 100,
+      "iconUrl": "/images/weapon-inseparable-sword.png",
+      "config": {
+        "guard": {
+          "phy": 59,
+          "mag": 34,
+          "fir": 34,
+          "lit": 34,
+          "hol": 52,
+          "sta": 44,
+          "res": 21
+        },
+        "attack": { "phy": 98, "hol": 98, "sta": 66 },
+        "scaling": { "str": 27, "dex": 27, "fth": 60 },
+        "schema": "2200"
+      }
+    },
+    "weapon:nox-flowing-sword": {
+      "type": "curved-sword",
+      "name": "Nox Flowing Sword",
+      "group": "swords",
+      "weight": 3.5,
+      "maxTiers": 10,
+      "requirements": { "attributes": { "str": 8, "dex": 15 } },
+      "crit": 100,
+      "iconUrl": "/images/weapon-nox-flowing-sword.png",
+      "config": {
+        "guard": {
+          "phy": 40,
+          "mag": 30,
+          "fir": 30,
+          "lit": 30,
+          "hol": 30,
+          "sta": 25,
+          "res": 10
+        },
+        "attack": { "phy": 112, "sta": 40 },
+        "scaling": { "str": 20, "dex": 50 },
+        "schema": "2200"
+      }
+    },
+    "weapon:golden-epitaph": {
+      "type": "straight-sword",
+      "name": "Golden Epitaph",
+      "group": "swords",
+      "weight": 3.5,
+      "maxTiers": 10,
+      "requirements": { "attributes": { "str": 12, "dex": 10, "fth": 14 } },
+      "crit": 100,
+      "iconUrl": "/images/weapon-golden-epitaph.png",
+      "config": {
+        "guard": {
+          "phy": 25,
+          "mag": 15,
+          "fir": 15,
+          "lit": 15,
+          "hol": 40,
+          "sta": 30,
+          "res": 15
+        },
+        "attack": { "phy": 85, "hol": 85, "sta": 45 },
+        "scaling": { "str": 30, "dex": 30, "fth": 38 },
+        "schema": "2200"
+      }
+    },
+    "weapon:ornamental-straight-sword": {
+      "type": "straight-sword",
+      "name": "Ornamental Straight Sword",
+      "group": "swords",
+      "weight": 3.0,
+      "maxTiers": 10,
+      "requirements": { "attributes": { "str": 10, "dex": 14 } },
+      "crit": 100,
+      "iconUrl": "/images/weapon-ornamental-straight-sword.png",
+      "config": {
+        "guard": {
+          "phy": 42,
+          "mag": 28,
+          "fir": 28,
+          "lit": 28,
+          "hol": 28,
+          "sta": 28,
+          "res": 14
+        },
+        "attack": { "phy": 101, "sta": 42 },
+        "scaling": { "str": 20, "dex": 55 },
         "schema": "2200"
       }
     },
@@ -1418,7 +1820,48 @@
 				]
 			}
 		},
-    "2200": {
+		"1900": {
+			"attack": {
+				"phy": [1, 1.75],
+				"mag": [1, 1.75],
+				"fir": [1, 1.75],
+				"lit": [1, 1.75],
+				"hol": [1, 1.75],
+				"sta": [1, 2]
+			},
+			"scaling": {
+				"str": [
+					1, 1.08, 1.16, 1.24, 1.32, 1.4, 1.48, 1.56, 1.64, 1.72, 1.8, 1.88, 1.96, 2.04, 2.12, 2.2,
+					2.28, 2.36, 2.44, 2.52, 2.6, 2.68, 2.76, 2.84, 2.92, 3
+				],
+				"dex": [
+					1, 1.08, 1.16, 1.24, 1.32, 1.4, 1.48, 1.56, 1.64, 1.72, 1.8, 1.88, 1.96, 2.04, 2.12, 2.2,
+					2.28, 2.36, 2.44, 2.52, 2.6, 2.68, 2.76, 2.84, 2.92, 3
+				],
+				"int": [
+					1, 1.08, 1.16, 1.24, 1.32, 1.4, 1.48, 1.56, 1.64, 1.72, 1.8, 1.88, 1.96, 2.04, 2.12, 2.2,
+					2.28, 2.36, 2.44, 2.52, 2.6, 2.68, 2.76, 2.84, 2.92, 3
+				],
+				"fth": [
+					1, 1.08, 1.16, 1.24, 1.32, 1.4, 1.48, 1.56, 1.64, 1.72, 1.8, 1.88, 1.96, 2.04, 2.12, 2.2,
+					2.28, 2.36, 2.44, 2.52, 2.6, 2.68, 2.76, 2.84, 2.92, 3
+				],
+				"arc": [
+					1, 1.08, 1.16, 1.24, 1.32, 1.4, 1.48, 1.56, 1.64, 1.72, 1.8, 1.88, 1.96, 2.04, 2.12, 2.2,
+					2.28, 2.36, 2.44, 2.52, 2.6, 2.68, 2.76, 2.84, 2.92, 3
+				]
+			},
+      "guard": {
+				"phy": [1, 1],
+				"mag": [1, 1],
+				"fir": [1, 1],
+				"lit": [1, 1],
+				"hol": [1, 1],
+				"sta": [1, 1],
+				"res": [1, 1]
+			}
+		},
+		"2200": {
 			"attack": {
 				"phy": [1, 2.45],
 				"mag": [1, 2.45],
@@ -1441,6 +1884,32 @@
 				"lit": [1, 1],
 				"hol": [1, 1],
 				"sta": [1, 1.1],
+				"res": [1, 1]
+			}
+		},
+    "2400": {
+			"attack": {
+				"phy": [1, 2.45],
+				"mag": [1, 2.45],
+				"fir": [1, 2.45],
+				"lit": [1, 2.45],
+				"hol": [1, 2.45],
+				"sta": [1, 2]
+			},
+			"scaling": {
+				"str": [1, 1.2, 1.4, 1.6, 1.8, 2, 2.2, 2.4, 2.6, 2.8, 3],
+				"dex": [1, 1.2, 1.4, 1.6, 1.8, 2, 2.2, 2.4, 2.6, 2.8, 3],
+				"int": [1, 1.2, 1.4, 1.6, 1.8, 2, 2.2, 2.4, 2.6, 2.8, 3],
+				"fth": [1, 1.2, 1.4, 1.6, 1.8, 2, 2.2, 2.4, 2.6, 2.8, 3],
+				"arc": [1, 1.2, 1.4, 1.6, 1.8, 2, 2.2, 2.4, 2.6, 2.8, 3]
+			},
+			"guard": {
+				"phy": [1, 1],
+				"mag": [1, 1],
+				"fir": [1, 1],
+				"lit": [1, 1],
+				"hol": [1, 1],
+				"sta": [1, 1],
 				"res": [1, 1]
 			}
 		},
@@ -1476,7 +1945,7 @@
 				]
 			}
 		},
-    "6000": {
+		"6000": {
 			"attack": {
 				"phy": [0.95, 2.2],
 				"mag": [0.95, 2.2],
@@ -1508,7 +1977,89 @@
 				]
 			}
 		},
-    "8300": {
+		"8000": {
+			"attack": {
+				"phy": [1, 2.45],
+				"mag": [1, 2.45],
+				"fir": [1, 2.45],
+				"lit": [1, 2.45],
+				"hol": [1, 2.45],
+				"sta": [1, 2]
+			},
+			"scaling": {
+				"str": [
+					1, 1.04, 1.08, 1.12, 1.16, 1.2, 1.24, 1.28, 1.32, 1.36, 1.4, 1.43, 1.46, 1.49, 1.52, 1.55,
+					1.58, 1.61, 1.64, 1.67, 1.7, 1.72, 1.74, 1.76, 1.78, 1.8
+				],
+				"dex": [
+					1, 1.04, 1.08, 1.12, 1.16, 1.2, 1.24, 1.28, 1.32, 1.36, 1.4, 1.43, 1.46, 1.49, 1.52, 1.55,
+					1.58, 1.61, 1.64, 1.67, 1.7, 1.72, 1.74, 1.76, 1.78, 1.8
+				],
+				"int": [
+					1, 1.04, 1.08, 1.12, 1.16, 1.2, 1.24, 1.28, 1.32, 1.36, 1.4, 1.43, 1.46, 1.49, 1.52, 1.55,
+					1.58, 1.61, 1.64, 1.67, 1.7, 1.72, 1.74, 1.76, 1.78, 1.8
+				],
+				"fth": [
+					1, 1.04, 1.08, 1.12, 1.16, 1.2, 1.24, 1.28, 1.32, 1.36, 1.4, 1.43, 1.46, 1.49, 1.52, 1.55,
+					1.58, 1.61, 1.64, 1.67, 1.7, 1.72, 1.74, 1.76, 1.78, 1.8
+				],
+				"arc": [
+					1, 1.04, 1.08, 1.12, 1.16, 1.2, 1.24, 1.28, 1.32, 1.36, 1.4, 1.43, 1.46, 1.49, 1.52, 1.55,
+					1.58, 1.61, 1.64, 1.67, 1.7, 1.72, 1.74, 1.76, 1.78, 1.8
+				]
+			},
+			"guard": {
+				"phy": [1, 1],
+				"mag": [1, 1],
+				"fir": [1, 1],
+				"lit": [1, 1],
+				"hol": [1, 1],
+				"sta": [1, 1.32],
+				"res": [1, 1]
+			}
+		},
+		"8100": {
+			"attack": {
+				"phy": [1, 2.45],
+				"mag": [1, 2.45],
+				"fir": [1, 2.45],
+				"lit": [1, 2.45],
+				"hol": [1, 2.45],
+				"sta": [1, 2]
+			},
+			"scaling": {
+				"str": [
+					1, 1.04, 1.08, 1.12, 1.16, 1.2, 1.24, 1.28, 1.32, 1.36, 1.4, 1.43, 1.46, 1.49, 1.52, 1.55,
+					1.58, 1.61, 1.64, 1.67, 1.7, 1.72, 1.74, 1.76, 1.78, 1.8
+				],
+				"dex": [
+					1, 1.04, 1.08, 1.12, 1.16, 1.2, 1.24, 1.28, 1.32, 1.36, 1.4, 1.43, 1.46, 1.49, 1.52, 1.55,
+					1.58, 1.61, 1.64, 1.67, 1.7, 1.72, 1.74, 1.76, 1.78, 1.8
+				],
+				"int": [
+					1, 1.04, 1.08, 1.12, 1.16, 1.2, 1.24, 1.28, 1.32, 1.36, 1.4, 1.43, 1.46, 1.49, 1.52, 1.55,
+					1.58, 1.61, 1.64, 1.67, 1.7, 1.72, 1.74, 1.76, 1.78, 1.8
+				],
+				"fth": [
+					1, 1.04, 1.08, 1.12, 1.16, 1.2, 1.24, 1.28, 1.32, 1.36, 1.4, 1.43, 1.46, 1.49, 1.52, 1.55,
+					1.58, 1.61, 1.64, 1.67, 1.7, 1.72, 1.74, 1.76, 1.78, 1.8
+				],
+				"arc": [
+					1, 1.04, 1.08, 1.12, 1.16, 1.2, 1.24, 1.28, 1.32, 1.36, 1.4, 1.43, 1.46, 1.49, 1.52, 1.55,
+					1.58, 1.61, 1.64, 1.67, 1.7, 1.72, 1.74, 1.76, 1.78, 1.8
+				]
+			},
+			"guard": {
+				"phy": [1, 1],
+				"mag": [1, 1],
+				"fir": [1, 1],
+				"lit": [1, 1],
+				"hol": [1, 1],
+				"sta": [1, 1.24],
+				"res": [1, 1]
+			}
+		},
+		"8300": {
 			"attack": {
 				"phy": [1.2, 2.3],
 				"mag": [1.2, 2.3],
@@ -1524,15 +2075,15 @@
 				"fth": [1, 1.08, 1.16, 1.24, 1.32, 1.4, 1.48, 1.56, 1.64, 1.72, 1.8],
 				"arc": [1, 1.08, 1.16, 1.24, 1.32, 1.4, 1.48, 1.56, 1.64, 1.72, 1.8]
 			},
-      "guard": {
-        "phy": [1, 1],
-        "mag": [1, 1],
-        "fir": [1, 1],
-        "lit": [1, 1],
-        "hol": [1, 1],
+			"guard": {
+				"phy": [1, 1],
+				"mag": [1, 1],
+				"fir": [1, 1],
+				"lit": [1, 1],
+				"hol": [1, 1],
 				"sta": [1, 1.1],
-        "res": [1, 1]
-      }
+				"res": [1, 1]
+			}
 		}
 	},
 
@@ -1593,6 +2144,20 @@
       { "breakpoint": 60, "grow": 75 },
       { "breakpoint": 80, "grow": 90 },
       { "breakpoint": 150, "grow": 110 }
+    ],
+    "catalysts": [
+      { "breakpoint": 1, "grow": 0 },
+      { "breakpoint": 18, "grow": 20 },
+      { "breakpoint": 60, "grow": 75 },
+      { "breakpoint": 80, "grow": 90 },
+      { "breakpoint": 99, "grow": 100 }
+    ],
+    "catalysts#15": [
+      { "breakpoint": 1, "grow": 0 },
+      { "breakpoint": 25, "grow": 25 },
+      { "breakpoint": 60, "grow": 65 },
+      { "breakpoint": 80, "grow": 95 },
+      { "breakpoint": 99, "grow": 100 }
     ]
   }
 }

@@ -4,8 +4,7 @@
 	import Header from '$lib/components/Header.svelte';
 	import AttributePanel from '$lib/components/AttributePanel.svelte';
 	import HeroModifiers from '$lib/components/HeroModifiers.svelte';
-	import type { DataSchema } from '$lib/types';
-	import { loadData } from '$lib/data';
+	import { loadData, type DataSchema } from '$lib/data';
 	import EquipPanel from '$lib/components/EquipPanel.svelte';
 	import { attributeState, equipState } from '$lib/state';
 

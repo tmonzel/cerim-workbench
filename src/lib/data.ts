@@ -1,9 +1,25 @@
-import type { DataSchema } from './types';
 import { appState } from './state';
 import { equipStore, itemStore, type EquipState } from './stores';
-import { AttributeType, Item, type AttributeMutation, type ItemPreset, type UpgradeSchema } from './core';
+import { AttributeType, Item, type AttributeEffect, type AttributeMutation, type ItemDef, type ItemPreset, type UpgradeSchema } from './core';
 import { attributeStore } from './attributes';
 import { get } from 'svelte/store';
+
+export type DataSchema = {
+  maxLevel: number;
+  attributePointsPerLevel: number;
+  
+  defaults?: {
+    attributes?: Record<AttributeType, number>;
+    equip?: Record<keyof EquipState, string>;
+  };
+
+  items?: Record<string, ItemDef>;
+
+  effects?: AttributeEffect[];
+  upgradeSchemata?: Record<string, UpgradeSchema>; 
+  presets?: Record<string, ItemPreset>;
+  mutations?: Record<string, AttributeMutation[]>;
+}
 
 export const mutationRecord: Record<string, AttributeMutation[]> = {};
 export const presetRecord: Record<string, ItemPreset> = {};

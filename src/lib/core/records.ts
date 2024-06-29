@@ -86,6 +86,14 @@ export const damageRecord: Record<DamageType, { name: string; color: string }> =
   [DamageType.STAMINA]: {
     name: 'Stamina',
     color: '#339966'
+  },
+  [DamageType.SORCERY]: {
+    name: 'Sorcery',
+    color: '#c084fc'
+  },
+  [DamageType.INCANTATION]: {
+    name: 'Incantation',
+    color: '#c084fc'
   }
 }
 
@@ -110,6 +118,72 @@ export const statRecord: Record<HeroStatType, HeroStat> = {
   },
   attackSpeed: {
     name: 'Attack Speed'
+  },
+  'res:immunity': {
+    name: 'Immunity'
+  },
+  'res:robustness': {
+    name: 'Robustness'
+  },
+  'res:focus': {
+    name: 'Focus'
+  },
+  'res:vitality': {
+    name: 'Vitality'
+  },
+  'res:poise': {
+    name: 'Poise'
+  },
+  'def:standard': {
+    name: 'Physical'
+  },
+  'def:strike': {
+    name: 'Strike'
+  },
+  'def:slash': {
+    name: 'Slash'
+  },
+  'def:pierce': {
+    name: 'Pierce'
+  },
+  'def:hol': {
+    name: 'Holy Defense'
+  },
+  'def:lit': {
+    name: 'Lightning Defense'
+  },
+  'def:fir': {
+    name: 'Fire Defense'
+  },
+  'def:mag': {
+    name: 'Magic Defense'
+  },
+  'guard:sta': {
+    name: 'Stability'
+  },
+  'guard:res': {
+    name: 'Resistance'
+  },
+  'guard:phy': {
+    name: 'Physical Guard'
+  },
+  'guard:mag': {
+    name: 'Magic Guard'
+  },
+  'guard:fir': {
+    name: 'Fire Guard'
+  },
+  'guard:lit': {
+    name: 'Lightning Guard'
+  },
+  'guard:hol': {
+    name: 'Holy Guard'
+  },
+  damage: {
+    name: 'Attack Damage'
+  },
+  attributes: {
+    name: 'Attributes'
   }
 }
 
@@ -294,6 +368,9 @@ export const equipRecord: Record<string, { name: string }> = {
   },
   'glintstone-staff': {
     name: 'Glintstone Staff'
+  },
+  'sacred-seal': {
+    name: 'Sacred Seal'
   },
 
   // Armor

@@ -4,18 +4,18 @@
 	
   export let body: EquipState;
 </script>
-<div class="grid grid-cols-2 gap-5">
-  <div class="flex flex-col gap-5 mb-5">
+<div class="grid grid-cols-8 gap-5">
+  <div class="flex flex-col gap-5 mb-5 col-span-5">
     <EquipSlot 
       type="MainHand" 
       item={body.mainHand}  
-      allowedGroups={['axes', 'bows', 'hammers', 'swords', 'daggers', 'halberds']} 
+      allowedGroups={['axes', 'bows', 'hammers', 'swords', 'daggers', 'halberds', 'staffs']} 
       on:itemChange={(e) => equipStore.update((store) => ({ ...store, mainHand: e.detail }))}
     />
     <EquipSlot 
       type="OffHand" 
       item={body.offHand} 
-      allowedGroups={['shields']} 
+      allowedGroups={['shields', 'seals']} 
       on:itemChange={(e) => equipStore.update((store) => ({ ...store, offHand: e.detail }))}
     />
     <EquipSlot 
@@ -43,7 +43,7 @@
       on:itemChange={(e) => equipStore.update((store) => ({ ...store, hand: e.detail }))}
     />
   </div>
-  <div class="flex flex-col gap-5 mb-5">
+  <div class="flex flex-col gap-5 mb-5 col-span-3">
     <EquipSlot 
       type="GreatRune" 
       item={body.rune} 
