@@ -167,7 +167,6 @@ export type Damage = Partial<Record<DamageType, number>>;
 export type BaseScalingValue = { [0]: number; [1]: string | string[] } | number;
 export type ScalingBase = Partial<Record<AttributeType, BaseScalingValue>>;
 export type NumberRange = { [0]: number, [1]: number };
-export type ItemType = 'weapon' | 'armor' | 'talisman' | 'shield';
 
 export type UpgradeSchema = {
   attack?: Record<DamageType, number[]>;
@@ -177,7 +176,7 @@ export type UpgradeSchema = {
 
 export type ItemDef = {
   name: string;
-  type: ItemType;
+  type: string;
   caption: string;
   group: string;
   tags: string[];

@@ -200,3 +200,124 @@ export const affinityRecord: Record<AffinityType, Affinity> = {
     name: 'Occult'
   }
 }
+
+export const equipRecord: Record<string, { name: string }> = {
+  'talisman': {
+    name: 'Talisman'
+  },
+  'rune': {
+    name: 'Great Rune'
+  },
+  'dagger': {
+    name: 'Dagger'
+  },
+  'straight-sword': {
+    name: 'Straight Sword'
+  },
+  'greatsword': {
+    name: 'Greatsword'
+  },
+  'colossal-sword': {
+    name: 'Colossal Sword'
+  },
+  'thrusting-sword': {
+    name: 'Thrusting Sword'
+  },
+  'heavy-thrusting-sword': {
+    name: 'Heavy Thrusting Sword'
+  },
+  'curved-sword': {
+    name: 'Curved Sword'
+  },
+  'curved-greatsword': {
+    name: 'Curved Greatsword'
+  },
+  'katana': {
+    name: 'Katana'
+  },
+  'twinblade': {
+    name: 'Twinblade'
+  },
+  'axe': {
+    name: 'Axe'
+  },
+  'great-axe': {
+    name: 'Greataxe'
+  },
+  'hammer': {
+    name: 'Hammer'
+  },
+  'flail': {
+    name: 'Flail'
+  },
+  'great-hammer': {
+    name: 'Great Hammer'
+  },
+  'colossal-weapon': {
+    name: 'Colossal Weapon'
+  },
+  'spear': {
+    name: 'Spear'
+  },
+  'great-spear': {
+    name: 'Great Spear'
+  },
+  'halberd': {
+    name: 'Halberd'
+  },
+  'reaper': {
+    name: 'Reaper'
+  },
+  'whip': {
+    name: 'Whip'
+  },
+  'fist': {
+    name: 'Fist'
+  },
+  'claw': {
+    name: 'Claw'
+  },
+  'light-bow': {
+    name: 'Light Bow'
+  },
+  'bow': {
+    name: 'Bow'
+  },
+  'great-bow': {
+    name: 'Greatbow'
+  },
+  'crossbow': {
+    name: 'Crossbow'
+  },
+  'ballista': {
+    name: 'Ballista'
+  },
+  'glintstone-staff': {
+    name: 'Glintstone Staff'
+  },
+
+  // Armor
+  'helm': {
+    name: 'Helm'
+  },
+  'armor': {
+    name: 'Chest Armor'
+  },
+  'gauntlet': {
+    name: 'Gauntlet'
+  },
+  'leg': {
+    name: 'Leg Armor'
+  },
+
+  // Shields
+  'small-shield': {
+    name: 'Small Shield'
+  },
+  'shield': {
+    name: 'Medium Shield'
+  },
+  'greatshield': {
+    name: 'Greatshield'
+  },
+}

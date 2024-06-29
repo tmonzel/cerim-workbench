@@ -1,4 +1,4 @@
-import { AffinityType, DamageType, AttributeType, type Defense, type ItemDef, type ItemRequirements, type ItemType, type Resistance, type Damage, type Guard, type ItemConfig, type AttributeMutation, type ItemPreset, type UpgradeSchema, GuardType, type ModifierType, type ItemModifierDef } from './types';
+import { AffinityType, DamageType, AttributeType, type Defense, type ItemDef, type ItemRequirements, type Resistance, type Damage, type Guard, type ItemConfig, type AttributeMutation, type ItemPreset, type UpgradeSchema, GuardType, type ModifierType, type ItemModifierDef } from './types';
 import type { AttributeState } from '$lib/attributes';
 import { calcAttributeScaling, getScalingId, list } from './helpers';
 import { mutationRecord, presetRecord, upgradeSchemata } from '$lib/data';
@@ -35,11 +35,7 @@ export class Item {
     return this.def.name;
   }
 
-  get caption(): string {
-    return this.def.caption;
-  }
-
-  get type(): ItemType {
+  get type(): string {
     return this.def.type;
   }
 
@@ -126,7 +122,9 @@ export class Item {
       }
     }
 
-    this.possibleUpgrades = preset.maxTiers ?? 25;
+    if(preset.maxTiers !== undefined && this.possibleUpgrades === 0) {
+      this.possibleUpgrades = preset.maxTiers;
+    }
   }
 
   applyConfig(config: ItemConfig): void {

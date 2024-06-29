@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Item, affinityRecord, attributeRecord, list, sum } from '$lib/core';
+	import { Item, affinityRecord, attributeRecord, equipRecord, list, sum } from '$lib/core';
 	import DamageBadge from './DamageBadge.svelte';
 	import DamageDetail from './DamageDetail.svelte';
 	import ElementalGrid from './ElementalGrid.svelte';
@@ -35,7 +35,7 @@
       {item.name} {#if item.tier > 0}(+{item.tier}){/if}
       <span class="absolute inset-0"></span>
     </div>
-    <p class="text-sm dark:text-zinc-400">{item.caption}</p>
+    <p class="text-sm dark:text-zinc-400">{equipRecord[item.type].name}</p>
   
     <div class="flex items-center gap-x-12 mt-3 mb-2">
       {#if item.type === 'weapon' || item.type === 'shield'}

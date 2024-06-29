@@ -143,7 +143,6 @@
     "rune:godrik": {
       "type": "rune",
       "name": "Godrick’s Great Rune",
-      "caption": "Great Rune",
       "description": "Its blessing raises all attributes",
       "group": "runes",
       "modifiers": {
@@ -159,7 +158,6 @@
     "rune:rykard": {
       "type": "rune",
       "name": "Rykard’s Great Rune",
-      "caption": "Great Rune",
       "group": "runes",
       "effects": [
         "Restores 80 HP plus 7% of your total HP upon defeating enemies"
@@ -169,7 +167,6 @@
     "rune:radahn": {
       "type": "rune",
       "name": "Radahn’s Great Rune",
-      "caption": "Great Rune",
       "group": "runes",
       "modifiers": {
         "percentual": {
@@ -184,7 +181,6 @@
     "rune:morgott": {
       "type": "rune",
       "name": "Morgott’s Great Rune",
-      "caption": "Great Rune",
       "description": "Its blessing greatly raises maximum HP.",
       "group": "runes",
       "modifiers": {
@@ -197,7 +193,6 @@
     "rune:mohg": {
       "type": "rune",
       "name": "Mohg’s Great Rune",
-      "caption": "Great Rune",
       "description": "A Great Rune of the shardbearer Mohg.",
       "group": "runes",
       "effects": [
@@ -208,7 +203,6 @@
     "rune:malenia": {
       "type": "rune",
       "name": "Malenia’s Great Rune",
-      "caption": "Great Rune",
       "description": "The blessing of this half-rotted rune reduces the healing power of Flask of Crimson Tears.",
       "group": "runes",
       "effects": [
@@ -219,7 +213,6 @@
     "rune:unborn": {
       "type": "rune",
       "name": "Great Rune of the Unborn",
-      "caption": "Great Rune",
       "description": "Perfects those who have been born anew.",
       "group": "runes",
       "effects": [
@@ -230,7 +223,6 @@
     "rune:phantom": {
       "type": "rune",
       "name": "Phantom Great Rune",
-      "caption": "Great Rune",
       "group": "runes",
       "effects": [
         "Give blessing of blood to enemies in invaded world"  
@@ -240,12 +232,14 @@
     "talisman:radagon": {
       "type": "talisman",
       "name": "Radagon’s Scarseal",
-      "caption": "Talisman",
       "group": "talismans",
       "weight": 0.8,
       "modifiers": {
         "flat": {
-          "attributes": { "vig": 3, "end": 3, "str": 3 }
+          "attributes": {
+            "name": "Raise Vigor, Endurance and Strength",
+            "modify": { "vig": 3, "end": 3, "str": 3 }
+          }
         }
       },
       "effects": [
@@ -256,7 +250,6 @@
     "talisman:daedicar": {
       "type": "talisman",
       "name": "Daedicar’s Woe",
-      "caption": "Talisman",
       "group": "talismans",
       "weight": 0.8,
       "effects": [
@@ -267,7 +260,6 @@
     "talisman:crimson-amber": {
       "type": "talisman",
       "name": "Crimson Amber Medallion",
-      "caption": "Talisman",
       "group": "talismans",
       "weight": 0.3,
       "iconUrl": "/images/talisman-crimson-amber.png",
@@ -307,7 +299,6 @@
     "talisman:horn-charm": {
       "type": "talisman",
       "name": "Immunizing Horn Charm",
-      "caption": "Talisman",
       "group": "talismans",
       "weight": 0.6,
       "iconUrl": "/images/talisman-immunizing-horn-charm.png",
@@ -323,7 +314,6 @@
     "talisman:arsenal-charm": {
       "type": "talisman",
       "name": "Arsenal Charm",
-      "caption": "Talisman",
       "group": "talismans",
       "weight": 1.5,
       "iconUrl": "/images/talisman-arsenal-charm.png",
@@ -332,21 +322,26 @@
           "iconUrl": "/images/talisman-arsenal-charm-1.png",
           "modifiers": {
             "percentual": {
-              "stats": { "equipLoad": 1.17 }
+              "stats": {
+                "name": "Increase Equip Load",
+                "modify": { "equipLoad": 1.17 }
+              }
             }
           }
         }
       ],
       "modifiers": {
         "percentual": {
-          "stats": { "equipLoad": 1.15 }
+          "stats": {
+            "name": "Increase Equip Load",
+            "modify": { "equipLoad": 1.15 }
+          }
         }
       }
     },
     "talisman:great-arsenal": {
       "type": "talisman",
       "name": "Great-Jar’s Arsenal",
-      "caption": "Talisman",
       "group": "talismans",
       "weight": 1.5,
       "iconUrl": "/images/talisman-great-jars-arsenal.png",
@@ -362,7 +357,6 @@
     "talisman:erdtree-favor": {
       "type": "talisman",
       "name": "Erdtree’s Favor",
-      "caption": "Talisman",
       "group": "talismans",
       "weight": 1.5,
       "iconUrl": "/images/talisman-erdtrees-favor.png",
@@ -378,7 +372,6 @@
     "talisman:starscourge": {
       "type": "talisman",
       "name": "Starscourge Heirloom",
-      "caption": "Talisman",
       "group": "talismans",
       "weight": 0.8,
       "iconUrl": "/images/talisman-starscourge-heirloom.png",
@@ -394,14 +387,13 @@
     "talisman:bull-goat": {
       "type": "talisman",
       "name": "Bull-Goat’s Talisman",
-      "caption": "Talisman",
       "group": "talismans",
       "weight": 0.5,
       "iconUrl": "/images/talisman-bullgoats.png",
       "modifiers": {
         "percentual": {
           "resistance": {
-            "name": "Increase Equip Load",
+            "name": "Increase Poise Resistance",
             "modify": { "poise": 1.33 }
           }
         }
@@ -410,7 +402,6 @@
     "talisman:crucible-scale": {
       "type": "talisman",
       "name": "Crucible Scale Talisman",
-      "caption": "Talisman",
       "group": "talismans",
       "weight": 1.1,
       "effects": [
@@ -421,7 +412,6 @@
     "talisman:haligdrake": {
       "type": "talisman",
       "name": "Haligdrake Talisman",
-      "caption": "Talisman",
       "group": "talismans",
       "weight": 0.6,
       "iconUrl": "/images/talisman-haligdrake.png",
@@ -461,7 +451,6 @@
     "talisman:boltdrake": {
       "type": "talisman",
       "name": "Boltdrake Talisman",
-      "caption": "Talisman",
       "group": "talismans",
       "weight": 0.6,
       "iconUrl": "/images/talisman-boltdrake.png",
@@ -501,7 +490,6 @@
     "talisman:pearldrake": {
       "type": "talisman",
       "name": "Pearldrake Talisman",
-      "caption": "Talisman",
       "group": "talismans",
       "weight": 0.9,
       "iconUrl": "/images/talisman-pearldrake.png",
@@ -541,7 +529,6 @@
     "talisman:prince-of-death": {
       "type": "talisman",
       "name": "Prince of Death’s Cyst",
-      "caption": "Talisman",
       "group": "talismans",
       "weight": 0.6,
       "iconUrl": "/images/talisman-prince-of-death.png",
@@ -555,9 +542,8 @@
       }
     },
     "armor:navy-hood": {
-      "type": "armor",
+      "type": "helm",
       "name": "Navy Hood",
-      "caption": "Helm",
       "set": "noble",
       "group": "helmets",
       "weight": 1.7,
@@ -583,9 +569,8 @@
       }
     },
     "armor:briar-helm": {
-      "type": "armor",
+      "type": "helm",
       "name": "Briar Helm",
-      "caption": "Helm",
       "set": "briar",
       "group": "helmets",
       "weight": 5.1,
@@ -605,7 +590,6 @@
     "armor:briar": {
       "type": "armor",
       "name": "Briar Armor",
-      "caption": "Chest Armor",
       "set": "briar",
       "group": "bodyArmors",
       "weight": 11.8,
@@ -623,9 +607,8 @@
       }
     },
     "armor:briar-gauntlets": {
-      "type": "armor",
+      "type": "gauntlet",
       "name": "Briar Gauntlets",
-      "caption": "Gauntlet",
       "set": "briar",
       "group": "gauntlets",
       "weight": 3.9,
@@ -643,9 +626,8 @@
       }
     },
     "armor:briar-greaves": {
-      "type": "armor",
+      "type": "leg",
       "name": "Briar Greaves",
-      "caption": "Leg Armor",
       "set": "briar",
       "group": "greaves",
       "weight": 7.3,
@@ -683,9 +665,8 @@
       }
     },
     "shield:icon": {
-      "type": "weapon",
+      "type": "greatshield",
       "name": "Icon Shield",
-      "caption": "Greatshield",
       "group": "shields",
       "weight": 11.5,
       "maxTiers": 10,
@@ -710,10 +691,129 @@
         "schema": "8300"
       }
     },
+    "weapon:sword-st-trina": {
+      "type": "straight-sword",
+      "name": "Sword Of St.Trina",
+      "group": "swords",
+      "weight": 3,
+      "maxTiers": 10,
+      "requirements": { "attributes": { "str": 10, "dex": 12, "int": 14 } },
+      "crit": 100,
+      "iconUrl": "/images/weapon-sword-st-trina.png",
+      "config": {
+        "guard": {
+          "phy": 39,
+          "mag": 33,
+          "fir": 27,
+          "lit": 27,
+          "hol": 27,
+          "sta": 28,
+          "res": 14
+        },
+        "attack": { "phy": 107, "mag": 32, "sta": 45 },
+        "scaling": { "str": 28, "dex": 40, "int": 20 },
+        "schema": "2200"
+      }
+    },
+    "weapon:miquellan-knights-sword": {
+      "type": "straight-sword",
+      "name": "Miquellan Knight’s Sword",
+      "group": "swords",
+      "weight": 3.5,
+      "maxTiers": 10,
+      "requirements": { "attributes": { "str": 11, "dex": 11, "fth": 16 } },
+      "crit": 100,
+      "iconUrl": "/images/weapon-miquellan-knights-sword.png",
+      "config": {
+        "guard": {
+          "phy": 40,
+          "mag": 28,
+          "fir": 28,
+          "lit": 28,
+          "hol": 40,
+          "sta": 30,
+          "res": 15
+        },
+        "attack": { "phy": 105, "hol": 68, "sta": 45 },
+        "scaling": { "str": 29, "dex": 29, "fth": 20 },
+        "schema": "2200"
+      }
+    },
+    "weapon:carian-knights-sword": {
+      "type": "straight-sword",
+      "name": "Carian Knight’s Sword",
+      "group": "swords",
+      "weight": 4.0,
+      "maxTiers": 10,
+      "requirements": { "attributes": { "str": 10, "dex": 10, "int": 18 } },
+      "crit": 100,
+      "iconUrl": "/images/weapon-carian-knights-sword.png",
+      "config": {
+        "guard": {
+          "phy": 36,
+          "mag": 52,
+          "fir": 26,
+          "lit": 26,
+          "hol": 26,
+          "sta": 31,
+          "res": 15
+        },
+        "attack": { "phy": 88, "mag": 88, "sta": 45 },
+        "scaling": { "str": 35, "dex": 26, "int": 32 },
+        "schema": "2200"
+      }
+    },
+    "weapon:crystal-sword": {
+      "type": "straight-sword",
+      "name": "Crystal Sword",
+      "group": "swords",
+      "weight": 4.5,
+      "maxTiers": 10,
+      "requirements": { "attributes": { "str": 13, "dex": 10, "int": 15 } },
+      "crit": 100,
+      "iconUrl": "/images/weapon-crystal-sword.png",
+      "config": {
+        "guard": {
+          "phy": 44,
+          "mag": 44,
+          "fir": 30,
+          "lit": 30,
+          "hol": 30,
+          "sta": 33,
+          "res": 16
+        },
+        "attack": { "phy": 106, "mag": 68, "sta": 49 },
+        "scaling": { "str": 45, "dex": 15, "int": 32 },
+        "schema": "2200"
+      }
+    },
+    "weapon:sword-night-and-flame": {
+      "type": "straight-sword",
+      "name": "Sword Of Night And Flame",
+      "group": "swords",
+      "weight": 4.0,
+      "maxTiers": 10,
+      "requirements": { "attributes": { "str": 12, "dex": 12, "int": 24, "fth": 24 } },
+      "crit": 100,
+      "iconUrl": "/images/weapon-sword-night-flame.png",
+      "config": {
+        "guard": {
+          "phy": 36,
+          "mag": 42,
+          "fir": 42,
+          "lit": 26,
+          "hol": 26,
+          "sta": 31,
+          "res": 15
+        },
+        "attack": { "phy": 87, "mag": 56, "fir": 56, "sta": 47 },
+        "scaling": { "str": 14, "dex": 14, "int": 50, "fth": 50 },
+        "schema": "2200"
+      }
+    },
     "weapon:nightrider-glaive": {
-      "type": "weapon",
+      "type": "halberd",
       "name": "Nightrider Glaive",
-      "caption": "Halberd",
       "group": "halberds",
       "weight": 12.0,
       "requirements": { "attributes": { "str": 26, "dex": 10 } },
@@ -738,9 +838,8 @@
       }
     },
     "weapon:cane-sword": {
-      "type": "weapon",
+      "type": "straight-sword",
       "name": "Cane Sword",
-      "caption": "Straight Sword",
       "group": "swords",
       "weight": 2.5,
       "requirements": { "attributes": { "str": 8, "dex": 11 } },
@@ -764,9 +863,8 @@
       }
     },
     "weapon:short-sword": {
-      "type": "weapon",
+      "type": "straight-sword",
       "name": "Short Sword",
-      "caption": "Straight Sword",
       "group": "swords",
       "weight": 3.0,
       "requirements": { "attributes": { "str": 8, "dex": 10 } },
@@ -841,9 +939,8 @@
       }
     },
     "weapon:dagger": {
-      "type": "weapon",
+      "type": "dagger",
       "name": "Dagger",
-      "caption": "Dagger",
       "group": "daggers",
       "iconUrl": "/images/weapon-dagger.png",
       "weight": 1.5,
@@ -1319,6 +1416,32 @@
 					1, 1.04, 1.08, 1.12, 1.16, 1.2, 1.24, 1.28, 1.32, 1.36, 1.4, 1.43, 1.46, 1.49, 1.52, 1.55,
 					1.58, 1.61, 1.64, 1.67, 1.7, 1.72, 1.74, 1.76, 1.78, 1.8
 				]
+			}
+		},
+    "2200": {
+			"attack": {
+				"phy": [1, 2.45],
+				"mag": [1, 2.45],
+				"fir": [1, 2.45],
+				"lit": [1, 2.45],
+				"hol": [1, 2.45],
+				"sta": [1, 2]
+			},
+			"scaling": {
+				"str": [1, 1.08, 1.16, 1.24, 1.32, 1.4, 1.48, 1.56, 1.64, 1.72, 1.8],
+				"dex": [1, 1.08, 1.16, 1.24, 1.32, 1.4, 1.48, 1.56, 1.64, 1.72, 1.8],
+				"int": [1, 1.08, 1.16, 1.24, 1.32, 1.4, 1.48, 1.56, 1.64, 1.72, 1.8],
+				"fth": [1, 1.08, 1.16, 1.24, 1.32, 1.4, 1.48, 1.56, 1.64, 1.72, 1.8],
+				"arc": [1, 1.08, 1.16, 1.24, 1.32, 1.4, 1.48, 1.56, 1.64, 1.72, 1.8]
+			},
+			"guard": {
+				"phy": [1, 1],
+				"mag": [1, 1],
+				"fir": [1, 1],
+				"lit": [1, 1],
+				"hol": [1, 1],
+				"sta": [1, 1.1],
+				"res": [1, 1]
 			}
 		},
 		"5000": {
