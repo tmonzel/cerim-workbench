@@ -53,25 +53,6 @@ export const heroStatsState = derived([attributeStore, equipStore, appState, ite
     'guard:hol': new DynamicNumber()
   };
 
-  // Apply effects
-  for(const effect of state.effects) {
-    const attr = attributes[effect.attr as AttributeType];
-    
-    switch(effect.affects) {
-      case 'hp':
-      case 'fp':
-      case 'stamina':
-      case 'equipLoad':
-      case 'discovery':
-      case 'res:vitality':
-      case 'def:standard':
-      case 'def:mag':
-      case 'def:fir':
-      case 'def:hol':
-        stats[effect.affects].add(calcAttributeScaling(attr.value + attr.offset, effect.mutations));
-    }
-  }
-
   // Apply item modifications
   for(const item of Object.values(equip)) {
     if(!item) {
@@ -118,6 +99,26 @@ export const heroStatsState = derived([attributeStore, equipStore, appState, ite
 
     // Sum item weights
     stats.weight.add(item.weight);
+  }
+
+  // Apply effects
+  for(const effect of state.effects) {
+    const attr = attributes[effect.attr as AttributeType];
+    const offset = stats.attributes.get(effect.attr as AttributeType);
+    
+    switch(effect.affects) {
+      case 'hp':
+      case 'fp':
+      case 'stamina':
+      case 'equipLoad':
+      case 'discovery':
+      case 'res:vitality':
+      case 'def:standard':
+      case 'def:mag':
+      case 'def:fir':
+      case 'def:hol':
+        stats[effect.affects].add(calcAttributeScaling(attr.value + offset, effect.mutations));
+    }
   }
   
   return stats;

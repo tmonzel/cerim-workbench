@@ -11,23 +11,23 @@ export class FlatModifier {
       switch(item.key) {
         case 'stats':
           for(const s of list(item.value.modify)) {
-            stats[s.key].value.addOffset(s.value);
+            stats[s.key].addOffset(s.value);
           }
           
           break;
         case 'defense':
           for(const s of list(item.value.modify)) {
-            stats['def:' + s.key].value.addOffset(s.value);
+            stats['def:' + s.key].addOffset(s.value);
           }
           break;
         case 'resistance':
           for(const s of list(item.value.modify)) {
-            stats['res:' + s.key].value.addOffset(s.value);
+            stats['res:' + s.key].addOffset(s.value);
           }
           break;
         case 'attributes':
           for(const a of list(item.value.modify)) {
-            stats.attributes.value.add({ [a.key]: a.value });
+            stats.attributes.add({ [a.key]: a.value });
           }
       }
     }
