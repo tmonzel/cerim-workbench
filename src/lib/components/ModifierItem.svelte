@@ -1,0 +1,38 @@
+<script lang="ts">
+	import { list, type ItemModifierConfig, type ModifierType } from '$lib/core';
+	import { attributeRecord, damageRecord, defenseRecord, resistanceRecord, statRecord } from '$lib/records';
+
+  export let type: ModifierType = 'flat';
+  export let key: string;
+  export let config: ItemModifierConfig;
+</script>
+
+<div class="modifier-item">
+  <dt class="text-sm font-medium leading-6 text-zinc-200 sm:col-span-3">{config.name}</dt>
+  <dd>
+    <dl class="sm:grid sm:grid-cols-2 sm:px-0">
+    {#each list(config.modify) as stat}
+      <dt class="text-sm font-medium leading-6 dark:text-zinc-500">
+        {#if key === 'attributes'}
+          {attributeRecord[stat.key].name}
+        {:else if key === 'resistance'}
+          {resistanceRecord[stat.key].name}
+        {:else if key === 'defense'}
+          {defenseRecord[stat.key].name}
+        {:else if key === 'attack'}
+          {damageRecord[stat.key].name} Damage
+        {:else}
+          {statRecord[stat.key] ? statRecord[stat.key].name : '-'}
+        {/if}
+      </dt>
+      <dd class="mt-1 text-sm leading-6 text-gray-700 dark:text-zinc-200 sm:mt-0">
+        {#if type === 'percentual'}
+          {#if stat.value >= 1}+{/if}{Math.round((stat.value - 1) * 100)}%
+        {:else}
+          {#if stat.value >= 0}+{/if}{stat.value}
+        {/if}
+      </dd>
+    {/each}
+    </dl>
+  </dd>
+</div>

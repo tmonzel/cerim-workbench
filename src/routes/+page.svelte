@@ -12,6 +12,7 @@
 
   // TODOS
   // Implement local storage
+  // Weapon Status effects: hemorrhage, frostbite,poison
   // UI: Little white gradient shine from top
   // UI: Show weapon damage types
   // UI: Scrolling Header

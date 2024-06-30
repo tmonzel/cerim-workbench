@@ -14,7 +14,6 @@
   
   $: scalingFlags = item.getScalingFlags();
   $: {
-
     if(item.defense) {
       protection = Math.round(sum({ ...item.defense.elemental, ...item.defense.physical }) * 10) / 10;
     }
@@ -22,7 +21,7 @@
 </script>
 
 <div class="flex gap-x-3 dark:text-zinc-200 w-full">
-  <div class="mt-1 flex h-48 w-48 flex-none items-center justify-center rounded-lg bg-stone-700/40 p-5">
+  <div class="mt-1 flex h-40 w-40 flex-none items-center justify-center rounded-lg bg-stone-700/40 p-5">
     {#if item.iconUrl}
       <img src={item.iconUrl} alt="Item icon" class="transition-all group-hover:brightness-150" />
     {:else}

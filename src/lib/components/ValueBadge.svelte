@@ -20,7 +20,17 @@
     {/each}
   </div>
 {:else if value instanceof DynamicNumber}
-  <span class:text-emerald-400={value.modified} class:font-normal={value.modified}>
-    {Math.round(value.total * 100) / 100}{#if value.modified}^{/if}
+  {#if value.base < value.total}
+  <span class="text-emerald-400 font-normal">
+    {Math.round(value.total * 100) / 100}^
   </span>
+  {:else if value.base > value.total}
+  <span class="text-red-400 font-normal">
+    {Math.round(value.total * 100) / 100}<span class="inline-block rotate-180">^</span>
+  </span>
+  {:else}
+  <span>
+    {Math.round(value.total * 100) / 100}
+  </span>
+  {/if}
 {/if}

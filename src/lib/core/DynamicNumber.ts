@@ -12,6 +12,10 @@ export class DynamicNumber {
     return this._state.modified;
   }
 
+  get base(): number {
+    return this._base;
+  }
+
   get offset(): number {
     return this._offset;
   }
@@ -56,6 +60,10 @@ export class DynamicNumber {
 
   isPresent(): boolean {
     return this._state.total > 0;
+  }
+
+  modificationState(): number {
+    return this._base / this._state.total;
   }
 
   private update(): void {

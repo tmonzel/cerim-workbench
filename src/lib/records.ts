@@ -139,16 +139,16 @@ export const statRecord: Record<HeroStatType, HeroStat> = {
     name: 'Poise'
   },
   'def:standard': {
-    name: 'Physical'
+    name: 'Physical Defense'
   },
   'def:strike': {
-    name: 'Strike'
+    name: 'Strike Defense'
   },
   'def:slash': {
-    name: 'Slash'
+    name: 'Slash Defense'
   },
   'def:pierce': {
-    name: 'Pierce'
+    name: 'Pierce Defense'
   },
   'def:hol': {
     name: 'Holy Defense'
@@ -184,7 +184,7 @@ export const statRecord: Record<HeroStatType, HeroStat> = {
     name: 'Holy Guard'
   },
   damage: {
-    name: 'Attack Damage'
+    name: 'Attack'
   },
   attributes: {
     name: 'Attributes'

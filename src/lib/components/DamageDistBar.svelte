@@ -6,10 +6,10 @@
 
   let gradient = '';
 
+  $: dist = damage.getValueDistribution();
   $: {
     let v = [];
     let lastPercent = 0;
-    let dist = damage.getValueDistribution();
 
     for(const d of dist) {
       const percent = d.amount * 100;
@@ -27,6 +27,15 @@
     }
   }
 </script>
-<div style="padding: 2px" class="border border-zinc-300">
+<!--<div style="padding: 2px" class="border border-zinc-300">
   <div style="width: 100%; height: 6px" style:background={gradient}></div>
+</div>-->
+
+<div class="flex gap-1">
+  {#each dist as d}
+    <div style:width={`${d.amount * 100}%`}>
+      <div style:background-color={damageRecord[d.key].color} class="h-2"></div>
+      {(Math.floor(d.value))}
+    </div>
+  {/each}
 </div>

@@ -4,6 +4,7 @@
 	import { heroState } from '$lib/hero';
 	import { ComplexDamage } from '$lib/core';
 	import { damageRecord, statRecord } from '$lib/records';
+	import DamageDetail from './DamageDetail.svelte';
 
   const displayedStats: string[] = [
     'attackSpeed', 
@@ -23,10 +24,13 @@
     <div class="px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
       <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-300">{statRecord[name].name}</dt>
       <dd class="mt-1 text-sm leading-6 text-gray-70 dark:text-white sm:col-span-2 sm:mt-0">
-        <ValueBadge value={stat} />
-
         {#if stat instanceof ComplexDamage}
+          <div class="mb-2 font-semibold">
+            <ValueBadge value={stat} />
+          </div>
           <DamageDistBar damage={stat} />
+        {:else}
+          <ValueBadge value={stat} />
         {/if}
       </dd>
     </div>
@@ -77,28 +81,28 @@
     <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-300">Defense</dt>
     <dd class="grid grid-cols-3">
       <div>
-        <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">{statRecord['def:standard'].name}</dt>
+        <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">Standard</dt>
         <dd class="text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2 sm:mt-0">
           <ValueBadge value={$heroState.stats['def:standard']} />
         </dd>
       </div>
   
       <div>
-        <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">{statRecord['def:strike'].name}</dt>
+        <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">Strike</dt>
         <dd class="text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2 sm:mt-0">
           <ValueBadge value={$heroState.stats['def:strike']} />
         </dd>
       </div>
       
       <div>
-        <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">{statRecord['def:slash'].name}</dt>
+        <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">Slash</dt>
         <dd class="text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2 sm:mt-0">
           <ValueBadge value={$heroState.stats['def:slash']} />
         </dd>
       </div>
       
       <div>
-        <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">{statRecord['def:pierce'].name}</dt>
+        <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">Pierce</dt>
         <dd class="text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2 sm:mt-0">
           <ValueBadge value={$heroState.stats['def:pierce']} />
         </dd>

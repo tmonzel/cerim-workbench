@@ -545,6 +545,25 @@
         }
       }
     },
+    "magic-scorpion-charm": {
+      "type": "talisman",
+      "name": "Magic Scorpion Charm",
+      "group": "talismans",
+      "weight": 0.8,
+      "iconUrl": "/images/magic-scorpion-charm.png",
+      "modifiers": {
+        "percentual": {
+          "attack": { 
+            "name": "Increase Magic Damage",
+            "modify": { "mag": 1.12 }
+          },
+          "defense": {
+            "name": "Decrease Damage Negation",
+            "modify": { "standard": 0.9 }
+          }
+        }
+      }
+    },
     "armor:navy-hood": {
       "type": "helm",
       "name": "Navy Hood",

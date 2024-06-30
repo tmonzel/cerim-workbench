@@ -3,7 +3,7 @@
 	import { damageRecord } from '$lib/records';
 
   export let damage: Damage;
-
+  
   $: dist = getValueDistribution(damage);
 </script>
 

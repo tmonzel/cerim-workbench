@@ -3,6 +3,7 @@
 	import { derived } from 'svelte/store';
 	import { DynamicNumber } from '$lib/core/DynamicNumber';
 	import type { HeroStatType } from '$lib/core';
+	import { statRecord } from '$lib/records';
 
   const modifiedStats = derived(heroState, (hero) => {
     let filteredStats: Partial<Record<HeroStatType, DynamicNumber>> = {};
@@ -32,19 +33,19 @@
     {#each statKeys as k}
       {@const stat = $modifiedStats[k]}
 
-      {#if stat.value.offset > 0}
+      {#if stat.offset > 0}
         <div class="py-3 sm:grid sm:grid-cols-2 sm:gap-4 sm:px-0">
-          <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-300">{stat.name}</dt>
+          <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-300">{statRecord[k].name}</dt>
           <dd class="mt-1 text-sm leading 6 text-gray-700 dark:text-zinc-300 sm:col-span-1 sm:mt-0">
-            +{stat.value.offset}
+            +{stat.offset}
           </dd>
         </div>
       {/if}
 
-      {#if stat.value.multiplier !== 1}
-        {@const percentage = stat.value.multiplier - 1}
+      {#if stat.multiplier !== 1}
+        {@const percentage = stat.multiplier - 1}
         <div class="py-3 sm:grid sm:grid-cols-2 sm:gap-4 sm:px-0">
-          <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-300">Increased {stat.name}</dt>
+          <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-300">Increased {statRecord[k].name}</dt>
           <dd class="mt-1 text-sm leading 6 text-gray-700 dark:text-zinc-300 sm:col-span-1 sm:mt-0">
             {#if percentage > 0}+{/if}{Math.round(percentage * 100)}%
           </dd>

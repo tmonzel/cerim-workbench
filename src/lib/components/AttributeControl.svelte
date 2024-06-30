@@ -1,7 +1,10 @@
 <script lang="ts">
+	import type { AttributeType } from '$lib/core';
+	import { heroState } from '$lib/hero';
 	import { appState } from '$lib/state';
 	import { createEventDispatcher } from 'svelte';
 
+  export let type: AttributeType;
   export let attribute: { color: string; name: string };
   export let value: number;
   export let offset: number;
@@ -38,7 +41,7 @@
   <div class="absolute inset-y-0 right-0 flex items-center z-10">
     <button 
       class="h-full rounded-md border-0 bg-transparent px-5 text-gray-500 dark:text-zinc-200 hover:scale-150 transition-transform ease-out" 
-      on:click={() => changeValue(value + 1)}
+      on:click={() => $heroState.attributePoints > 0 ? changeValue(value + 1) : -1}
     >
       +
     </button>
