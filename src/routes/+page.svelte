@@ -26,7 +26,7 @@
   <Header />
 
   <div class="flex gap-7">
-    <div class="flex-auto">
+    <div class="max-w-72">
       <div class="sticky top-5">
         <div class="px-4 sm:px-0 min-h-20">
           <h3 class="text-base font-semibold leading-7 text-gray-900 dark:text-white">Attributes</h3>
@@ -50,7 +50,7 @@
       </div>
     </div>
 
-    <div class="flex-auto">
+    <div class="max-w-72">
       <div class="sticky top-5">
         <div class="px-4 sm:px-0 mb-4">
           <h3 class="text-base font-semibold leading-7 text-gray-900 dark:text-white">Stats</h3>
