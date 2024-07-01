@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { damageRecord } from '$lib/records';
 	import type { ComplexDamage } from '$lib/core/values';
+	import ValueBadge from './ValueBadge.svelte';
 
   export let damage: ComplexDamage;
 
@@ -31,11 +32,11 @@
   <div style="width: 100%; height: 6px" style:background={gradient}></div>
 </div>-->
 
-<div class="flex gap-1">
+<div class="flex flex-col gap-3">
   {#each dist as d}
     <div style:width={`${d.amount * 100}%`}>
       <div style:background-color={damageRecord[d.key].color} class="h-2"></div>
-      {(Math.floor(d.value))}
+      <ValueBadge value={damage.value[d.key]} />
     </div>
   {/each}
 </div>

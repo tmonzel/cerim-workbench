@@ -614,7 +614,7 @@
       "type": "armor",
       "name": "Briar Armor",
       "set": "briar",
-      "group": "bodyArmors",
+      "group": "armors",
       "weight": 11.8,
       "iconUrl": "/images/briar-armor.png",
       "resistance": {
@@ -672,7 +672,7 @@
       "name": "Veteran’s Armor",
       "caption": "Chest Armor",
       "set": "veteran",
-      "group": "bodyArmors",
+      "group": "armors",
       "weight": 18.9,
       "iconUrl": "/images/veteran-chest.png",
       "resistance": {

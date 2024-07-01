@@ -1,78 +1,68 @@
 <script lang="ts">
-	import { equipStore, type EquipState } from '$lib/stores';
+	import { itemSlotRecord } from '$lib/records';
+	import { type EquipState } from '$lib/stores';
 	import EquipSlot from './EquipSlot.svelte';
 	
   export let body: EquipState;
 </script>
-<div class="grid grid-cols-8 gap-5">
-  <div class="flex flex-col gap-5 mb-5 col-span-5">
+<div class="flex gap-5 justify-center">
+  <div class="flex flex-col gap-5" style="max-width: 52rem;">
     <EquipSlot 
-      type="MainHand" 
+      key="mainHand"
+      slot={itemSlotRecord.mainHand} 
       item={body.mainHand}  
-      allowedGroups={['axes', 'bows', 'hammers', 'swords', 'daggers', 'halberds', 'staffs']} 
-      on:itemChange={(e) => equipStore.update((store) => ({ ...store, mainHand: e.detail }))}
     />
     <EquipSlot 
-      type="OffHand" 
+      key="offHand" 
+      slot={itemSlotRecord.offHand}
       item={body.offHand} 
-      allowedGroups={['shields', 'seals']} 
-      on:itemChange={(e) => equipStore.update((store) => ({ ...store, offHand: e.detail }))}
     />
     <EquipSlot 
-      type="Head" 
+      key="head" 
+      slot={itemSlotRecord.head}
       item={body.head} 
-      allowedGroups={['helmets']}
-      on:itemChange={(e) => equipStore.update((store) => ({ ...store, head: e.detail }))}
     />
     <EquipSlot 
-      type="Chest" 
+      key="chest" 
+      slot={itemSlotRecord.chest}
       item={body.chest} 
-      allowedGroups={['bodyArmors']}
-      on:itemChange={(e) => equipStore.update((store) => ({ ...store, chest: e.detail }))}
     />
     <EquipSlot 
-      type="Legs" 
+      key="legs" 
+      slot={itemSlotRecord.legs}
       item={body.legs} 
-      allowedGroups={['greaves']}
-      on:itemChange={(e) => equipStore.update((store) => ({ ...store, legs: e.detail }))} 
     />
     <EquipSlot 
-      type="Hands" 
+      key="hand" 
+      slot={itemSlotRecord.hand}
       item={body.hand} 
-      allowedGroups={['gauntlets']} 
-      on:itemChange={(e) => equipStore.update((store) => ({ ...store, hand: e.detail }))}
     />
   </div>
-  <div class="flex flex-col gap-5 mb-5 col-span-3">
+  <div class="flex flex-col gap-5 max-w-lg">
     <EquipSlot 
-      type="GreatRune" 
+      key="rune"
+      slot={itemSlotRecord.rune} 
       item={body.rune} 
-      allowedGroups={['runes']}
-      on:itemChange={(e) => equipStore.update((store) => ({ ...store, rune: e.detail }))}
     />
     <EquipSlot 
-      type="Pouch" 
+      key="pouch"
+      slot={itemSlotRecord.pouch} 
       item={body.pouch} 
-      allowedGroups={['talismans']} 
-      on:itemChange={(e) => equipStore.update((store) => ({ ...store, pouch: e.detail }))}
     />
     <EquipSlot 
-      type="2nd Pouch" 
+      key="pouch2"
+      slot={itemSlotRecord.pouch2} 
       item={body.pouch2} 
-      allowedGroups={['talismans']} 
-      on:itemChange={(e) => equipStore.update((store) => ({ ...store, pouch2: e.detail }))}
     />
     <EquipSlot 
-      type="3rd Pouch" 
+      key="pouch3"
+      slot={itemSlotRecord.pouch3} 
       item={body.pouch3} 
-      allowedGroups={['talismans']} 
-      on:itemChange={(e) => equipStore.update((store) => ({ ...store, pouch3: e.detail }))}
     />
     <EquipSlot 
-      type="4th Pouch" 
+      key="pouch4"
+      slot={itemSlotRecord.pouch4} 
       item={body.pouch4} 
-      allowedGroups={['talismans']} 
-      on:itemChange={(e) => equipStore.update((store) => ({ ...store, pouch4: e.detail }))}
     />
   </div>
 </div>

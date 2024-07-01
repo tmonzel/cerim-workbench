@@ -227,3 +227,8 @@ export type ItemConfig = {
   mutations?: AttributeMutation[] | string;
   cast?: 'sorceries' | 'incantations';
 }
+
+export type ItemSlot = {
+  label: string;
+  allowedGroups: string[];
+} 

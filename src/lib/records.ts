@@ -1,4 +1,4 @@
-import type { AttributeMutation, ItemPreset } from './core';
+import type { AttributeMutation, ItemPreset, ItemSlot } from './core';
 import { AffinityType, AttributeType, DamageType, DefenseType, type Affinity, type HeroStat, type HeroStatType, type ResistanceType } from './core';
 
 export const mutationRecord: Record<string, AttributeMutation[]> = {};
@@ -43,6 +43,53 @@ export const attributeRecord: Record<AttributeType, { name: string; color: strin
   [AttributeType.ARCANE]: {
     name: "Arcane",
     color: "#f3e8ff",
+  }
+}
+
+export const itemSlotRecord: Record<string, ItemSlot> = {
+  mainHand: {
+    label: "Main Hand",
+    allowedGroups: ['axes', 'bows', 'hammers', 'swords', 'daggers', 'halberds', 'staffs']
+  },
+  offHand: {
+    label: "Offhand",
+    allowedGroups: ['shields', 'seals']
+  },
+  head: {
+    label: "Head",
+    allowedGroups: ['helmets']
+  },
+  chest: {
+    label: "Chest",
+    allowedGroups: ['armors']
+  },
+  legs: {
+    label: "Legs",
+    allowedGroups: ['greaves']
+  },
+  hand: {
+    label: "Hands",
+    allowedGroups: ['gauntlets']
+  },
+  rune: {
+    label: "Greatrune",
+    allowedGroups: ['runes']
+  },
+  pouch: {
+    label: "Pouch",
+    allowedGroups: ['talismans']
+  },
+  pouch2: {
+    label: "Pouch II",
+    allowedGroups: ['talismans']
+  },
+  pouch3: {
+    label: "Pouch III",
+    allowedGroups: ['talismans']
+  },
+  pouch4: {
+    label: "Pouch IV",
+    allowedGroups: ['talismans']
   }
 }
 

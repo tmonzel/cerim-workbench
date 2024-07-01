@@ -23,6 +23,11 @@ export class PercentualModifier {
             stats['res:' + s.key].addMultiplier(s.value - 1);
           }
           break;
+        case 'attack':
+          for(const s of list(item.value.modify)) {
+            stats['damage'].value[s.key].addMultiplier(s.value - 1);
+          }
+          break;
         case 'attributes':
       }
     }

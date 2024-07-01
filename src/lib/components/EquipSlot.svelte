@@ -1,44 +1,23 @@
 <script lang="ts">
 	import ItemCard from './ItemCard.svelte';
-  import Dialog from '../components/Dialog.svelte';
-	import { derived } from 'svelte/store';
-	import { Item } from '$lib/core';
-	import { createEventDispatcher } from 'svelte';
+	import { Item, type ItemSlot } from '$lib/core';
 	import { attributeStore } from '$lib/attributes';
-	import { itemStore } from '$lib/stores';
+	import { type EquipState } from '$lib/stores';
 	import ItemUpgradeBar from './ItemUpgradeBar.svelte';
+	import ItemSelectDialog from './ItemSelectDialog.svelte';
 
-  export let type: string;
-  export let item: Item | null = null; 
-  export let allowedGroups: string[] = [];
+  export let key: keyof EquipState;
+  export let slot: ItemSlot;
+  export let item: Item | null = null;
 
-  let selectionDialog: Dialog;
-  let availableItems = derived(itemStore, (items) => Object.values(items).filter(i => allowedGroups.includes(i.group)));
-  
-  const dispatch = createEventDispatcher<{ itemChange: Item | null }>();
-
-  function selectItem(itm: Item | null) {
-    selectionDialog.close();
-
-    if(item) {
-      item.slotted = false;
-    }
-
-    if(itm) {
-      itm.slotted = true;
-    }
-    
-    item = itm;
-    
-    dispatch('itemChange', itm);
-  }
+  let selectionDialog: ItemSelectDialog;
 
   function toggleMenu() {
     selectionDialog.open();
   }
 </script>
 
-<div class="relative dark:bg-stone-600/20 rounded-md">
+<div class="relative dark:bg-stone-700/20 rounded-lg">
   {#if item && item.possibleUpgrades > 0}
     <div class="absolute top-5 right-5">
       <ItemUpgradeBar {item} />
@@ -46,17 +25,16 @@
   {/if}
   <button 
     type="button" 
-    class="group p-5 w-full text-left rounded-md shadow-lg transition-all ease-out duration-200 hover:ring-2 hover:ring-amber-300 hover:bg-stone-800" 
-    
+    class="group w-full p-5 text-left rounded-md shadow-lg transition-all ease-out duration-200 hover:ring-2 hover:ring-amber-300 hover:bg-stone-800" 
     on:click={toggleMenu}
   >
     {#if item}
       <span class="bg-indigo-100 text-amber-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-indigo-400/20 dark:text-indigo-300">
-        {type}
+        {slot.label}
       </span>
 
       <div class="pt-3">
-        <ItemCard {item} slotted />
+        <ItemCard {item} displayMode="equipped" />
       </div>
 
       {#if !item.checkRequirements($attributeStore)}
@@ -68,15 +46,17 @@
       {/if}
 
     {:else}
-    <div class="my-5">
-      <p class="text-lg text-zinc-500 dark:text-amber-300 text-center font-semibold">{type}</p>
-      <p class="text-xs text-center text-zinc-400 dark:text-zinc-200">({allowedGroups.join(', ')})</p>
+    <div class="text-center">
+      <p class="text-lg text-zinc-500 dark:text-amber-300 font-semibold">{slot.label}</p>
+      <p class="text-xs text-zinc-400 dark:text-zinc-200">({slot.allowedGroups.join(', ')})</p>
     </div>
     {/if}
   </button>
 </div>
 
-<Dialog bind:this={selectionDialog} title={`Choose ${type} equipment`} backdropClose>
+<ItemSelectDialog slotKey={key} bind:this={selectionDialog} />
+
+<!--<Dialog bind:this={selectionDialog} title={`Choose ${type} equipment`} backdropClose>
   <div class="">
     {#if $availableItems.length > 0}
       <div class="grid sm:grid-cols-2 xl:grid-cols-3 gap-5">
@@ -111,4 +91,4 @@
     <p class="mt-1 text-gray-600 italic">No items available</p>
     {/if}
   </div>
-</Dialog>
+</Dialog>-->

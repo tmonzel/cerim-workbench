@@ -7,8 +7,7 @@
 	import ModifierList from './ModifierList.svelte';
 
   export let item: Item;
-  export let slotted = false;
-  export let displayMode: 'list' | 'showAll' = 'showAll';
+  export let displayMode: 'detail' | 'equipped' = 'detail';
 
   let protection: number;
   
@@ -20,26 +19,30 @@
   }
 </script>
 
-<div class="flex gap-x-3 dark:text-zinc-200 w-full">
-  <div class="mt-1 flex h-40 w-40 flex-none items-center justify-center rounded-lg bg-stone-700/40 p-5">
-    {#if item.iconUrl}
-      <img src={item.iconUrl} alt="Item icon" class="transition-all group-hover:brightness-150" />
-    {:else}
-      <svg xmlns="http://www.w3.org/2000/svg" height="30px" viewBox="0 -960 960 960" width="30px" fill="#5f6368"><path d="M440-183v-274L200-596v274l240 139Zm80 0 240-139v-274L520-457v274Zm-80 92L160-252q-19-11-29.5-29T120-321v-318q0-22 10.5-40t29.5-29l280-161q19-11 40-11t40 11l280 161q19 11 29.5 29t10.5 40v318q0 22-10.5 40T800-252L520-91q-19 11-40 11t-40-11Zm200-528 77-44-237-137-78 45 238 136Zm-160 93 78-45-237-137-78 45 237 137Z"/></svg>
-    {/if}
+<div class="flex gap-x-5 dark:text-zinc-200">
+  <div class="basis-2/6 flex justify-center">
+    <div>
+      <div class="rounded-lg p-2">
+        {#if item.iconUrl}
+          <img src={item.iconUrl} alt="Item icon" class="transition-all group-hover:brightness-150" />
+        {:else}
+          <svg xmlns="http://www.w3.org/2000/svg" height="30px" viewBox="0 -960 960 960" width="30px" fill="#5f6368"><path d="M440-183v-274L200-596v274l240 139Zm80 0 240-139v-274L520-457v274Zm-80 92L160-252q-19-11-29.5-29T120-321v-318q0-22 10.5-40t29.5-29l280-161q19-11 40-11t40 11l280 161q19 11 29.5 29t10.5 40v318q0 22-10.5 40T800-252L520-91q-19 11-40 11t-40-11Zm200-528 77-44-237-137-78 45 238 136Zm-160 93 78-45-237-137-78 45 237 137Z"/></svg>
+        {/if}
+      </div>
+    </div>
   </div>
-  <div class="grow">
-    <div class="font-medium relative text-lg">
+  
+  <div class="basis-4/6">
+    <div class="font-medium text-lg">
       {#if item.affinity && item.affinities}
         <span class="font-bold">{affinityRecord[item.affinity].name}</span>
       {/if} 
       {item.name} {#if item.tier > 0}(+{item.tier}){/if}
-      <span class="absolute inset-0"></span>
     </div>
     <p class="text-sm dark:text-zinc-400">{equipRecord[item.type].name}</p>
   
     <div class="flex items-center gap-x-12 mt-3 mb-2">
-      {#if displayMode === 'list' && item.damage}
+      {#if displayMode === 'detail' && item.damage}
         <p class="text-xl flex gap-2">
           <DamageBadge damage={item.damage} />
         </p>
@@ -68,7 +71,7 @@
       {/if}
     </div>
 
-    {#if displayMode === 'list' && item.damage}
+    {#if displayMode === 'detail' && item.damage}
       <div class="mb-3">
         <DamageDetail damage={item.damage} />
       </div>
@@ -117,7 +120,7 @@
       {/if}
     </div>
 
-    {#if displayMode === 'showAll'}
+    {#if displayMode === 'detail' || displayMode === 'equipped'}
 
     <dl class="divide-y divide-gray-100/20 my-3">
       {#if item.resistance}
@@ -236,7 +239,7 @@
       {/each}
     {/if}
     
-    {#if !slotted && item.description}
+    {#if displayMode !== 'equipped' && item.description}
     <p class="mt-1 text-gray-500 italic">{item.description}</p>
     {/if}
   </div>
