@@ -1,4 +1,5 @@
-import { type AttributeMutation } from './types';
+import type { AttributeState } from '$lib/attributes';
+import { AttributeType, type AttributeMutation } from './types';
 
 export function sum<T extends string>(v: Partial<Record<T, number>>): number {
   let s = 0;
@@ -115,4 +116,14 @@ export function calcAttributeScaling(value: number, mutations: AttributeMutation
   }
 
   return params.grow[0] + ((params.grow[1] - params.grow[0]) * growth);
+}
+
+export function flattenAttributeState(state: AttributeState): Partial<Record<AttributeType, number>> {
+  const flatAttributes: Partial<Record<AttributeType, number>> = {};
+
+  for(const attr of list(state)) {
+    flatAttributes[attr.key] = attr.value.value + attr.value.offset;
+  }
+
+  return flatAttributes;
 }

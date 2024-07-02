@@ -68,6 +68,8 @@ export type AttributeEffect = {
   mutations: AttributeMutation[];
 }
 
+export type AttributeDamageScaling = Partial<Record<AttributeType, { base: number, allowedDamageTypes: AttackType[] }>>;
+
 export enum AttributeType {
   VIGOR = 'vig',
   ENDURANCE = 'end',

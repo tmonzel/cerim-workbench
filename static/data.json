@@ -2231,11 +2231,5 @@
       { "breakpoint": 80, "grow": 95 },
       { "breakpoint": 99, "grow": 100 }
     ]
-  },
-
-  "statusEffects": {
-    "blood": [57, 82],
-    "frost": [66, 105],
-    "poison": [66, 95]
   }
 }

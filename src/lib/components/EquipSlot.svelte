@@ -1,6 +1,6 @@
 <script lang="ts">
 	import ItemCard from './ItemCard.svelte';
-	import { Item, type ItemSlot } from '$lib/core';
+	import { Item, flattenAttributeState, type ItemSlot } from '$lib/core';
 	import { attributeStore } from '$lib/attributes';
 	import { type EquipState } from '$lib/stores';
 	import ItemUpgradeBar from './ItemUpgradeBar.svelte';
@@ -37,7 +37,7 @@
         <ItemCard {item} displayMode="equipped" />
       </div>
 
-      {#if !item.checkRequirements($attributeStore)}
+      {#if !item.checkRequirements(flattenAttributeState($attributeStore))}
       <div class="flex justify-center mt-5">
         <span class="text-xs rounded-md bg-pink-600/10 px-1.5 py-0.5 font-medium text-pink-400 ring-1 ring-inset ring-pink-400">
           Requirements not met

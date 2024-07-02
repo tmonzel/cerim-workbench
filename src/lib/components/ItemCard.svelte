@@ -1,11 +1,12 @@
 <script lang="ts">
-	import { Item, list, sum } from '$lib/core';
+	import { AttributeType, Item, list, sum } from '$lib/core';
 	import { affinityRecord, attributeRecord, damageTypeRecord, equipRecord } from '$lib/records';
 	import DamageBadge from './DamageBadge.svelte';
 	import DamageDetail from './DamageDetail.svelte';
 	import ElementalGrid from './ElementalGrid.svelte';
 	import ModifierList from './ModifierList.svelte';
 	import StatusEffectIcon from './StatusEffectIcon.svelte';
+	import DamageScalingChart from './DamageScalingChart.svelte';
 
   export let item: Item;
   export let displayMode: 'detail' | 'equipped' = 'detail';
@@ -147,6 +148,30 @@
         </div>
       {/if}
     </div>
+
+    {#if item.damage && item.scaling}
+    <div class="mt-5 flex flex-wrap gap-x-5">
+      {#if item.scaling.str}
+        <DamageScalingChart {item} attributeType={AttributeType.STRENGTH} showAttackTypes={item.scaling.str.allowedDamageTypes} />
+      {/if}
+
+      {#if item.scaling.dex}
+        <DamageScalingChart {item} attributeType={AttributeType.DEXTERITY} showAttackTypes={item.scaling.dex.allowedDamageTypes} />
+      {/if}
+
+      {#if item.scaling.int}
+        <DamageScalingChart {item} attributeType={AttributeType.INTELLIGENCE} showAttackTypes={item.scaling.int.allowedDamageTypes} />
+      {/if}
+
+      {#if item.scaling.fth}
+        <DamageScalingChart {item} attributeType={AttributeType.FAITH} showAttackTypes={item.scaling.fth.allowedDamageTypes} />
+      {/if}
+
+      {#if item.scaling.arc}
+        <DamageScalingChart {item} attributeType={AttributeType.ARCANE} showAttackTypes={item.scaling.arc.allowedDamageTypes} />
+      {/if}
+    </div>
+    {/if}
 
     {#if displayMode === 'detail' || displayMode === 'equipped'}
 

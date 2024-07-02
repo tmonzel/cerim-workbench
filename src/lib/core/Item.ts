@@ -1,4 +1,4 @@
-import { AffinityType, AttributeType, type Defense, type ItemDef, type ItemRequirements, type Resistance, type Damage, type Guard, type ItemConfig, type AttributeMutation, type ItemPreset, type UpgradeSchema, GuardType, type ModifierType, type ItemModifierDef, StatusEffectType, type ItemAttackInfo, AttackType, DamageType } from './types';
+import { AffinityType, AttributeType, type Defense, type ItemDef, type ItemRequirements, type Resistance, type Damage, type Guard, type ItemConfig, type AttributeMutation, type ItemPreset, type UpgradeSchema, GuardType, type ModifierType, type ItemModifierDef, StatusEffectType, type ItemAttackInfo, AttackType, DamageType, type AttributeDamageScaling } from './types';
 import type { AttributeState } from '$lib/attributes';
 import { calcAttributeScaling, getScalingId, list } from './helpers';
 import { upgradeSchemata } from '$lib/data';
@@ -20,7 +20,7 @@ export class Item {
   damage?: Partial<Damage>;
   scaledDamage?: Partial<Damage>;
   affinity: AffinityType = AffinityType.STANDARD;
-  scaling?: Partial<Record<AttributeType, { base: number, allowedDamageTypes: AttackType[] }>>;
+  scaling?: AttributeDamageScaling;
   config!: ItemConfig;
   guard?: Guard;
   resistance?: Resistance;
@@ -156,7 +156,6 @@ export class Item {
     if(!this.config) {
       return;
     }
-    
 
     if(this.config.guard) {
       this.guard = this.config.guard;
@@ -258,10 +257,10 @@ export class Item {
               allowedDamageTypes = [AttackType.PHYSICAL, AttackType.LIGHTNING];
             break;
             case AttributeType.INTELLIGENCE:
-              allowedDamageTypes = [AttackType.MAGIC, AttackType.PHYSICAL];
+              allowedDamageTypes = [AttackType.MAGIC, AttackType.PHYSICAL, AttackType.SORCERY];
             break;
             case AttributeType.FAITH:
-              allowedDamageTypes = [AttackType.FIRE, AttackType.HOLY];
+              allowedDamageTypes = [AttackType.FIRE, AttackType.HOLY, AttackType.INCANTATION];
               break;
             case AttributeType.ARCANE:
               allowedDamageTypes = [AttackType.PHYSICAL];
@@ -295,14 +294,14 @@ export class Item {
     });
   }
 
-  checkRequirements(attributes: AttributeState): boolean {
+  checkRequirements(attributes: Partial<Record<AttributeType, number>>): boolean {
     if(!this.requirements.attributes) {
       return true;
     }
 
     for(const [k, v] of Object.entries(this.requirements.attributes)) {
       const type = k as AttributeType;
-      const attrValue = attributes[type].value + attributes[type].offset;
+      const attrValue = attributes[type] ?? 0;
 
       if(attrValue < v) {
         return false;
@@ -312,12 +311,12 @@ export class Item {
     return true;
   }
 
-  applyScaling(attributes: AttributeState): Item {
-    if(!this.scaling || !this.damage) {
-      return this;
+  scaleDamage(attributes: Partial<Record<AttributeType, number>>, ignoreRequirements: boolean = false): Partial<Damage> {
+    if(!this.damage || !this.scaling) {
+      return {};
     }
-    
-    this.scaledDamage = { ...this.damage };
+
+    const scaledDamage = { ...this.damage };
 
     for(const [t, attrScale] of Object.entries(this.scaling)) {
       const attrType = t as AttributeType;
@@ -326,9 +325,7 @@ export class Item {
         continue;
       }
       
-      const attrTotal = attributes[attrType].value + attributes[attrType].offset;
-
-      
+      const attrTotal = attributes[attrType] ?? 0;
       
       for(const damageType of Object.values(AttackType)) {
         if(!this.damage[damageType] || !attrScale.allowedDamageTypes.includes(damageType)) {
@@ -338,27 +335,36 @@ export class Item {
         const attrScaling = calcAttributeScaling(attrTotal, this.mutations ?? []) / 100;
         const upgradeScaling = attrScale.base / 100;
 
-
         let elementBase = this.damage[damageType] ?? 0;
         elementBase *= attrScaling + upgradeScaling;
 
         if(this.config.cast === 'sorceries' && attrType === AttributeType.INTELLIGENCE) {
-          if(this.checkRequirements(attributes)) {
-            this.scaledDamage[AttackType.SORCERY] = (1 + (upgradeScaling * attrScaling)) * 100;
+          if(this.checkRequirements(attributes) || ignoreRequirements) {
+            scaledDamage[AttackType.SORCERY] = (1 + (upgradeScaling * attrScaling)) * 100;
           } else {
-            this.scaledDamage[AttackType.SORCERY] = 60;
+            scaledDamage[AttackType.SORCERY] = 60;
           }
         } else if(this.config.cast === 'incantations' && attrType === AttributeType.FAITH) {
-          if(this.checkRequirements(attributes)) {
-            this.scaledDamage[AttackType.INCANTATION] = (1 + (upgradeScaling * attrScaling)) * 100;
+          if(this.checkRequirements(attributes) || ignoreRequirements) {
+            scaledDamage[AttackType.INCANTATION] = (1 + (upgradeScaling * attrScaling)) * 100;
           } else {
-            this.scaledDamage[AttackType.INCANTATION] = 60;
+            scaledDamage[AttackType.INCANTATION] = 60;
           }
-        } else if(this.scaledDamage[damageType] !== undefined) {
-          this.scaledDamage[damageType]! += elementBase;
+        } else if(scaledDamage[damageType] !== undefined) {
+          scaledDamage[damageType]! += elementBase;
         }
       }
     }
+
+    return scaledDamage
+  }
+
+  applyScaling(attributes: Partial<Record<AttributeType, number>>): Item {
+    if(!this.scaling || !this.damage) {
+      return this;
+    }
+    
+    this.scaledDamage = this.scaleDamage(attributes);
 
     return this;
   }

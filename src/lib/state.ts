@@ -1,6 +1,6 @@
 import { derived, writable } from 'svelte/store';
 import { attributeStore } from './attributes';
-import { AttributeType, ComplexAttributes, ComplexDamage, calcAttributeScaling, type AttributeEffect, type HeroStats, type Item } from './core';
+import { AttributeType, ComplexAttributes, ComplexDamage, calcAttributeScaling, flattenAttributeState, type AttributeEffect, type HeroStats, type Item } from './core';
 import { equipStore, itemStore, type EquipState } from './stores';
 import { DynamicNumber } from './core/DynamicNumber';
 
@@ -151,12 +151,14 @@ export const equipState = derived([attributeState, equipStore, itemStore], ([att
     pouch4: null
   }
 
+  const flatAttributes = flattenAttributeState(attributes)
+
   for(const [part, item] of Object.entries(equip) as [keyof EquipState, Item | null][]) {
     if(!item) {
       continue;
     }
     
-    state[part] = item.applyScaling(attributes);
+    state[part] = item.applyScaling(flatAttributes);
   }
 
   return state;
