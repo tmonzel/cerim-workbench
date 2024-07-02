@@ -3,7 +3,7 @@
 	import ValueBadge from './ValueBadge.svelte';
 	import { heroState } from '$lib/hero';
 	import { ComplexDamage } from '$lib/core';
-	import { damageRecord, statRecord } from '$lib/records';
+	import { attackTypeRecord, statRecord } from '$lib/records';
 
   let activeTab = 'general';
   const displayedStats: string[] = [
@@ -138,28 +138,28 @@
               {#if $heroState.stats['def:mag'].isPresent()}
               <div class="flex flex-col">
                 <span><ValueBadge value={$heroState.stats['def:mag']} /></span> 
-                <div class="h-1" style:background-color={damageRecord['mag'].color}></div>
+                <div class="h-1" style:background-color={attackTypeRecord['mag'].color}></div>
               </div>
               {/if}
         
               {#if $heroState.stats['def:fir'].isPresent()}
               <div class="flex flex-col">
                 <span><ValueBadge value={$heroState.stats['def:fir']} /></span> 
-                <div class="h-1" style:background-color={damageRecord['fir'].color}></div>
+                <div class="h-1" style:background-color={attackTypeRecord['fir'].color}></div>
               </div>
               {/if}
         
               {#if $heroState.stats['def:lit'].isPresent()}
               <div class="flex flex-col">
                 <span><ValueBadge value={$heroState.stats['def:lit']} /></span> 
-                <div class="h-1" style:background-color={damageRecord['lit'].color}></div>
+                <div class="h-1" style:background-color={attackTypeRecord['lit'].color}></div>
               </div>
               {/if}
         
               {#if $heroState.stats['def:hol'].isPresent()}
               <div class="flex flex-col">
                 <span><ValueBadge value={$heroState.stats['def:hol']} /></span> 
-                <div class="h-1" style:background-color={damageRecord['hol'].color}></div>
+                <div class="h-1" style:background-color={attackTypeRecord['hol'].color}></div>
               </div>
               {/if}
             </span>
@@ -200,28 +200,28 @@
               {#if $heroState.stats['guard:mag'].isPresent()}
               <div class="flex flex-col">
                 <span><ValueBadge value={$heroState.stats['guard:mag']} /></span> 
-                <div class="h-1" style:background-color={damageRecord['mag'].color}></div>
+                <div class="h-1" style:background-color={attackTypeRecord['mag'].color}></div>
               </div>
               {/if}
         
               {#if $heroState.stats['guard:fir'].isPresent()}
               <div class="flex flex-col">
                 <span><ValueBadge value={$heroState.stats['guard:fir']} /></span> 
-                <div class="h-1" style:background-color={damageRecord['fir'].color}></div>
+                <div class="h-1" style:background-color={attackTypeRecord['fir'].color}></div>
               </div>
               {/if}
         
               {#if $heroState.stats['guard:lit'].isPresent()}
               <div class="flex flex-col">
                 <span><ValueBadge value={$heroState.stats['guard:lit']} /></span> 
-                <div class="h-1" style:background-color={damageRecord['lit'].color}></div>
+                <div class="h-1" style:background-color={attackTypeRecord['lit'].color}></div>
               </div>
               {/if}
         
               {#if $heroState.stats['guard:hol'].isPresent()}
               <div class="flex flex-col">
                 <span><ValueBadge value={$heroState.stats['guard:hol']} /></span> 
-                <div class="h-1" style:background-color={damageRecord['hol'].color}></div>
+                <div class="h-1" style:background-color={attackTypeRecord['hol'].color}></div>
               </div>
               {/if}
             </span>

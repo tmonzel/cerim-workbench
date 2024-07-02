@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { list, type ItemModifierConfig, type ModifierType } from '$lib/core';
-	import { attributeRecord, damageRecord, defenseRecord, resistanceRecord, statRecord } from '$lib/records';
+	import { attackTypeRecord, attributeRecord, damageTypeRecord, resistanceRecord, statRecord } from '$lib/records';
 
   export let type: ModifierType = 'flat';
   export let key: string;
@@ -18,9 +18,9 @@
         {:else if key === 'resistance'}
           {resistanceRecord[stat.key].name}
         {:else if key === 'defense'}
-          {defenseRecord[stat.key].name}
+          {damageTypeRecord[stat.key].name}
         {:else if key === 'attack'}
-          {damageRecord[stat.key].name} Damage
+          {attackTypeRecord[stat.key].name} Damage
         {:else}
           {statRecord[stat.key] ? statRecord[stat.key].name : '-'}
         {/if}

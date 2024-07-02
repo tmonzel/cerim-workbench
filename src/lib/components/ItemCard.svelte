@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Item, list, sum } from '$lib/core';
-	import { affinityRecord, attributeRecord, equipRecord } from '$lib/records';
+	import { affinityRecord, attributeRecord, damageTypeRecord, equipRecord } from '$lib/records';
 	import DamageBadge from './DamageBadge.svelte';
 	import DamageDetail from './DamageDetail.svelte';
 	import ElementalGrid from './ElementalGrid.svelte';
@@ -120,18 +120,25 @@
       </p>
       {/if}
 
-      {#if item.crit}
+      {#if item.attackInfo.damage}
+        <div>
+          <span class="text-zinc-500">Damage</span><br>
+          <span>{item.attackInfo.damage.map(t => damageTypeRecord[t].name).join('/')}</span>
+        </div>
+      {/if}
+
+      {#if item.attackInfo.crit}
         <div>
           <span class="text-zinc-500">Critical</span><br>
           <span>
-            {item.crit}
+            {item.attackInfo.crit}
           </span>
         </div>
       {/if}
 
       {#if item.statusEffects}
         <div>
-          <div class="text-zinc-500 mb-1">Status Effects</div>
+          <div class="text-zinc-500 mb-1">Effects</div>
           {#each list(item.statusEffects) as se}
           <div class="flex items-center">
             <StatusEffectIcon effect={se.key} /> <span class="ms-2">{Math.floor(se.value)}</span>

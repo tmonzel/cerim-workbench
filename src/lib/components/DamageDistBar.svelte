@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { damageRecord } from '$lib/records';
+	import { attackTypeRecord } from '$lib/records';
 	import type { ComplexDamage } from '$lib/core/values';
 	import ValueBadge from './ValueBadge.svelte';
 
@@ -16,7 +16,7 @@
       const percent = d.amount * 100;
 
       if(percent > 0) {
-        v.push(damageRecord[d.key].color + ' ' + lastPercent + '% ' + (lastPercent + percent) + '%');
+        v.push(attackTypeRecord[d.key].color + ' ' + lastPercent + '% ' + (lastPercent + percent) + '%');
         lastPercent = percent;
       }
     }
@@ -35,7 +35,7 @@
 <div class="flex flex-col gap-3">
   {#each dist as d}
     <div style:width={`${d.amount * 100}%`}>
-      <div style:background-color={damageRecord[d.key].color} class="h-2"></div>
+      <div style:background-color={attackTypeRecord[d.key].color} class="h-2"></div>
       <ValueBadge value={damage.value[d.key]} />
     </div>
   {/each}

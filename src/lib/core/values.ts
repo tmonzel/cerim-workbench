@@ -1,18 +1,18 @@
 import { ComplexValue } from './ComplexValue';
 import { DynamicNumber } from './DynamicNumber';
-import { DamageType, AttributeType, type ResistanceType } from './types';
+import { DamageType, AttributeType, type ResistanceType, AttackType } from './types';
 
-export class ComplexDamage extends ComplexValue<DamageType> {
+export class ComplexDamage extends ComplexValue<AttackType> {
   constructor(value?: Partial<Record<DamageType, DynamicNumber>>) {
     super({
-      [DamageType.PHYSICAL]: new DynamicNumber(),
-      [DamageType.MAGIC]: new DynamicNumber(),
-      [DamageType.FIRE]: new DynamicNumber(),
-      [DamageType.LIGHTNING]: new DynamicNumber(),
-      [DamageType.HOLY]: new DynamicNumber(),
-      [DamageType.STAMINA]: new DynamicNumber(),
-      [DamageType.SORCERY]: new DynamicNumber(),
-      [DamageType.INCANTATION]: new DynamicNumber(),
+      [AttackType.PHYSICAL]: new DynamicNumber(),
+      [AttackType.MAGIC]: new DynamicNumber(),
+      [AttackType.FIRE]: new DynamicNumber(),
+      [AttackType.LIGHTNING]: new DynamicNumber(),
+      [AttackType.HOLY]: new DynamicNumber(),
+      [AttackType.STAMINA]: new DynamicNumber(),
+      [AttackType.SORCERY]: new DynamicNumber(),
+      [AttackType.INCANTATION]: new DynamicNumber(),
       ...value
     });
   }

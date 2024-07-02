@@ -695,7 +695,10 @@
       "maxTiers": 10,
       "requirements": { "attributes": { "str": 22 } },
       "iconUrl": "/images/shield-icon.png",
-      "crit": 100,
+      "attackInfo": {
+        "damage": ["strike"],
+        "crit": 100
+      },
       "config": {
         "guard": {
           "phy": 95,
@@ -722,7 +725,10 @@
       "maxTiers": 25,
       "requirements": { "attributes": { "str": 8 } },
       "iconUrl": "/images/shield-rickety.png",
-      "crit": 100,
+      "attackInfo": {
+        "damage": ["strike"],
+        "crit": 100
+      },
       "affinities": {
         "standard": {
           "attack": { 
@@ -751,7 +757,10 @@
       "maxTiers": 25,
       "requirements": { "attributes": { "str": 8 } },
       "iconUrl": "/images/riveted-wooden-shield.png",
-      "crit": 100,
+      "attackInfo": {
+        "damage": ["strike"],
+        "crit": 100
+      },
       "affinities": {
         "standard": {
           "attack": { 
@@ -780,7 +789,9 @@
       "maxTiers": 25,
       "requirements": { "attributes": { "str": 8 } },
       "iconUrl": "/images/blue-white-wooden-shield.png",
-      "crit": 100,
+      "attackInfo": {
+        "crit": 100
+      },
       "affinities": {
         "standard": {
           "attack": { 
@@ -809,7 +820,10 @@
       "maxTiers": 25,
       "requirements": { "attributes": { "str": 8 } },
       "iconUrl": "/images/sun-realm-shield.png",
-      "crit": 100,
+      "attackInfo": {
+        "damage": ["strike"],
+        "crit": 100
+      },
       "affinities": {
         "standard": {
           "attack": { 
@@ -837,7 +851,10 @@
       "weight": 3,
       "maxTiers": 25,
       "requirements": { "attributes": { "str": 7, "int": 16 } },
-      "crit": 100,
+      "attackInfo": {
+        "damage": ["strike"],
+        "crit": 100
+      },
       "iconUrl": "/images/astrologers-staff.png",
       "config": {
         "guard": {
@@ -863,7 +880,10 @@
       "weight": 3,
       "maxTiers": 25,
       "requirements": { "attributes": { "str": 6, "int": 10 } },
-      "crit": 100,
+      "attackInfo": {
+        "damage": ["strike"],
+        "crit": 100
+      },
       "iconUrl": "/images/glintstone-staff.png",
       "config": {
         "guard": {
@@ -889,7 +909,10 @@
       "weight": 3,
       "maxTiers": 25,
       "requirements": { "attributes": { "str": 6, "int": 28 } },
-      "crit": 100,
+      "attackInfo": {
+        "damage": ["strike"],
+        "crit": 100
+      },
       "iconUrl": "/images/academy-glintstone-staff.png",
       "config": {
         "guard": {
@@ -915,7 +938,10 @@
       "weight": 4.5,
       "maxTiers": 25,
       "requirements": { "attributes": { "str": 8, "int": 12 } },
-      "crit": 100,
+      "attackInfo": {
+        "damage": ["strike"],
+        "crit": 100
+      },
       "iconUrl": "/images/diggers-staff.png",
       "config": {
         "guard": {
@@ -941,7 +967,10 @@
       "weight": 3.0,
       "maxTiers": 25,
       "requirements": { "attributes": { "str": 6, "int": 10 } },
-      "crit": 100,
+      "attackInfo": {
+        "damage": ["strike"],
+        "crit": 100
+      },
       "iconUrl": "/images/demi-human-queens-staff.png",
       "config": {
         "guard": {
@@ -973,7 +1002,10 @@
       "weight": 0,
       "maxTiers": 10,
       "requirements": { "attributes": { "fth": 40 } },
-      "crit": 100,
+      "attackInfo": {
+        "damage": ["strike"],
+        "crit": 100
+      },
       "iconUrl": "/images/erdtree-seal.png",
       "config": {
         "guard": {
@@ -999,7 +1031,10 @@
       "weight": 3,
       "maxTiers": 10,
       "requirements": { "attributes": { "str": 10, "dex": 12, "int": 14 } },
-      "crit": 100,
+      "attackInfo": {
+        "damage": ["standard", "pierce"],
+        "crit": 100
+      },
       "iconUrl": "/images/weapon-sword-st-trina.png",
       "config": {
         "guard": {
@@ -1023,7 +1058,10 @@
       "weight": 3.5,
       "maxTiers": 10,
       "requirements": { "attributes": { "str": 11, "dex": 11, "fth": 16 } },
-      "crit": 100,
+      "attackInfo": {
+        "damage": ["standard", "pierce"],
+        "crit": 100
+      },
       "iconUrl": "/images/weapon-miquellan-knights-sword.png",
       "config": {
         "guard": {
@@ -1047,7 +1085,10 @@
       "weight": 4.0,
       "maxTiers": 10,
       "requirements": { "attributes": { "str": 10, "dex": 10, "int": 18 } },
-      "crit": 100,
+      "attackInfo": {
+        "damage": ["standard", "pierce"],
+        "crit": 100
+      },
       "iconUrl": "/images/weapon-carian-knights-sword.png",
       "config": {
         "guard": {
@@ -1071,7 +1112,10 @@
       "weight": 4.5,
       "maxTiers": 10,
       "requirements": { "attributes": { "str": 13, "dex": 10, "int": 15 } },
-      "crit": 100,
+      "attackInfo": {
+        "damage": ["standard", "pierce"],
+        "crit": 100
+      },
       "iconUrl": "/images/weapon-crystal-sword.png",
       "config": {
         "guard": {
@@ -1095,7 +1139,10 @@
       "weight": 4.0,
       "maxTiers": 10,
       "requirements": { "attributes": { "str": 12, "dex": 12, "int": 24, "fth": 24 } },
-      "crit": 100,
+      "attackInfo": {
+        "damage": ["standard", "pierce"],
+        "crit": 100
+      },
       "iconUrl": "/images/weapon-sword-night-flame.png",
       "config": {
         "guard": {
@@ -1119,7 +1166,10 @@
       "weight": 2.5,
       "maxTiers": 10,
       "requirements": { "attributes": { "fth": 20 } },
-      "crit": 100,
+      "attackInfo": {
+        "damage": ["standard", "pierce"],
+        "crit": 100
+      },
       "iconUrl": "/images/weapon-coded-sword.png",
       "config": {
         "guard": {
@@ -1143,7 +1193,10 @@
       "weight": 10.0,
       "maxTiers": 10,
       "requirements": { "attributes": { "str": 18, "dex": 18, "fth": 20 } },
-      "crit": 100,
+      "attackInfo": {
+        "damage": ["standard", "pierce"],
+        "crit": 100
+      },
       "iconUrl": "/images/weapon-inseparable-sword.png",
       "config": {
         "guard": {
@@ -1167,7 +1220,10 @@
       "weight": 3.5,
       "maxTiers": 10,
       "requirements": { "attributes": { "str": 8, "dex": 15 } },
-      "crit": 100,
+      "attackInfo": {
+        "damage": ["slash"],
+        "crit": 100
+      },
       "iconUrl": "/images/weapon-nox-flowing-sword.png",
       "config": {
         "guard": {
@@ -1191,7 +1247,10 @@
       "weight": 3.5,
       "maxTiers": 10,
       "requirements": { "attributes": { "str": 12, "dex": 10, "fth": 14 } },
-      "crit": 100,
+      "attackInfo": {
+        "damage": ["standard", "pierce"],
+        "crit": 100
+      },
       "iconUrl": "/images/weapon-golden-epitaph.png",
       "config": {
         "guard": {
@@ -1215,7 +1274,10 @@
       "weight": 3.0,
       "maxTiers": 10,
       "requirements": { "attributes": { "str": 10, "dex": 14 } },
-      "crit": 100,
+      "attackInfo": {
+        "damage": ["standard", "pierce"],
+        "crit": 100
+      },
       "iconUrl": "/images/weapon-ornamental-straight-sword.png",
       "config": {
         "guard": {
@@ -1238,7 +1300,10 @@
       "group": "halberds",
       "weight": 12.0,
       "requirements": { "attributes": { "str": 26, "dex": 10 } },
-      "crit": 100,
+      "attackInfo": {
+        "damage": ["slash", "pierce"],
+        "crit": 100
+      },
       "iconUrl": "/images/weapon-nightrider-glaive.png",
       "defaults": "weapon:basic",
       "affinities": {
@@ -1263,7 +1328,10 @@
       "group": "swords",
       "weight": 2.5,
       "requirements": { "attributes": { "str": 8, "dex": 11 } },
-      "crit": 100,
+      "attackInfo": {
+        "damage": ["standard", "pierce"],
+        "crit": 100
+      },
       "iconUrl": "/images/weapon-cane-sword.png",
       "defaults": "weapon:basic",
       "guard": {
@@ -1288,7 +1356,10 @@
       "group": "swords",
       "weight": 3.0,
       "requirements": { "attributes": { "str": 8, "dex": 10 } },
-      "crit": 100,
+      "attackInfo": {
+        "damage": ["standard", "pierce"],
+        "crit": 100
+      },
       "iconUrl": "/images/weapon-short-sword.png",
       "defaults": "weapon:basic",
       "affinities": {
@@ -1353,11 +1424,13 @@
       "group": "daggers",
       "iconUrl": "/images/weapon-dagger.png",
       "weight": 1.5,
-      "affinity": "keen",
       "requirements": { 
         "attributes": { "str": 5, "dex": 9 } 
       },
-      "crit": 130,
+      "attackInfo": { 
+        "damage": ["slash", "pierce"], 
+        "crit": 130
+      },
       "defaults": "weapon:basic",
       "affinities": {
         "standard": {

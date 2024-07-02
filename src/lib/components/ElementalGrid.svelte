@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { DamageType, ElementalDamageType } from '$lib/core';
-	import { damageRecord } from '$lib/records';
+	import { attackTypeRecord } from '$lib/records';
 
   export let value: Partial<Record<ElementalDamageType, number>>;
 
@@ -12,7 +12,7 @@
     {#if el[1] > 0}
     <div class="flex flex-col">
       <span>{Math.round(el[1] * 10) / 10}</span> 
-      <div class="bg-zinc-500 h-1" style:background-color={damageRecord[el[0]].color}></div>
+      <div class="bg-zinc-500 h-1" style:background-color={attackTypeRecord[el[0]].color}></div>
     </div> 
     {/if}
   {/each}

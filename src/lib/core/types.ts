@@ -43,7 +43,7 @@ export type HeroStats = {
   'attributes': ComplexAttributes;
 };
 
-export enum DefenseType {
+export enum DamageType {
   STANDARD = 'standard',
   STRIKE = 'strike',
   SLASH = 'slash',
@@ -79,7 +79,7 @@ export enum AttributeType {
   ARCANE = 'arc'
 }
 
-export enum DamageType {
+export enum AttackType {
   PHYSICAL = 'phy',
   MAGIC = 'mag',
   FIRE = 'fir',
@@ -163,13 +163,13 @@ export type Defense = {
   elemental: Record<ElementalDamageType, number>;
 }
 
-export type Damage = Partial<Record<DamageType, number>>;
+export type Damage = Partial<Record<AttackType, number>>;
 
 export type BaseScalingValue = { [0]: number; [1]: string | string[] } | number;
 export type ScalingBase = Partial<Record<AttributeType, BaseScalingValue>>;
 
 export type UpgradeSchema = {
-  attack?: Record<DamageType, number[]>;
+  attack?: Record<AttackType, number[]>;
   scaling?: Record<AttributeType, number[]>;
   guard?: Record<GuardType, number[]>;
 }
@@ -191,7 +191,6 @@ export type ItemDef = {
   resistance?: Resistance;
   defense?: Defense;
   guard?: Guard;
-  crit?: number;
   affinity?: AffinityType;
   iconUrl?: string;
   effects?: string[];
@@ -200,6 +199,12 @@ export type ItemDef = {
   affinities?: Record<AffinityType, ItemConfig>;
   defaults?: string | ItemPreset;
   upgrades?: ItemUpgrade[];
+  attackInfo?: ItemAttackInfo;
+}
+
+export type ItemAttackInfo = {
+  damage?: DamageType[];
+  crit?: number;
 }
 
 export type ItemUpgrade = {
@@ -228,7 +233,7 @@ export type ItemRequirements = {
 }
 
 export type ItemConfig = {
-  attack?: Partial<Record<DamageType, number>>;
+  attack?: Partial<Record<AttackType, number>>;
   guard?: Guard;
   scaling?: ScalingBase;
   schema?: string;

@@ -1,5 +1,5 @@
-import type { AttributeMutation, ItemPreset, ItemSlot } from './core';
-import { AffinityType, AttributeType, DamageType, DefenseType, type Affinity, type HeroStat, type HeroStatType, type ResistanceType } from './core';
+import { AttackType, type AttributeMutation, type ItemPreset, type ItemSlot } from './core';
+import { AffinityType, AttributeType, DamageType, type Affinity, type HeroStat, type HeroStatType, type ResistanceType } from './core';
 
 export const mutationRecord: Record<string, AttributeMutation[]> = {};
 export const presetRecord: Record<string, ItemPreset> = {};
@@ -93,41 +93,41 @@ export const itemSlotRecord: Record<string, ItemSlot> = {
   }
 }
 
-export const damageRecord: Record<DamageType, { name: string; color: string }> = {
-  [DamageType.PHYSICAL]: {
+export const attackTypeRecord: Record<AttackType, { name: string; color: string }> = {
+  [AttackType.PHYSICAL]: {
     name: "Physical",
     color: "#444",
   },
 
-  [DamageType.FIRE]: {
+  [AttackType.FIRE]: {
     name: "Fire",
     color: "#ff9900",
   },
 
-  [DamageType.LIGHTNING]: {
+  [AttackType.LIGHTNING]: {
     name: "Lightning",
     color: "#ffff00",
   },
 
-  [DamageType.HOLY]: {
+  [AttackType.HOLY]: {
     name: "Holy",
     color: "#ffcc99",
   },
 
-  [DamageType.MAGIC]: {
+  [AttackType.MAGIC]: {
     name: 'Magic',
     color: '#3fbddd'
   },
 
-  [DamageType.STAMINA]: {
+  [AttackType.STAMINA]: {
     name: 'Stamina',
     color: '#339966'
   },
-  [DamageType.SORCERY]: {
+  [AttackType.SORCERY]: {
     name: 'Sorcery',
     color: '#c084fc'
   },
-  [DamageType.INCANTATION]: {
+  [AttackType.INCANTATION]: {
     name: 'Incantation',
     color: '#c084fc'
   }
@@ -241,33 +241,32 @@ export const resistanceRecord: Record<ResistanceType, { name: string }> = {
   }
 }
 
-export const defenseRecord: Record<DefenseType, { name: string }> = {
-  [DefenseType.STANDARD]: {
+export const damageTypeRecord: Record<DamageType, { name: string }> = {
+  [DamageType.STANDARD]: {
     name: 'Standard'
   },
-  [DefenseType.STRIKE]: {
+  [DamageType.STRIKE]: {
     name: 'Strike'
   },
-  [DefenseType.SLASH]: {
+  [DamageType.SLASH]: {
     name: 'Slash'
   },
-  [DefenseType.PIERCE]: {
+  [DamageType.PIERCE]: {
     name: 'Pierce'
   },
-  [DefenseType.HOLY]: {
+  [DamageType.HOLY]: {
     name: 'Holy'
   },
-  [DefenseType.LIGHTNING]: {
+  [DamageType.LIGHTNING]: {
     name: 'Lightning'
   },
-  [DefenseType.FIRE]: {
+  [DamageType.FIRE]: {
     name: 'Fire'
   },
-  [DefenseType.MAGIC]: {
+  [DamageType.MAGIC]: {
     name: 'Magic'
   }
 }
-
 
 export const affinityRecord: Record<AffinityType, Affinity> = {
   [AffinityType.STANDARD]: {

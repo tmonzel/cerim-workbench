@@ -1,6 +1,6 @@
 import { derived } from 'svelte/store';
 import { appState, attributeState, equipState, heroStatsState } from './state';
-import { DamageType, type HeroStats } from './core';
+import { list, type HeroStats } from './core';
 
 export type HeroState = {
   level: number;
@@ -31,8 +31,8 @@ export const heroState = derived([heroStatsState, attributeState, equipState, ap
     }
     
     if(item.scaledDamage) {
-      for(const damageType in item.scaledDamage) {
-        hero.stats['damage'].add({ [damageType]: item.scaledDamage[damageType as DamageType] })
+      for(const damage of list(item.scaledDamage)) {
+        hero.stats['damage'].add({ [damage.key]: item.scaledDamage[damage.key] })
       }
     }
   }
