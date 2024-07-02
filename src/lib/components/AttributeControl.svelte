@@ -4,7 +4,6 @@
 	import { appState } from '$lib/state';
 	import { createEventDispatcher } from 'svelte';
 
-  export let type: AttributeType;
   export let attribute: { color: string; name: string };
   export let value: number;
   export let offset: number;

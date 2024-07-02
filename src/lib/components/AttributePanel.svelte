@@ -11,7 +11,6 @@
   {#each Object.values(AttributeType) as type}
     <div class="mb-5">
       <AttributeControl 
-        {type}
         attribute={attributeRecord[type]} 
         value={state[type].value}  
         offset={state[type].offset} 

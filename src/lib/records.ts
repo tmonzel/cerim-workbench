@@ -119,21 +119,6 @@ export const damageRecord: Record<DamageType, { name: string; color: string }> =
     color: '#3fbddd'
   },
 
-  [DamageType.FROSTBITE]: {
-    name: 'Frostbite',
-    color: '#999'
-  },
-
-  [DamageType.POISON]: {
-    name: 'Poison',
-    color: '#999'
-  },
-
-  [DamageType.HEMORRHAGE]: {
-    name: 'Hemorrhage',
-    color: '#999'
-  },
-
   [DamageType.STAMINA]: {
     name: 'Stamina',
     color: '#339966'
@@ -286,43 +271,56 @@ export const defenseRecord: Record<DefenseType, { name: string }> = {
 
 export const affinityRecord: Record<AffinityType, Affinity> = {
   [AffinityType.STANDARD]: {
-    name: 'Standard'
+    name: 'Standard',
+    schema: '0' 
   },
   [AffinityType.HEAVY]: {
-    name: 'Heavy'
+    name: 'Heavy',
+    schema: '100' 
   },
   [AffinityType.KEEN]: {
-    name: 'Keen'
+    name: 'Keen',
+    schema: '200' 
   },
   [AffinityType.QUALITY]: {
-    name: 'Quality'
+    name: 'Quality',
+    schema: '300' 
   },
   [AffinityType.FIRE]: {
-    name: 'Fire'
+    name: 'Fire',
+    schema: '400' 
   },
   [AffinityType.FLAME]: {
-    name: 'Flame'
+    name: 'Flame',
+    schema: '500' 
   },
   [AffinityType.LIGHTNING]: {
-    name: 'Lightning'
+    name: 'Lightning',
+    schema: '600' 
   },
   [AffinityType.SACRED]: {
-    name: 'Sacred'
+    name: 'Sacred',
+    schema: '700' 
   },
   [AffinityType.MAGIC]: {
-    name: 'Magic'
+    name: 'Magic',
+    schema: '800' 
   },
   [AffinityType.COLD]: {
-    name: 'Cold'
+    name: 'Cold',
+    schema: '900' 
   },
   [AffinityType.POISON]: {
-    name: 'Poison'
+    name: 'Poison',
+    schema: '1000' 
   },
   [AffinityType.BLOOD]: {
-    name: 'Blood'
+    name: 'Blood',
+    schema: '1100' 
   },
   [AffinityType.OCCULT]: {
-    name: 'Occult'
+    name: 'Occult',
+    schema: '1200' 
   }
 }
 

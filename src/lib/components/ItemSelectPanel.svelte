@@ -41,6 +41,7 @@
       bind:value={$searchInput} 
       class="bg-zinc-800 font-medium border-transparent text-zinc-200 text-lg rounded-lg block w-full p-2.5 focus:ring-2 focus:ring-zinc-600 focus:border-transparent" 
       placeholder="Search items..." 
+      autofocus
     />
   </div>
   <div class="flex" style="height: 70vh">

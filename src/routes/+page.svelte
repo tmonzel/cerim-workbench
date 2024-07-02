@@ -26,7 +26,7 @@
   <Header />
 
   <div class="flex gap-7">
-    <div class="max-w-72">
+    <div>
       <div class="sticky top-5">
         <div class="px-4 sm:px-0 min-h-20">
           <h3 class="text-base font-semibold leading-7 text-gray-900 dark:text-white">Attributes</h3>
@@ -36,7 +36,7 @@
       </div>
     </div>
     
-    <div class="grow">
+    <div class="grow bg-zinc-800/20 rounded-xl p-5">
       <EquipPanel body={$equipState} />
     </div>
 

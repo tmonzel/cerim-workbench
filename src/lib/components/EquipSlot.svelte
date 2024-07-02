@@ -25,7 +25,7 @@
   {/if}
   <button 
     type="button" 
-    class="group w-full p-5 text-left rounded-md shadow-lg transition-all ease-out duration-200 hover:ring-2 hover:ring-amber-300 hover:bg-stone-800" 
+    class="group w-full p-5 text-left rounded-md shadow-md transition-all ease-out duration-200 hover:ring-2 hover:ring-amber-300 hover:bg-stone-800" 
     on:click={toggleMenu}
   >
     {#if item}

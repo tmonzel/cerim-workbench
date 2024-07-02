@@ -1253,8 +1253,7 @@
         },
         "keen": {
           "attack": { "phy": 123, "sta": 70 },
-          "scaling": { "str": 16, "dex": 52 },
-          "schema": "200"
+          "scaling": { "str": 16, "dex": 52 }
         }
       }
     },
@@ -1299,8 +1298,7 @@
         },
         "heavy": {
           "attack": { "phy": 97, "sta": 45 },
-          "scaling": { "str": 47 },
-          "schema": "100"
+          "scaling": { "str": 47 }
         },
         "keen": {
           "attack": { "phy": 97, "sta": 45 },
@@ -1309,53 +1307,43 @@
         },
         "quality": {
           "attack": { "phy": 97, "sta": 45 },
-          "scaling": { "str": 55, "dex": 55 },
-          "schema": "300"
+          "scaling": { "str": 55, "dex": 55 }
         },
         "fire": {
           "attack": { "phy": 97, "fir": 97, "sta": 45 },
-          "scaling": { "str": [37, ["phy", "fir"]], "dex": 8 },
-          "schema": "400"
+          "scaling": { "str": [37, ["phy", "fir"]], "dex": 8 }
         },
         "flame": {
           "attack": { "phy": 97, "fir": 97, "sta": 45 },
-          "scaling": { "str": 7, "dex": 9, "fth": 46 },
-          "schema": "500"
+          "scaling": { "str": 7, "dex": 9, "fth": 46 }
         },
         "lightning": {
           "attack": { "phy": 97, "lit": 97, "sta": 45 },
-          "scaling": { "str": 8, "dex": 37 },
-          "schema": "600"
+          "scaling": { "str": 8, "dex": 37 }
         },
         "sacred": {
           "attack": { "phy": 97, "hol": 97, "sta": 45 },
-          "scaling": { "str": 7,  "dex": 9, "fth": 46 },
-          "schema": "700"
+          "scaling": { "str": 7,  "dex": 9, "fth": 46 }
         },
         "magic": {
           "attack": { "phy": 97, "mag": 97, "sta": 45 },
-          "scaling": { "str": 5, "dex": 7, "int": 46 },
-          "schema": "800"
+          "scaling": { "str": 5, "dex": 7, "int": 46 }
         },
         "cold": {
           "attack": { "phy": 97, "mag": 78, "sta": 45 },
-          "scaling": { "str": 33, "dex": 43, "int": 42 },
-          "schema": "900"
+          "scaling": { "str": 33, "dex": 43, "int": 42 }
         },
         "poison": {
           "attack": { "phy": 97, "sta": 45 },
-          "scaling": { "str": 35, "dex": 45, "arc": 30 },
-          "schema": "1000"
+          "scaling": { "str": 35, "dex": 45, "arc": 30 }
         },
         "blood": {
           "attack": { "phy": 97, "sta": 45 },
-          "scaling": { "str": 35, "dex": 45, "arc": 30 },
-          "schema": "1100"
+          "scaling": { "str": 35, "dex": 45, "arc": 30 }
         },
         "occult": {
           "attack": { "phy": 97, "sta": 45 },
-          "scaling": { "str": 14, "dex": 19, "arc": 72 },
-          "schema": "1200"
+          "scaling": { "str": 14, "dex": 19, "arc": 72 }
         }
       }
     },
@@ -1378,8 +1366,7 @@
         },
         "heavy": {
           "attack": { "phy": 71, "sta": 30 },
-          "scaling": { "str": 55 },
-          "schema": "100"
+          "scaling": { "str": 55 }
         },
         "keen": {
           "attack": { "phy": 71, "sta": 30 },  
@@ -1388,53 +1375,46 @@
         },
         "quality": {
           "attack": { "phy": 71, "sta": 30 },
-          "scaling": { "str": 63, "dex": 63 },
-          "schema": "300"
+          "scaling": { "str": 63, "dex": 63 }
         },
         "fire": {
           "attack": { "phy": 71, "fir": 71, "sta": 30 },
-          "scaling": { "str": [47, ["phy", "fir"]], "dex": 63 },
-          "schema": "400"
+          "scaling": { "str": [47, ["phy", "fir"]], "dex": 63 }
         },
         "flame": {
           "attack": { "phy": 71, "fir": 71, "sta": 30 },
-          "scaling": { "str": 10, "dex": 19, "fth": 55 },
-          "schema": "500"
+          "scaling": { "str": 10, "dex": 19, "fth": 55 }
         },
         "lightning": {
           "attack": { "phy": 71, "lit": 71, "sta": 30 },
-          "scaling": { "str": 10, "dex": 47 },
-          "schema": "600"
+          "scaling": { "str": 10, "dex": 47 }
         },
         "sacred": {
           "attack": { "phy": 71, "hol": 71, "sta": 30 },
-          "scaling": { "str": 10,  "dex": 19, "fth": 55 },
-          "schema": "700"
+          "scaling": { "str": 10,  "dex": 19, "fth": 55 }
         },
         "magic": {
           "attack": { "phy": 71, "mag": 71, "sta": 30 },
-          "scaling": { "str": 10, "dex": 19, "int": 56 },
-          "schema": "800"
+          "scaling": { "str": 10, "dex": 19, "int": 56 }
         },
         "cold": {
           "attack": { "phy": 71, "mag": 60, "sta": 30 },
           "scaling": { "str": 31, "dex": 58, "int": 52 },
-          "schema": "900"
+          "apply": { "frb": [66, 105] }
         },
         "poison": {
           "attack": { "phy": 71, "sta": 30 },
           "scaling": { "str": 33, "dex": 61, "arc": 30 },
-          "schema": "1000"
+          "apply": { "poi": [66, 95] }
         },
         "blood": {
           "attack": { "phy": 71, "sta": 30 },
           "scaling": { "str": 33, "dex": 61, "arc": 30 },
-          "schema": "1100"
+          "apply": { "hem": [57, 82] }
         },
         "occult": {
           "attack": { "phy": 71, "sta": 30 },
-          "scaling": { "str": 14, "dex": 26, "arc": 85 },
-          "schema": "1200"
+          "scaling": { "str": 14, "dex": 26, "arc": 85 }
         }
       }
     }
@@ -2178,5 +2158,11 @@
       { "breakpoint": 80, "grow": 95 },
       { "breakpoint": 99, "grow": 100 }
     ]
+  },
+
+  "statusEffects": {
+    "blood": [57, 82],
+    "frost": [66, 105],
+    "poison": [66, 95]
   }
 }

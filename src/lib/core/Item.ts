@@ -1,14 +1,20 @@
-import { AffinityType, DamageType, AttributeType, type Defense, type ItemDef, type ItemRequirements, type Resistance, type Damage, type Guard, type ItemConfig, type AttributeMutation, type ItemPreset, type UpgradeSchema, GuardType, type ModifierType, type ItemModifierDef } from './types';
+import { AffinityType, DamageType, AttributeType, type Defense, type ItemDef, type ItemRequirements, type Resistance, type Damage, type Guard, type ItemConfig, type AttributeMutation, type ItemPreset, type UpgradeSchema, GuardType, type ModifierType, type ItemModifierDef, StatusEffectType } from './types';
 import type { AttributeState } from '$lib/attributes';
 import { calcAttributeScaling, getScalingId, list } from './helpers';
 import { upgradeSchemata } from '$lib/data';
 import { PercentualModifier } from './modifiers/PercentualModifier';
 import { FlatModifier } from './modifiers/FlatModifier';
-import { mutationRecord, presetRecord } from '$lib/records';
+import { affinityRecord, mutationRecord, presetRecord } from '$lib/records';
 
 export class Item {
-  tier = 0;
-  
+  type: string;
+  name: string;
+  tier: number;
+  weight: number;
+  possibleUpgrades: number;
+  group: string;
+
+  requirements?: ItemRequirements;
   damage?: Partial<Damage>;
   scaledDamage?: Partial<Damage>;
   affinity: AffinityType = AffinityType.STANDARD;
@@ -18,76 +24,40 @@ export class Item {
   resistance?: Resistance;
   defense?: Defense;
   affinities?: Record<AffinityType, ItemConfig>;
-  possibleUpgrades: number = 0;
   mutations: AttributeMutation[] = [];
   upgradeSchema?: UpgradeSchema;
   modifiers: (PercentualModifier | FlatModifier)[] = [];
   iconUrl?: string;
-
-  slotted = false;
-
-  get weight(): number {
-    return this.def.weight ?? 0;
-  }
-
-  get group(): string {
-    return this.def.group;
-  }
-
-  get name(): string {
-    return this.def.name;
-  }
-
-  get type(): string {
-    return this.def.type;
-  }
-
-  get requirements(): ItemRequirements {
-    return this.def.requirements ?? {};
-  }
-
-  get description(): string | undefined {
-    return this.def.description;
-  }
-
-  get effects(): string[] | undefined {
-    return this.def.effects;
-  }
-
-  get attackSpeed(): number | undefined {
-    return this.def.attackSpeed;
-  }
+  crit?: number;
+  statusEffects?: Partial<Record<StatusEffectType, number>>;
+  description?: string;
+  effects?: string[];
+  attackSpeed?: number;
 
   constructor(
     readonly id: string, 
     protected def: ItemDef,
   ) {
-    this.tier = this.def.tier ?? 0;
+    this.type = def.type;
+    this.name = def.name;
+    this.tier = def.tier ?? 0;
     this.possibleUpgrades = def.maxTiers ?? 0;
-    this.iconUrl = this.def.iconUrl;
+    this.iconUrl = def.iconUrl;
+    this.weight = def.weight ?? 0;
+    this.possibleUpgrades = def.upgrades ? def.upgrades.length : 0;
+    this.crit = def.crit;
+    this.description = def.description;
+    this.group = def.group;
+    this.requirements = def.requirements ?? {};
+    this.effects = def.effects;
+    this.attackSpeed = def.attackSpeed;
+    this.defense = def.defense;
+    this.resistance = def.resistance;
+    this.guard = def.guard;
+    this.affinities = def.affinities;
 
     if(def.modifiers) {
       this.setModifiers(def.modifiers);
-    }
-
-    if(def.resistance) {
-      this.resistance = def.resistance;
-    }
-
-    if(def.defense) {
-      this.defense = def.defense;
-    }
-
-    if(def.guard) {
-      this.guard = def.guard;
-    }
-
-    if(def.affinities) {
-      this.affinities = def.affinities;
-    }
-
-    if(def.upgrades) {
-      this.possibleUpgrades = def.upgrades.length;
     }
 
     if(def.defaults) {
@@ -196,12 +166,23 @@ export class Item {
       this.mutations = mutationRecord['weapon:default'];
     }
 
+    if(this.config.apply) {
+      this.statusEffects = {};
+
+      for(const se of list(this.config.apply)) {
+        const range = se.value;
+        const diff = range[1] - range[0];
+
+        this.statusEffects[se.key] = range[0] + this.tier * (diff / this.possibleUpgrades);
+      }
+    }
+
     let schema: UpgradeSchema = {};
 
     if(this.config.schema) {
       schema = upgradeSchemata[this.config.schema];
     } else {
-      schema = upgradeSchemata['0'];
+      schema = upgradeSchemata[affinityRecord[this.affinity] ? affinityRecord[this.affinity].schema : '0'];
     }
     
     if(!this.config.attack || !schema.attack) {

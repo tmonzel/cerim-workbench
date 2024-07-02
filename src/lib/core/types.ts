@@ -85,13 +85,19 @@ export enum DamageType {
   FIRE = 'fir',
   LIGHTNING = 'lit',
   HOLY = 'hol',
+  STAMINA = 'sta',
   SORCERY = 'sor',
   INCANTATION = 'inc',
+}
 
+export enum StatusEffectType {
   FROSTBITE = 'frb',
   POISON = 'poi',
   HEMORRHAGE = 'hem',
-  STAMINA = 'sta'
+  SLEEP = 'slp',
+  ROT = 'rot',
+  DEATH = 'dth',
+  MADNESS = 'mad'
 }
 
 export type ResistanceType = 'immunity' | 'robustness' | 'focus' | 'vitality' | 'poise'; 
@@ -139,6 +145,7 @@ export enum ElementalDamageType {
 
 export type Affinity = {
   name: string;
+  schema: string;
 }
 
 export type Resistance = {
@@ -184,6 +191,7 @@ export type ItemDef = {
   resistance?: Resistance;
   defense?: Defense;
   guard?: Guard;
+  crit?: number;
   affinity?: AffinityType;
   iconUrl?: string;
   effects?: string[];
@@ -226,6 +234,7 @@ export type ItemConfig = {
   schema?: string;
   mutations?: AttributeMutation[] | string;
   cast?: 'sorceries' | 'incantations';
+  apply?: Partial<Record<StatusEffectType, number[]>>;
 }
 
 export type ItemSlot = {
