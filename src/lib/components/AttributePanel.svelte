@@ -1,10 +1,11 @@
 <script lang="ts">
-	import { attributeStore, type AttributeState } from '$lib/attributes';
 	import { AttributeType } from '$lib/core';
 	import { attributeRecord } from '$lib/records';
+	import type { HeroState } from '$lib/state';
+	import { attributeStore } from '$lib/stores';
 	import AttributeControl from './AttributeControl.svelte';
 
-  export let state: AttributeState;
+  export let hero: HeroState;
 </script>
 
 <div class="attribute-panel">
@@ -12,10 +13,9 @@
     <div class="mb-5">
       <AttributeControl 
         attribute={attributeRecord[type]} 
-        value={state[type].value}  
-        offset={state[type].offset} 
+        num={hero.attributes.value[type]} 
         on:changeValue={(e) => {
-          attributeStore.update((store) => ({ ...store, [type]: { ...store[type], value: e.detail } }))
+          attributeStore.update((store) => ({ ...store, [type]: e.detail }))
         }
       } />
     </div>

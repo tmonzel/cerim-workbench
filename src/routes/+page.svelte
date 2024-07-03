@@ -5,8 +5,8 @@
 	import AttributePanel from '$lib/components/AttributePanel.svelte';
 	import HeroModifiers from '$lib/components/HeroModifiers.svelte';
 	import { loadData, type DataSchema } from '$lib/data';
-	import EquipPanel from '$lib/components/EquipPanel.svelte';
-	import { attributeState, equipState } from '$lib/state';
+	import HeroBody from '$lib/components/HeroBody.svelte';
+  import { heroState } from '$lib/state';
 
 	export let data: DataSchema;
 
@@ -23,7 +23,7 @@
 </script>
 
 <div class="p-12">
-  <Header />
+  <Header hero={$heroState} />
 
   <div class="flex gap-7">
     <div>
@@ -32,12 +32,12 @@
           <h3 class="text-base font-semibold leading-7 text-gray-900 dark:text-white">Attributes</h3>
           <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-400/80">Spend attribute points to level up ({data.attributePointsPerLevel})</p>
         </div>
-        <AttributePanel state={$attributeState} />
+        <AttributePanel hero={$heroState} />
       </div>
     </div>
     
     <div class="grow bg-zinc-800/20 rounded-xl p-5">
-      <EquipPanel body={$equipState} />
+      <HeroBody hero={$heroState} />
     </div>
 
     <div class="max-w-72">
@@ -46,7 +46,7 @@
           <h3 class="text-base font-semibold leading-7 text-gray-900 dark:text-white">Modifiers</h3>
           <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-400/80">What affects your stats?</p>
         </div>
-        <HeroModifiers />
+        <HeroModifiers hero={$heroState} />
       </div>
     </div>
 
@@ -56,7 +56,7 @@
           <h3 class="text-base font-semibold leading-7 text-gray-900 dark:text-white">Stats</h3>
           <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-400/80">Calculated hero stats based on attributes, gear etc.</p>
         </div>
-        <HeroStats />
+        <HeroStats hero={$heroState} />
       </div>
     </div>
   </div>

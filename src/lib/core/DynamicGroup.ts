@@ -2,12 +2,12 @@ import type { DynamicNumber } from './DynamicNumber';
 
 type ValueRecord<T extends string> = Record<T, DynamicNumber>;
 
-export type ComplexValueInterface<T extends string> = {
+export type DynamicGroupInterface<T extends string> = {
   add(value: Partial<Record<T, number>>): void;
   get value(): ValueRecord<T>;
 }
 
-export class ComplexValue<T extends string> implements ComplexValueInterface<T> {
+export class DynamicGroup<T extends string> implements DynamicGroupInterface<T> {
   protected _value: ValueRecord<T>;
 
   get value(): ValueRecord<T> {
@@ -33,6 +33,12 @@ export class ComplexValue<T extends string> implements ComplexValueInterface<T> 
   add(value: Partial<Record<T, number>>): void {
     for(const k in value) {
       this._value[k].add(value[k] ?? 0);
+    }
+  }
+
+  addOffset(value: Partial<Record<T, number>>): void {
+    for(const k in value) {
+      this._value[k].addOffset(value[k] ?? 0);
     }
   }
 
@@ -94,5 +100,15 @@ export class ComplexValue<T extends string> implements ComplexValueInterface<T> 
     }
 
     return total;
+  }
+
+  getTotalValue(): Record<T, number> {
+    const v: Partial<Record<T, number>> = {};
+
+    for(const k in this._value) {
+      v[k] = this._value[k].total;
+    }
+
+    return v as Record<T, number>;
   }
 }

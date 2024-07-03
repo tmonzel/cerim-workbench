@@ -1,5 +1,4 @@
 import type { DynamicNumber } from './DynamicNumber';
-import type { ComplexAttributes, ComplexDamage } from './values';
 
 export type Maybe<T> = T | null | undefined;
 
@@ -38,9 +37,6 @@ export type HeroStats = {
   'guard:fir': DynamicNumber;
   'guard:lit': DynamicNumber;
   'guard:hol': DynamicNumber;
-
-  'damage': ComplexDamage;
-  'attributes': ComplexAttributes;
 };
 
 export enum DamageType {
@@ -165,7 +161,7 @@ export type Defense = {
   elemental: Record<ElementalDamageType, number>;
 }
 
-export type Damage = Partial<Record<AttackType, number>>;
+export type Attack = Partial<Record<AttackType, number>>;
 
 export type BaseScalingValue = { [0]: number; [1]: string | string[] } | number;
 export type ScalingBase = Partial<Record<AttributeType, BaseScalingValue>>;

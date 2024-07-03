@@ -1,68 +1,68 @@
 <script lang="ts">
 	import { itemSlotRecord } from '$lib/records';
-	import { type EquipState } from '$lib/stores';
+	import type { HeroState } from '$lib/state';
 	import EquipSlot from './EquipSlot.svelte';
 	
-  export let body: EquipState;
+  export let hero: HeroState;
 </script>
 <div class="flex gap-5 justify-center">
   <div class="flex flex-col gap-5" style="max-width: 52rem;">
     <EquipSlot 
       key="mainHand"
       slot={itemSlotRecord.mainHand} 
-      item={body.mainHand}  
+      item={hero.equip.mainHand}  
     />
     <EquipSlot 
       key="offHand" 
       slot={itemSlotRecord.offHand}
-      item={body.offHand} 
+      item={hero.equip.offHand} 
     />
     <EquipSlot 
       key="head" 
       slot={itemSlotRecord.head}
-      item={body.head} 
+      item={hero.equip.head} 
     />
     <EquipSlot 
       key="chest" 
       slot={itemSlotRecord.chest}
-      item={body.chest} 
+      item={hero.equip.chest} 
     />
     <EquipSlot 
       key="legs" 
       slot={itemSlotRecord.legs}
-      item={body.legs} 
+      item={hero.equip.legs} 
     />
     <EquipSlot 
       key="hand" 
       slot={itemSlotRecord.hand}
-      item={body.hand} 
+      item={hero.equip.hand} 
     />
   </div>
   <div class="flex flex-col gap-5 max-w-lg">
     <EquipSlot 
       key="rune"
       slot={itemSlotRecord.rune} 
-      item={body.rune} 
+      item={hero.equip.rune} 
     />
     <EquipSlot 
       key="pouch"
       slot={itemSlotRecord.pouch} 
-      item={body.pouch} 
+      item={hero.equip.pouch} 
     />
     <EquipSlot 
       key="pouch2"
       slot={itemSlotRecord.pouch2} 
-      item={body.pouch2} 
+      item={hero.equip.pouch2} 
     />
     <EquipSlot 
       key="pouch3"
       slot={itemSlotRecord.pouch3} 
-      item={body.pouch3} 
+      item={hero.equip.pouch3} 
     />
     <EquipSlot 
       key="pouch4"
       slot={itemSlotRecord.pouch4} 
-      item={body.pouch4} 
+      item={hero.equip.pouch4} 
     />
   </div>
 </div>

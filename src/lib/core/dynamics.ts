@@ -1,8 +1,8 @@
-import { ComplexValue } from './ComplexValue';
+import { DynamicGroup } from './DynamicGroup';
 import { DynamicNumber } from './DynamicNumber';
 import { DamageType, AttributeType, type ResistanceType, AttackType } from './types';
 
-export class ComplexDamage extends ComplexValue<AttackType> {
+export class DynamicAttack extends DynamicGroup<AttackType> {
   constructor(value?: Partial<Record<DamageType, DynamicNumber>>) {
     super({
       [AttackType.PHYSICAL]: new DynamicNumber(),
@@ -18,23 +18,22 @@ export class ComplexDamage extends ComplexValue<AttackType> {
   }
 }
 
-export class ComplexAttributes extends ComplexValue<AttributeType> {
-  constructor(value?: Partial<Record<AttributeType, DynamicNumber>>) {
+export class DynamicAttributes extends DynamicGroup<AttributeType> {
+  constructor(value?: Partial<Record<AttributeType, number>>) {
     super({
-      [AttributeType.VIGOR]: new DynamicNumber(),
-      [AttributeType.ENDURANCE]: new DynamicNumber(),
-      [AttributeType.STRENGTH]: new DynamicNumber(),
-      [AttributeType.DEXTERITY]: new DynamicNumber(),
-      [AttributeType.MIND]: new DynamicNumber(),
-      [AttributeType.INTELLIGENCE]: new DynamicNumber(),
-      [AttributeType.FAITH]: new DynamicNumber(),
-      [AttributeType.ARCANE]: new DynamicNumber(),
-      ...value
+      [AttributeType.VIGOR]: new DynamicNumber(value?.vig),
+      [AttributeType.ENDURANCE]: new DynamicNumber(value?.end),
+      [AttributeType.STRENGTH]: new DynamicNumber(value?.str),
+      [AttributeType.DEXTERITY]: new DynamicNumber(value?.dex),
+      [AttributeType.MIND]: new DynamicNumber(value?.mnd),
+      [AttributeType.INTELLIGENCE]: new DynamicNumber(value?.int),
+      [AttributeType.FAITH]: new DynamicNumber(value?.fth),
+      [AttributeType.ARCANE]: new DynamicNumber(value?.arc),
     });
   }
 }
 
-export class ComplexResistance extends ComplexValue<ResistanceType> {
+export class DynamicResistance extends DynamicGroup<ResistanceType> {
   constructor(value?: Partial<Record<ResistanceType, DynamicNumber>>) {
     super({
       immunity: new DynamicNumber(),

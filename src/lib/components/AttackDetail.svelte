@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { getValueDistribution, type Damage } from '$lib/core';
+	import { getValueDistribution, type Attack } from '$lib/core';
 	import { attackTypeRecord } from '$lib/records';
 
-  export let damage: Damage;
+  export let attack: Attack;
   
-  $: dist = getValueDistribution(damage);
+  $: dist = getValueDistribution(attack);
 </script>
 
 <div class="flex gap-4">

@@ -215,7 +215,7 @@ export const statRecord: Record<HeroStatType, HeroStat> = {
   'guard:hol': {
     name: 'Holy Guard'
   },
-  damage: {
+  attack: {
     name: 'Attack'
   },
   attributes: {

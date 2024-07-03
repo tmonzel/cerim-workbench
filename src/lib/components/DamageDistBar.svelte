@@ -1,13 +1,13 @@
 <script lang="ts">
+	import type { DynamicAttack } from '$lib/core';
 	import { attackTypeRecord } from '$lib/records';
-	import type { ComplexDamage } from '$lib/core/values';
 	import ValueBadge from './ValueBadge.svelte';
 
-  export let damage: ComplexDamage;
+  export let attack: DynamicAttack;
 
   let gradient = '';
 
-  $: dist = damage.getValueDistribution();
+  $: dist = attack.getValueDistribution();
   $: {
     let v = [];
     let lastPercent = 0;
@@ -36,7 +36,7 @@
   {#each dist as d}
     <div style:width={`${d.amount * 100}%`}>
       <div style:background-color={attackTypeRecord[d.key].color} class="h-2"></div>
-      <ValueBadge value={damage.value[d.key]} />
+      <ValueBadge value={attack.value[d.key]} />
     </div>
   {/each}
 </div>

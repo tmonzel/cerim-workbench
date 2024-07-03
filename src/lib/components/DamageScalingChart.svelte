@@ -1,5 +1,5 @@
 <script lang='ts'>
-	import { AttackType, AttributeType, type Damage, type Item } from '$lib/core';
+	import { AttackType, AttributeType, type Attack, type Item } from '$lib/core';
 	import { attackTypeRecord } from '$lib/records';
   import { VisXYContainer, VisLine, VisAxis } from '@unovis/svelte'
   
@@ -7,21 +7,21 @@
   export let attributeType: AttributeType;
   export let showAttackTypes: AttackType[] = [];
 
-  type DataRecord = { attr: number, damage: Partial<Damage> }
+  type DataRecord = { attr: number, attack: Attack }
   
   const attributeRange = 150;
   let data: DataRecord[];
   
   const x = (d: DataRecord) => d.attr;
   const y = [
-    (d: DataRecord) => d.damage.phy,
-    (d: DataRecord) => d.damage.mag,
-    (d: DataRecord) => d.damage.lit,
-    (d: DataRecord) => d.damage.sor,
-    (d: DataRecord) => d.damage.fir,
-    (d: DataRecord) => d.damage.hol,
-    (d: DataRecord) => d.damage.inc,
-    (d: DataRecord) => d.damage.sta
+    (d: DataRecord) => d.attack.phy,
+    (d: DataRecord) => d.attack.mag,
+    (d: DataRecord) => d.attack.lit,
+    (d: DataRecord) => d.attack.sor,
+    (d: DataRecord) => d.attack.fir,
+    (d: DataRecord) => d.attack.hol,
+    (d: DataRecord) => d.attack.inc,
+    (d: DataRecord) => d.attack.sta
   ];
 
   const color = (d: DataRecord, i: number) => [
@@ -36,20 +36,20 @@
   ][i]
 
   $: {
-    const newData = [];
+    const newData: DataRecord[] = [];
 
     for(let i = 0; i < attributeRange; i++) {
-      const damage = item.scaleDamage({ [attributeType]: i }, true);
+      const attack = item.scaleDamage({ [attributeType]: i }, true);
 
       for(const at of Object.values(AttackType)) {
         if(showAttackTypes.includes(at)) {
           continue;
         }
 
-        delete damage[at];
+        delete attack[at];
       }
 
-      newData.push({ attr: i, damage: damage });
+      newData.push({ attr: i, attack });
     }
 
     data = newData;

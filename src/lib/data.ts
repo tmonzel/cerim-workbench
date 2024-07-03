@@ -1,7 +1,6 @@
-import { appState } from './state';
-import { equipStore, itemStore, type EquipState } from './stores';
+import { appState, type EquipState } from './state';
+import { attributeStore, equipStore, itemStore } from './stores';
 import { AttributeType, Item, type AttributeEffect, type AttributeMutation, type ItemDef, type ItemPreset, type UpgradeSchema } from './core';
-import { attributeStore } from './attributes';
 import { get } from 'svelte/store';
 import { mutationRecord, presetRecord } from './records';
 
@@ -73,7 +72,7 @@ export function loadData(data: DataSchema) {
         continue;
       }
 
-      state[t].value = data.defaults.attributes[t];
+      state[t] = data.defaults.attributes[t];
     }
 
     return { ...state };

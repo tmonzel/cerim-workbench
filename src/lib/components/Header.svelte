@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { loadData } from '$lib/data';
-	import { heroState } from '$lib/hero';
+	import type { HeroState } from '$lib/state';
+
+  export let hero: HeroState;
 
   function importData() {
     let input = document.createElement('input');
@@ -32,18 +34,18 @@
   <div class="flex gap-20 mb-10 items-end">
     <div>
       <h3 class="text-lg text-zinc-500">Level</h3>
-      <p class="mt-2 text-5xl dark:text-zinc-200">{$heroState.level}</p>
+      <p class="mt-2 text-5xl dark:text-zinc-200">{hero.level}</p>
     </div>
 
     <div>
       <h3 class="text-lg text-zinc-500">Attribute Points</h3>
-      <p class="mt-2 text-5xl dark:text-zinc-200">{$heroState.attributePoints}</p>
+      <p class="mt-2 text-5xl dark:text-zinc-200">{hero.attributePoints}</p>
     </div>
 
     <div>
       <h3 class="text-lg text-zinc-500">Attack Power</h3>
       <p class="mt-2 text-5xl dark:text-zinc-200">
-        {Math.round($heroState.dps * 10) / 10}
+        {Math.round(hero.attack.getTotal() * 10) / 10}
       </p>
     </div>
 
@@ -58,7 +60,7 @@
   </div>
 
   <div class="my-10">
-    <hr class="h-1 bg-amber-300 border-amber-300 transition-all" style:width={$heroState.progress * 100 + "%"}>
+    <hr class="h-1 bg-amber-300 border-amber-300 transition-all" style:width={hero.progress * 100 + "%"}>
     <hr class="opacity-30">
   </div>
 </header>

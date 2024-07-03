@@ -1,16 +1,15 @@
 <script lang="ts">
-	import { roundValue } from '$lib/core';
+	import { DynamicAttack, DynamicAttributes, roundValue } from '$lib/core';
 	import { DynamicNumber } from '$lib/core/DynamicNumber';
-	import { ComplexAttributes, ComplexDamage } from '$lib/core/values';
 
-  export let value: DynamicNumber | ComplexDamage | ComplexAttributes;
+  export let value: DynamicNumber | DynamicAttack | DynamicAttributes;
 </script>
 
-{#if value instanceof ComplexDamage}
+{#if value instanceof DynamicAttack}
   <span class:text-amber-300={value.modified} class:font-semibold={value.modified}>
     {roundValue(value.getTotal())}{#if value.modified}^{/if}
   </span>
-{:else if value instanceof ComplexAttributes}
+{:else if value instanceof DynamicAttributes}
   <div class="grid grid-cols-2">
     {#each Object.entries(value.getPresentValues()) as [t, v]}
       <div class="flex items-center">

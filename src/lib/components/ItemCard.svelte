@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { AttributeType, Item, list, sum } from '$lib/core';
 	import { affinityRecord, attributeRecord, damageTypeRecord, equipRecord } from '$lib/records';
-	import DamageBadge from './DamageBadge.svelte';
-	import DamageDetail from './DamageDetail.svelte';
+	import AttackBadge from './AttackBadge.svelte';
 	import ElementalGrid from './ElementalGrid.svelte';
 	import ModifierList from './ModifierList.svelte';
 	import StatusEffectIcon from './StatusEffectIcon.svelte';
 	import DamageScalingChart from './DamageScalingChart.svelte';
+	import AttackDetail from './AttackDetail.svelte';
 
   export let item: Item;
   export let displayMode: 'detail' | 'equipped' = 'detail';
@@ -44,13 +44,13 @@
     <p class="text-sm dark:text-zinc-400">{equipRecord[item.type].name}</p>
   
     <div class="flex items-center gap-x-12 mt-3 mb-2">
-      {#if displayMode === 'detail' && item.damage}
+      {#if displayMode === 'detail' && item.attack}
         <p class="text-xl flex gap-2">
-          <DamageBadge damage={item.damage} />
+          <AttackBadge attack={item.attack} />
         </p>
-      {:else if item.scaledDamage}
+      {:else if item.scaledAttack}
         <p class="text-xl flex gap-2">
-          <DamageBadge damage={item.scaledDamage} />
+          <AttackBadge attack={item.scaledAttack} />
         </p>
       {/if}
 
@@ -73,13 +73,13 @@
       {/if}
     </div>
 
-    {#if displayMode === 'detail' && item.damage}
+    {#if displayMode === 'detail' && item.attack}
       <div class="mb-3">
-        <DamageDetail damage={item.damage} />
+        <AttackDetail attack={item.attack} />
       </div>
-    {:else if item.scaledDamage}
+    {:else if item.scaledAttack}
       <div class="mb-3">
-        <DamageDetail damage={item.scaledDamage} />
+        <AttackDetail attack={item.scaledAttack} />
       </div>
     {/if}
 
@@ -149,7 +149,7 @@
       {/if}
     </div>
 
-    {#if item.damage && item.scaling}
+    {#if item.attack && item.scaling}
     <div class="mt-5 flex flex-wrap gap-x-5">
       {#if item.scaling.str}
         <DamageScalingChart {item} attributeType={AttributeType.STRENGTH} showAttackTypes={item.scaling.str.allowedDamageTypes} />

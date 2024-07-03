@@ -1,7 +1,6 @@
 import { derived, writable } from 'svelte/store';
-import { attributeStore } from './attributes';
-import { AttributeType, ComplexAttributes, ComplexDamage, calcAttributeScaling, flattenAttributeState, type AttributeEffect, type HeroStats, type Item } from './core';
-import { equipStore, itemStore, type EquipState } from './stores';
+import { AttributeType, DynamicAttack, DynamicAttributes, calcAttributeScaling, list, type AttributeEffect, type HeroStats, type Item } from './core';
+import { attributeStore, equipStore, itemStore } from './stores';
 import { DynamicNumber } from './core/DynamicNumber';
 
 export type AppState = {
@@ -10,13 +9,40 @@ export type AppState = {
   effects: AttributeEffect[]
 }
 
+export type AttributeState = Record<AttributeType, number>;
+
+export type EquipState = {
+  rune: Item | null;
+  pouch: Item | null;
+  pouch2: Item | null;
+  pouch3: Item | null;
+  pouch4: Item | null;
+  head: Item | null;
+  chest: Item | null;
+  legs: Item | null;
+  hand: Item | null;
+  mainHand: Item | null;
+  offHand: Item | null;
+}
+
+export type HeroState = {
+  level: number;
+  progress: number;
+  attributePoints: number;
+  attributes: DynamicAttributes;
+  equip: EquipState;
+  stats: HeroStats;
+  effects: string[];
+  attack: DynamicAttack;
+}
+
 export const appState = writable<AppState>({
   maxLevel: 0,
   attributePointsPerLevel: 0,
   effects: []
 });
 
-export const heroStatsState = derived([attributeStore, equipStore, appState, itemStore], ([attributes, equip, state]) => {
+export const heroState = derived([attributeStore, equipStore, appState, itemStore], ([attributes, equip, app]) => {
   const stats: HeroStats = {
     'hp': new DynamicNumber(),
     'fp': new DynamicNumber(),
@@ -40,9 +66,6 @@ export const heroStatsState = derived([attributeStore, equipStore, appState, ite
     'def:lit': new DynamicNumber(),
     'def:fir': new DynamicNumber(),
     'def:mag': new DynamicNumber(),
-
-    'attributes': new ComplexAttributes(),
-    'damage': new ComplexDamage(),
     
     'guard:sta': new DynamicNumber(),
     'guard:res': new DynamicNumber(),
@@ -51,6 +74,20 @@ export const heroStatsState = derived([attributeStore, equipStore, appState, ite
     'guard:fir': new DynamicNumber(),
     'guard:lit': new DynamicNumber(),
     'guard:hol': new DynamicNumber()
+  };
+
+  const numDistributedPoints = Object.values(attributes).reduce((p, c) => p + c, 0);
+  const level = Math.floor(numDistributedPoints / app.attributePointsPerLevel);
+
+  const hero: HeroState = {
+    level,
+    progress: (level / app.maxLevel),
+    attributePoints: app.attributePointsPerLevel * app.maxLevel - numDistributedPoints,
+    stats,
+    equip,
+    effects: [],
+    attributes: new DynamicAttributes(attributes),
+    attack: new DynamicAttack()
   };
 
   // Apply item modifications
@@ -85,7 +122,6 @@ export const heroStatsState = derived([attributeStore, equipStore, appState, ite
     if(item.guard) {
       stats['guard:sta'].add(item.guard.sta);
       stats['guard:res'].add(item.guard.res);
-      
       stats['guard:phy'].add(item.guard.phy);
       stats['guard:mag'].add(item.guard.mag);
       stats['guard:fir'].add(item.guard.fir);
@@ -94,7 +130,11 @@ export const heroStatsState = derived([attributeStore, equipStore, appState, ite
     }
 
     for(const mod of item.modifiers) {
-      mod.modify(stats);
+      mod.modify(hero);
+    }
+
+    if(item.effects) {
+      hero.effects.push(...item.effects);
     }
 
     // Sum item weights
@@ -102,9 +142,8 @@ export const heroStatsState = derived([attributeStore, equipStore, appState, ite
   }
 
   // Apply effects
-  for(const effect of state.effects) {
-    const attr = attributes[effect.attr as AttributeType];
-    const offset = stats.attributes.get(effect.attr as AttributeType);
+  for(const effect of app.effects) {
+    const attr = hero.attributes.value[effect.attr as AttributeType];
     
     switch(effect.affects) {
       case 'hp':
@@ -117,49 +156,25 @@ export const heroStatsState = derived([attributeStore, equipStore, appState, ite
       case 'def:mag':
       case 'def:fir':
       case 'def:hol':
-        stats[effect.affects].add(calcAttributeScaling(attr.value + offset, effect.mutations));
+        stats[effect.affects].add(calcAttributeScaling(attr.total, effect.mutations));
     }
   }
-  
-  return stats;
-}) 
 
-export const attributeState = derived([attributeStore, heroStatsState], ([attributes, stats]) => {
-  for(const [n, attr] of Object.entries(attributes)) {
-    const t = n as AttributeType;
-    attributes[t] = { 
-      ...attr, 
-      offset: stats.attributes.get(t)
-    };
-  }
-
-  return attributes;
-});
-
-export const equipState = derived([attributeState, equipStore, itemStore], ([attributes, equip]) => {
-  const state: EquipState = {
-    head: null,
-    chest: null,
-    legs: null,
-    hand: null,
-    mainHand: null,
-    offHand: null,
-    rune: null,
-    pouch: null,
-    pouch2: null,
-    pouch3: null,
-    pouch4: null
-  }
-
-  const flatAttributes = flattenAttributeState(attributes)
+  const totalAttributes = hero.attributes.getTotalValue();
 
   for(const [part, item] of Object.entries(equip) as [keyof EquipState, Item | null][]) {
     if(!item) {
       continue;
     }
     
-    state[part] = item.applyScaling(flatAttributes);
-  }
+    hero.equip[part] = item.applyScaling(totalAttributes);
 
-  return state;
-})
+    if(item.scaledAttack) {
+      for(const damage of list(item.scaledAttack)) {
+        hero.attack.add({ [damage.key]: item.scaledAttack[damage.key] })
+      }
+    }
+  }
+  
+  return hero;
+});
