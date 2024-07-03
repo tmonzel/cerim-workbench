@@ -1,22 +1,14 @@
 <script lang="ts">
 	import { type HeroState } from '$lib/state';
 	import { DynamicNumber } from '$lib/core/DynamicNumber';
-	import type { HeroStatType } from '$lib/core';
 	import { statRecord } from '$lib/records';
+	import type { StatType } from '$lib/core';
 
   export let hero: HeroState;
 
-  let modifiedStats: { type: HeroStatType; value: DynamicNumber }[] = [];
+  let modifiedStats: { type: StatType; value: DynamicNumber }[] = [];
 
-  $: {
-    for(const k in hero.stats) {
-      const stat = hero.stats[k as HeroStatType];
-
-      if(stat.modified && stat instanceof DynamicNumber) {
-        modifiedStats.push({ type: k as HeroStatType, value: stat });
-      }
-    }
-  }
+  $: modifiedStats = Object.entries(hero.stats).map(([k, v]) => ({ type: k as StatType, value: v })).filter(stat => stat.value.modified);
 </script>
 
 <div>

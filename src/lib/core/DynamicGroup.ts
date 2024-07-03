@@ -42,9 +42,15 @@ export class DynamicGroup<T extends string> implements DynamicGroupInterface<T> 
     }
   }
 
-  multiply(amount: number): void {
+  multiplyAllBy(amount: number): void {
     for(const k in this._value) {
       this._value[k].addMultiplier(amount - 1);
+    }
+  }
+
+  addMultiplier(value: Partial<Record<T, number>>): void {
+    for(const k in this._value) {
+      this._value[k].addMultiplier(value[k] ? (value[k]! - 1) : 1);
     }
   }
 

@@ -2,21 +2,12 @@
 	import DamageDistBar from './DamageDistBar.svelte';
 	import ValueBadge from './ValueBadge.svelte';
 	import { attackTypeRecord, statRecord } from '$lib/records';
-	import { type HeroStats } from '$lib/core';
 	import type { HeroState } from '$lib/state';
+	import { StatType } from '$lib/core';
 
   export let hero: HeroState;
 
   let activeTab = 'general';
-
-  const displayedStats: (keyof HeroStats)[] = [
-    'hp', 
-    'fp', 
-    'stamina', 
-    'weight', 
-    'equipLoad', 
-    'discovery'
-  ];
 
   const tabs: { key: string; label: string }[] = [
     { key: 'general', label: 'General' },
@@ -51,8 +42,8 @@
         <DamageDistBar attack={hero.attack} />
       </dd>
     </div>
-    {#each displayedStats as name}
-      {@const stat = hero.stats[name]}
+    {#each Object.values(StatType) as name}
+      {@const stat = hero.stats.value[name]}
       <div class="px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
         <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-300">{statRecord[name].name}</dt>
         <dd class="mt-1 text-sm leading-6 text-gray-70 dark:text-white sm:col-span-2 sm:mt-0">
@@ -69,35 +60,35 @@
         <div>
           <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">{statRecord['res:immunity'].name}</dt>
           <dd class="text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2 sm:mt-0">
-            <ValueBadge value={hero.stats['res:immunity']} />
+            <ValueBadge value={hero.resistance.value['immunity']} />
           </dd>
         </div>
     
         <div>
           <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">{statRecord['res:robustness'].name}</dt>
           <dd class="text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2 sm:mt-0">
-            <ValueBadge value={hero.stats['res:robustness']} />
+            <ValueBadge value={hero.resistance.value['robustness']} />
           </dd>
         </div>
     
         <div>
           <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">{statRecord['res:focus'].name}</dt>
           <dd class="text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2">
-            <ValueBadge value={hero.stats['res:focus']} />
+            <ValueBadge value={hero.resistance.value['focus']} />
           </dd>
         </div>
     
         <div>
           <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">{statRecord['res:vitality'].name}</dt>
           <dd class="text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2 sm:mt-0">
-            <ValueBadge value={hero.stats['res:vitality']} />
+            <ValueBadge value={hero.resistance.value['vitality']} />
           </dd>
         </div>
     
         <div>
           <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">{statRecord['res:poise'].name}</dt>
           <dd class="text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2">
-            <ValueBadge value={hero.stats['res:poise']} />
+            <ValueBadge value={hero.resistance.value['poise']} />
           </dd>
         </div>
       </dd>
@@ -110,28 +101,28 @@
         <div>
           <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">Standard</dt>
           <dd class="text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2 sm:mt-0">
-            <ValueBadge value={hero.stats['def:standard']} />
+            <ValueBadge value={hero.defense.value['standard']} />
           </dd>
         </div>
     
         <div>
           <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">Strike</dt>
           <dd class="text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2 sm:mt-0">
-            <ValueBadge value={hero.stats['def:strike']} />
+            <ValueBadge value={hero.defense.value['strike']} />
           </dd>
         </div>
         
         <div>
           <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">Slash</dt>
           <dd class="text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2 sm:mt-0">
-            <ValueBadge value={hero.stats['def:slash']} />
+            <ValueBadge value={hero.defense.value['slash']} />
           </dd>
         </div>
         
         <div>
           <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">Pierce</dt>
           <dd class="text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2 sm:mt-0">
-            <ValueBadge value={hero.stats['def:pierce']} />
+            <ValueBadge value={hero.defense.value['pierce']} />
           </dd>
         </div>
         
@@ -139,30 +130,30 @@
           <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">Elemental</dt>
           <dd class="text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2 sm:mt-0">
             <span class="grid grid-cols-3 gap-2">
-              {#if hero.stats['def:mag'].isPresent()}
+              {#if hero.defense.value['mag'].isPresent()}
               <div class="flex flex-col">
-                <span><ValueBadge value={hero.stats['def:mag']} /></span> 
+                <span><ValueBadge value={hero.defense.value['mag']} /></span> 
                 <div class="h-1" style:background-color={attackTypeRecord['mag'].color}></div>
               </div>
               {/if}
         
-              {#if hero.stats['def:fir'].isPresent()}
+              {#if hero.defense.value['fir'].isPresent()}
               <div class="flex flex-col">
-                <span><ValueBadge value={hero.stats['def:fir']} /></span> 
+                <span><ValueBadge value={hero.defense.value['fir']} /></span> 
                 <div class="h-1" style:background-color={attackTypeRecord['fir'].color}></div>
               </div>
               {/if}
         
-              {#if hero.stats['def:lit'].isPresent()}
+              {#if hero.defense.value['lit'].isPresent()}
               <div class="flex flex-col">
-                <span><ValueBadge value={hero.stats['def:lit']} /></span> 
+                <span><ValueBadge value={hero.defense.value['lit']} /></span> 
                 <div class="h-1" style:background-color={attackTypeRecord['lit'].color}></div>
               </div>
               {/if}
         
-              {#if hero.stats['def:hol'].isPresent()}
+              {#if hero.defense.value['hol'].isPresent()}
               <div class="flex flex-col">
-                <span><ValueBadge value={hero.stats['def:hol']} /></span> 
+                <span><ValueBadge value={hero.defense.value['hol']} /></span> 
                 <div class="h-1" style:background-color={attackTypeRecord['hol'].color}></div>
               </div>
               {/if}
@@ -170,8 +161,6 @@
           </dd>
         </div>
       </dd>
-      
-      
     </div>
   
     <div class="px-4 py-3 sm:grid sm:gap-2 sm:px-0">
@@ -180,20 +169,20 @@
         <div>
           <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">Standard</dt>
           <dd class="text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2 sm:mt-0">
-            <ValueBadge value={hero.stats['guard:phy']} />
+            <ValueBadge value={hero.guard.value['phy']} />
           </dd>
         </div>
         <div>
           <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">Stability</dt>
           <dd class="text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2 sm:mt-0">
-            <ValueBadge value={hero.stats['guard:sta']} />
+            <ValueBadge value={hero.guard.value['sta']} />
           </dd>
         </div>
   
         <div>
           <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">Resistance</dt>
           <dd class="text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2 sm:mt-0">
-            <ValueBadge value={hero.stats['guard:res']} />
+            <ValueBadge value={hero.guard.value['res']} />
           </dd>
         </div>
         
@@ -201,30 +190,30 @@
           <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">Elemental</dt>
           <dd class="text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2 sm:mt-0">
             <span class="grid grid-cols-3 gap-2">
-              {#if hero.stats['guard:mag'].isPresent()}
+              {#if hero.guard.value['mag'].isPresent()}
               <div class="flex flex-col">
-                <span><ValueBadge value={hero.stats['guard:mag']} /></span> 
+                <span><ValueBadge value={hero.guard.value['mag']} /></span> 
                 <div class="h-1" style:background-color={attackTypeRecord['mag'].color}></div>
               </div>
               {/if}
         
-              {#if hero.stats['guard:fir'].isPresent()}
+              {#if hero.guard.value['fir'].isPresent()}
               <div class="flex flex-col">
-                <span><ValueBadge value={hero.stats['guard:fir']} /></span> 
+                <span><ValueBadge value={hero.guard.value['fir']} /></span> 
                 <div class="h-1" style:background-color={attackTypeRecord['fir'].color}></div>
               </div>
               {/if}
         
-              {#if hero.stats['guard:lit'].isPresent()}
+              {#if hero.guard.value['lit'].isPresent()}
               <div class="flex flex-col">
-                <span><ValueBadge value={hero.stats['guard:lit']} /></span> 
+                <span><ValueBadge value={hero.guard.value['lit']} /></span> 
                 <div class="h-1" style:background-color={attackTypeRecord['lit'].color}></div>
               </div>
               {/if}
         
-              {#if hero.stats['guard:hol'].isPresent()}
+              {#if hero.guard.value['hol'].isPresent()}
               <div class="flex flex-col">
-                <span><ValueBadge value={hero.stats['guard:hol']} /></span> 
+                <span><ValueBadge value={hero.guard.value['hol']} /></span> 
                 <div class="h-1" style:background-color={attackTypeRecord['hol'].color}></div>
               </div>
               {/if}

@@ -1,10 +1,12 @@
 <script lang="ts">
-	import { DamageType, ElementalDamageType } from '$lib/core';
+	import { AttackType, DamageType} from '$lib/core';
 	import { attackTypeRecord } from '$lib/records';
 
-  export let value: Partial<Record<ElementalDamageType, number>>;
+  export let value: Partial<Record<DamageType, number>>;
 
-  $: elements = Object.entries(value) as { [0]: DamageType; [1]: number }[]
+  const elementTypes = [AttackType.MAGIC, AttackType.FIRE, AttackType.LIGHTNING, AttackType.HOLY];
+
+  $: elements = (Object.entries(value) as { [0]: AttackType; [1]: number }[]).filter(v => elementTypes.includes(v[0]));
 </script>
 
 <span class="grid grid-cols-3 gap-2">

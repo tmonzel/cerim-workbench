@@ -16,7 +16,7 @@
   $: scalingFlags = item.getScalingFlags();
   $: {
     if(item.defense) {
-      protection = Math.round(sum({ ...item.defense.elemental, ...item.defense.physical }) * 10) / 10;
+      protection = Math.round(sum({ ...item.defense, ...item.defense }) * 10) / 10;
     }
   }
 </script>
@@ -206,35 +206,35 @@
           <div>
             <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">Standard</dt>
             <dd class="text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2 sm:mt-0">
-              {item.defense.physical.standard}
+              {item.defense.standard}
             </dd>
           </div>
           
           <div>
             <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">Strike</dt>
             <dd class="text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2 sm:mt-0">
-              {item.defense.physical.strike}
+              {item.defense.strike}
             </dd>
           </div>
           
           <div>
             <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">Slash</dt>
             <dd class="text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2 sm:mt-0">
-              {item.defense.physical.slash}
+              {item.defense.slash}
             </dd>
           </div>
           
           <div>
             <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">Pierce</dt>
             <dd class="text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2 sm:mt-0">
-              {item.defense.physical.pierce}
+              {item.defense.pierce}
             </dd>
           </div>
           
           <div class="col-span-2">
             <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">Elemental</dt>
             <dd class="text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2 sm:mt-0">
-              <ElementalGrid value={item.defense.elemental} />
+              <ElementalGrid value={item.defense} />
             </dd>
           </div>
         </dd>

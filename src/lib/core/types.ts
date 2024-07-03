@@ -1,43 +1,18 @@
-import type { DynamicNumber } from './DynamicNumber';
-
 export type Maybe<T> = T | null | undefined;
 
 export type HeroStat = {
   name: string;
 } 
 
-export type HeroStats = {
-  'hp': DynamicNumber;
-  'fp': DynamicNumber;
-  'stamina': DynamicNumber;
-  'discovery': DynamicNumber;
-  'weight': DynamicNumber;
-  'equipLoad': DynamicNumber;
-  'attackSpeed': DynamicNumber;
-  
-  'res:immunity': DynamicNumber;
-  'res:robustness': DynamicNumber;
-  'res:focus': DynamicNumber;
-  'res:vitality': DynamicNumber;
-  'res:poise': DynamicNumber;
-  
-  'def:standard': DynamicNumber;
-  'def:strike': DynamicNumber;
-  'def:slash': DynamicNumber;
-  'def:pierce': DynamicNumber;
-  'def:hol': DynamicNumber;
-  'def:lit': DynamicNumber;
-  'def:fir': DynamicNumber;
-  'def:mag': DynamicNumber;
-
-  'guard:sta': DynamicNumber;
-  'guard:res': DynamicNumber;
-  'guard:phy': DynamicNumber;
-  'guard:mag': DynamicNumber;
-  'guard:fir': DynamicNumber;
-  'guard:lit': DynamicNumber;
-  'guard:hol': DynamicNumber;
-};
+export enum StatType {
+  HEALTH = 'hp',
+  FOCUS_POINTS = 'fp',
+  STAMINA = 'stamina',
+  DISCOVERY = 'discovery',
+  WEIGHT = 'weight',
+  EQUIP_LOAD = 'equipLoad',
+  ATTACK_SPEED = 'attackSpeed'
+}
 
 export enum DamageType {
   STANDARD = 'standard',
@@ -50,8 +25,6 @@ export enum DamageType {
   MAGIC = 'mag'
 }
 
-export type HeroStatType = keyof HeroStats;
-
 export type AttributeMutation = {
   breakpoint: number;
   grow: number;
@@ -60,7 +33,8 @@ export type AttributeMutation = {
 
 export type AttributeEffect = {
   attr: AttributeType;
-  affects: HeroStatType;
+  mutate: Record<string, Partial<Record<string, AttributeMutation[]>>>;
+  affects: string;
   mutations: AttributeMutation[];
 }
 
@@ -113,7 +87,6 @@ export enum GuardType {
   FIRE = 'fir',
   LIGHTNING = 'lit',
   HOLY = 'hol',
-
   STABILITY = 'sta',
   RESISTANCE = 'res'
 }
@@ -146,21 +119,9 @@ export type Affinity = {
   schema: string;
 }
 
-export type Resistance = {
-  immunity: number;
-  robustness: number;
-  focus: number;
-  vitality: number;
-  poise: number;
-}
-
+export type Resistance = Record<ResistanceType, number>;
 export type Guard = Record<GuardType, number>;
-
-export type Defense = {
-  physical: Record<PhysicalDamageType, number>;
-  elemental: Record<ElementalDamageType, number>;
-}
-
+export type Defense = Record<DamageType, number>;
 export type Attack = Partial<Record<AttackType, number>>;
 
 export type BaseScalingValue = { [0]: number; [1]: string | string[] } | number;
