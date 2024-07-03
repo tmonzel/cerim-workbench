@@ -114,6 +114,12 @@
           <AttackDetail attack={item.attack} />
         {/if}
         <ModifierList data={item.modifiers} />
+        {#if item.effects}
+          <p class="text-sm font-medium">Effects</p>
+          {#each item.effects as effect}
+            <p class="mt-1 text-gray-500 text-sm font-medium">{effect}</p>
+          {/each}
+        {/if}
       </div>
     </button>
   </li>
