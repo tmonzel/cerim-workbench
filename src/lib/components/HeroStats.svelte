@@ -1,7 +1,7 @@
 <script lang="ts">
 	import DamageDistBar from './DamageDistBar.svelte';
 	import ValueBadge from './ValueBadge.svelte';
-	import { attackTypeRecord, statRecord } from '$lib/records';
+	import { attackTypeRecord, resistanceRecord, statRecord } from '$lib/records';
 	import type { HeroState } from '$lib/state';
 	import { StatType } from '$lib/core/types';
 
@@ -58,35 +58,35 @@
       <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-300">Resistance</dt>
       <dd class="grid grid-cols-3">
         <div>
-          <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">{statRecord['res:immunity'].name}</dt>
+          <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">{resistanceRecord['immunity'].name}</dt>
           <dd class="text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2 sm:mt-0">
             <ValueBadge value={hero.resistance.value['immunity']} />
           </dd>
         </div>
     
         <div>
-          <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">{statRecord['res:robustness'].name}</dt>
+          <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">{resistanceRecord['robustness'].name}</dt>
           <dd class="text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2 sm:mt-0">
             <ValueBadge value={hero.resistance.value['robustness']} />
           </dd>
         </div>
     
         <div>
-          <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">{statRecord['res:focus'].name}</dt>
+          <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">{resistanceRecord['focus'].name}</dt>
           <dd class="text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2">
             <ValueBadge value={hero.resistance.value['focus']} />
           </dd>
         </div>
     
         <div>
-          <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">{statRecord['res:vitality'].name}</dt>
+          <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">{resistanceRecord['vitality'].name}</dt>
           <dd class="text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2 sm:mt-0">
             <ValueBadge value={hero.resistance.value['vitality']} />
           </dd>
         </div>
     
         <div>
-          <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">{statRecord['res:poise'].name}</dt>
+          <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">{resistanceRecord['poise'].name}</dt>
           <dd class="text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2">
             <ValueBadge value={hero.resistance.value['poise']} />
           </dd>
