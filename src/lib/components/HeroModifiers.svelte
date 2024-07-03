@@ -46,9 +46,9 @@
   {#if hero.effects.length > 0}
   <div>
     <p class="text-sm font-medium dark:text-zinc-300 mb-1">Effects</p>
-    <ul class="list-disc list-inside">
+    <ul class="list-disc ps-4">
     {#each hero.effects as effect}
-      <li class="text-sm dark:text-zinc-500">{effect}</li>
+      <li class="text-sm dark:text-zinc-500 mb-2">{effect}</li>
     {/each}
     </ul>
   </div>
