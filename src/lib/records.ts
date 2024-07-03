@@ -1,5 +1,5 @@
-import { AttackType, type AttributeMutation, type ItemPreset, type ItemSlot } from './core';
-import { AffinityType, AttributeType, DamageType, type Affinity, type HeroStat, type HeroStatType, type ResistanceType } from './core';
+import { AffinityType, AttackType, AttributeType, DamageType, StatType, type Affinity, type AttributeMutation, type ResistanceType, type Stat } from './core/types';
+import type { ItemPreset } from './item/types';
 
 export const mutationRecord: Record<string, AttributeMutation[]> = {};
 export const presetRecord: Record<string, ItemPreset> = {};
@@ -46,53 +46,6 @@ export const attributeRecord: Record<AttributeType, { name: string; color: strin
   }
 }
 
-export const itemSlotRecord: Record<string, ItemSlot> = {
-  mainHand: {
-    label: "Main Hand",
-    allowedGroups: ['axes', 'bows', 'hammers', 'swords', 'daggers', 'halberds', 'staffs']
-  },
-  offHand: {
-    label: "Offhand",
-    allowedGroups: ['shields', 'seals']
-  },
-  head: {
-    label: "Head",
-    allowedGroups: ['helmets']
-  },
-  chest: {
-    label: "Chest",
-    allowedGroups: ['armors']
-  },
-  legs: {
-    label: "Legs",
-    allowedGroups: ['greaves']
-  },
-  hand: {
-    label: "Hands",
-    allowedGroups: ['gauntlets']
-  },
-  rune: {
-    label: "Greatrune",
-    allowedGroups: ['runes']
-  },
-  pouch: {
-    label: "Pouch",
-    allowedGroups: ['talismans']
-  },
-  pouch2: {
-    label: "Pouch II",
-    allowedGroups: ['talismans']
-  },
-  pouch3: {
-    label: "Pouch III",
-    allowedGroups: ['talismans']
-  },
-  pouch4: {
-    label: "Pouch IV",
-    allowedGroups: ['talismans']
-  }
-}
-
 export const attackTypeRecord: Record<AttackType, { name: string; color: string }> = {
   [AttackType.PHYSICAL]: {
     name: "Physical",
@@ -133,7 +86,7 @@ export const attackTypeRecord: Record<AttackType, { name: string; color: string 
   }
 }
 
-export const statRecord: Record<HeroStatType, HeroStat> = {
+export const statRecord: Record<StatType, Stat> = {
   hp: {
     name: 'Health'
   },
@@ -154,66 +107,6 @@ export const statRecord: Record<HeroStatType, HeroStat> = {
   },
   attackSpeed: {
     name: 'Attack Speed'
-  },
-  'res:immunity': {
-    name: 'Immunity'
-  },
-  'res:robustness': {
-    name: 'Robustness'
-  },
-  'res:focus': {
-    name: 'Focus'
-  },
-  'res:vitality': {
-    name: 'Vitality'
-  },
-  'res:poise': {
-    name: 'Poise'
-  },
-  'def:standard': {
-    name: 'Physical Defense'
-  },
-  'def:strike': {
-    name: 'Strike Defense'
-  },
-  'def:slash': {
-    name: 'Slash Defense'
-  },
-  'def:pierce': {
-    name: 'Pierce Defense'
-  },
-  'def:hol': {
-    name: 'Holy Defense'
-  },
-  'def:lit': {
-    name: 'Lightning Defense'
-  },
-  'def:fir': {
-    name: 'Fire Defense'
-  },
-  'def:mag': {
-    name: 'Magic Defense'
-  },
-  'guard:sta': {
-    name: 'Stability'
-  },
-  'guard:res': {
-    name: 'Resistance'
-  },
-  'guard:phy': {
-    name: 'Physical Guard'
-  },
-  'guard:mag': {
-    name: 'Magic Guard'
-  },
-  'guard:fir': {
-    name: 'Fire Guard'
-  },
-  'guard:lit': {
-    name: 'Lightning Guard'
-  },
-  'guard:hol': {
-    name: 'Holy Guard'
   }
 }
 

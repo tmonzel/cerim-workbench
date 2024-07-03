@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { AttributeType } from '$lib/core';
+	import { AttributeType } from '$lib/core/types';
 	import { attributeRecord } from '$lib/records';
 	import type { HeroState } from '$lib/state';
 	import { attributeStore } from '$lib/stores';

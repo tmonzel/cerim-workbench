@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { getValueDistribution, type Attack } from '$lib/core';
+	import { getValueDistribution } from '$lib/core';
+	import type { Attack } from '$lib/core/types';
 	import { attackTypeRecord } from '$lib/records';
 
   export let attack: Attack;

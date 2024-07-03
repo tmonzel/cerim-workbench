@@ -1,8 +1,9 @@
-import { appState, type EquipState } from './state';
-import { attributeStore, equipStore, itemStore } from './stores';
-import { AttributeType, Item, type AttributeEffect, type AttributeMutation, type ItemDef, type ItemPreset, type UpgradeSchema } from './core';
-import { get } from 'svelte/store';
+import { appState, type SlotState } from './state';
+import { attributeStore, slotStore } from './stores';
 import { mutationRecord, presetRecord } from './records';
+import { AttributeType, type AttributeEffect, type AttributeMutation, type UpgradeSchema } from './core/types';
+import type { ItemDef, ItemPreset } from './item/types';
+import { Item, itemStore } from './item';
 
 export type DataSchema = {
   maxLevel: number;
@@ -10,7 +11,7 @@ export type DataSchema = {
   
   defaults?: {
     attributes?: Record<AttributeType, number>;
-    equip?: Record<keyof EquipState, string>;
+    equip?: Record<keyof SlotState, string>;
   };
 
   items?: Record<string, ItemDef>;
@@ -79,21 +80,11 @@ export function loadData(data: DataSchema) {
   });
 
   // Apply equip defaults
-  equipStore.update(state => {
+  slotStore.update(state => {
     if(!data.defaults || !data.defaults.equip) {
       return { ...state };
     }
 
-    const items = get(itemStore);
-
-    for(const [slot, itemId] of Object.entries(data.defaults.equip)) {
-      if(!items[itemId]) {
-        continue;
-      }
-
-      state[slot as keyof EquipState] = items[itemId];
-    }
-
-    return { ...state };
+    return { ...state, ...data.defaults.equip };
   })
 }

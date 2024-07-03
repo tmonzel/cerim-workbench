@@ -1,10 +1,10 @@
 <script lang="ts">
-	import type { Item } from '$lib/core';
 	import { createEventDispatcher } from 'svelte';
-	import AttackDetail from './AttackDetail.svelte';
 	import ModifierList from './ModifierList.svelte';
 	import { equipRecord } from '$lib/records';
 	import { writable } from 'svelte/store';
+	import type { Item } from '../Item';
+	import AttackDetail from '$lib/components/AttackDetail.svelte';
 
   export let items: Item[];
   

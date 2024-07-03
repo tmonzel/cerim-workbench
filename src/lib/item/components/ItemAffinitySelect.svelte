@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { AffinityType } from '$lib/core';
+	import { AffinityType } from '$lib/core/types';
 	import { affinityRecord } from '$lib/records';
 	import { createEventDispatcher } from 'svelte';
 

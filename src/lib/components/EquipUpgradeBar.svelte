@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { AffinityType, Item } from '$lib/core';
-	import { itemStore } from '$lib/stores';
-	import ItemAffinitySelect from './ItemAffinitySelect.svelte';
+	import type { AffinityType } from '$lib/core/types';
+	import { itemStore, type Item } from '$lib/item';
+	import ItemAffinitySelect from '../item/components/ItemAffinitySelect.svelte';
 
   export let item: Item;
 

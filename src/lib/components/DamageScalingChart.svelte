@@ -1,5 +1,6 @@
 <script lang='ts'>
-	import { AttackType, AttributeType, type Attack, type Item } from '$lib/core';
+	import { AttackType, type Attack, type AttributeType } from '$lib/core/types';
+	import type { Item } from '$lib/item';
 	import { attackTypeRecord } from '$lib/records';
   import { VisXYContainer, VisLine, VisAxis } from '@unovis/svelte'
   

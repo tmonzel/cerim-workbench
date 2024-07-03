@@ -2,7 +2,7 @@
 	import { type HeroState } from '$lib/state';
 	import { DynamicNumber } from '$lib/core/DynamicNumber';
 	import { statRecord } from '$lib/records';
-	import type { StatType } from '$lib/core';
+	import type { StatType } from '$lib/core/types';
 
   export let hero: HeroState;
 

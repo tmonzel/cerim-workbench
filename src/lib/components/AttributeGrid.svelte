@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { AttributeType, list } from '$lib/core';
+	import { list } from '$lib/core';
+	import type { AttributeType } from '$lib/core/types';
 	import { attributeRecord } from '$lib/records';
 
   export let value: Partial<Record<AttributeType, number>>;

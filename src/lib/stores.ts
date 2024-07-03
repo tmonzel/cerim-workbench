@@ -1,9 +1,6 @@
 import { writable } from 'svelte/store';
-import type { Item } from './core/Item';
-import type { AttributeState, EquipState } from './state';
-import { AttributeType } from './core';
-
-export const itemStore = writable<Record<string, Item>>({});
+import type { AttributeState, SlotState } from './state';
+import { AttributeType } from './core/types';
 
 export const attributeStore = writable<AttributeState>({
   [AttributeType.VIGOR]: 0,
@@ -16,7 +13,7 @@ export const attributeStore = writable<AttributeState>({
   [AttributeType.ARCANE]: 0
 });
 
-export const equipStore = writable<EquipState>({
+export const slotStore = writable<SlotState>({
   rune: null,
   pouch: null,
   pouch2: null,

@@ -1,19 +1,13 @@
 <script lang="ts">
-	import { itemSlotRecord } from '$lib/records';
-	import { equipStore, itemStore } from '$lib/stores';
-	import { derived } from 'svelte/store';
-	import type { Item } from '$lib/core';
-	import type { EquipState } from '$lib/state';
 	import ItemSelectList from './ItemSelectList.svelte';
+	import type { Item } from '../Item';
 
-  export let slotKey: keyof EquipState;
+  export let items: Item[] = [];
 
   let dialog: HTMLDialogElement;
   let opened = false;
 
   let selectedItemId: string | null = null;
-  
-  const items = derived(itemStore, (items) => Object.values(items).filter(i => itemSlotRecord[slotKey].allowedGroups.includes(i.group)));
 
   export function open(): void {
     dialog.showModal();
@@ -26,7 +20,7 @@
   }
 
   export function selectItem(item: Item | null): void {
-    equipStore.update((store) => ({ ...store, [slotKey]: item }));
+    //equipStore.update((store) => ({ ...store, [slotKey]: item }));
     selectedItemId = item ? item.id : null;
 
     close();
@@ -39,7 +33,7 @@
   </button> 
 
   <div class="relative z-50">
-    <ItemSelectList items={$items} on:selectItem={(e) => selectItem(e.detail)} />
+    <ItemSelectList {items} on:selectItem={(e) => selectItem(e.detail)} />
   </div>
 </dialog>
 

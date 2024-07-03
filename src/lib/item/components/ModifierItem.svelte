@@ -1,6 +1,7 @@
 <script lang="ts">
-	import { list, type ItemModifierConfig, type ModifierType } from '$lib/core';
+	import { list } from '$lib/core';
 	import { attackTypeRecord, attributeRecord, damageTypeRecord, resistanceRecord, statRecord } from '$lib/records';
+	import type { ItemModifierConfig, ModifierType } from '../types';
 
   export let type: ModifierType = 'flat';
   export let key: string;

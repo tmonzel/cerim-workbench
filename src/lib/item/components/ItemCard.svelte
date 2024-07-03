@@ -1,12 +1,14 @@
 <script lang="ts">
-	import { AttributeType, Item, list, sum } from '$lib/core';
+	import AttackBadge from '$lib/components/AttackBadge.svelte';
+	import AttackDetail from '$lib/components/AttackDetail.svelte';
+	import DamageScalingChart from '$lib/components/DamageScalingChart.svelte';
+	import ElementalGrid from '$lib/components/ElementalGrid.svelte';
+	import StatusEffectIcon from '$lib/components/StatusEffectIcon.svelte';
+	import { list, sum } from '$lib/core';
+	import { AttributeType } from '$lib/core/types';
 	import { affinityRecord, attributeRecord, damageTypeRecord, equipRecord } from '$lib/records';
-	import AttackBadge from './AttackBadge.svelte';
-	import ElementalGrid from './ElementalGrid.svelte';
+	import type { Item } from '../Item';
 	import ModifierList from './ModifierList.svelte';
-	import StatusEffectIcon from './StatusEffectIcon.svelte';
-	import DamageScalingChart from './DamageScalingChart.svelte';
-	import AttackDetail from './AttackDetail.svelte';
 
   export let item: Item;
   export let displayMode: 'detail' | 'equipped' = 'detail';

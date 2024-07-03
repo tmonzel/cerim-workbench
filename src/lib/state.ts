@@ -1,6 +1,8 @@
 import { derived, writable } from 'svelte/store';
-import { AttributeType, DynamicAttack, DynamicAttributes, DynamicDefense, DynamicGuard, DynamicResistance, DynamicStats, calcAttributeScaling, list, type AttributeEffect, type Item } from './core';
-import { attributeStore, equipStore, itemStore } from './stores';
+import { DynamicAttack, DynamicAttributes, DynamicDefense, DynamicGuard, DynamicResistance, DynamicStats, calcAttributeScaling, list } from './core';
+import { attributeStore, slotStore } from './stores';
+import type { AttributeEffect, AttributeType } from './core/types';
+import { itemStore, type Item } from './item';
 
 export type AppState = {
   maxLevel: number;
@@ -24,6 +26,8 @@ export type EquipState = {
   offHand: Item | null;
 }
 
+export type SlotState = Record<keyof EquipState, string | null>;
+
 export type HeroState = {
   level: number;
   progress: number;
@@ -44,9 +48,22 @@ export const appState = writable<AppState>({
   effects: []
 });
 
-export const heroState = derived([attributeStore, equipStore, appState, itemStore], ([attributes, equip, app]) => {
+export const heroState = derived([attributeStore, slotStore, appState, itemStore], ([attributes, slots, app, items]) => {
   const numDistributedPoints = Object.values(attributes).reduce((p, c) => p + c, 0);
   const level = Math.floor(numDistributedPoints / app.attributePointsPerLevel);
+  const equip: EquipState = {
+    rune: slots.rune ? items[slots.rune] : null,
+    pouch: slots.pouch ? items[slots.pouch] : null,
+    pouch2: slots.pouch2 ? items[slots.pouch2] : null,
+    pouch3: slots.pouch3 ? items[slots.pouch3] : null,
+    pouch4: slots.pouch4 ? items[slots.pouch4] : null,
+    head: slots.head ? items[slots.head] : null,
+    chest: slots.chest ? items[slots.chest] : null,
+    legs: slots.legs ? items[slots.legs] : null,
+    hand: slots.hand ? items[slots.hand] : null,
+    mainHand: slots.mainHand ? items[slots.mainHand] : null,
+    offHand: slots.offHand ? items[slots.offHand] : null
+  };
 
   const hero: HeroState = {
     level,

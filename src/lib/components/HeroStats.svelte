@@ -3,7 +3,7 @@
 	import ValueBadge from './ValueBadge.svelte';
 	import { attackTypeRecord, statRecord } from '$lib/records';
 	import type { HeroState } from '$lib/state';
-	import { StatType } from '$lib/core';
+	import { StatType } from '$lib/core/types';
 
   export let hero: HeroState;
 

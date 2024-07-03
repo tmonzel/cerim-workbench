@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { itemSlotRecord } from '$lib/records';
 	import type { HeroState } from '$lib/state';
+	import { slotStore } from '$lib/stores';
 	import EquipSlot from './EquipSlot.svelte';
 	
   export let hero: HeroState;
@@ -8,60 +8,71 @@
 <div class="flex gap-5 justify-center">
   <div class="flex flex-col gap-5" style="max-width: 52rem;">
     <EquipSlot 
-      key="mainHand"
-      slot={itemSlotRecord.mainHand} 
+      bind:slot={$slotStore.mainHand}
+      label="Main Hand"
+      groups={['axes', 'bows', 'hammers', 'swords', 'daggers', 'halberds', 'staffs']} 
       item={hero.equip.mainHand}  
     />
     <EquipSlot 
-      key="offHand" 
-      slot={itemSlotRecord.offHand}
+      bind:slot={$slotStore.offHand}
+      label="Offhand" 
+      groups={['shields', 'seals']} 
       item={hero.equip.offHand} 
     />
     <EquipSlot 
-      key="head" 
-      slot={itemSlotRecord.head}
+      label="Head" 
+      bind:slot={$slotStore.head}
+      groups={['helmets']} 
       item={hero.equip.head} 
     />
     <EquipSlot 
-      key="chest" 
-      slot={itemSlotRecord.chest}
+      label="Chest" 
+      bind:slot={$slotStore.chest}
+      groups={['armors']} 
       item={hero.equip.chest} 
     />
     <EquipSlot 
-      key="legs" 
-      slot={itemSlotRecord.legs}
+      label="Legs" 
+      bind:slot={$slotStore.legs}
+      groups={['greaves']} 
       item={hero.equip.legs} 
     />
     <EquipSlot 
-      key="hand" 
-      slot={itemSlotRecord.hand}
+      label="Hands" 
+      bind:slot={$slotStore.hand}
+      groups={['gauntlets']} 
       item={hero.equip.hand} 
     />
   </div>
   <div class="flex flex-col gap-5 max-w-lg">
     <EquipSlot 
-      key="rune"
-      slot={itemSlotRecord.rune} 
+      label="Greatrune"
+      bind:slot={$slotStore.rune} 
+      groups={['runes']} 
       item={hero.equip.rune} 
     />
     <EquipSlot 
-      key="pouch"
-      slot={itemSlotRecord.pouch} 
+      label="Pouch"
+      bind:slot={$slotStore.pouch} 
+      groups={['talismans']} 
       item={hero.equip.pouch} 
     />
     <EquipSlot 
-      key="pouch2"
-      slot={itemSlotRecord.pouch2} 
+      label="Pouch II"
+      bind:slot={$slotStore.pouch2} 
+      groups={['talismans']} 
       item={hero.equip.pouch2} 
     />
     <EquipSlot 
-      key="pouch3"
-      slot={itemSlotRecord.pouch3} 
+      label="Pouch III"
+      bind:slot={$slotStore.pouch3} 
+      groups={['talismans']} 
       item={hero.equip.pouch3} 
     />
     <EquipSlot 
-      key="pouch4"
-      slot={itemSlotRecord.pouch4} 
+      label="Pouch IV"
+      bind:slot={$slotStore.pouch4} 
+      groups={['talismans']} 
       item={hero.equip.pouch4} 
     />
   </div>

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { AttackType, DamageType} from '$lib/core';
+	import { AttackType, type DamageType } from '$lib/core/types';
 	import { attackTypeRecord } from '$lib/records';
 
   export let value: Partial<Record<DamageType, number>>;

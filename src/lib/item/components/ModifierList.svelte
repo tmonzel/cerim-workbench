@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { list } from '$lib/core';
-	import { FlatModifier } from '$lib/core/modifiers/FlatModifier';
-	import { PercentualModifier } from '$lib/core/modifiers/PercentualModifier';
+	import { FlatModifier } from '../modifiers/FlatModifier';
+	import { PercentualModifier } from '../modifiers/PercentualModifier';
 	import ModifierItem from './ModifierItem.svelte';
 
   export let data: (FlatModifier | PercentualModifier)[] = [];

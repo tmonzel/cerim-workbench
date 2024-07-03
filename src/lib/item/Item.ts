@@ -1,9 +1,11 @@
-import { AffinityType, AttributeType, type Defense, type ItemDef, type ItemRequirements, type Resistance, type Attack, type Guard, type ItemConfig, type AttributeMutation, type ItemPreset, type UpgradeSchema, GuardType, type ModifierType, type ItemModifierDef, StatusEffectType, type ItemAttackInfo, AttackType, DamageType, type AttributeDamageScaling } from './types';
-import { calcAttributeScaling, getScalingId, list } from './helpers';
+
+import { calcAttributeScaling, getScalingId, list } from '$lib/core';
+import { AffinityType, AttackType, AttributeType, DamageType, GuardType, StatusEffectType, type Attack, type AttributeDamageScaling, type AttributeMutation, type Defense, type Guard, type Resistance, type UpgradeSchema } from '$lib/core/types';
 import { upgradeSchemata } from '$lib/data';
-import { PercentualModifier } from './modifiers/PercentualModifier';
-import { FlatModifier } from './modifiers/FlatModifier';
 import { affinityRecord, mutationRecord, presetRecord } from '$lib/records';
+import { FlatModifier } from './modifiers/FlatModifier';
+import { PercentualModifier } from './modifiers/PercentualModifier';
+import type { ItemAttackInfo, ItemConfig, ItemDef, ItemModifierDef, ItemPreset, ItemRequirements, ModifierType } from './types';
 
 export class Item {
   readonly type: string;

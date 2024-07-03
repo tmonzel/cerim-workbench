@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { StatusEffectType } from '$lib/core';
+	import { StatusEffectType } from '$lib/core/types';
 
   export let effect: StatusEffectType; 
 
