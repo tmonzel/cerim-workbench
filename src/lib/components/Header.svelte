@@ -27,7 +27,11 @@
 
     <div class="leading-3 text-right">
       <span class="text-zinc-500 text-xs">Developed by Thomas Monzel</span><br>
-      <span class="text-zinc-600 text-xs">ELDEN RING is a trademark of FromSoftware.</span>
+      <span class="text-zinc-600 text-xs">ELDEN RING is a trademark of FromSoftware.</span><br><br>
+
+      <a href="https://www.buymeacoffee.com/digitaleshandwerk" class="inline-block w-40" target="_blank">
+        <img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=digitaleshandwerk&button_colour=FFDD00&font_colour=000000&font_family=Inter&outline_colour=000000&coffee_colour=ffffff" />
+      </a>
     </div>
   </div>
   

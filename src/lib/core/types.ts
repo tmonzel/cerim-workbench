@@ -122,6 +122,7 @@ export type Affinity = {
 export type Resistance = Record<ResistanceType, number>;
 export type Guard = Record<GuardType, number>;
 export type Defense = Record<DamageType, number>;
+export type DamageNegation = Record<DamageType, number>;
 export type Attack = Partial<Record<AttackType, number>>;
 
 export type BaseScalingValue = { [0]: number; [1]: string | string[] } | number;

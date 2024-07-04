@@ -50,7 +50,11 @@ export class DynamicGroup<T extends string> implements DynamicGroupInterface<T> 
 
   addMultiplier(value: Partial<Record<T, number>>): void {
     for(const k in this._value) {
-      this._value[k].addMultiplier(value[k] ? (value[k]! - 1) : 1);
+      if(!value[k]) {
+        continue;
+      }
+
+      this._value[k].addMultiplier(value[k]! - 1);
     }
   }
 

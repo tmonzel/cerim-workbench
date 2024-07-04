@@ -62,7 +62,7 @@
       {/if}
 
     {:else}
-    <div class="text-center">
+    <div class="text-center py-4">
       <p class="text-lg text-zinc-500 dark:text-amber-300 font-semibold">{label}</p>
       <p class="text-xs text-zinc-400 dark:text-zinc-200">({groups.join(', ')})</p>
     </div>
@@ -75,8 +75,16 @@
     <span class="sr-only">Close modal</span>
   </button> 
 
-  <div class="relative z-50">
-    <ItemSelectList items={$selectableItems} on:selectItem={(e) => selectItem(e.detail)} />
+  <div class="relative z-50 bg-neutral-800/30">
+    <div class="text-stone-300 bg-neutral-800 text-xl p-4 flex justify-between items-center border-b border-zinc-700">
+      <div>
+        Select <span class="font-semibold">{label}</span> Item
+      </div>
+      <div>
+        <button class="bg-amber-300 text-amber-900 p-2.5 rounded-md" on:click={() => selectItem(null)}>Clear Slot</button>
+      </div>
+    </div>
+    <ItemSelectList items={$selectableItems} selectedItemId={slot} on:selectItem={(e) => selectItem(e.detail)} />
   </div>
 </dialog>
 

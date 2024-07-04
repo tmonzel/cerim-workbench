@@ -14,6 +14,7 @@ export class FlatModifier {
         case 'resistance':
         case 'attributes':
         case 'defense':
+        case 'damageNegation':
           hero[item.key].addOffset(item.value.modify);
       }
     }

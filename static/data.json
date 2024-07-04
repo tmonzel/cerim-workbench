@@ -12,10 +12,9 @@
       "vig": 0, 
       "end": 0, 
       "str": 0,
-      "int": 16
+      "int": 0
     },
-    "equip": {
-    }
+    "equip": {}
   },
 
   "effects": [
@@ -30,13 +29,7 @@
             { "breakpoint": 60, "grow": 1900, "exp": -1.2 },
             { "breakpoint": 99, "grow": 2100 }
           ]
-        }
-      }
-    },
-
-    {
-      "attr": "vig",
-      "mutate": {
+        },
         "defense": {
           "fir": [
             { "breakpoint": 0, "grow": 0 },
@@ -84,6 +77,27 @@
       "mutate": {
         "defense": {
           "standard": [
+            { "breakpoint": 0, "grow": 0 },
+            { "breakpoint": 30, "grow": 10 },
+            { "breakpoint": 40, "grow": 15 },
+            { "breakpoint": 60, "grow": 30 },
+            { "breakpoint": 99, "grow": 40 }
+          ],
+          "strike": [
+            { "breakpoint": 0, "grow": 0 },
+            { "breakpoint": 30, "grow": 10 },
+            { "breakpoint": 40, "grow": 15 },
+            { "breakpoint": 60, "grow": 30 },
+            { "breakpoint": 99, "grow": 40 }
+          ],
+          "slash": [
+            { "breakpoint": 0, "grow": 0 },
+            { "breakpoint": 30, "grow": 10 },
+            { "breakpoint": 40, "grow": 15 },
+            { "breakpoint": 60, "grow": 30 },
+            { "breakpoint": 99, "grow": 40 }
+          ],
+          "pierce": [
             { "breakpoint": 0, "grow": 0 },
             { "breakpoint": 30, "grow": 10 },
             { "breakpoint": 40, "grow": 15 },
@@ -277,9 +291,63 @@
         }
       },
       "effects": [
-        "Increases damage taken by 10%"
+        "Increased damage taken by 10%"
       ],
-      "iconUrl": "/images/talisman-radagons-scarseal.png"
+      "iconUrl": "/images/radagons-scarseal.png"
+    },
+    "radagons-soreseal": {
+      "type": "talisman",
+      "name": "Radagon’s Soreseal",
+      "group": "talismans",
+      "weight": 0.8,
+      "modifiers": {
+        "flat": {
+          "attributes": {
+            "name": "Raise Vigor, Endurance, Strength and Dexterity",
+            "modify": { "vig": 5, "end": 5, "str": 5, "dex": 5 }
+          }
+        }
+      },
+      "effects": [
+        "Increased damage taken by 15%"
+      ],
+      "iconUrl": "/images/radagons-soreseal.png"
+    },
+    "marikas-scarseal": {
+      "type": "talisman",
+      "name": "Marika’s Scarseal",
+      "group": "talismans",
+      "weight": 0.8,
+      "modifiers": {
+        "flat": {
+          "attributes": {
+            "name": "Raise Mind, Intelligence, Faith and Arcane",
+            "modify": { "mnd": 3, "int": 3, "fth": 3, "arc": 3 }
+          }
+        }
+      },
+      "effects": [
+        "Increased damage taken by 10%"
+      ],
+      "iconUrl": "/images/marikas-scarseal.png"
+    },
+    "marikas-soreseal": {
+      "type": "talisman",
+      "name": "Marika’s Soreseal",
+      "group": "talismans",
+      "weight": 0.8,
+      "modifiers": {
+        "flat": {
+          "attributes": {
+            "name": "Raise Mind, Intelligence, Faith and Arcane",
+            "modify": { "mnd": 5, "int": 5, "fth": 5, "arc": 5 }
+          }
+        }
+      },
+      "effects": [
+        "Increased damage taken by 15%"
+      ],
+      "iconUrl": "/images/marikas-scarseal.png"
     },
     "talisman:daedicar": {
       "type": "talisman",
@@ -287,7 +355,7 @@
       "group": "talismans",
       "weight": 0.8,
       "effects": [
-        "Doubles damage taken"
+        "Double damage taken"
       ],
       "iconUrl": "/images/talisman-daedicars-woe.png"
     },
@@ -329,6 +397,124 @@
           }
         }
       }
+    },
+    "cerulean-amber-medallion": {
+      "type": "talisman",
+      "name": "Cerulaen Amber Medallion",
+      "group": "talismans",
+      "weight": 0.3,
+      "iconUrl": "/images/cerulean-amber-medallion.png",
+      "upgrades": [
+        {
+          "iconUrl": "/images/cerulean-amber-medallion-1.png",
+          "modifiers": {
+            "percentual": {
+              "stats": {
+                "name": "Increase FP",
+                "modify": { "fp": 1.09 }
+              }
+            }
+          }
+        },
+        {
+          "iconUrl": "/images/cerulean-amber-medallion-2.png",
+          "modifiers": {
+            "percentual": {
+              "stats": {
+                "name": "Increase FP",
+                "modify": { "fp": 1.11 }
+              }
+            }
+          }
+        }
+      ],
+      "modifiers": {
+        "percentual": {
+          "stats": {
+            "name": "Increase FP",
+            "modify": { "fp": 1.07 }
+          }
+        }
+      }
+    },
+    "viridian-amber-medallion": {
+      "type": "talisman",
+      "name": "Viridian Amber Medallion",
+      "group": "talismans",
+      "weight": 0.3,
+      "iconUrl": "/images/viridian-amber-medallion.png",
+      "upgrades": [
+        {
+          "iconUrl": "/images/viridian-amber-medallion-1.png",
+          "modifiers": {
+            "percentual": {
+              "stats": {
+                "name": "Increase Stamina",
+                "modify": { "stamina": 1.13 }
+              }
+            }
+          }
+        },
+        {
+          "iconUrl": "/images/viridian-amber-medallion-2.png",
+          "modifiers": {
+            "percentual": {
+              "stats": {
+                "name": "Increase Stamina",
+                "modify": { "stamina": 1.15 }
+              }
+            }
+          }
+        }
+      ],
+      "modifiers": {
+        "percentual": {
+          "stats": {
+            "name": "Increase Stamina",
+            "modify": { "stamina": 1.11 }
+          }
+        }
+      }
+    },
+    "crimson-seed-talisman": {
+      "type": "talisman",
+      "name": "Crimson Seed Talisman",
+      "group": "talismans",
+      "weight": 0.8,
+      "iconUrl": "/images/crimson-seed-talisman.png",
+      "effects": [
+        "Increase HP restoration from Flask of Crimson Tears by 20%"
+      ]
+    },
+    "cerulean-seed-talisman": {
+      "type": "talisman",
+      "name": "Cerulean Seed Talisman",
+      "group": "talismans",
+      "weight": 0.8,
+      "iconUrl": "/images/cerulean-seed-talisman.png",
+      "effects": [
+        "Increase FP restoration from Flask of Cerulean Tears by 20%"
+      ]
+    },
+    "green-turtle-talisman": {
+      "type": "talisman",
+      "name": "Green Turtle Talisman",
+      "group": "talismans",
+      "weight": 0.7,
+      "iconUrl": "/images/green-turtle-talisman.png",
+      "effects": [
+        "Increase Stamina recovery speed by 8 per second (17.7%)"
+      ]
+    },
+    "blessed-dew-talisman": {
+      "type": "talisman",
+      "name": "Blessed Dew Talisman",
+      "group": "talismans",
+      "weight": 0.6,
+      "iconUrl": "/images/blessed-dew-talisman.png",
+      "effects": [
+        "Restore 2 HP/sec"
+      ]
     },
     "talisman:horn-charm": {
       "type": "talisman",
@@ -393,7 +579,7 @@
       "name": "Erdtree’s Favor",
       "group": "talismans",
       "weight": 1.5,
-      "iconUrl": "/images/talisman-erdtrees-favor.png",
+      "iconUrl": "/images/erdtrees-favor.png",
       "modifiers": {
         "percentual": {
           "stats": {
@@ -401,7 +587,31 @@
             "modify": { "hp": 1.03, "stamina": 1.07, "equipLoad": 1.05 }
           }
         }
-      }
+      },
+      "upgrades": [
+        {
+          "iconUrl": "/images/erdtrees-favor-1.png",
+          "modifiers": {
+            "percentual": {
+              "stats": {
+                "name": "Increase Health, Stamina and Equipload",
+                "modify": { "hp": 1.035, "stamina": 1.085, "equipLoad": 1.065 }
+              }
+            }
+          }
+        },
+        {
+          "iconUrl": "/images/erdtrees-favor-2.png",
+          "modifiers": {
+            "percentual": {
+              "stats": {
+                "name": "Increase Health, Stamina and Equipload",
+                "modify": { "hp": 1.04, "stamina": 1.1, "equipLoad": 1.08 }
+              }
+            }
+          }
+        }
+      ]
     },
     "talisman:starscourge": {
       "type": "talisman",
@@ -417,6 +627,306 @@
           }
         }
       }
+    },
+    "prosthesis-wearer-heirloom": {
+      "type": "talisman",
+      "name": "Prosthesis-Wearer Heirloom",
+      "group": "talismans",
+      "weight": 0.8,
+      "iconUrl": "/images/prosthesis-wearer-heirloom.png",
+      "modifiers": {
+        "flat": {
+          "attributes": {
+            "name": "Raise Dexterity",
+            "modify": { "dex": 5 }
+          }
+        }
+      }
+    },
+    "stargazer-heirloom": {
+      "type": "talisman",
+      "name": "Stargazer Heirloom",
+      "group": "talismans",
+      "weight": 0.6,
+      "iconUrl": "/images/stargazer-heirloom.png",
+      "modifiers": {
+        "flat": {
+          "attributes": {
+            "name": "Raise Intelligence",
+            "modify": { "int": 5 }
+          }
+        }
+      }
+    },
+    "two-fingers-heirloom": {
+      "type": "talisman",
+      "name": "Two Fingers Heirloom",
+      "group": "talismans",
+      "weight": 0.6,
+      "iconUrl": "/images/two-fingers-heirloom.png",
+      "modifiers": {
+        "flat": {
+          "attributes": {
+            "name": "Raise Faith",
+            "modify": { "fth": 5 }
+          }
+        }
+      }
+    },
+    "dragoncrest-shield-talisman": {
+      "type": "talisman",
+      "name": "Dragoncrest Shield Talisman",
+      "group": "talismans",
+      "weight": 0.8,
+      "iconUrl": "/images/dragoncrest-shield-talisman.png",
+      "modifiers": {
+        "percentual": {
+          "damageNegation": {
+            "name": "Increase Damage Negation",
+            "modify": { "standard": 1.10, "strike": 1.10, "slash": 1.10, "pierce": 1.10 }
+          }
+        }
+      },
+      "upgrades": [
+        {
+          "iconUrl": "/images/dragoncrest-shield-talisman-1.png",
+          "modifiers": {
+            "percentual": {
+              "damageNegation": {
+                "name": "Increase Damage Negation",
+                "modify": { "standard": 1.13, "strike": 1.13, "slash": 1.13, "pierce": 1.13 }
+              }
+            }
+          }
+        },
+        {
+          "iconUrl": "/images/dragoncrest-shield-talisman-2.png",
+          "modifiers": {
+            "percentual": {
+              "damageNegation": {
+                "name": "Increase Damage Negation",
+                "modify": { "standard": 1.17, "strike": 1.17, "slash": 1.17, "pierce": 1.17 }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "dragoncrest-greatshield-talisman": {
+      "type": "talisman",
+      "name": "Dragoncrest Greatshield Talisman",
+      "group": "talismans",
+      "weight": 0.8,
+      "iconUrl": "/images/dragoncrest-greatshield-talisman.png",
+      "modifiers": {
+        "percentual": {
+          "damageNegation": {
+            "name": "Increase Damage Negation",
+            "modify": { "standard": 1.20, "strike": 1.20, "slash": 1.20, "pierce": 1.20 }
+          }
+        }
+      }
+    },
+    "spelldrake-talisman": {
+      "type": "talisman",
+      "name": "Spelldrake Talisman",
+      "group": "talismans",
+      "weight": 0.6,
+      "iconUrl": "/images/spelldrake-talisman.png",
+      "modifiers": {
+        "percentual": {
+          "damageNegation": {
+            "name": "Increase Damage Negation",
+            "modify": { "mag": 1.13 }
+          }
+        }
+      },
+      "upgrades": [
+        {
+          "iconUrl": "/images/spelldrake-talisman-1.png",
+          "modifiers": {
+            "percentual": {
+              "damageNegation": {
+                "name": "Increase Damage Negation",
+                "modify": { "mag": 1.17 }
+              }
+            }
+          }
+        },
+        {
+          "iconUrl": "/images/spelldrake-talisman-2.png",
+          "modifiers": {
+            "percentual": {
+              "damageNegation": {
+                "name": "Increase Damage Negation",
+                "modify": { "mag": 1.20 }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "flamedrake-talisman": {
+      "type": "talisman",
+      "name": "Flamedrake Talisman",
+      "group": "talismans",
+      "weight": 0.6,
+      "iconUrl": "/images/flamedrake-talisman.png",
+      "modifiers": {
+        "percentual": {
+          "damageNegation": {
+            "name": "Increase Damage Negation",
+            "modify": { "fir": 1.13 }
+          }
+        }
+      },
+      "upgrades": [
+        {
+          "iconUrl": "/images/flamedrake-talisman-1.png",
+          "modifiers": {
+            "percentual": {
+              "damageNegation": {
+                "name": "Increase Damage Negation",
+                "modify": { "fir": 1.17 }
+              }
+            }
+          }
+        },
+        {
+          "iconUrl": "/images/flamedrake-talisman-2.png",
+          "modifiers": {
+            "percentual": {
+              "damageNegation": {
+                "name": "Increase Damage Negation",
+                "modify": { "fir": 1.20 }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "boltdrake-talisman": {
+      "type": "talisman",
+      "name": "Boltdrake Talisman",
+      "group": "talismans",
+      "weight": 0.6,
+      "iconUrl": "/images/boltdrake-talisman.png",
+      "modifiers": {
+        "percentual": {
+          "damageNegation": {
+            "name": "Increase Damage Negation",
+            "modify": { "lit": 1.13 }
+          }
+        }
+      },
+      "upgrades": [
+        {
+          "iconUrl": "/images/boltdrake-talisman-1.png",
+          "modifiers": {
+            "percentual": {
+              "damageNegation": {
+                "name": "Increase Damage Negation",
+                "modify": { "lit": 1.17 }
+              }
+            }
+          }
+        },
+        {
+          "iconUrl": "/images/boltdrake-talisman-2.png",
+          "modifiers": {
+            "percentual": {
+              "damageNegation": {
+                "name": "Increase Damage Negation",
+                "modify": { "lit": 1.20 }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "stalwart-horn-charm": {
+      "type": "talisman",
+      "name": "Stalwart Horn Charm",
+      "group": "talismans",
+      "weight": 0.6,
+      "iconUrl": "/images/stalwart-horn-charm.png",
+      "modifiers": {
+        "flat": {
+          "resistance": {
+            "name": "Add Robustness",
+            "modify": { "robustness": 90 }
+          }
+        }
+      },
+      "upgrades": [
+        {
+          "iconUrl": "/images/stalwart-horn-charm-1.png",
+          "modifiers": {
+            "flat": {
+              "resistance": {
+                "name": "Add Robustness",
+                "modify": { "robustness": 140 }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "clarifying-horn-charm": {
+      "type": "talisman",
+      "name": "Stalwart Horn Charm",
+      "group": "talismans",
+      "weight": 0.6,
+      "iconUrl": "/images/clarifying-horn-charm.png",
+      "modifiers": {
+        "flat": {
+          "resistance": {
+            "name": "Add Focus",
+            "modify": { "focus": 90 }
+          }
+        }
+      },
+      "upgrades": [
+        {
+          "iconUrl": "/images/clarifying-horn-charm-1.png",
+          "modifiers": {
+            "flat": {
+              "resistance": {
+                "name": "Add Focus",
+                "modify": { "focus": 140 }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "mottled-necklace": {
+      "type": "talisman",
+      "name": "Mottled Necklace",
+      "group": "talismans",
+      "weight": 0.9,
+      "iconUrl": "/images/mottled-necklace.png",
+      "modifiers": {
+        "flat": {
+          "resistance": {
+            "name": "Raise Immunity, Robustness and Focus",
+            "modify": { "immunity": 40, "robustness": 40, "focus": 40 }
+          }
+        }
+      },
+      "upgrades": [
+        {
+          "iconUrl": "/images/mottled-necklace-1.png",
+          "modifiers": {
+            "flat": {
+              "resistance": {
+                "name": "Raise Immunity, Robustness and Focus",
+                "modify": { "immunity": 60, "robustness": 60, "focus": 60 }
+              }
+            }
+          }
+        }
+      ]
     },
     "talisman:bull-goat": {
       "type": "talisman",
@@ -482,45 +992,6 @@
         }
       }
     },
-    "talisman:boltdrake": {
-      "type": "talisman",
-      "name": "Boltdrake Talisman",
-      "group": "talismans",
-      "weight": 0.6,
-      "iconUrl": "/images/talisman-boltdrake.png",
-      "upgrades": [
-        {
-          "iconUrl": "/images/talisman-boltdrake-1.png",
-          "modifiers": {
-            "percentual": {
-              "defense": {
-                "name": "Increase Lightning Defense",
-                "modify": { "lit": 1.17 }
-              }
-            }
-          }
-        },
-        {
-          "iconUrl": "/images/talisman-boltdrake-2.png",
-          "modifiers": {
-            "percentual": {
-              "defense": {
-                "name": "Increase Lightning Defense",
-                "modify": { "lit": 1.20 }
-              }
-            }
-          }
-        }
-      ],
-      "modifiers": {
-        "percentual": {
-          "defense": {
-            "name": "Increase Lightning Defense",
-            "modify": { "lit": 1.13 }
-          }
-        }
-      }
-    },
     "talisman:pearldrake": {
       "type": "talisman",
       "name": "Pearldrake Talisman",
@@ -560,12 +1031,297 @@
         }
       }
     },
-    "talisman:prince-of-death": {
+    "prince-of-deaths-pustule": {
+      "type": "talisman",
+      "name": "Prince of Death’s Pustule",
+      "group": "talismans",
+      "weight": 0.6,
+      "iconUrl": "/images/prince-of-deaths-pustule.png",
+      "modifiers": {
+        "flat": {
+          "resistance": { 
+            "name": "Add Vitality",
+            "modify": { "vitality": 90 }
+          }
+        }
+      }
+    },
+    "dagger-talisman": {
+      "type": "talisman",
+      "name": "Dagger Talisman",
+      "group": "talismans",
+      "weight": 1.1,
+      "iconUrl": "/images/dagger-talisman.png",
+      "effects": [
+        "Increased Critical Damage by 17%"
+      ]
+    },
+    "curved-sword-talisman": {
+      "type": "talisman",
+      "name": "Curved Sword Talisman",
+      "group": "talismans",
+      "weight": 0.7,
+      "iconUrl": "/images/curved-sword-talisman.png",
+      "effects": [
+        "Increased guard counter damage by 20%"
+      ]
+    },
+    "twinblade-talisman": {
+      "type": "talisman",
+      "name": "Twinblade Talisman",
+      "group": "talismans",
+      "weight": 0.7,
+      "iconUrl": "/images/twinblade-talisman.png",
+      "effects": [
+        "Increased damage of final hit in attack chain by 45%"
+      ]
+    },
+    "axe-talisman": {
+      "type": "talisman",
+      "name": "Axe Talisman",
+      "group": "talismans",
+      "weight": 0.7,
+      "iconUrl": "/images/axe-talisman.png",
+      "effects": [
+        "Increased Charge Attack damage by 10%"
+      ]
+    },
+    "hammer-talisman": {
+      "type": "talisman",
+      "name": "Hammer Talisman",
+      "group": "talismans",
+      "weight": 0.9,
+      "iconUrl": "/images/hammer-talisman.png",
+      "effects": [
+        "Increased Stamina damage against blocking enemies by 40%"
+      ]
+    },
+    "spear-talisman": {
+      "type": "talisman",
+      "name": "Spear Talisman",
+      "group": "talismans",
+      "weight": 0.5,
+      "iconUrl": "/images/spear-talisman.png",
+      "effects": [
+        "Increased thrusting weapon counterattack damage by 15%"
+      ]
+    },
+    "lance-talisman": {
+      "type": "talisman",
+      "name": "Lance Talisman",
+      "group": "talismans",
+      "weight": 0.5,
+      "iconUrl": "/images/lance-talisman.png",
+      "effects": [
+        "Increased damage of attacks while on horseback by 15%"
+      ]
+    },
+    "claw-talisman": {
+      "type": "talisman",
+      "name": "Claw Talisman",
+      "group": "talismans",
+      "weight": 0.7,
+      "iconUrl": "/images/claw-talisman.png",
+      "effects": [
+        "Increased jump attack damage by 15%"
+      ]
+    },
+    "greatshield-talisman": {
+      "type": "talisman",
+      "name": "Greatshield Talisman",
+      "group": "talismans",
+      "weight": 0.9,
+      "iconUrl": "/images/greatshield-talisman.png",
+      "effects": [
+        "Reduced stamina damage taken while blocking by 20%"
+      ]
+    },
+    "arrows-sting-talisman": {
+      "type": "talisman",
+      "name": "Arrow’s Sting Talisman",
+      "group": "talismans",
+      "weight": 0.7,
+      "iconUrl": "/images/arrows-sting-talisman.png",
+      "effects": [
+        "Raised attack power of Arrows/Bolts by 10%"
+      ]
+    },
+    "arrows-reach-talisman": {
+      "type": "talisman",
+      "name": "Arrow’s Reach Talisman",
+      "group": "talismans",
+      "weight": 0.7,
+      "iconUrl": "/images/arrows-reach-talisman.png",
+      "effects": [
+        "Increased range of various projectiles by 65%"
+      ]
+    },
+    "graven-school-talisman": {
+      "type": "talisman",
+      "name": "Graven-School Talisman",
+      "group": "talismans",
+      "weight": 0.7,
+      "iconUrl": "/images/graven-school-talisman.png",
+      "effects": [
+        "Raised potency of Sorceries by 4%"
+      ]
+    },
+    "graven-mass-talisman": {
+      "type": "talisman",
+      "name": "Graven-Mass Talisman",
+      "group": "talismans",
+      "weight": 1.0,
+      "iconUrl": "/images/graven-mass-talisman.png",
+      "effects": [
+        "Raised potency of Sorceries by 8%"
+      ]
+    },
+    "faithfuls-canvas-talisman": {
+      "type": "talisman",
+      "name": "Faithful’s Canvas Talisman",
+      "group": "talismans",
+      "weight": 0.7,
+      "iconUrl": "/images/faithfuls-canvas-talisman.png",
+      "effects": [
+        "Raised potency of Incantations by 4%"
+      ]
+    },
+    "flocks-canvas-talisman": {
+      "type": "talisman",
+      "name": "Flocks’s Canvas Talisman",
+      "group": "talismans",
+      "weight": 1.0,
+      "iconUrl": "/images/flocks-canvas-talisman.png",
+      "effects": [
+        "Raised potency of Incantations by 8%"
+      ]
+    },
+    "primal-glintstone-blade": {
+      "type": "talisman",
+      "name": "Primal Glintstone Blade",
+      "group": "talismans",
+      "weight": 0.6,
+      "iconUrl": "/images/primal-glintstone-blade.png",
+      "effects": [
+        "Reduced Spell FP costs by 25% but reduces maximum HP by 15%"
+      ]
+    },
+    "moon-of-nokstella": {
+      "type": "talisman",
+      "name": "Moon Of Nokstella",
+      "group": "talismans",
+      "weight": 0.8,
+      "iconUrl": "/images/moon-of-nokstella.png",
+      "effects": [
+        "+2 Memory Slots"
+      ]
+    },
+    "old-lords-talisman": {
+      "type": "talisman",
+      "name": "Old Lord’s Talisman",
+      "group": "talismans",
+      "weight": 0.5,
+      "iconUrl": "/images/old-lords-talisman.png",
+      "effects": [
+        "+30% Spell duration"
+      ]
+    },
+    "radagon-icon": {
+      "type": "talisman",
+      "name": "Radagon Icon",
+      "group": "talismans",
+      "weight": 0.7,
+      "iconUrl": "/images/radagon-icon.png",
+      "effects": [
+        "Shorter casting time of Spells"
+      ]
+    },
+    "roar-medallion": {
+      "type": "talisman",
+      "name": "Roar Medallion",
+      "group": "talismans",
+      "weight": 0.7,
+      "iconUrl": "/images/roar-medallion.png",
+      "effects": [
+        "+15% damage of roars and breath attacks"
+      ]
+    },
+    "companion-jar": {
+      "type": "talisman",
+      "name": "Companion Jar",
+      "group": "talismans",
+      "weight": 0.6,
+      "iconUrl": "/images/companion-jar.png",
+      "effects": [
+        "+20% potency of Throwing Pots"
+      ]
+    },
+    "perfumers-talisman": {
+      "type": "talisman",
+      "name": "Perfumer’s Talisman",
+      "group": "talismans",
+      "weight": 0.6,
+      "iconUrl": "/images/perfumers-talisman.png",
+      "effects": [
+        "+20% potency of Perfume Arts"
+      ]
+    },
+    "carian-filigreed-crest": {
+      "type": "talisman",
+      "name": "Carian Filigreed Crest",
+      "group": "talismans",
+      "weight": 0.8,
+      "iconUrl": "/images/carian-filigreed-crest.png",
+      "effects": [
+        "-25% FP cost of Skills"
+      ]
+    },
+    "warrior-jar-shard": {
+      "type": "talisman",
+      "name": "Warrior Jar Shard",
+      "group": "talismans",
+      "weight": 0.9,
+      "iconUrl": "/images/warrior-jar-shard.png",
+      "effects": [
+        "+10% Attack Power of Skills"
+      ]
+    },
+    "shard-of-alexander": {
+      "type": "talisman",
+      "name": "Shard Of Alexander",
+      "group": "talismans",
+      "weight": 0.9,
+      "iconUrl": "/images/warrior-jar-shard.png",
+      "effects": [
+        "+15% Attack Power of Skills"
+      ]
+    },
+    "godfrey-icon": {
+      "type": "talisman",
+      "name": "Godfrey Icon",
+      "group": "talismans",
+      "weight": 0.8,
+      "iconUrl": "/images/godfrey-icon.png",
+      "effects": [
+        "+15% Attack Power of charged Spells and Skills"
+      ]
+    },
+    "blue-dancer-charm": {
+      "type": "talisman",
+      "name": "Blue Dancer Charm",
+      "group": "talismans",
+      "weight": 0.9,
+      "iconUrl": "/images/blue-dancer-charm.png",
+      "effects": [
+        "Raised Physical Damage with lower Equip Weight"
+      ]
+    },
+    "prince-of-deaths-cyst": {
       "type": "talisman",
       "name": "Prince of Death’s Cyst",
       "group": "talismans",
       "weight": 0.6,
-      "iconUrl": "/images/talisman-prince-of-death.png",
+      "iconUrl": "/images/prince-of-deaths-cyst.png",
       "modifiers": {
         "flat": {
           "resistance": { 
@@ -594,6 +1350,240 @@
         }
       }
     },
+    "fire-scorpion-charm": {
+      "type": "talisman",
+      "name": "Fire Scorpion Charm",
+      "group": "talismans",
+      "weight": 0.8,
+      "iconUrl": "/images/fire-scorpion-charm.png",
+      "modifiers": {
+        "percentual": {
+          "attack": { 
+            "name": "Increase Fire Damage",
+            "modify": { "fir": 1.12 }
+          },
+          "defense": {
+            "name": "Decrease Damage Negation",
+            "modify": { "standard": 0.9 }
+          }
+        }
+      }
+    },
+    "lightning-scorpion-charm": {
+      "type": "talisman",
+      "name": "Lightning Scorpion Charm",
+      "group": "talismans",
+      "weight": 0.8,
+      "iconUrl": "/images/lightning-scorpion-charm.png",
+      "modifiers": {
+        "percentual": {
+          "attack": { 
+            "name": "Increase Lightning Damage",
+            "modify": { "lit": 1.12 }
+          },
+          "defense": {
+            "name": "Decrease Damage Negation",
+            "modify": { "standard": 0.9 }
+          }
+        }
+      }
+    },
+    "sacred-scorpion-charm": {
+      "type": "talisman",
+      "name": "Sacred Scorpion Charm",
+      "group": "talismans",
+      "weight": 0.8,
+      "iconUrl": "/images/sacred-scorpion-charm.png",
+      "modifiers": {
+        "percentual": {
+          "attack": { 
+            "name": "Increase Holy Damage",
+            "modify": { "hol": 1.12 }
+          },
+          "defense": {
+            "name": "Decrease Damage Negation",
+            "modify": { "standard": 0.9 }
+          }
+        }
+      }
+    },
+    "crucible-feather-talisman": {
+      "type": "talisman",
+      "name": "Crucible Feather Talisman",
+      "group": "talismans",
+      "weight": 0.8,
+      "iconUrl": "/images/crucible-feather-talisman.png",
+      "modifiers": {
+        "percentual": {
+          "defense": {
+            "name": "Decrease Damage Negation",
+            "modify": { 
+              "standard": 0.7, 
+              "strike": 0.7, 
+              "slash": 0.7, 
+              "pierce": 0.7, 
+              "mag": 0.7, 
+              "fir": 0.7, 
+              "lit": 0.7, 
+              "hol": 0.7 
+            }
+          }
+        }
+      },
+      "effects": [
+        "Improved dodge rolling with increased damage taken"
+      ]
+    },
+    "crucible-knot-talisman": {
+      "type": "talisman",
+      "name": "Crucible Knot Talisman",
+      "group": "talismans",
+      "weight": 0.5,
+      "iconUrl": "/images/crucible-knot-talisman.png",
+      "effects": [
+        "Eliminated headshot bonus damage and stagger on self"
+      ]
+    },
+    "red-feathered-branchsword": {
+      "type": "talisman",
+      "name": "Red-Feathered Branchsword",
+      "group": "talismans",
+      "weight": 1.4,
+      "iconUrl": "/images/red-feathered-branchsword.png",
+      "effects": [
+        "+20% Attack Power when HP is below 20%"
+      ]
+    },
+    "blue-feathered-branchsword": {
+      "type": "talisman",
+      "name": "Blue-Feathered Branchsword",
+      "group": "talismans",
+      "weight": 1.1,
+      "iconUrl": "/images/blue-feathered-branchsword.png",
+      "effects": [
+        "+50% Damage Negation when HP is below 20%"
+      ]
+    },
+    "ritual-sword-talisman": {
+      "type": "talisman",
+      "name": "Ritual Sword Talisman",
+      "group": "talismans",
+      "weight": 0.9,
+      "iconUrl": "/images/ritual-sword-talisman.png",
+      "effects": [
+        "+10% Attack Power when HP is at maximum"
+      ]
+    },
+    "ritual-shield-talisman": {
+      "type": "talisman",
+      "name": "Ritual Shield Talisman",
+      "group": "talismans",
+      "weight": 0.9,
+      "iconUrl": "/images/ritual-shield-talisman.png",
+      "effects": [
+        "+30% Damage Negation when HP is at maximum"
+      ]
+    },
+    "nox-mirrorhelm": {
+      "type": "helm",
+      "name": "Nox Mirrorhelm",
+      "set": "nox",
+      "group": "helmets",
+      "weight": 7.5,
+      "iconUrl": "/images/nox-mirrorhelm.png",
+      "resistance": {
+        "immunity": 29,
+        "robustness": 33,
+        "focus": 26,
+        "vitality": 42,
+        "poise": 6
+      },
+      "damageNegation": {
+        "standard": 4, 
+        "strike": 3.4, 
+        "slash": 5.5, 
+        "pierce": 5, 
+        "mag": 6.7, 
+        "fir": 5.3, 
+        "lit": 4.2, 
+        "hol": 5.3
+      }
+    },
+    "azurs-glintstone-robe": {
+      "type": "armor",
+      "name": "Azur’s Glintstone Robe",
+      "set": "azurs",
+      "group": "armors",
+      "weight": 7.1,
+      "iconUrl": "/images/azurs-glintstone-robe.png",
+      "resistance": {
+        "immunity": 50,
+        "robustness": 28,
+        "focus": 99,
+        "vitality": 83,
+        "poise": 12
+      },
+      "damageNegation": {
+        "standard": 7.1, 
+        "strike": 6.1, 
+        "slash": 6.7, 
+        "pierce": 5, 
+        "mag": 15.4, 
+        "fir": 12.8, 
+        "lit": 13, 
+        "hol": 13.8
+      }
+    },
+    "preceptors-gloves": {
+      "type": "gauntlet",
+      "name": "Preceptor’s Gloves",
+      "set": "preceptors",
+      "group": "gauntlets",
+      "weight": 2.1,
+      "iconUrl": "/images/preceptors-gloves.png",
+      "resistance": {
+        "immunity": 17,
+        "robustness": 8,
+        "focus": 28,
+        "vitality": 25,
+        "poise": 3
+      },
+      "damageNegation": {
+        "standard": 1.5, 
+        "strike": 1.6, 
+        "slash": 1.5, 
+        "pierce": 1.5, 
+        "mag": 3.6, 
+        "fir": 3.3, 
+        "lit": 3.2, 
+        "hol": 3.2
+      }
+    },
+    "preceptors-trousers": {
+      "type": "leg",
+      "name": "Preceptor’s Trousers",
+      "set": "preceptors",
+      "group": "greaves",
+      "weight": 3.9,
+      "iconUrl": "/images/preceptors-trousers.png",
+      "resistance": {
+        "immunity": 31,
+        "robustness": 15,
+        "focus": 51,
+        "vitality": 47,
+        "poise": 7
+      },
+      "damageNegation": {
+        "standard": 3.4, 
+        "strike": 3.8, 
+        "slash": 3.4, 
+        "pierce": 3.4, 
+        "mag": 8.3, 
+        "fir": 7.6, 
+        "lit": 7.3, 
+        "hol": 7.3
+      }
+    },
     "armor:navy-hood": {
       "type": "helm",
       "name": "Navy Hood",
@@ -608,7 +1598,7 @@
         "vitality": 27,
         "poise": 3
       },
-      "defense": {
+      "damageNegation": {
         "standard": 1.4, 
         "strike": 2.1, 
         "slash": 1.8, 
@@ -641,7 +1631,7 @@
         "vitality": 33,
         "poise": 9
       },
-      "defense": { 
+      "damageNegation": { 
         "standard": 4.6, 
         "strike": 4, 
         "slash": 4.8, 
@@ -666,7 +1656,7 @@
         "vitality": 24,
         "poise": 21
       },
-      "defense": { 
+      "damageNegation": { 
         "standard": 12.9, 
         "strike": 11.4, 
         "slash": 13.5, 
@@ -691,7 +1681,7 @@
         "vitality": 8,
         "poise": 5
       }, 
-      "defense": {
+      "damageNegation": {
         "standard": 3.2, 
         "strike": 2.8, 
         "slash": 3.3, 
@@ -716,7 +1706,7 @@
         "vitality": 15,
         "poise": 12
       },
-      "defense": {
+      "damageNegation": {
         "standard": 7.4, 
         "strike": 6.5, 
         "slash": 7.7, 
@@ -742,7 +1732,7 @@
         "vitality": 46,
         "poise": 38
       },
-      "defense": {
+      "damageNegation": {
         "standard": 18.7, 
         "strike": 17, 
         "slash": 18.7, 

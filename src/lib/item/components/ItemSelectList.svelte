@@ -1,14 +1,12 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	import ModifierList from './ModifierList.svelte';
 	import { equipRecord } from '$lib/records';
 	import { writable } from 'svelte/store';
 	import type { Item } from '../Item';
-	import AttackDetail from '$lib/components/AttackDetail.svelte';
+	import ItemListCard from './ItemListCard.svelte';
 
   export let items: Item[];
-  
-  let selectedItemId: string | null = null;
+  export let selectedItemId: string | null = null;
 
   let tabs: { key: string | null; label: string }[] = [];
 
@@ -51,7 +49,7 @@
   }
 </script>
 
-<div class="sticky top-0 px-5 py-3 item-list-header z-50">
+<div class="sticky top-0 px-5 py-3 item-list-header z-50 bg-neutral-800">
   <ul class="flex -mb-px text-white gap-x-2">
     {#each tabs as tab}
     <li>
@@ -70,7 +68,7 @@
     <!-- svelte-ignore a11y-autofocus -->
     <input 
       type="text" 
-      class="bg-zinc-800 border-0 text-xl text-zinc-300 rounded-lg focus:ring-2 focus:ring-stone-500 focus:border-stone-500 block w-full p-2.5" 
+      class="bg-neutral-700/40 shadow-md border-0 text-md text-zinc-300 rounded-lg focus:ring-2 focus:ring-stone-500 focus:border-stone-500 block w-full p-2.5" 
       placeholder="Search items..."
       bind:value={$searchInput}
       autofocus
@@ -78,20 +76,7 @@
   </div>
 </div>
 
-<ul class="flex flex-col divide-y-2 divide-zinc-800/30 p-5">
-  <li>
-    <button 
-      type="button" 
-      class="text-left w-full rounded-lg flex my-2 p-5 hover:bg-zinc-800/50 group text-white" 
-      on:click={() => selectItem(null)}
-      class:ring-2={selectedItemId === null}
-      class:bg-stone-800={selectedItemId === null}
-      class:ring-amber-300={selectedItemId === null}
-    >
-      Empty slot
-    </button>
-  </li>
-
+<ul class="flex flex-col divide-y divide-neutral-700/80 p-5">
   {#if filteredItems.length === 0}
     <li class="text-white p-5">No items found for <span class="italic">"{$searchInput}"</span></li>
   {/if}
@@ -100,34 +85,18 @@
   <li>
     <button 
       type="button" 
-      class="w-full my-2 text-left text-white flex gap-x-4 rounded-lg p-5 items-center hover:bg-zinc-800/50 group" 
+      class="w-full my-2 text-left text-white rounded-lg p-5 hover:bg-zinc-800/50 group" 
       on:click={() => selectItem(item)}
       class:ring-2={selectedItemId === item.id}
       class:bg-stone-800={selectedItemId === item.id}
       class:ring-amber-300={selectedItemId === item.id}
     >
-      <img src={item.iconUrl} alt="Item icon" class="w-28 transition-all group-hover:brightness-150" />
-      <div class="w-full">
-        <p>{item.name} {#if item.tier > 0}(+{item.tier}){/if}</p>
-        <p class="text-sm text-zinc-500 mb-4">{equipRecord[item.type].name}</p>
-        {#if item.attack}
-          <AttackDetail attack={item.attack} />
-        {/if}
-        <ModifierList data={item.modifiers} />
-        {#if item.effects}
-          <p class="text-sm font-medium">Effects</p>
-          {#each item.effects as effect}
-            <p class="mt-1 text-gray-500 text-sm font-medium">{effect}</p>
-          {/each}
-        {/if}
-      </div>
+      <ItemListCard {item} />
     </button>
   </li>
   {/each}
 </ul>
 
 <style>
-  .item-list-header {
-    background-color: rgb(30, 30, 33);
-  }
+  
 </style>

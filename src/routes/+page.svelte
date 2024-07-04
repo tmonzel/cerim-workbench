@@ -18,6 +18,20 @@
   // UI: Scrolling Header
   // UI: Compact mode for equipslots (3 modes maybe)
 
+  // Damage Negation => 50 + (base negation) / 2. ()
+
+  /**
+   * RITUAL SHIELD TALISMAN
+   * Increases your damage negation by an amount equal to 30% of what you would receive. 
+   * For example, at 0 base negation the talisman would provide 30 negation, thus reducing damage taken by 30%. 
+   * At 50 base negation it provides 15 negation, thus still reducing damage taken by 30%.
+Due to the above effect also taking into account negative negation, this talisman is particularly effective for 'glass cannon' builds. 
+As the amount of negation directly scales with how much you already have, having negative negation can even further increase the net negation of the item.
+For example, having two Scorpion Charms and Ragadon's Soreseal without armor equipped normally leaves you at -39.150% physical negation, 
+but with the talisman it leaves you at a total of 2.5% negation, effectively cancelling out the debuffs and making stacking such items 
+much more survivable and significantly decreasing your chances of being one-shot.
+  */
+
   // Initial data load
   loadData(data);
 </script>

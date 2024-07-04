@@ -22,13 +22,15 @@
           {damageTypeRecord[stat.key].name}
         {:else if key === 'attack'}
           {attackTypeRecord[stat.key].name} Damage
+        {:else if key === 'damageNegation'}
+          {damageTypeRecord[stat.key].name}
         {:else}
           {statRecord[stat.key] ? statRecord[stat.key].name : '-'}
         {/if}
       </dt>
       <dd class="mt-1 text-sm leading-6 text-gray-700 dark:text-zinc-200 sm:mt-0">
         {#if type === 'percentual'}
-          {#if stat.value >= 1}+{/if}{Math.round((stat.value - 1) * 100)}%
+          {#if stat.value >= 1}+{/if}{Math.round(((stat.value - 1) * 100) * 10) / 10}%
         {:else}
           {#if stat.value >= 0}+{/if}{stat.value}
         {/if}

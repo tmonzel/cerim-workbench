@@ -1,4 +1,4 @@
-import type { AffinityType, AttackType, AttributeMutation, AttributeType, DamageType, Defense, Guard, Resistance, ScalingBase, StatusEffectType } from '$lib/core/types';
+import type { AffinityType, AttackType, AttributeMutation, AttributeType, DamageNegation, DamageType, Guard, Resistance, ScalingBase, StatusEffectType } from '$lib/core/types';
 
 export type ItemDef = {
   name: string;
@@ -15,7 +15,7 @@ export type ItemDef = {
   description?: string;
   requirements?: ItemRequirements;
   resistance?: Resistance;
-  defense?: Defense;
+  damageNegation?: DamageNegation;
   guard?: Guard;
   affinity?: AffinityType;
   iconUrl?: string;

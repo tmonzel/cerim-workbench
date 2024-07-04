@@ -11,6 +11,7 @@ export class PercentualModifier {
         case 'stats':
         case 'defense':
         case 'resistance':
+        case 'damageNegation':
           hero[item.key].addMultiplier(item.value.modify);
       }
     }

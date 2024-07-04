@@ -1,9 +1,11 @@
 <script lang="ts">
 	import DamageDistBar from './DamageDistBar.svelte';
 	import ValueBadge from './ValueBadge.svelte';
-	import { attackTypeRecord, resistanceRecord, statRecord } from '$lib/records';
+  import AttackTypeBadge from './AttackTypeBadge.svelte';
+	import { statRecord } from '$lib/records';
 	import type { HeroState } from '$lib/state';
 	import { StatType } from '$lib/core/types';
+	import StatBadge from './StatBadge.svelte';
 
   export let hero: HeroState;
 
@@ -37,7 +39,7 @@
       <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-300">Attack</dt>
       <dd class="mt-1 text-sm leading-6 text-gray-70 dark:text-white sm:col-span-2 sm:mt-0">
         <div class="mb-2 font-semibold">
-          <ValueBadge value={hero.attack} />
+          {Math.round(hero.attack.getTotal() * 10) / 10}
         </div>
         <DamageDistBar attack={hero.attack} />
       </dd>
@@ -54,170 +56,105 @@
   </dl>
   {:else if activeTab === 'protection'}
   <dl class="divide-y divide-gray-100/20">
-    <div class="px-4 py-3 sm:grid sm:gap-2 sm:px-0">
+    <div class="px-2 py-4 sm:grid sm:gap-3 sm:px-0">
       <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-300">Resistance</dt>
-      <dd class="grid grid-cols-3">
-        <div>
-          <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">{resistanceRecord['immunity'].name}</dt>
-          <dd class="text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2 sm:mt-0">
-            <ValueBadge value={hero.resistance.value['immunity']} />
-          </dd>
-        </div>
-    
-        <div>
-          <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">{resistanceRecord['robustness'].name}</dt>
-          <dd class="text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2 sm:mt-0">
-            <ValueBadge value={hero.resistance.value['robustness']} />
-          </dd>
-        </div>
-    
-        <div>
-          <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">{resistanceRecord['focus'].name}</dt>
-          <dd class="text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2">
-            <ValueBadge value={hero.resistance.value['focus']} />
-          </dd>
-        </div>
-    
-        <div>
-          <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">{resistanceRecord['vitality'].name}</dt>
-          <dd class="text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2 sm:mt-0">
-            <ValueBadge value={hero.resistance.value['vitality']} />
-          </dd>
-        </div>
-    
-        <div>
-          <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">{resistanceRecord['poise'].name}</dt>
-          <dd class="text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2">
-            <ValueBadge value={hero.resistance.value['poise']} />
-          </dd>
-        </div>
+      <dd class="grid grid-cols-3 gap-4">
+        <StatBadge name="Immunity">
+          <ValueBadge value={hero.resistance.value['immunity']} />
+        </StatBadge>
+
+        <StatBadge name="Robustness">
+          <ValueBadge value={hero.resistance.value['robustness']} />
+        </StatBadge>
+
+        <StatBadge name="Focus">
+          <ValueBadge value={hero.resistance.value['focus']} />
+        </StatBadge>
+
+        <StatBadge name="Vitality">
+          <ValueBadge value={hero.resistance.value['vitality']} />
+        </StatBadge>
+
+        <StatBadge name="Poise">
+          <ValueBadge value={hero.resistance.value['poise']} />
+        </StatBadge>
       </dd>
-      
-      
     </div>
-    <div class="px-4 py-3 sm:grid sm:gap-2 sm:px-0">
-      <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-300">Defense</dt>
-      <dd class="grid grid-cols-3">
-        <div>
-          <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">Standard</dt>
-          <dd class="text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2 sm:mt-0">
-            <ValueBadge value={hero.defense.value['standard']} />
-          </dd>
-        </div>
-    
-        <div>
-          <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">Strike</dt>
-          <dd class="text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2 sm:mt-0">
-            <ValueBadge value={hero.defense.value['strike']} />
-          </dd>
-        </div>
-        
-        <div>
-          <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">Slash</dt>
-          <dd class="text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2 sm:mt-0">
-            <ValueBadge value={hero.defense.value['slash']} />
-          </dd>
-        </div>
-        
-        <div>
-          <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">Pierce</dt>
-          <dd class="text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2 sm:mt-0">
-            <ValueBadge value={hero.defense.value['pierce']} />
-          </dd>
-        </div>
+    <div class="px-2 py-4 sm:grid sm:gap-2 sm:px-0">
+      <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-300">Defense / Damage Negation</dt>
+      <dd class="grid grid-cols-3 gap-4">
+        <StatBadge name="Standard">
+          <ValueBadge value={hero.defense.value['standard']} /> / <ValueBadge value={hero.damageNegation.value['standard']} />
+        </StatBadge>
+
+        <StatBadge name="Strike">
+          <ValueBadge value={hero.defense.value['strike']} /> / <ValueBadge value={hero.damageNegation.value['strike']} />
+        </StatBadge>
+
+        <StatBadge name="Slash">
+          <ValueBadge value={hero.defense.value['slash']} /> / <ValueBadge value={hero.damageNegation.value['slash']} />
+        </StatBadge>
+
+        <StatBadge name="Pierce">
+          <ValueBadge value={hero.defense.value['pierce']} /> / <ValueBadge value={hero.damageNegation.value['pierce']} />
+        </StatBadge>
         
         <div class="col-span-2">
           <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">Elemental</dt>
-          <dd class="text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2 sm:mt-0">
-            <span class="grid grid-cols-3 gap-2">
-              {#if hero.defense.value['mag'].isPresent()}
-              <div class="flex flex-col">
-                <span><ValueBadge value={hero.defense.value['mag']} /></span> 
-                <div class="h-1" style:background-color={attackTypeRecord['mag'].color}></div>
-              </div>
-              {/if}
-        
-              {#if hero.defense.value['fir'].isPresent()}
-              <div class="flex flex-col">
-                <span><ValueBadge value={hero.defense.value['fir']} /></span> 
-                <div class="h-1" style:background-color={attackTypeRecord['fir'].color}></div>
-              </div>
-              {/if}
-        
-              {#if hero.defense.value['lit'].isPresent()}
-              <div class="flex flex-col">
-                <span><ValueBadge value={hero.defense.value['lit']} /></span> 
-                <div class="h-1" style:background-color={attackTypeRecord['lit'].color}></div>
-              </div>
-              {/if}
-        
-              {#if hero.defense.value['hol'].isPresent()}
-              <div class="flex flex-col">
-                <span><ValueBadge value={hero.defense.value['hol']} /></span> 
-                <div class="h-1" style:background-color={attackTypeRecord['hol'].color}></div>
-              </div>
-              {/if}
-            </span>
+          <dd class="grid grid-cols-3 gap-2">
+            <AttackTypeBadge type="mag">
+              <ValueBadge value={hero.defense.value['mag']} /> / <ValueBadge value={hero.damageNegation.value['mag']} />
+            </AttackTypeBadge>
+
+            <AttackTypeBadge type="fir">
+              <ValueBadge value={hero.defense.value['fir']} /> / <ValueBadge value={hero.damageNegation.value['fir']} />
+            </AttackTypeBadge>
+
+            <AttackTypeBadge type="lit">
+              <ValueBadge value={hero.defense.value['lit']} /> / <ValueBadge value={hero.damageNegation.value['lit']} />
+            </AttackTypeBadge>
+
+            <AttackTypeBadge type="hol">
+              <ValueBadge value={hero.defense.value['hol']} /> / <ValueBadge value={hero.damageNegation.value['hol']} />
+            </AttackTypeBadge>
           </dd>
         </div>
       </dd>
     </div>
   
-    <div class="px-4 py-3 sm:grid sm:gap-2 sm:px-0">
+    <div class="px-2 py-4 sm:grid sm:gap-2 sm:px-0">
       <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-300">Guard</dt>
-      <dd class="grid grid-cols-3">
-        <div>
-          <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">Standard</dt>
-          <dd class="text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2 sm:mt-0">
-            <ValueBadge value={hero.guard.value['phy']} />
-          </dd>
-        </div>
-        <div>
-          <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">Stability</dt>
-          <dd class="text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2 sm:mt-0">
-            <ValueBadge value={hero.guard.value['sta']} />
-          </dd>
-        </div>
-  
-        <div>
-          <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">Resistance</dt>
-          <dd class="text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2 sm:mt-0">
-            <ValueBadge value={hero.guard.value['res']} />
-          </dd>
-        </div>
+      <dd class="grid grid-cols-3 gap-4">
+        <StatBadge name="Standard">
+          <ValueBadge value={hero.guard.value['phy']} />
+        </StatBadge>
+
+        <StatBadge name="Stability">
+          <ValueBadge value={hero.guard.value['sta']} />
+        </StatBadge>
+
+        <StatBadge name="Resistance">
+          <ValueBadge value={hero.guard.value['res']} />
+        </StatBadge>
         
         <div class="col-span-3">
           <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-500">Elemental</dt>
-          <dd class="text-sm leading-6 text-gray-700 dark:text-white sm:col-span-2 sm:mt-0">
-            <span class="grid grid-cols-3 gap-2">
-              {#if hero.guard.value['mag'].isPresent()}
-              <div class="flex flex-col">
-                <span><ValueBadge value={hero.guard.value['mag']} /></span> 
-                <div class="h-1" style:background-color={attackTypeRecord['mag'].color}></div>
-              </div>
-              {/if}
-        
-              {#if hero.guard.value['fir'].isPresent()}
-              <div class="flex flex-col">
-                <span><ValueBadge value={hero.guard.value['fir']} /></span> 
-                <div class="h-1" style:background-color={attackTypeRecord['fir'].color}></div>
-              </div>
-              {/if}
-        
-              {#if hero.guard.value['lit'].isPresent()}
-              <div class="flex flex-col">
-                <span><ValueBadge value={hero.guard.value['lit']} /></span> 
-                <div class="h-1" style:background-color={attackTypeRecord['lit'].color}></div>
-              </div>
-              {/if}
-        
-              {#if hero.guard.value['hol'].isPresent()}
-              <div class="flex flex-col">
-                <span><ValueBadge value={hero.guard.value['hol']} /></span> 
-                <div class="h-1" style:background-color={attackTypeRecord['hol'].color}></div>
-              </div>
-              {/if}
-            </span>
+          <dd class="grid grid-cols-3 gap-2">
+            <AttackTypeBadge type="mag">
+              <ValueBadge value={hero.guard.value['mag']} />
+            </AttackTypeBadge>
+
+            <AttackTypeBadge type="fir">
+              <ValueBadge value={hero.guard.value['mag']} />
+            </AttackTypeBadge>
+
+            <AttackTypeBadge type="lit">
+              <ValueBadge value={hero.guard.value['mag']} />
+            </AttackTypeBadge>
+
+            <AttackTypeBadge type="hol">
+              <ValueBadge value={hero.guard.value['mag']} />
+            </AttackTypeBadge>
           </dd>
         </div>
       </dd>

@@ -1,5 +1,5 @@
 import { derived, writable } from 'svelte/store';
-import { DynamicAttack, DynamicAttributes, DynamicDefense, DynamicGuard, DynamicResistance, DynamicStats, calcAttributeScaling, list } from './core';
+import { DynamicAttack, DynamicAttributes, DynamicDamageNegation, DynamicDefense, DynamicGuard, DynamicResistance, DynamicStats, calcAttributeScaling, list } from './core';
 import { attributeStore, slotStore } from './stores';
 import type { AttributeEffect, AttributeType } from './core/types';
 import { itemStore, type Item } from './item';
@@ -39,6 +39,7 @@ export type HeroState = {
   attack: DynamicAttack;
   resistance: DynamicResistance;
   defense: DynamicDefense;
+  damageNegation: DynamicDamageNegation;
   guard: DynamicGuard;
 }
 
@@ -76,6 +77,7 @@ export const heroState = derived([attributeStore, slotStore, appState, itemStore
     attack: new DynamicAttack(),
     resistance: new DynamicResistance(),
     defense: new DynamicDefense(),
+    damageNegation: new DynamicDamageNegation(),
     guard: new DynamicGuard()
   };
 
@@ -90,9 +92,9 @@ export const heroState = derived([attributeStore, slotStore, appState, itemStore
       hero.resistance.add(item.resistance);
     }
 
-    // Summarize defense
-    if(item.defense) {
-      hero.defense.add(item.defense);
+    // Summarize damage negation
+    if(item.damageNegation) {
+      hero.damageNegation.add(item.damageNegation);
     }
 
     // Summarize guard

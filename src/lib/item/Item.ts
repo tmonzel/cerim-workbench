@@ -1,6 +1,6 @@
 
 import { calcAttributeScaling, getScalingId, list } from '$lib/core';
-import { AffinityType, AttackType, AttributeType, DamageType, GuardType, StatusEffectType, type Attack, type AttributeDamageScaling, type AttributeMutation, type Defense, type Guard, type Resistance, type UpgradeSchema } from '$lib/core/types';
+import { AffinityType, AttackType, AttributeType, DamageType, GuardType, StatusEffectType, type Attack, type AttributeDamageScaling, type AttributeMutation, type DamageNegation, type Guard, type Resistance, type UpgradeSchema } from '$lib/core/types';
 import { upgradeSchemata } from '$lib/data';
 import { affinityRecord, mutationRecord, presetRecord } from '$lib/records';
 import { FlatModifier } from './modifiers/FlatModifier';
@@ -26,7 +26,7 @@ export class Item {
   config!: ItemConfig;
   guard?: Guard;
   resistance?: Resistance;
-  defense?: Defense;
+  damageNegation?: DamageNegation;
   affinities?: Record<AffinityType, ItemConfig>;
   mutations: AttributeMutation[] = [];
   upgradeSchema?: UpgradeSchema;
@@ -53,7 +53,7 @@ export class Item {
     this.requirements = def.requirements ?? {};
     this.effects = def.effects;
     this.attackSpeed = def.attackSpeed;
-    this.defense = def.defense;
+    this.damageNegation = def.damageNegation;
     this.resistance = def.resistance;
     this.guard = def.guard;
     this.affinities = def.affinities;

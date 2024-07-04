@@ -8,7 +8,7 @@
 
   let modifiedStats: { type: StatType; value: DynamicNumber }[] = [];
 
-  $: modifiedStats = Object.entries(hero.stats).map(([k, v]) => ({ type: k as StatType, value: v })).filter(stat => stat.value.modified);
+  $: modifiedStats = Object.entries(hero.stats.value).map(([k, v]) => ({ type: k as StatType, value: v })).filter(stat => stat.value.modified);
 </script>
 
 <div>
