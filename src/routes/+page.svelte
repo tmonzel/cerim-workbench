@@ -1,13 +1,16 @@
 <script lang="ts">
+  import "../fonts.css";
   import "../app.css";
 	import HeroStats from '$lib/components/HeroStats.svelte';
 	import Header from '$lib/components/Header.svelte';
 	import AttributePanel from '$lib/components/AttributePanel.svelte';
 	import HeroModifiers from '$lib/components/HeroModifiers.svelte';
-	import { loadData, type DataSchema } from '$lib/data';
+	import { dataStore, loadData, type DataSchema } from '$lib/data';
 	import HeroBody from '$lib/components/HeroBody.svelte';
   import { heroState } from '$lib/state';
+	import { onMount } from 'svelte';
 
+  /** @type {import('./$types').PageData} */
 	export let data: DataSchema;
 
   // TODOS
@@ -19,6 +22,8 @@
   // UI: Compact mode for equipslots (3 modes maybe)
 
   // Damage Negation => 50 + (base negation) / 2. ()
+
+  // ADD RUNE LEVEL DEFENSE SCALE
 
   /**
    * RITUAL SHIELD TALISMAN
@@ -32,10 +37,12 @@ but with the talisman it leaves you at a total of 2.5% negation, effectively can
 much more survivable and significantly decreasing your chances of being one-shot.
   */
 
-  // Initial data load
-  loadData(data);
+  onMount(() => {
+    loadData(data);
+  });
 </script>
 
+{#if $dataStore}
 <div class="p-12">
   <Header hero={$heroState} />
 
@@ -43,8 +50,8 @@ much more survivable and significantly decreasing your chances of being one-shot
     <div>
       <div class="sticky top-5">
         <div class="px-4 sm:px-0 min-h-20">
-          <h3 class="text-base font-semibold leading-7 text-gray-900 dark:text-white">Attributes</h3>
-          <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-400/80">Spend attribute points to level up ({data.attributePointsPerLevel})</p>
+          <h3 class="text-base font-semibold leading-7 text-white">Attributes</h3>
+          <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-400/80">Spend attribute points to level up ({$dataStore.attributePointsPerLevel})</p>
         </div>
         <AttributePanel hero={$heroState} />
       </div>
@@ -75,3 +82,4 @@ much more survivable and significantly decreasing your chances of being one-shot
     </div>
   </div>
 </div>
+{/if}

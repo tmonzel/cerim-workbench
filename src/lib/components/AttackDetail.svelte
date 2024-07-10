@@ -19,7 +19,7 @@
 
       if(percent > 0) {
         v.push(attackTypeRecord[d.key].color + ' ' + lastPercent + '% ' + (lastPercent + percent) + '%');
-        lastPercent = percent;
+        lastPercent += percent;
       }
     }
 

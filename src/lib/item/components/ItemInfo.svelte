@@ -64,13 +64,15 @@
   {/if}
 
   {#if item.statusEffects}
-    <div>
+    <div class="">
       <div class="text-zinc-500 mb-1">Effects</div>
-      {#each list(item.statusEffects) as se}
-      <div class="flex items-center">
-        <StatusEffectIcon effect={se.key} /> <span class="ms-2">{Math.floor(se.value)}</span>
+      <div class="grid grid-cols-2 gap-4">
+        {#each list(item.statusEffects) as se}
+        <div class="flex items-center">
+          <StatusEffectIcon effect={se.key} /> <span class="ms-2">{Math.floor(se.value)}</span>
+        </div>
+        {/each}
       </div>
-      {/each}
     </div>
   {/if}
 </div>

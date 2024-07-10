@@ -2,7 +2,8 @@
 	import { AttackType, type Attack, type AttributeType } from '$lib/core/types';
 	import type { Item } from '$lib/item';
 	import { attackTypeRecord } from '$lib/records';
-  import { VisXYContainer, VisLine, VisAxis } from '@unovis/svelte'
+	import { heroState } from '$lib/state';
+  import { VisXYContainer, VisLine, VisAxis, VisStackedBar } from '@unovis/svelte';
   
   export let item: Item;
   export let attributeType: AttributeType;
@@ -10,7 +11,8 @@
 
   type DataRecord = { attr: number, attack: Attack }
   
-  const attributeRange = 150;
+  const attributeRange = 99;
+  let maxAttack = 0;
   let data: DataRecord[];
   
   const x = (d: DataRecord) => d.attr;
@@ -36,14 +38,23 @@
     attackTypeRecord.sta.color
   ][i]
 
+  $: attributeValue = $heroState.attributes.get(attributeType);
+
   $: {
     const newData: DataRecord[] = [];
+    maxAttack = 0;
 
     for(let i = 0; i < attributeRange; i++) {
       const attack = item.scaleDamage({ [attributeType]: i }, true);
 
       for(const at of Object.values(AttackType)) {
         if(showAttackTypes.includes(at)) {
+          const attackAmount = attack[at];
+
+          if(attackAmount && attackAmount > maxAttack) {
+            maxAttack = attackAmount;
+          }
+
           continue;
         }
 
@@ -56,10 +67,15 @@
     data = newData;
   }
 </script>
-<div style="--vis-axis-grid-color: rgba(255, 255, 255, 0.1);">
-  <VisXYContainer {data} width={150} height={100} duration={0}>
+<div style="--vis-axis-grid-color: rgba(255, 255, 255, 0.1)">
+  <VisXYContainer {data} width={150} height={120} duration={0} xDomain={[0, 100]} yDomain={[0, maxAttack > 500 ? maxAttack : 500]}>
     <VisLine {x} {y} {color} />
-    <VisAxis type="x" label={attributeType} tickValues={[0,50,100,150]} />
-    <VisAxis type="y" />
+    <VisAxis type="x" label={attributeType} tickValues={[0,25,50,75,100]} />
+    <VisAxis type="y" tickValues={[0,250, 500]} />
+    <VisStackedBar barWidth={1} x={attributeValue} y={maxAttack > 500 ? maxAttack : 500} color={() => '#bbb'} />
   </VisXYContainer>
 </div>
+
+<style>
+  
+</style>

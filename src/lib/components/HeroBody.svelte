@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { itemStore } from '$lib/item';
 	import type { HeroState } from '$lib/state';
 	import { slotStore } from '$lib/stores';
 	import EquipSlot from './EquipSlot.svelte';
@@ -10,37 +11,37 @@
     <EquipSlot 
       bind:slot={$slotStore.mainHand}
       label="Main Hand"
-      groups={['axes', 'bows', 'hammers', 'swords', 'daggers', 'halberds', 'staffs']} 
+      selectableItems={$itemStore.weapons} 
       item={hero.equip.mainHand}  
     />
     <EquipSlot 
       bind:slot={$slotStore.offHand}
       label="Offhand" 
-      groups={['shields', 'seals']} 
+      selectableItems={$itemStore.weapons} 
       item={hero.equip.offHand} 
     />
     <EquipSlot 
       label="Head" 
       bind:slot={$slotStore.head}
-      groups={['helmets']} 
+      selectableItems={$itemStore.helmets} 
       item={hero.equip.head} 
     />
     <EquipSlot 
       label="Chest" 
       bind:slot={$slotStore.chest}
-      groups={['armors']} 
+      selectableItems={$itemStore.armors} 
       item={hero.equip.chest} 
     />
     <EquipSlot 
       label="Legs" 
       bind:slot={$slotStore.legs}
-      groups={['greaves']} 
+      selectableItems={$itemStore.legs} 
       item={hero.equip.legs} 
     />
     <EquipSlot 
       label="Hands" 
       bind:slot={$slotStore.hand}
-      groups={['gauntlets']} 
+      selectableItems={$itemStore.gauntlets} 
       item={hero.equip.hand} 
     />
   </div>
@@ -48,31 +49,31 @@
     <EquipSlot 
       label="Greatrune"
       bind:slot={$slotStore.rune} 
-      groups={['runes']} 
+      selectableItems={$itemStore.runes} 
       item={hero.equip.rune} 
     />
     <EquipSlot 
       label="Pouch"
       bind:slot={$slotStore.pouch} 
-      groups={['talismans']} 
+      selectableItems={$itemStore.talismans} 
       item={hero.equip.pouch} 
     />
     <EquipSlot 
       label="Pouch II"
       bind:slot={$slotStore.pouch2} 
-      groups={['talismans']} 
+      selectableItems={$itemStore.talismans} 
       item={hero.equip.pouch2} 
     />
     <EquipSlot 
       label="Pouch III"
       bind:slot={$slotStore.pouch3} 
-      groups={['talismans']} 
+      selectableItems={$itemStore.talismans} 
       item={hero.equip.pouch3} 
     />
     <EquipSlot 
       label="Pouch IV"
       bind:slot={$slotStore.pouch4} 
-      groups={['talismans']} 
+      selectableItems={$itemStore.talismans}
       item={hero.equip.pouch4} 
     />
   </div>

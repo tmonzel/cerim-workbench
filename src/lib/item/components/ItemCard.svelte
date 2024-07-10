@@ -3,8 +3,8 @@
 	import AttackDetail from '$lib/components/AttackDetail.svelte';
 	import DamageScalingChart from '$lib/components/DamageScalingChart.svelte';
 	import { sum } from '$lib/core';
-	import { AttributeType } from '$lib/core/types';
-	import { affinityRecord, equipRecord } from '$lib/records';
+	import { AffinityType, AttributeType } from '$lib/core/types';
+	import { affinityRecord, itemTypeRecord } from '$lib/records';
 	import type { Item } from '../Item';
 	import ItemDamageNegationGrid from './ItemDamageNegationGrid.svelte';
 	import ItemGuardGrid from './ItemGuardGrid.svelte';
@@ -39,20 +39,20 @@
   
   <div class="basis-4/6">
     <div class="font-medium text-lg">
-      {#if item.affinity && item.affinities}
+      {#if item.affinity && item.affinity !== AffinityType.STANDARD}
         <span class="font-bold">{affinityRecord[item.affinity].name}</span>
       {/if} 
       {item.name} {#if item.tier > 0}(+{item.tier}){/if}
     </div>
-    <p class="text-sm dark:text-zinc-400">{equipRecord[item.type].name}</p>
+    <p class="text-sm dark:text-zinc-400">{itemTypeRecord[item.type].name}</p>
   
     <div class="flex items-center gap-x-12 mt-3 mb-2">
       {#if displayMode === 'detail' && item.attack}
-        <p class="text-xl flex gap-2">
+        <p class="grow text-xl flex gap-2">
           <AttackBadge attack={item.attack} />
         </p>
       {:else if item.scaledAttack}
-        <p class="text-xl flex gap-2">
+        <p class="grow text-xl flex gap-2">
           <AttackBadge attack={item.scaledAttack} />
         </p>
       {/if}

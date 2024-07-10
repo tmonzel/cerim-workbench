@@ -1,19 +1,16 @@
 <script lang="ts">
 	import EquipUpgradeBar from './EquipUpgradeBar.svelte';
 	import { heroState } from '$lib/state';
-	import { itemStore, type Item } from '$lib/item';
-	import { derived } from 'svelte/store';
 	import ItemCard from '$lib/item/components/ItemCard.svelte';
 	import ItemSelectList from '$lib/item/components/ItemSelectList.svelte';
+	import type { Item } from '$lib/item';
 
   export let label: string;
-  export let groups: string[] = [];
   export let slot: string | null = null;
   export let item: Item | null = null;
+  export let selectableItems: Record<string, Item> = {};
 
   let selectionDialog: HTMLDialogElement;
-  
-  const selectableItems = derived(itemStore, (items) => Object.values(items).filter(i => groups.includes(i.group)));
 
   let opened = false;
 
@@ -33,12 +30,19 @@
   }
 </script>
 
-<div class="relative dark:bg-stone-700/20 rounded-lg">
-  {#if item && item.possibleUpgrades > 0}
-    <div class="absolute top-5 right-5">
-      <EquipUpgradeBar {item} />
+<div class="relative bg-stone-700/20 rounded-lg">
+  
+    <div class="absolute top-5 right-5 flex gap-7">
+      {#if item && item.possibleUpgrades > 0}
+        <EquipUpgradeBar {item} />
+      {/if}
+
+      {#if item}
+      <button class="flex rounded-lg bg-stone-600/40 p-1 ring-stone-400 hover:ring-2 group" on:click={() => selectItem(null)}>
+        <svg  class="fill-stone-400" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
+      </button>
+      {/if}
     </div>
-  {/if}
   <button 
     type="button" 
     class="group w-full p-5 text-left rounded-md shadow-md transition-all ease-out duration-200 hover:ring-2 hover:ring-amber-300 hover:bg-stone-800" 
@@ -63,8 +67,7 @@
 
     {:else}
     <div class="text-center py-4">
-      <p class="text-lg text-zinc-500 dark:text-amber-300 font-semibold">{label}</p>
-      <p class="text-xs text-zinc-400 dark:text-zinc-200">({groups.join(', ')})</p>
+      <p class="text-lg text-amber-300 font-semibold">{label}</p>
     </div>
     {/if}
   </button>
@@ -84,7 +87,7 @@
         <button class="bg-amber-300 text-amber-900 p-2.5 rounded-md" on:click={() => selectItem(null)}>Clear Slot</button>
       </div>
     </div>
-    <ItemSelectList items={$selectableItems} selectedItemId={slot} on:selectItem={(e) => selectItem(e.detail)} />
+    <ItemSelectList items={Object.values(selectableItems)} selectedItemId={slot} on:selectItem={(e) => selectItem(e.detail)} />
   </div>
 </dialog>
 

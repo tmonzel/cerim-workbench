@@ -7,17 +7,17 @@
 </script>
 
 <dl class="grid grid-cols-3 gap-4">
-  <StatBadge name="Standard">{guard.phy}</StatBadge>
-  <StatBadge name="Stability">{guard.sta}</StatBadge>
-  <StatBadge name="Resistance">{guard.res}</StatBadge>
+  <StatBadge name="Standard" value={guard.phy} />
+  <StatBadge name="Stability" value={guard.sta} />
+  <StatBadge name="Resistance" value={guard.res} />
 
   <div class="col-span-2">
     <StatBadge name="Elemental">
       <span class="grid grid-cols-3 gap-2">
-        <AttackTypeBadge type="mag">{guard.mag}</AttackTypeBadge>
-        <AttackTypeBadge type="fir">{guard.fir}</AttackTypeBadge>
-        <AttackTypeBadge type="lit">{guard.lit}</AttackTypeBadge>
-        <AttackTypeBadge type="hol">{guard.hol}</AttackTypeBadge>
+        <AttackTypeBadge type="mag" value={guard.mag} />
+        <AttackTypeBadge type="fir" value={guard.fir} />
+        <AttackTypeBadge type="lit" value={guard.lit} />
+        <AttackTypeBadge type="hol" value={guard.hol} />
       </span>
     </StatBadge>
   </div>

@@ -1,17 +1,18 @@
 
 import { calcAttributeScaling, getScalingId, list } from '$lib/core';
 import { AffinityType, AttackType, AttributeType, DamageType, GuardType, StatusEffectType, type Attack, type AttributeDamageScaling, type AttributeMutation, type DamageNegation, type Guard, type Resistance, type UpgradeSchema } from '$lib/core/types';
-import { upgradeSchemata } from '$lib/data';
-import { affinityRecord, mutationRecord, presetRecord } from '$lib/records';
+import { attackCorrectRecord, spEffectsMap, upgradeSchemata } from '$lib/data';
+import { mutationRecord, presetRecord } from '$lib/records';
 import { FlatModifier } from './modifiers/FlatModifier';
 import { PercentualModifier } from './modifiers/PercentualModifier';
-import type { ItemAttackInfo, ItemConfig, ItemDef, ItemModifierDef, ItemPreset, ItemRequirements, ModifierType } from './types';
+import type { ItemAttackInfo, ItemCategory, ItemConfig, ItemData, ItemModifierData, ItemPreset, ItemRequirements, ModifierType } from './types';
 
 export class Item {
   readonly type: string;
   readonly name: string;
-  readonly weight: number;
   readonly group: string;
+  readonly weight: number;
+  readonly category: ItemCategory;
 
   tier: number;
   possibleUpgrades: number;
@@ -19,16 +20,17 @@ export class Item {
   attackInfo: ItemAttackInfo;
 
   attack?: Attack;
+  attackMutations: Partial<Record<AttackType, AttributeMutation[]>> = {};
   scaledAttack?: Attack;
 
-  affinity: AffinityType = AffinityType.STANDARD;
+  affinity?: AffinityType;
   scaling?: AttributeDamageScaling;
   config!: ItemConfig;
   guard?: Guard;
   resistance?: Resistance;
   damageNegation?: DamageNegation;
-  affinities?: Record<AffinityType, ItemConfig>;
-  mutations: AttributeMutation[] = [];
+  affinities?: Partial<Record<AffinityType, ItemConfig>>;
+  
   upgradeSchema?: UpgradeSchema;
   modifiers: (PercentualModifier | FlatModifier)[] = [];
   iconUrl?: string;
@@ -40,16 +42,17 @@ export class Item {
 
   constructor(
     readonly id: string, 
-    protected def: ItemDef,
+    protected def: ItemData,
   ) {
     this.type = def.type;
     this.name = def.name;
+    this.group = def.group;
+    this.category = def.category;
     this.tier = def.tier ?? 0;
     this.iconUrl = def.iconUrl;
     this.weight = def.weight ?? 0;
-    this.possibleUpgrades = def.upgrades ? def.upgrades.length : (def.maxTiers ?? 0);
+    this.possibleUpgrades = def.upgrades ? def.upgrades.length : 0;
     this.description = def.description;
-    this.group = def.group;
     this.requirements = def.requirements ?? {};
     this.effects = def.effects;
     this.attackSpeed = def.attackSpeed;
@@ -63,13 +66,13 @@ export class Item {
       this.setModifiers(def.modifiers);
     }
 
-    if(def.defaults) {
+    /*if(def.defaults) {
       if(typeof def.defaults === 'string') {
         this.applyPreset(presetRecord[def.defaults]);
       } else {
         this.applyPreset(def.defaults);
       }
-    }
+    }*/
 
     if(def.config) {
       this.applyConfig(def.config);
@@ -87,26 +90,41 @@ export class Item {
   }
 
   changeAffinity(affinity: AffinityType): void {
-    if(!this.def.affinities || !this.def.affinities[affinity]) {
+    if(!this.affinities || !this.affinities[affinity]) {
       return;
     }
 
     this.affinity = affinity;
-    this.applyConfig(this.def.affinities[affinity]);
+    this.applyConfig(this.affinities[affinity]);
   }
 
   applyPreset(preset: ItemPreset): void {
-    if(preset.affinities) {
+    if(preset.base) {
+      Object.assign(preset, presetRecord[preset.base]);
+    }
+
+    /*if(preset.affinities) {
       for(const aff of list(preset.affinities)) {
         if(this.affinities && this.affinities[aff.key]) {
           this.affinities[aff.key] = { ...preset.affinities[aff.key], ...this.affinities[aff.key] }
+
+          if(preset.config) {
+            for(const configAff of list(preset.config)) {
+              if(this.affinities[aff.key][configAff.key]) {
+                Object.assign(this.affinities[aff.key][configAff.key], configAff.value);
+                //this.affinities[aff.key][configAff.key] = { ...this.affinities[aff.key][configAff.key], ...configAff.value };
+              } else {
+                this.affinities[aff.key][configAff.key] = configAff.value;
+              }
+            }
+          }
         }
       }
-    }
+    }*/
 
-    if(preset.maxTiers !== undefined && this.possibleUpgrades === 0) {
+    /*if(preset.maxTiers !== undefined && this.possibleUpgrades === 0) {
       this.possibleUpgrades = preset.maxTiers;
-    }
+    }*/
   }
 
   applyConfig(config: ItemConfig): void {
@@ -114,7 +132,7 @@ export class Item {
     this.update();
   }
 
-  setModifiers(modifiers: Record<ModifierType, ItemModifierDef>): void {
+  setModifiers(modifiers: Record<ModifierType, ItemModifierData>): void {
     const newModifiers: (FlatModifier | PercentualModifier)[] = [];
 
     for(const mod of list(modifiers)) {
@@ -165,32 +183,45 @@ export class Item {
 
     if(this.config.mutations) {
       if(typeof this.config.mutations === 'string') {
-        this.mutations = mutationRecord[this.config.mutations];
-      } else {
-        this.mutations = this.config.mutations as AttributeMutation[];
+        for(const t of Object.values(AttackType)) {
+          this.attackMutations[t] = mutationRecord[this.config.mutations];
+        }
+      } else if(Array.isArray(this.config.mutations)) {
+        for(const t of Object.values(AttackType)) {
+          this.attackMutations[t] = this.config.mutations as AttributeMutation[];
+        }
+      } else if(typeof this.config.mutations === 'object') {
+        for(const t of Object.values(AttackType)) {
+          this.attackMutations[t] = this.config.mutations[t] ? mutationRecord[this.config.mutations[t]] : mutationRecord['0'];
+        }
       }
     } else {
-      this.mutations = mutationRecord['weapon:default'];
+      for(const t of Object.values(AttackType)) {
+        this.attackMutations[t] = mutationRecord['0'];
+      }
     }
 
     if(this.config.apply) {
       this.statusEffects = {};
 
-      for(const se of list(this.config.apply)) {
-        const range = se.value;
-        const diff = range[1] - range[0];
+      for(const id of this.config.apply) {
+        const upgradedId = id >= 105000 ? id + this.tier : id;
 
-        this.statusEffects[se.key] = range[0] + this.tier * (diff / this.possibleUpgrades);
+        if(!spEffectsMap.has(upgradedId)) {
+          continue;
+        }
+
+        Object.assign(this.statusEffects, spEffectsMap.get(upgradedId));
       }
     }
 
-    let schema: UpgradeSchema = {};
-
-    if(this.config.schema) {
-      schema = upgradeSchemata[this.config.schema];
-    } else {
-      schema = upgradeSchemata[affinityRecord[this.affinity] ? affinityRecord[this.affinity].schema : '0'];
+    const schema: UpgradeSchema = typeof this.config.schema === 'string' ? upgradeSchemata[this.config.schema] : upgradeSchemata['0'];
+    
+    if(!schema) {
+      return;
     }
+
+    this.possibleUpgrades = schema.tiers ?? 25;
     
     if(!this.config.attack || !schema.attack) {
       return;
@@ -208,10 +239,10 @@ export class Item {
         }
         
         const base = this.config.attack[t]!;
-        const multiplierRange = schema.attack[t];
-        const diff = multiplierRange[1] - multiplierRange[0];
+        const multiplier = schema.attack[t][this.tier];
+        //const diff = multiplierRange[1] - multiplierRange[0];
 
-        const multiplier = multiplierRange[0] + this.tier * (diff / maxTiers);
+        //const multiplier = multiplierRange[0] + this.tier * (diff / maxTiers);
         attack[t] = base * multiplier;
         
       }
@@ -235,7 +266,15 @@ export class Item {
         }
       }
 
-      for(const attrType of Object.values(AttributeType)) {
+      const scalingAttributes = [
+        AttributeType.STRENGTH, 
+        AttributeType.DEXTERITY,
+        AttributeType.INTELLIGENCE,
+        AttributeType.FAITH,
+        AttributeType.ARCANE
+      ];
+
+      for(const attrType of scalingAttributes) {
         if(!schema.scaling || !schema.scaling[attrType] || !this.config.scaling || !this.config.scaling[attrType]) {
           continue
         }
@@ -251,21 +290,23 @@ export class Item {
         } else {
           base = scalingVal as number;
 
+          const attackCorrect = attackCorrectRecord[this.config.attackCorrectId ?? '0'];
+
           switch(attrType) {
             case AttributeType.STRENGTH:
-              allowedDamageTypes = [AttackType.PHYSICAL];
+              allowedDamageTypes = attackCorrect.str;
               break;
             case AttributeType.DEXTERITY:
-              allowedDamageTypes = [AttackType.PHYSICAL, AttackType.LIGHTNING];
+              allowedDamageTypes = attackCorrect.dex;
             break;
             case AttributeType.INTELLIGENCE:
-              allowedDamageTypes = [AttackType.MAGIC, AttackType.PHYSICAL, AttackType.SORCERY];
+              allowedDamageTypes = [...attackCorrect.int, AttackType.SORCERY];
             break;
             case AttributeType.FAITH:
-              allowedDamageTypes = [AttackType.FIRE, AttackType.HOLY, AttackType.INCANTATION];
+              allowedDamageTypes = [...attackCorrect.fth, AttackType.INCANTATION];
               break;
             case AttributeType.ARCANE:
-              allowedDamageTypes = [AttackType.PHYSICAL];
+              allowedDamageTypes = attackCorrect.arc;
           }
         }
 
@@ -334,11 +375,12 @@ export class Item {
           continue;
         }
         
-        const attrScaling = calcAttributeScaling(attrTotal, this.mutations ?? []) / 100;
+        const attrScaling = calcAttributeScaling(attrTotal, this.attackMutations[damageType] ?? []) / 100;
         const upgradeScaling = attrScale.base / 100;
 
         let elementBase = this.attack[damageType] ?? 0;
-        elementBase *= attrScaling + upgradeScaling;
+        elementBase *= attrScaling;
+        elementBase *= upgradeScaling;
 
         if(this.config.cast === 'sorceries' && attrType === AttributeType.INTELLIGENCE) {
           if(this.checkRequirements(attributes) || ignoreRequirements) {

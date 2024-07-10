@@ -74,13 +74,6 @@ export enum StatusEffectType {
 
 export type ResistanceType = 'immunity' | 'robustness' | 'focus' | 'vitality' | 'poise'; 
 
-export enum PhysicalDamageType {
-  STANDARD = 'standard',
-  STRIKE = 'strike',
-  SLASH = 'slash',
-  PIERCE = 'pierce',
-}
-
 export enum GuardType {
   PHYSICAL = 'phy',
   MAGIC = 'mag',
@@ -107,13 +100,6 @@ export enum AffinityType {
   OCCULT = 'occult',
 }
 
-export enum ElementalDamageType {
-  MAGIC = 'mag',
-  FIRE = 'fir',
-  LIGHTNING = 'lit',
-  HOLY = 'hol'
-}
-
 export type Affinity = {
   name: string;
   schema: string;
@@ -128,10 +114,13 @@ export type Attack = Partial<Record<AttackType, number>>;
 export type BaseScalingValue = { [0]: number; [1]: string | string[] } | number;
 export type ScalingBase = Partial<Record<AttributeType, BaseScalingValue>>;
 
+export type AttackCorrect = Record<Exclude<AttributeType, 'vig' | 'mnd' | 'end'>, AttackType[]>;
+
 export type UpgradeSchema = {
-  attack?: Record<AttackType, number[]>;
-  scaling?: Record<AttributeType, number[]>;
-  guard?: Record<GuardType, number[]>;
+  tiers: number;
+  attack: Record<Exclude<AttackType, 'sor' | 'inc'>, number[]>;
+  scaling: Record<Exclude<AttributeType, 'vig' | 'mnd' | 'end'>, number[]>;
+  guard: Record<GuardType, number[]>;
 }
 
 export type EquipSlot = {

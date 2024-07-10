@@ -1,15 +1,23 @@
 import type { AffinityType, AttackType, AttributeMutation, AttributeType, DamageNegation, DamageType, Guard, Resistance, ScalingBase, StatusEffectType } from '$lib/core/types';
 
-export type ItemDef = {
+export enum ItemCategory {
+  NONE = 0,
+  ARMS = 1,
+  BODY = 2,
+  HAIR = 4,
+  HEAD = 5,
+  LEGS = 6,
+  WEAPON = 7
+}
+
+export type ItemData = {
   name: string;
   type: string;
-  caption: string;
+  category: ItemCategory;
   group: string;
-  tags: string[];
   poise?: number;
   weight?: number;
   armor?: number;
-  maxTiers?: number;
   tier?: number;
   attackSpeed?: number;
   description?: string;
@@ -20,9 +28,9 @@ export type ItemDef = {
   affinity?: AffinityType;
   iconUrl?: string;
   effects?: string[];
-  modifiers?: Record<ModifierType, ItemModifierDef>;
+  modifiers?: Record<ModifierType, ItemModifierData>;
   config?: ItemConfig;
-  affinities?: Record<AffinityType, ItemConfig>;
+  affinities?: Partial<Record<AffinityType, ItemConfig>>;
   defaults?: string | ItemPreset;
   upgrades?: ItemUpgrade[];
   attackInfo?: ItemAttackInfo;
@@ -35,15 +43,17 @@ export type ItemAttackInfo = {
 
 export type ItemUpgrade = {
   iconUrl?: string;
-  modifiers?: Record<ModifierType, ItemModifierDef>;
+  modifiers?: Record<ModifierType, ItemModifierData>;
 }
 
 export type ItemPreset = {
+  base?: string;
   maxTiers?: number;
+  config?: ItemConfig;
   affinities?: Record<AffinityType, ItemConfig>;
 }
  
-export type ItemModifierDef = Record<string, ItemModifierConfig>;
+export type ItemModifierData = Record<string, ItemModifierConfig>;
 export type ItemModifierConfig = { name?: string; modify: ItemModifierValue };
 export type ItemModifierValue = Record<string, number>;
 
@@ -63,7 +73,8 @@ export type ItemConfig = {
   guard?: Guard;
   scaling?: ScalingBase;
   schema?: string;
-  mutations?: AttributeMutation[] | string;
+  mutations?: AttributeMutation[] | number | Partial<Record<AttackType, string>>;
   cast?: 'sorceries' | 'incantations';
-  apply?: Partial<Record<StatusEffectType, number[]>>;
+  apply?: number[];
+  attackCorrectId?: string;
 }

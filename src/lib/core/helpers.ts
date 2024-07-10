@@ -31,18 +31,15 @@ export function getValueDistribution<T extends string = string>(v: Partial<Recor
   for(const k in v) {
     const b = v[k];
 
-    if(b === 0) {
+    if(b === 0 || b === undefined) {
       continue;
     }
-
-    if(b !== undefined) {
-      dist.push({ 
-        key: k,
-        value: b,
-        amount: Math.round(n * b) / 100 
-      });
-    }
     
+    dist.push({ 
+      key: k,
+      value: b,
+      amount: Math.round(n * b) / 100 
+    });
   }
   
   return dist;

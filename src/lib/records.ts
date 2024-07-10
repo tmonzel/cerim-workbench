@@ -210,7 +210,7 @@ export const affinityRecord: Record<AffinityType, Affinity> = {
   }
 }
 
-export const equipRecord: Record<string, { name: string }> = {
+export const itemTypeRecord: Record<string, { name: string }> = {
   'talisman': {
     name: 'Talisman'
   },
@@ -292,7 +292,7 @@ export const equipRecord: Record<string, { name: string }> = {
   'bow': {
     name: 'Bow'
   },
-  'great-bow': {
+  'greatbow': {
     name: 'Greatbow'
   },
   'crossbow': {
@@ -306,6 +306,30 @@ export const equipRecord: Record<string, { name: string }> = {
   },
   'sacred-seal': {
     name: 'Sacred Seal'
+  },
+  'throwing-blade': {
+    name: 'Throwing Blade'
+  },
+  'perfume-bottle': {
+    name: 'Perfume Bottle'
+  },
+  'torch': {
+    name: 'Torch'
+  },
+  'hand-to-hand': {
+    name: 'Hand-To-Hand Arts'
+  },
+  'beast-claw': {
+    name: 'Beast Claw'
+  },
+  'light-greatsword': {
+    name: 'Light Greatsword'
+  },
+  'great-katana': {
+    name: 'Great Katana'
+  },
+  'backhand-blade': {
+    name: 'Backhand Blade'
   },
 
   // Armor
@@ -331,5 +355,89 @@ export const equipRecord: Record<string, { name: string }> = {
   },
   'greatshield': {
     name: 'Greatshield'
+  },
+  'thrusting-shield': {
+    name: 'Thrusting Shield'
+  },
+}
+
+export const itemGroupRecord: Record<string, { name: string }> = {
+  'daggers': {
+    name: 'Daggers'
+  },
+  'swords': {
+    name: 'Swords'
+  },
+  'axes': {
+    name: 'Axes'
+  },
+  'hammers': {
+    name: 'Hammers'
+  },
+  'colossal-weapons': {
+    name: 'Colossal Weapons'
+  },
+  'flails': {
+    name: 'Flails'
+  },
+  'spears': {
+    name: 'Daggers'
+  },
+  'halberds': {
+    name: 'Halberds'
+  },
+  'reapers': {
+    name: 'Reapers'
+  },
+  'whips': {
+    name: 'Whips'
+  },
+  'fists': {
+    name: 'Fists'
+  },
+  'shields': {
+    name: 'Shields'
+  },
+  'claws': {
+    name: 'Claws'
+  },
+  'torches': {
+    name: 'Torches'
+  },
+  'staffs': {
+    name: 'Staffs'
+  },
+  'seals': {
+    name: 'Seals'
+  },
+  'bows': {
+    name: 'Bows'
+  },
+  'hand-to-hands': {
+    name: 'Hand to hands'
+  },
+  'bottles': {
+    name: 'Bottles'
+  },
+
+  'armors': {
+    name: 'Armors'
+  },
+  'helmets': {
+    name: 'Helmets'
+  },
+  'legs': {
+    name: 'Legs'
+  },
+  'gauntlets': {
+    name: 'Gauntlets'
+  },
+
+  'talismans': {
+    name: 'Talismans'
+  },
+
+  'runes': {
+    name: 'Runes'
   },
 }

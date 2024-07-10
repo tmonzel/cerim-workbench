@@ -1,7 +1,8 @@
 <script lang="ts">
 	import AttackBadge from '$lib/components/AttackBadge.svelte';
 	import AttackDetail from '$lib/components/AttackDetail.svelte';
-	import { equipRecord } from '$lib/records';
+	import { AffinityType } from '$lib/core/types';
+	import { affinityRecord, itemTypeRecord } from '$lib/records';
 	import type { Item } from '../Item';
 	import ItemDamageNegationGrid from './ItemDamageNegationGrid.svelte';
 	import ItemInfo from './ItemInfo.svelte';
@@ -17,8 +18,13 @@
   <div class="flex-auto">
     <div class="flex justify-between items-start">
       <div>
-        <p class="text-lg font-medium leading-5">{item.name} {#if item.tier > 0}(+{item.tier}){/if}</p>
-        <p class="text-md text-zinc-500 mb-4">{equipRecord[item.type].name}</p>
+        <p class="text-lg font-medium leading-5 text-zinc-300">
+          {#if item.affinity && item.affinity !== AffinityType.STANDARD}
+            <span class="font-bold">{affinityRecord[item.affinity].name}</span>
+          {/if} 
+          {item.name} {#if item.tier > 0}(+{item.tier}){/if}
+        </p>
+        <p class="text-md text-zinc-500 mb-4">{itemTypeRecord[item.type].name}</p>
       </div>
       <p class="text-lg font-light flex items-center gap-x-1">
         <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#ddd">

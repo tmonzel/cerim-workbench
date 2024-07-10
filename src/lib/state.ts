@@ -53,17 +53,17 @@ export const heroState = derived([attributeStore, slotStore, appState, itemStore
   const numDistributedPoints = Object.values(attributes).reduce((p, c) => p + c, 0);
   const level = Math.floor(numDistributedPoints / app.attributePointsPerLevel);
   const equip: EquipState = {
-    rune: slots.rune ? items[slots.rune] : null,
-    pouch: slots.pouch ? items[slots.pouch] : null,
-    pouch2: slots.pouch2 ? items[slots.pouch2] : null,
-    pouch3: slots.pouch3 ? items[slots.pouch3] : null,
-    pouch4: slots.pouch4 ? items[slots.pouch4] : null,
-    head: slots.head ? items[slots.head] : null,
-    chest: slots.chest ? items[slots.chest] : null,
-    legs: slots.legs ? items[slots.legs] : null,
-    hand: slots.hand ? items[slots.hand] : null,
-    mainHand: slots.mainHand ? items[slots.mainHand] : null,
-    offHand: slots.offHand ? items[slots.offHand] : null
+    rune: slots.rune ? items.runes[slots.rune] : null,
+    pouch: slots.pouch ? items.talismans[slots.pouch] : null,
+    pouch2: slots.pouch2 ? items.talismans[slots.pouch2] : null,
+    pouch3: slots.pouch3 ? items.talismans[slots.pouch3] : null,
+    pouch4: slots.pouch4 ? items.talismans[slots.pouch4] : null,
+    head: slots.head ? items.helmets[slots.head] : null,
+    chest: slots.chest ? items.armors[slots.chest] : null,
+    legs: slots.legs ? items.legs[slots.legs] : null,
+    hand: slots.hand ? items.gauntlets[slots.hand] : null,
+    mainHand: slots.mainHand ? items.weapons[slots.mainHand] : null,
+    offHand: slots.offHand ? items.weapons[slots.offHand] : null
   };
 
   const hero: HeroState = {
