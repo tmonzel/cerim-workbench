@@ -177,7 +177,6 @@ export interface ItemRow extends DataRow {
   thunGuardCutRate: number;
   darkGuardCutRate: number;
   staminaGuardDef: number;
-  guardBaseRepel: number; // Res
 
   isNormalAttackType: number;
   isBlowAttackType: number;
@@ -206,6 +205,14 @@ export interface ItemRow extends DataRow {
   fireDamageCutRate: number;
   thunderDamageCutRate: number;
   darkDamageCutRate: number;
+
+  poisonGuardResist: number;
+  diseaseGuardResist: number
+  bloodGuardResist: number;
+  curseGuardResist: number;
+  sleepGuardResist: number;
+  madnessGuardResist: number;
+  freezeGuardResist: number;
 
   // Poise
   toughnessCorrectRate: number;

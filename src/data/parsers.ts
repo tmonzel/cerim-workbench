@@ -96,7 +96,13 @@ function mapItemConfig(row: ItemRow): ItemConfig {
       lit: row.thunGuardCutRate,
       hol: row.darkGuardCutRate,
       sta: row.staminaGuardDef,
-      res: row.guardBaseRepel
+      res: (row.poisonGuardResist 
+        + row.diseaseGuardResist 
+        + row.bloodGuardResist 
+        + row.curseGuardResist 
+        + row.freezeGuardResist 
+        + row.sleepGuardResist 
+        + row.madnessGuardResist) / 7
     },
     schema: schema === '' ? '0' : schema,
     attackCorrectId: String(row.attackElementCorrectId),
