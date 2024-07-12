@@ -2,10 +2,10 @@
 import { calcAttributeScaling, getScalingId, list } from '$lib/core';
 import { AffinityType, AttackType, AttributeType, DamageType, GuardType, StatusEffectType, type Attack, type AttributeDamageScaling, type AttributeMutation, type DamageNegation, type Guard, type Resistance, type UpgradeSchema } from '$lib/core/types';
 import { attackCorrectRecord, spEffectsMap, upgradeSchemata } from '$lib/data';
-import { mutationRecord, presetRecord } from '$lib/records';
+import { mutationRecord } from '$lib/records';
 import { FlatModifier } from './modifiers/FlatModifier';
 import { PercentualModifier } from './modifiers/PercentualModifier';
-import type { ItemAttackInfo, ItemCategory, ItemConfig, ItemData, ItemModifierData, ItemPreset, ItemRequirements, ModifierType } from './types';
+import type { ItemAttackInfo, ItemCategory, ItemConfig, ItemData, ItemModifierData, ItemRequirements, ModifierType } from './types';
 
 export class Item {
   readonly type: string;
@@ -19,7 +19,7 @@ export class Item {
   requirements: ItemRequirements;
   attackInfo: ItemAttackInfo;
 
-  attack?: Attack;
+  attack?: Attack; 
   attackMutations: Partial<Record<AttackType, AttributeMutation[]>> = {};
   scaledAttack?: Attack;
 
@@ -39,6 +39,12 @@ export class Item {
   description?: string;
   effects?: string[];
   attackSpeed?: number;
+
+  private _modified = false;
+
+  get modified(): boolean {
+    return this._modified;
+  }
 
   constructor(
     readonly id: string, 
@@ -66,14 +72,6 @@ export class Item {
       this.setModifiers(def.modifiers);
     }
 
-    /*if(def.defaults) {
-      if(typeof def.defaults === 'string') {
-        this.applyPreset(presetRecord[def.defaults]);
-      } else {
-        this.applyPreset(def.defaults);
-      }
-    }*/
-
     if(def.config) {
       this.applyConfig(def.config);
     } else {
@@ -94,37 +92,9 @@ export class Item {
       return;
     }
 
+    this._modified = affinity !== AffinityType.STANDARD;
     this.affinity = affinity;
     this.applyConfig(this.affinities[affinity]);
-  }
-
-  applyPreset(preset: ItemPreset): void {
-    if(preset.base) {
-      Object.assign(preset, presetRecord[preset.base]);
-    }
-
-    /*if(preset.affinities) {
-      for(const aff of list(preset.affinities)) {
-        if(this.affinities && this.affinities[aff.key]) {
-          this.affinities[aff.key] = { ...preset.affinities[aff.key], ...this.affinities[aff.key] }
-
-          if(preset.config) {
-            for(const configAff of list(preset.config)) {
-              if(this.affinities[aff.key][configAff.key]) {
-                Object.assign(this.affinities[aff.key][configAff.key], configAff.value);
-                //this.affinities[aff.key][configAff.key] = { ...this.affinities[aff.key][configAff.key], ...configAff.value };
-              } else {
-                this.affinities[aff.key][configAff.key] = configAff.value;
-              }
-            }
-          }
-        }
-      }
-    }*/
-
-    /*if(preset.maxTiers !== undefined && this.possibleUpgrades === 0) {
-      this.possibleUpgrades = preset.maxTiers;
-    }*/
   }
 
   applyConfig(config: ItemConfig): void {
@@ -151,6 +121,7 @@ export class Item {
 
   upgrade(tier: number): void {
     this.tier = tier;
+    this._modified = tier !== 0;
 
     if(this.def.upgrades && this.tier > 0) {
       const upgrade = this.def.upgrades[this.tier - 1];

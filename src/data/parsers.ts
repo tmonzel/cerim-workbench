@@ -3,7 +3,7 @@ import { ItemCategory, type ItemAttackInfo, type ItemConfig, type ItemData, type
 import { existsSync } from 'fs';
 import { prepareXml } from './helpers';
 import { affinityMap, weaponTypeMap } from './maps';
-import { SpEffectType, type AttackCorrectParam, type CalcCorrectParam, type ItemRow, type ReinforceParam, type SpEffectParam } from './types';
+import { EquipModelCategory, SpEffectType, type AttackCorrectParam, type CalcCorrectParam, type ItemRow, type ReinforceParam, type SpEffectParam } from './types';
 
 function mapItemConfig(row: ItemRow): ItemConfig {
   const attack: Partial<Record<AttackType, number>> = {};
@@ -451,41 +451,55 @@ export function parseArmors(xmlFile: string): Record<string, ItemData> {
       continue;
     }
 
-    const item: ItemData = {
-      name: row.paramdexName,
-      group: '',
-      type: '',
-      weight: row.weight,
-      category: row.equipModelCategory
-    };
+    
 
     const iconId = String(row.iconIdF).padStart(5, '0');
-    const iconFile = `./static/images/items/MENU_Knowledge_${iconId}.png`;
+    const iconFile = `./static/images/items_webp/MENU_Knowledge_${iconId}.webp`;
 
     if(!existsSync(iconFile)) {
       console.log(`Armor image file ${iconFile} for ${row.paramdexName} does not exist (skipping)`);
       continue;
     }
 
+    let type = '';
+    let group = '';
+    let category: ItemCategory = ItemCategory.ARMOR;
+
     switch(row.equipModelCategory) {
-      case ItemCategory.HEAD:
-        item.type = 'helm';
-        item.group = 'helmets';
+      case EquipModelCategory.HEAD:
+        type = 'helm';
+        group = 'helmets';
+        category = ItemCategory.HELMET;
         break;
-      case ItemCategory.ARMS:
-        item.type = 'gauntlet';
-        item.group = 'gauntlets';
+      case EquipModelCategory.ARMS:
+        type = 'gauntlet';
+        group = 'gauntlets';
+        category = ItemCategory.ARMS;
         break;
-      case ItemCategory.BODY:
-        item.type = 'armor';
-        item.group = 'armors';
+      case EquipModelCategory.BODY:
+        type = 'armor';
+        group = 'armors';
+        category = ItemCategory.ARMOR;
         break;
-      case ItemCategory.LEGS:
-        item.type = 'leg';
-        item.group = 'legs';
+      case EquipModelCategory.LEGS:
+        type = 'leg';
+        group = 'legs';
+        category = ItemCategory.LEGS;
     }
+
+    if(type === '' || group === '') {
+      continue;
+    }
+
+    const item: ItemData = {
+      name: row.paramdexName,
+      weight: row.weight,
+      category,
+      type,
+      group
+    };
     
-    item.iconUrl = `/images/items/MENU_Knowledge_${iconId}.png`,
+    item.iconUrl = `/images/items_webp/MENU_Knowledge_${iconId}.webp`,
 
     item.damageNegation = {
       standard: (1 - row.neutralDamageCutRate) * 100,
@@ -530,7 +544,7 @@ export function parseWeapons(xmlFile: string): Record<string, ItemData> {
       group: '',
       type: '',
       weight: row.weight,
-      category: row.equipModelCategory
+      category: ItemCategory.WEAPON
     };
 
     const weaponType = weaponTypeMap[row.wepType];
@@ -541,14 +555,14 @@ export function parseWeapons(xmlFile: string): Record<string, ItemData> {
     }
 
     const iconId = String(row.iconId).padStart(5, '0');
-    const iconFile = `./static/images/items/MENU_Knowledge_${iconId}.png`;
+    const iconFile = `./static/images/items_webp/MENU_Knowledge_${iconId}.webp`;
 
     if(!existsSync(iconFile)) {
       console.log(`Weapon image file ${iconFile} for ${row.paramdexName} does not exist (skipping)`);
       continue;
     }
     
-    item.iconUrl = `/images/items/MENU_Knowledge_${iconId}.png`,
+    item.iconUrl = `/images/items_webp/MENU_Knowledge_${iconId}.webp`,
     item.type = weaponType.name;
     item.group = weaponType.group;
     item.attackInfo = mapItemAttackInfo(row);

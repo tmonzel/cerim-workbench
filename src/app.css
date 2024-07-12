@@ -13,3 +13,18 @@ body.dialog-open {
 h1, h2 {
   letter-spacing: -0.03em;
 }
+
+/* HTML: <div class="loader"></div> */
+.loader {
+  height: 2px;
+  width: 250px;
+  --c:no-repeat linear-gradient(#fcd34d 0 0);
+  background: var(--c),var(--c),#333;
+  background-size: 60% 100%;
+  animation: l16 3s infinite;
+}
+@keyframes l16 {
+  0%   {background-position:-150% 0,-150% 0}
+  66%  {background-position: 250% 0,-150% 0}
+  100% {background-position: 250% 0, 250% 0}
+}

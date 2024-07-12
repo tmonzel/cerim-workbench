@@ -1,5 +1,3 @@
-import type { ItemCategory } from '$lib/item/types';
-
 export type DataField = {
   name: string;
   defaultValue: unknown;
@@ -7,6 +5,17 @@ export type DataField = {
 
 export interface DataRow {
   id: number;
+}
+
+
+export enum EquipModelCategory {
+  NONE = 0,
+  ARMS = 1,
+  BODY = 2,
+  HAIR = 4,
+  HEAD = 5,
+  LEGS = 6,
+  WEAPON = 7
 }
 
 export enum SpEffectType {
@@ -130,7 +139,7 @@ export interface ItemRow extends DataRow {
 
   reinforceTypeId: number;
   attackElementCorrectId: number;
-  equipModelCategory: ItemCategory;
+  equipModelCategory: EquipModelCategory;
   originEquipWep: number;
 
   // Type

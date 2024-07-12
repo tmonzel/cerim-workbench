@@ -1,8 +1,9 @@
 import { derived, writable } from 'svelte/store';
 import { DynamicAttack, DynamicAttributes, DynamicDamageNegation, DynamicDefense, DynamicGuard, DynamicResistance, DynamicStats, calcAttributeScaling, list } from './core';
 import { attributeStore, slotStore } from './stores';
-import type { AttributeEffect, AttributeType } from './core/types';
+import type { AffinityType, AttributeEffect, AttributeType } from './core/types';
 import { itemStore, type Item } from './item';
+import type { DataDefaults } from './data';
 
 export type AppState = {
   maxLevel: number;
@@ -53,17 +54,17 @@ export const heroState = derived([attributeStore, slotStore, appState, itemStore
   const numDistributedPoints = Object.values(attributes).reduce((p, c) => p + c, 0);
   const level = Math.floor(numDistributedPoints / app.attributePointsPerLevel);
   const equip: EquipState = {
-    rune: slots.rune ? items.runes[slots.rune] : null,
-    pouch: slots.pouch ? items.talismans[slots.pouch] : null,
-    pouch2: slots.pouch2 ? items.talismans[slots.pouch2] : null,
-    pouch3: slots.pouch3 ? items.talismans[slots.pouch3] : null,
-    pouch4: slots.pouch4 ? items.talismans[slots.pouch4] : null,
-    head: slots.head ? items.helmets[slots.head] : null,
-    chest: slots.chest ? items.armors[slots.chest] : null,
-    legs: slots.legs ? items.legs[slots.legs] : null,
-    hand: slots.hand ? items.gauntlets[slots.hand] : null,
-    mainHand: slots.mainHand ? items.weapons[slots.mainHand] : null,
-    offHand: slots.offHand ? items.weapons[slots.offHand] : null
+    rune: slots.rune ? items[slots.rune] : null,
+    pouch: slots.pouch ? items[slots.pouch] : null,
+    pouch2: slots.pouch2 ? items[slots.pouch2] : null,
+    pouch3: slots.pouch3 ? items[slots.pouch3] : null,
+    pouch4: slots.pouch4 ? items[slots.pouch4] : null,
+    head: slots.head ? items[slots.head] : null,
+    chest: slots.chest ? items[slots.chest] : null,
+    legs: slots.legs ? items[slots.legs] : null,
+    hand: slots.hand ? items[slots.hand] : null,
+    mainHand: slots.mainHand ? items[slots.mainHand] : null,
+    offHand: slots.offHand ? items[slots.offHand] : null
   };
 
   const hero: HeroState = {
@@ -148,3 +149,32 @@ export const heroState = derived([attributeStore, slotStore, appState, itemStore
   
   return hero;
 });
+
+export const sharedDataState = derived([attributeStore, slotStore, itemStore], ([attributes, equip, items]) => {
+  const itemModifications: Record<string, { affinity?: AffinityType, tier?: number}> = {};
+
+  for(const item of Object.values(items)) {
+    if(!item.modified) {
+      continue;
+    }
+
+    const mod: { affinity?: AffinityType, tier?: number } = {};
+    
+    if(item.affinity) {
+      mod.affinity = item.affinity;
+    }
+
+    if(item.tier > 0) {
+      mod.tier = item.tier;
+    }
+
+    itemModifications[item.id] = mod;
+  }
+
+
+  return {
+    attributes,
+    equip,
+    itemModifications,
+  } satisfies DataDefaults;
+})

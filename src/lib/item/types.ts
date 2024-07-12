@@ -1,14 +1,5 @@
-import type { AffinityType, AttackType, AttributeMutation, AttributeType, DamageNegation, DamageType, Guard, Resistance, ScalingBase, StatusEffectType } from '$lib/core/types';
+import type { AffinityType, AttackType, AttributeMutation, AttributeType, DamageNegation, DamageType, Guard, Resistance, ScalingBase } from '$lib/core/types';
 
-export enum ItemCategory {
-  NONE = 0,
-  ARMS = 1,
-  BODY = 2,
-  HAIR = 4,
-  HEAD = 5,
-  LEGS = 6,
-  WEAPON = 7
-}
 
 export type ItemData = {
   name: string;
@@ -34,6 +25,16 @@ export type ItemData = {
   defaults?: string | ItemPreset;
   upgrades?: ItemUpgrade[];
   attackInfo?: ItemAttackInfo;
+}
+
+export enum ItemCategory {
+  WEAPON = 1,
+  HELMET = 2,
+  ARMOR = 3,
+  LEGS = 4,
+  ARMS = 5,
+  RUNE = 6,
+  TALISMAN = 7
 }
 
 export type ItemAttackInfo = {

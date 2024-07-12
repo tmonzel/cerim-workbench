@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { loadData } from '$lib/data';
-	import type { HeroState } from '$lib/state';
+	import { createBuild } from '$lib/api';
+	import { sharedDataState, type HeroState } from '$lib/state';
 
   export let hero: HeroState;
 
-  function importData() {
+  /*function importData() {
     let input = document.createElement('input');
     input.type = 'file';
     input.accept = 'application/JSON';
@@ -16,7 +16,12 @@
     };
 
     input.click();
-  }
+  }*/
+
+ async function createSharedUrl() {
+  const url = await createBuild($sharedDataState)
+  alert(url);
+ }
 </script>
 
 <header>
@@ -26,11 +31,11 @@
     </h1>
 
     <div class="leading-3 text-right">
-      <span class="text-zinc-500 text-xs">Developed by Thomas Monzel</span><br>
+      <span class="text-zinc-500 text-xs">Developed with love by Thomas Monzel</span><br>
       <span class="text-zinc-600 text-xs">ELDEN RING is a trademark of FromSoftware.</span><br><br>
 
       <a href="https://www.buymeacoffee.com/digitaleshandwerk" class="inline-block w-40" target="_blank">
-        <img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=digitaleshandwerk&button_colour=FFDD00&font_colour=000000&font_family=Inter&outline_colour=000000&coffee_colour=ffffff" />
+        <img alt="Buy me a coffee button" src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=digitaleshandwerk&button_colour=FFDD00&font_colour=000000&font_family=Inter&outline_colour=000000&coffee_colour=ffffff" />
       </a>
     </div>
   </div>
@@ -57,8 +62,8 @@
       <button 
         type="button" 
         class="px-4 py-2 font-medium dark:text-zinc-200 border-2 rounded-xl"
-        on:click={importData}>
-          Import
+        on:click={() => createSharedUrl()}>
+          Share your build
       </button>
     </div>
   </div>

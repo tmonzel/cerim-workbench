@@ -8,7 +8,7 @@
   export let label: string;
   export let slot: string | null = null;
   export let item: Item | null = null;
-  export let selectableItems: Record<string, Item> = {};
+  export let selectableItems: Item[] = [];
 
   let selectionDialog: HTMLDialogElement;
 
@@ -87,7 +87,7 @@
         <button class="bg-amber-300 text-amber-900 p-2.5 rounded-md" on:click={() => selectItem(null)}>Clear Slot</button>
       </div>
     </div>
-    <ItemSelectList items={Object.values(selectableItems)} selectedItemId={slot} on:selectItem={(e) => selectItem(e.detail)} />
+    <ItemSelectList items={selectableItems} selectedItemId={slot} on:selectItem={(e) => selectItem(e.detail)} />
   </div>
 </dialog>
 

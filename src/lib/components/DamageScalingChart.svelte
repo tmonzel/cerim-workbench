@@ -4,6 +4,7 @@
 	import { attackTypeRecord } from '$lib/records';
 	import { heroState } from '$lib/state';
   import { VisXYContainer, VisLine, VisAxis, VisStackedBar } from '@unovis/svelte';
+	import AttributeBadge from './AttributeBadge.svelte';
   
   export let item: Item;
   export let attributeType: AttributeType;
@@ -67,13 +68,18 @@
     data = newData;
   }
 </script>
-<div style="--vis-axis-grid-color: rgba(255, 255, 255, 0.1)">
-  <VisXYContainer {data} width={150} height={120} duration={0} xDomain={[0, 100]} yDomain={[0, maxAttack > 500 ? maxAttack : 500]}>
-    <VisLine {x} {y} {color} />
-    <VisAxis type="x" label={attributeType} tickValues={[0,25,50,75,100]} />
-    <VisAxis type="y" tickValues={[0,250, 500]} />
-    <VisStackedBar barWidth={1} x={attributeValue} y={maxAttack > 500 ? maxAttack : 500} color={() => '#bbb'} />
-  </VisXYContainer>
+<div style="--vis-axis-grid-color: rgba(255, 255, 255, 0.1)" class="flex flex-col items-end">
+  <div class="mb-2">
+    <VisXYContainer {data} width={150} height={100} duration={0} xDomain={[0, 100]} yDomain={[0, maxAttack > 500 ? maxAttack : 500]}>
+      <VisLine {x} {y} {color} />
+      <VisAxis type="x" tickValues={[0,25,50,75,100]} />
+      <VisAxis type="y" tickValues={[0,250, 500]} />
+      <VisStackedBar barWidth={1} x={attributeValue} y={maxAttack > 500 ? maxAttack : 500} color={() => '#bbb'} />
+    </VisXYContainer>
+  </div>
+  <div class="text-xs text-zinc-500">
+    <AttributeBadge type={attributeType} />
+  </div>
 </div>
 
 <style>
