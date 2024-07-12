@@ -79,13 +79,15 @@
   </button> 
 
   <div class="relative z-50 bg-neutral-800/30">
-    <div class="text-stone-300 bg-neutral-800 text-xl p-4 flex justify-between items-center border-b border-zinc-700">
-      <div>
+    <div class="text-stone-300 bg-neutral-800 text-xl p-2 flex justify-between items-center border-b border-zinc-700">
+      <div class="p-4">
         Select <span class="font-semibold">{label}</span> Item
       </div>
+      {#if item}
       <div>
         <button class="bg-amber-300 text-amber-900 p-2.5 rounded-md" on:click={() => selectItem(null)}>Clear Slot</button>
       </div>
+      {/if}
     </div>
     <ItemSelectList items={selectableItems} selectedItemId={slot} on:selectItem={(e) => selectItem(e.detail)} />
   </div>

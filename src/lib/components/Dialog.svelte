@@ -1,5 +1,4 @@
 <script lang="ts">
-  export let title = '';
   export let backdropClose = false;
 
   let dialog: HTMLDialogElement;
@@ -19,7 +18,7 @@
 
 </script>
 
-<dialog bind:this={dialog} class="bg-zinc-900/90 m-0">
+<dialog bind:this={dialog} class="bg-zinc-800 mt-5 w-full lg:max-w-xl rounded-lg">
   {#if backdropClose}
   <button type="button" on:click={() => close()} class="fixed w-full top-0 left-0 right-0 bottom-0">
     <span class="sr-only">Close modal</span>
@@ -27,11 +26,9 @@
   {/if}
 
   <div class="relative">
-    <div class="flex items-center justify-between p-4 md:p-5 z-50 border-zinc-500">
-      <h3 class="text-xl font-semibold text-gray-900 dark:text-zinc-300">
-        {title}
-      </h3>
-      <div>
+    <div class="flex items-center justify-between z-50 border-zinc-500 p-5">
+      <slot name="title"></slot>
+      <div class="flex">
         <button type="button" on:click={() => close()} class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
           <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
@@ -54,13 +51,10 @@
 
 <style>
 dialog {
-  width: 100%;
   animation: fade-out 0.2s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 dialog:modal {
-  max-width: 100vw;
-  min-height: 100vh;
 }
 
 dialog[open] {

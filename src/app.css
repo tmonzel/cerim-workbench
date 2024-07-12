@@ -4,6 +4,11 @@
 
 body {
   font-family: "Inter", sans-serif;
+  color: #e4e4e7;
+}
+
+dialog {
+  color: #e4e4e7;
 }
 
 body.dialog-open {
@@ -12,6 +17,11 @@ body.dialog-open {
 
 h1, h2 {
   letter-spacing: -0.03em;
+}
+
+::selection {
+  color: #333;
+  background: rgba(252, 211, 77);
 }
 
 /* HTML: <div class="loader"></div> */
