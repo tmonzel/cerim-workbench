@@ -118,8 +118,8 @@ export type AttackCorrect = Record<Exclude<AttributeType, 'vig' | 'mnd' | 'end'>
 
 export type UpgradeSchema = {
   tiers: number;
-  attack: Record<Exclude<AttackType, 'sor' | 'inc'>, number[]>;
-  scaling: Record<Exclude<AttributeType, 'vig' | 'mnd' | 'end'>, number[]>;
+  attack: Record<string, number[]>;
+  scaling: Record<string, number[]>;
   guard: Record<GuardType, number[]>;
 }
 

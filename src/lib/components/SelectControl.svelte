@@ -1,12 +1,15 @@
 <script lang="ts">
+	import { createEventDispatcher } from 'svelte';
 
-  export let items: { label: string; value: unknown }[] = []
+  export let items: { name: string; value: unknown }[] = []
   export let showMenu = false;
   export let value: unknown = null;
   export let noItemLabel = 'Select item';
   export let compareWith = (v: unknown, v2: unknown) => v === v2; 
 
-  let selectedItem: { label: string; value: unknown } | null = null;
+  let selectedItem: { name: string; value: unknown } | null = null;
+
+  const dispatch = createEventDispatcher<{ select: any }>();
 
   $: {
     for(const item of items) {
@@ -20,6 +23,8 @@
   function selectValue(val: null | unknown): void {
     value = val;
     showMenu = false;
+
+    dispatch('select', value);
   }
 </script>
 
@@ -27,11 +32,11 @@
   <div class="relative">
     <button 
       type="button" 
-      class="relative w-full rounded-md bg-amber-500/10 py-2.5 pr-10 text-left text-amber-300 shadow-sm ring-2 ring-inset ring-transparent focus:outline-none focus:ring-2 focus:ring-amber-300" aria-expanded={showMenu}
+      class="relative w-full rounded-md p-1 bg-stone-700/50 pr-10 text-left focus:outline-none focus:ring-2 focus:ring-amber-300" aria-expanded={showMenu}
       on:click={() => showMenu = !showMenu}
       >
       <span class="flex items-center">
-        <span class="ml-3 block">{selectedItem ? selectedItem.label : noItemLabel}</span>
+        <span class="ml-3 block">{selectedItem ? selectedItem.name : noItemLabel}</span>
       </span>
       <span class="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2">
         <svg class="h-5 w-5 ring-amber-300" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -51,7 +56,7 @@
         To: "opacity-0"
     -->
     {#if showMenu}
-    <div class="absolute z-10 mt-1 p-2 rounded-md bg-stone-700 flex flex-col gap-y-2" tabindex="-1" role="listbox">
+    <div class="absolute z-10 mt-1 p-1 rounded-md bg-zinc-900 flex flex-col gap-y-2" tabindex="-1" role="listbox">
       <!--
         Select option, manage highlight styles based on mouseenter/mouseleave and keyboard navigation.
 
@@ -60,7 +65,7 @@
       {#each items as item, i}
       {@const selected = selectedItem === item}
       <button 
-        class="relative w-full rounded-md select-none py-2 pl-3 pr-12 flex justify-between hover:bg-stone-600 ring-amber-300" 
+        class="relative w-full rounded-md select-none py-1 pl-3 pr-12 flex justify-between hover:bg-stone-800 ring-amber-300" 
         id="listbox-option-{i}" 
         role="option" 
         aria-selected={selected} 
@@ -69,9 +74,8 @@
         class:ring-2={selected}
       >
         <div class="flex items-center">
-          
           <!-- Selected: "font-semibold", Not Selected: "font-normal" -->
-          <span class="block truncate font-normal text-zinc-400">{item.label}</span>
+          <span class="block truncate font-normal text-zinc-400">{item.name}</span>
         </div>
 
         <!--

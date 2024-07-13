@@ -9,6 +9,7 @@
   export let slot: string | null = null;
   export let item: Item | null = null;
   export let selectableItems: Item[] = [];
+  export let iconUrl: string | undefined = undefined;
 
   let selectionDialog: HTMLDialogElement;
 
@@ -31,23 +32,24 @@
 </script>
 
 <div class="relative bg-stone-700/20 rounded-lg">
-  
-    <div class="absolute top-5 right-5 flex gap-7">
-      {#if item && item.possibleUpgrades > 0}
-        <EquipUpgradeBar {item} />
-      {/if}
+  <div class="absolute top-2 right-2 flex gap-7">
+    {#if item && item.possibleUpgrades > 0}
+      <EquipUpgradeBar {item} />
+    {/if}
 
-      {#if item}
+    {#if item}
+    <div>
       <button class="flex rounded-lg bg-stone-600/40 p-1 ring-stone-400 hover:ring-2 group" on:click={() => selectItem(null)}>
         <svg  class="fill-stone-400" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
       </button>
-      {/if}
     </div>
-  <button 
-    type="button" 
-    class="group w-full p-5 text-left rounded-md shadow-md transition-all ease-out duration-200 hover:ring-2 hover:ring-amber-300 hover:bg-stone-800" 
-    on:click={() => openSelectionDialog()}
-  >
+    {/if}
+</div>
+<button 
+  type="button" 
+  class="group w-full p-5 text-left rounded-md shadow-md transition-all ease-out duration-200 hover:ring-2 hover:ring-amber-300 hover:bg-stone-800" 
+  on:click={() => openSelectionDialog()}
+>
     {#if item}
       <span class="bg-indigo-100 text-amber-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-indigo-400/20 dark:text-indigo-300">
         {label}
@@ -66,7 +68,10 @@
       {/if}
 
     {:else}
-    <div class="text-center py-4">
+    <div class="text-center py-4 flex flex-col items-center">
+      {#if iconUrl}
+      <img src={iconUrl} alt="Slot icon" class="max-w-28">
+      {/if}
       <p class="text-lg text-amber-300 font-semibold">{label}</p>
     </div>
     {/if}

@@ -47,6 +47,10 @@ much more survivable and significantly decreasing your chances of being one-shot
   });
 </script>
 
+<svelte:head>
+  <title>Tarnished Creator | An Elden Ring Hero Planner</title>
+</svelte:head>
+
 {#if $dataStore}
 <slot></slot>
 {:else}

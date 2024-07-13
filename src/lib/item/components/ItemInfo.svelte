@@ -2,11 +2,12 @@
 	import StatusEffectIcon from '$lib/components/StatusEffectIcon.svelte';
 	import { list } from '$lib/core';
 	import { attributeRecord, damageTypeRecord } from '$lib/records';
+	import { AttackItem } from '../AttackItem';
 	import type { Item } from '../Item';
 
   export let item: Item;
 
-  $: scalingFlags = item.getScalingFlags();
+  $: scalingFlags = item instanceof AttackItem ? item.getScalingFlags() : [];
 </script>
 
 <div class="flex gap-x-8 text-sm">
@@ -40,31 +41,23 @@
     </div>
   {/if}
 
-  {#if item.attackSpeed !== undefined}
-  <p class="flex">
-    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e4e4e7"><path d="M418-340q24 24 62 23.5t56-27.5l224-336-336 224q-27 18-28.5 55t22.5 61Zm62-460q59 0 113.5 16.5T696-734l-76 48q-33-17-68.5-25.5T480-720q-133 0-226.5 93.5T160-400q0 42 11.5 83t32.5 77h552q23-38 33.5-79t10.5-85q0-36-8.5-70T766-540l48-76q30 47 47.5 100T880-406q1 57-13 109t-41 99q-11 18-30 28t-40 10H204q-21 0-40-10t-30-28q-26-45-40-95.5T80-400q0-83 31.5-155.5t86-127Q252-737 325-768.5T480-800Zm7 313Z"/></svg>
-    <span class="ml-1 text-xs font-semibold">{item.attackSpeed}</span>
-  </p>
-  {/if}
-
-  {#if item.attackInfo.damage}
+  {#if item instanceof AttackItem}
+    <div class="flex">
+      <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e4e4e7"><path d="M418-340q24 24 62 23.5t56-27.5l224-336-336 224q-27 18-28.5 55t22.5 61Zm62-460q59 0 113.5 16.5T696-734l-76 48q-33-17-68.5-25.5T480-720q-133 0-226.5 93.5T160-400q0 42 11.5 83t32.5 77h552q23-38 33.5-79t10.5-85q0-36-8.5-70T766-540l48-76q30 47 47.5 100T880-406q1 57-13 109t-41 99q-11 18-30 28t-40 10H204q-21 0-40-10t-30-28q-26-45-40-95.5T80-400q0-83 31.5-155.5t86-127Q252-737 325-768.5T480-800Zm7 313Z"/></svg>
+      <span class="ml-1 text-xs font-semibold">{item.attackSpeed}</span>
+    </div>
     <div>
       <span class="text-zinc-500">Damage</span><br>
       <span>{item.attackInfo.damage.map(t => damageTypeRecord[t].name).join('/')}</span>
     </div>
-  {/if}
-
-  {#if item.attackInfo.crit}
     <div>
       <span class="text-zinc-500">Critical</span><br>
       <span>
         {item.attackInfo.crit}
       </span>
     </div>
-  {/if}
-
-  {#if item.statusEffects}
-    <div class="">
+    {#if item.statusEffects}
+    <div>
       <div class="text-zinc-500 mb-1">Effects</div>
       <div class="grid grid-cols-2 gap-4">
         {#each list(item.statusEffects) as se}
@@ -74,5 +67,6 @@
         {/each}
       </div>
     </div>
+    {/if}
   {/if}
 </div>

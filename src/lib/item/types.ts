@@ -6,6 +6,7 @@ export type ItemData = {
   type: string;
   category: ItemCategory;
   group: string;
+  rarity: ItemRarity;
   poise?: number;
   weight?: number;
   armor?: number;
@@ -37,9 +38,16 @@ export enum ItemCategory {
   TALISMAN = 7
 }
 
+export enum ItemRarity {
+  DEFAULT = 0,
+  COMMON = 1,
+  RARE = 2,
+  LEGENDARY = 3
+}
+
 export type ItemAttackInfo = {
-  damage?: DamageType[];
-  crit?: number;
+  damage: DamageType[];
+  crit: number;
 }
 
 export type ItemUpgrade = {

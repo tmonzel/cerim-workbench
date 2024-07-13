@@ -9,7 +9,7 @@
   export let items: Item[];
   export let selectedItemId: string | null = null;
 
-  let groupSelectItems: { value: string; label: string }[] = [];
+  let groupSelectItems: { value: string; name: string }[] = [];
 
   const searchInput = writable<string>('');
   
@@ -32,7 +32,7 @@
       availableGroups.push(item.group);
     }
 
-    groupSelectItems = availableGroups.map(t => ({ label: itemGroupRecord[t].name, value: t }))
+    groupSelectItems = availableGroups.map(t => ({ name: itemGroupRecord[t].name, value: t }))
 
     if(selectedItem) {
       selectedGroup.set(selectedItem.group);

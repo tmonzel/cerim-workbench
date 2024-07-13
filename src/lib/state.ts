@@ -2,7 +2,7 @@ import { derived, writable } from 'svelte/store';
 import { DynamicAttack, DynamicAttributes, DynamicDamageNegation, DynamicDefense, DynamicGuard, DynamicResistance, DynamicStats, calcAttributeScaling, list } from './core';
 import { attributeStore, slotStore } from './stores';
 import type { AffinityType, AttributeEffect, AttributeType } from './core/types';
-import { itemStore, type Item } from './item';
+import { AttackItem, itemStore, type Item } from './item';
 import type { DataDefaults } from './data';
 
 export type AppState = {
@@ -99,7 +99,7 @@ export const heroState = derived([attributeStore, slotStore, appState, itemStore
     }
 
     // Summarize guard
-    if(item.guard) {
+    if(item instanceof AttackItem) {
       hero.guard.add(item.guard);
     }
 
@@ -137,12 +137,14 @@ export const heroState = derived([attributeStore, slotStore, appState, itemStore
     if(!item) {
       continue;
     }
-    
-    hero.equip[part] = item.applyScaling(totalAttributes);
 
-    if(item.scaledAttack) {
-      for(const damage of list(item.scaledAttack)) {
-        hero.attack.add({ [damage.key]: item.scaledAttack[damage.key] })
+    if(item instanceof AttackItem) {
+      hero.equip[part] = item.applyScaling(totalAttributes);
+
+      if(item.scaledAttack) {
+        for(const damage of list(item.scaledAttack)) {
+          hero.attack.add({ [damage.key]: item.scaledAttack[damage.key] })
+        }
       }
     }
   }
@@ -160,7 +162,7 @@ export const sharedDataState = derived([attributeStore, slotStore, itemStore], (
 
     const mod: { affinity?: AffinityType, tier?: number } = {};
     
-    if(item.affinity) {
+    if(item instanceof AttackItem) {
       mod.affinity = item.affinity;
     }
 

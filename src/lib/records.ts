@@ -128,7 +128,7 @@ export const resistanceRecord: Record<ResistanceType, { name: string }> = {
   }
 }
 
-export const damageTypeRecord: Record<DamageType, { name: string }> = {
+export const damageTypeRecord: Record<string, { name: string }> = {
   [DamageType.STANDARD]: {
     name: 'Standard'
   },
@@ -155,7 +155,7 @@ export const damageTypeRecord: Record<DamageType, { name: string }> = {
   }
 }
 
-export const affinityRecord: Record<AffinityType, Affinity> = {
+export const affinityRecord: Record<string, Affinity> = {
   [AffinityType.STANDARD]: {
     name: 'Standard',
     schema: '0' 

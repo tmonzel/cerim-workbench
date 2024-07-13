@@ -11,6 +11,7 @@
 	import ItemResistanceGrid from './ItemResistanceGrid.svelte';
 	import ItemModifierList from './ItemModifierList.svelte';
 	import ItemInfo from './ItemInfo.svelte';
+	import { AttackItem } from '../AttackItem';
 
   export let item: Item;
   export let displayMode: 'detail' | 'equipped' = 'detail';
@@ -39,7 +40,7 @@
   
   <div class="basis-4/6">
     <div class="font-medium text-lg">
-      {#if item.affinity && item.affinity !== AffinityType.STANDARD}
+      {#if item instanceof AttackItem && item.affinity && item.affinity !== AffinityType.STANDARD}
         <span class="font-bold">{affinityRecord[item.affinity].name}</span>
       {/if} 
       {item.name} {#if item.tier > 0}(+{item.tier}){/if}
@@ -47,11 +48,11 @@
     <p class="text-sm dark:text-zinc-400">{itemTypeRecord[item.type].name}</p>
   
     <div class="flex items-center gap-x-12 mt-3 mb-2">
-      {#if displayMode === 'detail' && item.attack}
+      {#if displayMode === 'detail' && item instanceof AttackItem}
         <p class="grow text-xl flex gap-2">
           <AttackBadge attack={item.attack} />
         </p>
-      {:else if item.scaledAttack}
+      {:else if item instanceof AttackItem && item.scaledAttack}
         <p class="grow text-xl flex gap-2">
           <AttackBadge attack={item.scaledAttack} />
         </p>
@@ -76,11 +77,11 @@
       {/if}
     </div>
 
-    {#if displayMode === 'detail' && item.attack}
+    {#if displayMode === 'detail' && item instanceof AttackItem}
       <div class="mb-3">
         <AttackDetail attack={item.attack} />
       </div>
-    {:else if item.scaledAttack}
+    {:else if item instanceof AttackItem && item.scaledAttack}
       <div class="mb-3">
         <AttackDetail attack={item.scaledAttack} />
       </div>
@@ -88,7 +89,7 @@
 
     <ItemInfo {item} />
 
-    {#if item.attack && item.scaling}
+    {#if item instanceof AttackItem && item.scaling}
     <div class="mt-5 flex flex-wrap gap-x-5">
       {#if item.scaling.str}
         <DamageScalingChart {item} attributeType={AttributeType.STRENGTH} showAttackTypes={item.scaling.str.allowedDamageTypes} />
@@ -128,7 +129,7 @@
       </div>
       {/if}
 
-      {#if item.guard}
+      {#if item instanceof AttackItem}
       <div class="px-4 py-4 sm:grid sm:gap-2 sm:px-0">
         <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-300">Guard</dt>
         <dd><ItemGuardGrid guard={item.guard} /></dd>

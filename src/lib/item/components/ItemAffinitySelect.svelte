@@ -4,7 +4,7 @@
 	import { createEventDispatcher } from 'svelte';
 
   export let value: AffinityType = AffinityType.STANDARD;
-  export let selectableTypes: AffinityType[] = [];
+  export let items: { name: string; value: unknown }[] = [];
 
   const dispatch = createEventDispatcher<{ affinityChange: AffinityType }>();
 
@@ -30,11 +30,11 @@
   <div class="absolute z-50 left-0 translate-y-3">
     <div class="flex-auto overflow-hidden rounded-lg bg-zinc-800 text-sm leading-6 shadow-lg ring-1 ring-zinc-300/20">
       <div class="p-2">
-        {#each selectableTypes as t}
+        {#each items as item}
           <button 
             class="group w-full relative flex gap-x-6 my-1 rounded-md ring-inset px-2 py-1 hover:ring-2 hover:bg-stone-800 hover:ring-amber-300 font-semibold text-zinc-300" 
-            on:click={() => select(t)}
-            class:ring-2={t === value}
+            on:click={() => select(item.value)}
+            class:ring-2={item.value === value}
             class:bg-stone-800={t === value}
             class:ring-amber-300={t === value}
             >

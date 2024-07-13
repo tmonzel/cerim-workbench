@@ -3,6 +3,7 @@
 	import AttackDetail from '$lib/components/AttackDetail.svelte';
 	import { AffinityType } from '$lib/core/types';
 	import { affinityRecord, itemTypeRecord } from '$lib/records';
+	import { AttackItem } from '../AttackItem';
 	import type { Item } from '../Item';
 	import ItemDamageNegationGrid from './ItemDamageNegationGrid.svelte';
 	import ItemInfo from './ItemInfo.svelte';
@@ -19,7 +20,7 @@
     <div class="flex justify-between items-start">
       <div>
         <p class="text-lg font-medium leading-5 text-zinc-300">
-          {#if item.affinity && item.affinity !== AffinityType.STANDARD}
+          {#if item instanceof AttackItem && item.affinity && item.affinity !== AffinityType.STANDARD}
             <span class="font-bold">{affinityRecord[item.affinity].name}</span>
           {/if} 
           {item.name} {#if item.tier > 0}(+{item.tier}){/if}
@@ -34,7 +35,7 @@
       </p>
     </div>
     
-    {#if item.attack}
+    {#if item instanceof AttackItem}
       <div class="mb-3">
         <div class="text-lg mb-1 font-medium">
           <AttackBadge attack={item.attack} />

@@ -70,10 +70,10 @@
 </script>
 <div style="--vis-axis-grid-color: rgba(255, 255, 255, 0.1)" class="flex flex-col items-end">
   <div class="mb-2">
-    <VisXYContainer {data} width={150} height={100} duration={0} xDomain={[0, 100]} yDomain={[0, maxAttack > 500 ? maxAttack : 500]}>
+    <VisXYContainer {data} width={150} height={100} duration={0} xDomain={[0, 100]} yDomain={[0, maxAttack > 250 ? maxAttack : 250]}>
       <VisLine {x} {y} {color} />
       <VisAxis type="x" tickValues={[0,25,50,75,100]} />
-      <VisAxis type="y" tickValues={[0,250, 500]} />
+      <VisAxis type="y" tickValues={[0,50,150,250,500]} />
       <VisStackedBar barWidth={1} x={attributeValue} y={maxAttack > 500 ? maxAttack : 500} color={() => '#bbb'} />
     </VisXYContainer>
   </div>

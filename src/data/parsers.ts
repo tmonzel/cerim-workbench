@@ -85,8 +85,7 @@ function mapItemConfig(row: ItemRow): ItemConfig {
 
   const schemaId = row.reinforceTypeId.toFixed();
   const schema = schemaId.substring(0, schemaId.length - 2);
-
-  return {
+  const config: ItemConfig = {
     attack,
     scaling,
     guard: {
@@ -109,6 +108,16 @@ function mapItemConfig(row: ItemRow): ItemConfig {
     mutations,
     apply
   }
+
+  if(row.enableMagic === 1) {
+    config.cast = 'sorceries';
+  }
+
+  if(row.enableMiracle === 1) {
+    config.cast = 'incantations';
+  }
+
+  return config;
 }
 
 function mapItemAttackInfo(row: ItemRow): ItemAttackInfo {
@@ -451,8 +460,6 @@ export function parseArmors(xmlFile: string): Record<string, ItemData> {
       continue;
     }
 
-    
-
     const iconId = String(row.iconIdF).padStart(5, '0');
     const iconFile = `./static/images/items_webp/MENU_Knowledge_${iconId}.webp`;
 
@@ -494,6 +501,7 @@ export function parseArmors(xmlFile: string): Record<string, ItemData> {
     const item: ItemData = {
       name: row.paramdexName,
       weight: row.weight,
+      rarity: row.rarity,
       category,
       type,
       group
@@ -519,7 +527,6 @@ export function parseArmors(xmlFile: string): Record<string, ItemData> {
       vitality: row.resistCurse,
       poise: row.toughnessCorrectRate * 1000
     }
-
     
     items[`${row.equipModelCategory}#${row.id}`] = item;
   }
@@ -544,7 +551,8 @@ export function parseWeapons(xmlFile: string): Record<string, ItemData> {
       group: '',
       type: '',
       weight: row.weight,
-      category: ItemCategory.WEAPON
+      category: ItemCategory.WEAPON,
+      rarity: row.rarity
     };
 
     const weaponType = weaponTypeMap[row.wepType];
@@ -578,9 +586,7 @@ export function parseWeapons(xmlFile: string): Record<string, ItemData> {
       item.affinities[affinityMap[row.id % 10000]] = mapItemConfig(row);
     } else if(row.originEquipWep === row.id) {
       
-      item.affinities = {
-        standard: mapItemConfig(row)
-      }
+      item.config = mapItemConfig(row);
       
       items[`${row.equipModelCategory}#${row.id}`] = item;
     }

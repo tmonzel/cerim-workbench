@@ -3,7 +3,7 @@ import { attributeStore, slotStore } from './stores';
 import { mutationRecord, presetRecord } from './records';
 import { AffinityType, AttributeType, StatusEffectType, type AttackCorrect, type AttributeEffect, type AttributeMutation, type UpgradeSchema } from './core/types';
 import { type ItemData, type ItemPreset } from './item/types';
-import { Item, itemStore, type ItemState } from './item';
+import { AccessoryItem, AttackItem, itemStore, ProtectionItem, type ItemState } from './item';
 import { writable } from 'svelte/store';
 
 export type DataSchema = {
@@ -68,30 +68,20 @@ export function loadData(data: DataSchema) {
     }
   }
 
-  // Resolve items
+  // Resolve item data
   if(data.items) {
     const items: ItemState = {};
 
     for(const id in data.items.weapons) {
-      if(items[id]) {
-        console.log("Item collision", id);
-      }
-
-      items[id] = new Item(id, data.items.weapons[id]);
+      items[id] = new AttackItem(id, data.items.weapons[id]);
     }
 
     for(const id in data.items.armors) {
-      if(items[id]) {
-        console.log("Item collision", id);
-      }
-      items[id] = new Item(id, data.items.armors[id]);
+      items[id] = new ProtectionItem(id, data.items.armors[id]);
     }
 
     for(const id in data.items.accessories) {
-      if(items[id]) {
-        console.log("Item collision", id);
-      }
-      items[id] = new Item(id, data.items.accessories[id]);
+      items[id] = new AccessoryItem(id, data.items.accessories[id]);
     }
 
     itemStore.set(items);
@@ -120,7 +110,7 @@ export function loadData(data: DataSchema) {
     return { ...state };
   });
 
-  // Apply equip defaults
+  // Apply slot defaults
   slotStore.update(state => {
     if(!data.defaults || !data.defaults.equip) {
       return { ...state };
@@ -129,26 +119,26 @@ export function loadData(data: DataSchema) {
     return { ...state, ...data.defaults.equip };
   });
 
-  // Apply equip defaults
+  // Apply item defaults
   itemStore.update(store => {
     if(!data.defaults || !data.defaults.itemModifications) {
       return { ...store };
     }
 
     for(const [id, mod] of Object.entries(data.defaults.itemModifications)) {
+      const item = store[id];
 
-      if(mod.tier && mod.tier > 0) {
-        store[id].upgrade(mod.tier);
+      if(item && mod.tier && mod.tier > 0) {
+        item.upgrade(mod.tier);
       }
       
-      if(mod.affinity && mod.affinity !== AffinityType.STANDARD) {
-        store[id].changeAffinity(mod.affinity);
+      if(item instanceof AttackItem && mod.affinity && mod.affinity !== AffinityType.STANDARD) {
+        item.changeAffinity(mod.affinity);
       }
     }
 
     return { ...store };
   });
-
   
   dataStore.set(data);
 }

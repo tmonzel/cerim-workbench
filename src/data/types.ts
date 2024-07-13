@@ -1,3 +1,5 @@
+import type { ItemRarity } from '$lib/item/types';
+
 export type DataField = {
   name: string;
   defaultValue: unknown;
@@ -148,6 +150,8 @@ export interface ItemRow extends DataRow {
   // Name
   paramdexName: string;
 
+  rarity: ItemRarity;
+
   // CalcCorrect_IDs
   correctType_Physics: number;
   correctType_Magic: number;
@@ -245,4 +249,11 @@ export interface ItemRow extends DataRow {
   spEffectBehaviorId0: number;
   spEffectBehaviorId1: number;
   spEffectBehaviorId2: number;
+
+  enableMagic: number;
+  enableMiracle: number;
+
+  isDualBlade: number;
+  bothHandEquipable: number;
+  isEnhance: number; // Can it be strengthened with pine fat?
 }
