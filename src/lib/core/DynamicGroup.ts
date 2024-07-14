@@ -7,7 +7,7 @@ export type DynamicGroupInterface<T extends string> = {
   get value(): ValueRecord<T>;
 }
 
-export class DynamicGroup<T extends string> implements DynamicGroupInterface<T> {
+export class DynamicGroup<T extends string = string> implements DynamicGroupInterface<T> {
   protected _value: ValueRecord<T>;
 
   get value(): ValueRecord<T> {

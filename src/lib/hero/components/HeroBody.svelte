@@ -2,10 +2,9 @@
 	import { ItemCategory } from '$lib/item/types';
 
 	import { Item, itemStore } from '$lib/item';
-	import type { HeroState } from '$lib/state';
-	import { slotStore } from '$lib/stores';
 	import { derived } from 'svelte/store';
 	import EquipSlot from './EquipSlot.svelte';
+	import { slotStore, type HeroState } from '$lib/hero';
 	
   export let hero: HeroState;
 

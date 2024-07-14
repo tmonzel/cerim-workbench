@@ -1,8 +1,5 @@
-
-import { list } from '$lib/core';
 import { AttributeType, type DamageNegation, type Resistance, type UpgradeSchema } from '$lib/core/types';
-import { FlatModifier } from './modifiers/FlatModifier';
-import { PercentualModifier } from './modifiers/PercentualModifier';
+import { ItemModifier } from './ItemModifier';
 import type { ItemCategory, ItemConfig, ItemData, ItemModifierData, ItemRequirements, ModifierType } from './types';
 
 export abstract class Item {
@@ -21,7 +18,7 @@ export abstract class Item {
   damageNegation?: DamageNegation;
   
   upgradeSchema?: UpgradeSchema;
-  modifiers: (PercentualModifier | FlatModifier)[] = [];
+  modifiers: ItemModifier[] = [];
   iconUrl?: string;
   description?: string;
   effects?: string[];
@@ -63,17 +60,10 @@ export abstract class Item {
   abstract update(): void;
 
   setModifiers(modifiers: Record<ModifierType, ItemModifierData>): void {
-    const newModifiers: (FlatModifier | PercentualModifier)[] = [];
+    const newModifiers: ItemModifier[] = [];
 
-    for(const mod of list(modifiers)) {
-      switch(mod.key) {
-        case 'percentual':
-          newModifiers.push(new PercentualModifier(mod.value));
-          break;
-        case 'flat':
-        default:
-          newModifiers.push(new FlatModifier(mod.value));
-      }
+    for(const [type, data] of Object.entries(modifiers)) {
+      newModifiers.push(new ItemModifier(data, type as ModifierType));
     }
 
     this.modifiers = newModifiers;

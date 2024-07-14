@@ -1,9 +1,9 @@
 import { DynamicGroup } from './DynamicGroup';
 import { DynamicNumber } from './DynamicNumber';
-import { DamageType, AttributeType, type ResistanceType, AttackType, StatType, GuardType } from './types';
+import { DamageType, AttributeType, AttackType, type ResistanceType } from './types';
 
-export class DynamicStats extends DynamicGroup<StatType> {
-  constructor(value?: Partial<Record<StatType, number>>) {
+export class DynamicStats extends DynamicGroup {
+  constructor(value?: Partial<Record<string, number>>) {
     super({
       hp: new DynamicNumber(value?.hp),
       fp: new DynamicNumber(value?.fp),
@@ -16,8 +16,8 @@ export class DynamicStats extends DynamicGroup<StatType> {
   }
 }
 
-export class DynamicAttack extends DynamicGroup<AttackType> {
-  constructor(value?: Partial<Record<DamageType, DynamicNumber>>) {
+export class DynamicAttack extends DynamicGroup {
+  constructor(value?: Partial<Record<string, DynamicNumber>>) {
     super({
       [AttackType.PHYSICAL]: new DynamicNumber(),
       [AttackType.MAGIC]: new DynamicNumber(),
@@ -32,8 +32,8 @@ export class DynamicAttack extends DynamicGroup<AttackType> {
   }
 }
 
-export class DynamicAttributes extends DynamicGroup<AttributeType> {
-  constructor(value?: Partial<Record<AttributeType, number>>) {
+export class DynamicAttributes extends DynamicGroup {
+  constructor(value?: Partial<Record<string, number>>) {
     super({
       [AttributeType.VIGOR]: new DynamicNumber(value?.vig),
       [AttributeType.ENDURANCE]: new DynamicNumber(value?.end),
@@ -48,7 +48,7 @@ export class DynamicAttributes extends DynamicGroup<AttributeType> {
 }
 
 export class DynamicResistance extends DynamicGroup<ResistanceType> {
-  constructor(value?: Partial<Record<ResistanceType, number>>) {
+  constructor(value?: Partial<Record<string, number>>) {
     super({
       immunity: new DynamicNumber(value?.immunity),
       robustness: new DynamicNumber(value?.robustness),
@@ -60,7 +60,7 @@ export class DynamicResistance extends DynamicGroup<ResistanceType> {
 }
 
 export class DynamicDefense extends DynamicGroup<DamageType> {
-  constructor(value?: Partial<Record<DamageType, number>>) {
+  constructor(value?: Partial<Record<string, number>>) {
     super({
       [DamageType.STANDARD]: new DynamicNumber(value?.standard),
       [DamageType.STRIKE]: new DynamicNumber(value?.strike),
@@ -74,8 +74,8 @@ export class DynamicDefense extends DynamicGroup<DamageType> {
   }
 }
 
-export class DynamicDamageNegation extends DynamicGroup<DamageType> {
-  constructor(value?: Partial<Record<DamageType, number>>) {
+export class DynamicDamageNegation extends DynamicGroup {
+  constructor(value?: Partial<Record<string, number>>) {
     super({
       [DamageType.STANDARD]: new DynamicNumber(value?.standard),
       [DamageType.STRIKE]: new DynamicNumber(value?.strike),
@@ -89,8 +89,8 @@ export class DynamicDamageNegation extends DynamicGroup<DamageType> {
   }
 }
 
-export class DynamicGuard extends DynamicGroup<GuardType> {
-  constructor(value?: Partial<Record<GuardType, number>>) {
+export class DynamicGuard extends DynamicGroup {
+  constructor(value?: Partial<Record<string, number>>) {
     super({
       phy: new DynamicNumber(value?.phy),
       fir: new DynamicNumber(value?.fir),

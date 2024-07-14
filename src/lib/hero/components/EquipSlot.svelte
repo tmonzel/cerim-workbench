@@ -1,6 +1,6 @@
 <script lang="ts">
 	import EquipUpgradeBar from './EquipUpgradeBar.svelte';
-	import { heroState } from '$lib/state';
+	import { heroState } from '$lib/hero';
 	import ItemCard from '$lib/item/components/ItemCard.svelte';
 	import ItemSelectList from '$lib/item/components/ItemSelectList.svelte';
 	import type { Item } from '$lib/item';

@@ -1,8 +1,8 @@
 <script lang="ts">
+	import Button from '$lib/components/Button.svelte';
+	import SelectControl from '$lib/components/SelectControl.svelte';
 	import type { AffinityType } from '$lib/core/types';
 	import { AttackItem, itemStore, type Item } from '$lib/item';
-	import Button from './Button.svelte';
-	import SelectControl from './SelectControl.svelte';
 
   export let item: Item;
 

@@ -1,4 +1,4 @@
-import { AttackType, AttributeType, DamageType, StatusEffectType, type AttackCorrect, type AttributeMutation, type ScalingBase, type UpgradeSchema } from '$lib/core/types';
+import { AttackType, AttributeType, DamageType, StatusEffectType, type AttackCorrect, type GraphMutation, type ScalingBase, type UpgradeSchema } from '$lib/core/types';
 import { ItemCategory, type ItemAttackInfo, type ItemConfig, type ItemData, type ItemRequirements } from '$lib/item/types';
 import { existsSync } from 'fs';
 import { prepareXml } from './helpers';
@@ -276,10 +276,10 @@ export function parseReinforceData(file: string): Record<string, UpgradeSchema> 
   return record;
 }
 
-export function parseCalcCorrectData(xmlFile: string): Record<string, AttributeMutation[]> {
+export function parseCalcCorrectData(xmlFile: string): Record<string, GraphMutation[]> {
   const { rows, defaults } = prepareXml<CalcCorrectParam>(xmlFile);
 
-  const record: Record<string, AttributeMutation[]> = {};
+  const record: Record<string, GraphMutation[]> = {};
 
   for(const r of rows) {
     const row = { ...defaults, ...r };

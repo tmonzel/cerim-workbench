@@ -1,11 +1,11 @@
 <script lang="ts">
-	import DamageDistBar from './DamageDistBar.svelte';
-	import ValueBadge from './ValueBadge.svelte';
-  import AttackTypeBadge from './AttackTypeBadge.svelte';
 	import { statRecord } from '$lib/records';
-	import type { HeroState } from '$lib/state';
+	import type { HeroState } from '$lib/hero';
 	import { StatType } from '$lib/core/types';
-	import StatBadge from './StatBadge.svelte';
+	import DamageDistBar from '$lib/components/DamageDistBar.svelte';
+	import ValueBadge from '$lib/components/ValueBadge.svelte';
+	import StatBadge from '$lib/components/StatBadge.svelte';
+	import AttackTypeBadge from '$lib/components/AttackTypeBadge.svelte';
 
   export let hero: HeroState;
 

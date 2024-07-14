@@ -1,7 +1,7 @@
 <script lang="ts">
-	import type { HeroState } from '$lib/state';
+	import Header from '$lib/components/Header.svelte';
+	import type { HeroState } from '$lib/hero';
 	import AttributePanel from './AttributePanel.svelte';
-	import Header from './Header.svelte';
 	import HeroBody from './HeroBody.svelte';
 	import HeroModifiers from './HeroModifiers.svelte';
 	import HeroStats from './HeroStats.svelte';

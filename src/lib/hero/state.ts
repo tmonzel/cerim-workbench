@@ -1,17 +1,12 @@
+import { AttackItem, itemStore, type Item } from '$lib/item';
 import { derived, writable } from 'svelte/store';
-import { DynamicAttack, DynamicAttributes, DynamicDamageNegation, DynamicDefense, DynamicGuard, DynamicResistance, DynamicStats, calcAttributeScaling, list } from './core';
-import { attributeStore, slotStore } from './stores';
-import type { AffinityType, AttributeEffect, AttributeType } from './core/types';
-import { AttackItem, itemStore, type Item } from './item';
-import type { DataDefaults } from './data';
-
-export type AppState = {
-  maxLevel: number;
-  attributePointsPerLevel: number;
-  effects: AttributeEffect[]
-}
-
-export type AttributeState = Record<AttributeType, number>;
+import type { AppState, HeroState } from './types';
+import { attributeStore } from './attributes';
+import { slotStore } from './equip';
+import { calcCorrect, DynamicAttack, DynamicAttributes, DynamicDamageNegation, DynamicDefense, DynamicGuard, DynamicResistance, DynamicStats, list } from '$lib/core';
+import { defenseMutations, resistanceMutations } from './graph';
+import type { AffinityType, AttributeType } from '$lib/core/types';
+import type { DataDefaults } from '$lib/data';
 
 export type EquipState = {
   rune: Item | null;
@@ -27,23 +22,6 @@ export type EquipState = {
   offHand: Item | null;
 }
 
-export type SlotState = Record<keyof EquipState, string | null>;
-
-export type HeroState = {
-  level: number;
-  progress: number;
-  attributePoints: number;
-  equip: EquipState;
-  effects: string[];
-  stats: DynamicStats;
-  attributes: DynamicAttributes;
-  attack: DynamicAttack;
-  resistance: DynamicResistance;
-  defense: DynamicDefense;
-  damageNegation: DynamicDamageNegation;
-  guard: DynamicGuard;
-}
-
 export const appState = writable<AppState>({
   maxLevel: 0,
   attributePointsPerLevel: 0,
@@ -53,6 +31,7 @@ export const appState = writable<AppState>({
 export const heroState = derived([attributeStore, slotStore, appState, itemStore], ([attributes, slots, app, items]) => {
   const numDistributedPoints = Object.values(attributes).reduce((p, c) => p + c, 0);
   const level = Math.floor(numDistributedPoints / app.attributePointsPerLevel);
+  
   const equip: EquipState = {
     rune: slots.rune ? items[slots.rune] : null,
     pouch: slots.pouch ? items[slots.pouch] : null,
@@ -67,6 +46,9 @@ export const heroState = derived([attributeStore, slotStore, appState, itemStore
     offHand: slots.offHand ? items[slots.offHand] : null
   };
 
+  const baseDefense = calcCorrect(level + 79, defenseMutations);
+  const baseResistance = calcCorrect(level + 79, resistanceMutations);
+
   const hero: HeroState = {
     level,
     progress: (level / app.maxLevel),
@@ -76,8 +58,26 @@ export const heroState = derived([attributeStore, slotStore, appState, itemStore
     effects: [],
     attributes: new DynamicAttributes(attributes),
     attack: new DynamicAttack(),
-    resistance: new DynamicResistance(),
-    defense: new DynamicDefense(),
+
+    resistance: new DynamicResistance({
+      immunity: baseResistance,
+      focus: baseResistance,
+      poise: baseResistance,
+      robustness: baseResistance,
+      vitality: baseResistance
+    }),
+
+    defense: new DynamicDefense({ 
+      standard: baseDefense,
+      pierce: baseDefense,
+      slash: baseDefense,
+      strike: baseDefense, 
+      fir: baseDefense, 
+      hol: baseDefense, 
+      lit: baseDefense, 
+      mag: baseDefense 
+    }),
+
     damageNegation: new DynamicDamageNegation(),
     guard: new DynamicGuard()
   };
@@ -125,7 +125,7 @@ export const heroState = derived([attributeStore, slotStore, appState, itemStore
         case 'resistance':
         case 'defense':
           for(const k of list(m.value)) {
-            hero[m.key].value[k.key].add(calcAttributeScaling(attr.total, k.value));
+            hero[m.key].value[k.key].add(calcCorrect(attr.total, k.value));
           }
       }
     }
@@ -162,7 +162,7 @@ export const sharedDataState = derived([attributeStore, slotStore, itemStore], (
 
     const mod: { affinity?: AffinityType, tier?: number } = {};
     
-    if(item instanceof AttackItem) {
+    if(item instanceof AttackItem && item.affinity) {
       mod.affinity = item.affinity;
     }
 

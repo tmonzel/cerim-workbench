@@ -1,10 +1,10 @@
-import { AffinityType, AttackType, AttributeType, DamageType, StatType, type Affinity, type AttributeMutation, type ResistanceType, type Stat } from './core/types';
+import { AffinityType, AttackType, AttributeType, DamageType, type Affinity, type GraphMutation, type Stat } from './core/types';
 import type { ItemPreset } from './item/types';
 
-export const mutationRecord: Record<string, AttributeMutation[]> = {};
+export const mutationRecord: Record<string, GraphMutation[]> = {};
 export const presetRecord: Record<string, ItemPreset> = {};
 
-export const attributeRecord: Record<AttributeType, { name: string; color: string }> = {
+export const attributeRecord: Record<string, { name: string; color: string }> = {
   [AttributeType.VIGOR]: {
     name: "Vigor",
     color: "#4ade80",
@@ -46,7 +46,7 @@ export const attributeRecord: Record<AttributeType, { name: string; color: strin
   }
 }
 
-export const attackTypeRecord: Record<AttackType, { name: string; color: string }> = {
+export const attackTypeRecord: Record<string, { name: string; color: string }> = {
   [AttackType.PHYSICAL]: {
     name: "Physical",
     color: "#444",
@@ -86,7 +86,7 @@ export const attackTypeRecord: Record<AttackType, { name: string; color: string 
   }
 }
 
-export const statRecord: Record<StatType, Stat> = {
+export const statRecord: Record<string, Stat> = {
   hp: {
     name: 'Health'
   },
@@ -110,7 +110,7 @@ export const statRecord: Record<StatType, Stat> = {
   }
 }
 
-export const resistanceRecord: Record<ResistanceType, { name: string }> = {
+export const resistanceRecord: Record<string, { name: string }> = {
   immunity: {
     name: 'Immunity'
   },

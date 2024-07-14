@@ -25,7 +25,7 @@ export enum DamageType {
   MAGIC = 'mag'
 }
 
-export type AttributeMutation = {
+export type GraphMutation = {
   breakpoint: number;
   grow: number;
   exp?: number;
@@ -33,9 +33,7 @@ export type AttributeMutation = {
 
 export type AttributeEffect = {
   attr: AttributeType;
-  mutate: Record<string, Partial<Record<string, AttributeMutation[]>>>;
-  affects: string;
-  mutations: AttributeMutation[];
+  mutate: Record<string, Partial<Record<string, GraphMutation[]>>>;
 }
 
 export type AttributeDamageScaling = Partial<Record<AttributeType, { base: number, allowedDamageTypes: AttackType[] }>>;
@@ -126,4 +124,6 @@ export type UpgradeSchema = {
 export type EquipSlot = {
   label: string;
   allowedGroups: string[];
-} 
+}
+
+

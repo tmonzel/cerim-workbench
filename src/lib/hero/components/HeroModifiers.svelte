@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { type HeroState } from '$lib/state';
-	import { DynamicNumber } from '$lib/core/DynamicNumber';
+	import { type HeroState } from '../types';
+	import { DynamicNumber } from '$lib/core';
 	import { statRecord } from '$lib/records';
 	import type { StatType } from '$lib/core/types';
 

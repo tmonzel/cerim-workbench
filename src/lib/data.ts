@@ -1,10 +1,10 @@
-import { appState, type SlotState } from './state';
-import { attributeStore, slotStore } from './stores';
+
 import { mutationRecord, presetRecord } from './records';
-import { AffinityType, AttributeType, StatusEffectType, type AttackCorrect, type AttributeEffect, type AttributeMutation, type UpgradeSchema } from './core/types';
+import { AffinityType, AttributeType, StatusEffectType, type AttackCorrect, type AttributeEffect, type GraphMutation, type UpgradeSchema } from './core/types';
 import { type ItemData, type ItemPreset } from './item/types';
 import { AccessoryItem, AttackItem, itemStore, ProtectionItem, type ItemState } from './item';
 import { writable } from 'svelte/store';
+import { appState, attributeStore, slotStore, type SlotState } from './hero';
 
 export type DataSchema = {
   maxLevel: number;
@@ -21,7 +21,7 @@ export type DataSchema = {
   effects?: AttributeEffect[];
   upgradeSchemata?: Record<string, UpgradeSchema>; 
   presets?: Record<string, ItemPreset>;
-  mutations?: Record<string, AttributeMutation[]>;
+  mutations?: Record<string, GraphMutation[]>;
   attackCorrect?: Record<string, AttackCorrect>;
   spEffects?: Record<number, Partial<Record<StatusEffectType, number>>>;
 }
@@ -133,7 +133,7 @@ export function loadData(data: DataSchema) {
       }
       
       if(item instanceof AttackItem && mod.affinity && mod.affinity !== AffinityType.STANDARD) {
-        item.changeAffinity(mod.affinity);
+        item.setAffinity(mod.affinity);
       }
     }
 

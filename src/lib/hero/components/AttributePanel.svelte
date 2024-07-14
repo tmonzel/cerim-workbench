@@ -1,8 +1,7 @@
 <script lang="ts">
 	import { AttributeType } from '$lib/core/types';
+	import { attributeStore, type HeroState } from '$lib/hero';
 	import { attributeRecord } from '$lib/records';
-	import type { HeroState } from '$lib/state';
-	import { attributeStore } from '$lib/stores';
 	import AttributeControl from './AttributeControl.svelte';
 
   export let hero: HeroState;

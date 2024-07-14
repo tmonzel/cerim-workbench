@@ -1,8 +1,7 @@
 <script lang="ts">
-	import type { AttributeType } from '$lib/core/types';
 	import { attributeRecord } from '$lib/records';
 
-  export let type: AttributeType
+  export let type: string;
 </script>
 
 <div class="flex items-center">

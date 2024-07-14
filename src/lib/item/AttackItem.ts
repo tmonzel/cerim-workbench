@@ -1,5 +1,5 @@
-import { calcAttributeScaling, getScalingId, list } from '$lib/core';
-import { AffinityType, AttackType, AttributeType, DamageType, GuardType, StatusEffectType, type Attack, type AttributeDamageScaling, type AttributeMutation, type Guard, type UpgradeSchema } from '$lib/core/types';
+import { calcCorrect, getScalingId, list } from '$lib/core';
+import { AffinityType, AttackType, AttributeType, DamageType, GuardType, StatusEffectType, type Attack, type AttributeDamageScaling, type GraphMutation, type Guard, type UpgradeSchema } from '$lib/core/types';
 import { attackCorrectRecord, spEffectsMap, upgradeSchemata } from '$lib/data';
 import { affinityRecord, mutationRecord } from '$lib/records';
 import { Item } from './Item';
@@ -15,7 +15,7 @@ export class AttackItem extends Item {
   affinities: Map<string, ItemConfig>;
   scaling?: AttributeDamageScaling;
 
-  private attackMutations: Partial<Record<AttackType, AttributeMutation[]>>;
+  private attackMutations: Partial<Record<AttackType, GraphMutation[]>>;
   private _affinity: AffinityType | null;
 
   get affinity(): AffinityType | null {
@@ -84,7 +84,6 @@ export class AttackItem extends Item {
     if(this.config.guard) {
       this.guard = this.config.guard;
     }
-    
 
     if(this.config.mutations) {
       if(typeof this.config.mutations === 'string') {
@@ -93,7 +92,7 @@ export class AttackItem extends Item {
         }
       } else if(Array.isArray(this.config.mutations)) {
         for(const t of Object.values(AttackType)) {
-          this.attackMutations[t] = this.config.mutations as AttributeMutation[];
+          this.attackMutations[t] = this.config.mutations;
         }
       } else if(typeof this.config.mutations === 'object') {
         for(const t of Object.values(AttackType)) {
@@ -237,7 +236,7 @@ export class AttackItem extends Item {
     this.scaling = attributeScaling;
   }
 
-  private scaleDamage(attributes: Partial<Record<AttributeType, number>>, ignoreRequirements: boolean = false): Attack {
+  scaleDamage(attributes: Partial<Record<AttributeType, number>>, ignoreRequirements: boolean = false): Attack {
     if(!this.attack || !this.scaling) {
       return {};
     }
@@ -258,7 +257,7 @@ export class AttackItem extends Item {
           continue;
         }
         
-        const attrScaling = calcAttributeScaling(attrTotal, this.attackMutations[damageType] ?? []) / 100;
+        const attrScaling = calcCorrect(attrTotal, this.attackMutations[damageType] ?? []) / 100;
         const upgradeScaling = attrScale.base / 100;
 
         let elementBase = this.attack[damageType] ?? 0;

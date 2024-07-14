@@ -1,4 +1,4 @@
-import { type AttributeMutation } from './types';
+import { type GraphMutation } from './types';
 
 export function sum<T extends string>(v: Partial<Record<T, number>>): number {
   let s = 0;
@@ -76,11 +76,11 @@ export function getScalingId(base: number): string {
   return "S";
 }
 
-export function getAttributeScalingParams(attributeLevel: number, mutations: AttributeMutation[]): { stat: number[], grow: number[], exp: number[] } {
+export function calcGraphParams(x: number, mutations: GraphMutation[]): { stat: number[], grow: number[], exp: number[] } {
   for(let i = 1; i < mutations.length; i++) {
     const calc = mutations[i];
 
-    if(calc.breakpoint > attributeLevel) {
+    if(calc.breakpoint > x) {
       return {
         stat: [mutations[i-1].breakpoint, calc.breakpoint],
         grow: [mutations[i-1].grow, calc.grow],
@@ -96,12 +96,12 @@ export function getAttributeScalingParams(attributeLevel: number, mutations: Att
   }
 }
 
-export function calcAttributeScaling(value: number, mutations: AttributeMutation[]): number {
-  if(value === 0) {
+export function calcCorrect(value: number, mutations: GraphMutation[]): number {
+  if(value === 0 || mutations.length <= 1) {
     return 0;
   }
 
-  const params = getAttributeScalingParams(value, mutations);
+  const params = calcGraphParams(value, mutations);
   const ratio = (value - params.stat[0]) / (params.stat[1] - params.stat[0]);
   let growth = 0;
 

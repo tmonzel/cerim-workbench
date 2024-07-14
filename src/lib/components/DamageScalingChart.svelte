@@ -1,8 +1,8 @@
 <script lang='ts'>
 	import { AttackType, type Attack, type AttributeType } from '$lib/core/types';
-	import type { Item } from '$lib/item';
+	import { AttackItem, type Item } from '$lib/item';
 	import { attackTypeRecord } from '$lib/records';
-	import { heroState } from '$lib/state';
+	import { heroState } from '$lib/hero';
   import { VisXYContainer, VisLine, VisAxis, VisStackedBar } from '@unovis/svelte';
 	import AttributeBadge from './AttributeBadge.svelte';
   
@@ -46,6 +46,10 @@
     maxAttack = 0;
 
     for(let i = 0; i < attributeRange; i++) {
+      if(!(item instanceof AttackItem)) {
+        continue;
+      }
+
       const attack = item.scaleDamage({ [attributeType]: i }, true);
 
       for(const at of Object.values(AttackType)) {

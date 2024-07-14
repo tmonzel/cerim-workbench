@@ -1,4 +1,4 @@
-import type { AffinityType, AttackType, AttributeMutation, AttributeType, DamageNegation, DamageType, Guard, Resistance, ScalingBase } from '$lib/core/types';
+import type { AffinityType, AttackType, AttributeType, DamageNegation, DamageType, GraphMutation, Guard, Resistance, ScalingBase } from '$lib/core/types';
 
 
 export type ItemData = {
@@ -82,7 +82,7 @@ export type ItemConfig = {
   guard?: Guard;
   scaling?: ScalingBase;
   schema?: string;
-  mutations?: AttributeMutation[] | number | Partial<Record<AttackType, string>>;
+  mutations?: GraphMutation[] | number | Partial<Record<AttackType, string>>;
   cast?: 'sorceries' | 'incantations';
   apply?: number[];
   attackCorrectId?: string;
