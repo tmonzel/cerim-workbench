@@ -1,14 +1,14 @@
 <script lang='ts'>
 	import { AttackType, type Attack, type AttributeType } from '$lib/core/types';
-	import { AttackItem, type Item } from '$lib/item';
+	import { AttackItem } from '$lib/item';
 	import { attackTypeRecord } from '$lib/records';
-	import { heroState } from '$lib/hero';
   import { VisXYContainer, VisLine, VisAxis, VisStackedBar } from '@unovis/svelte';
 	import AttributeBadge from './AttributeBadge.svelte';
   
-  export let item: Item;
+  export let item: AttackItem;
   export let attributeType: AttributeType;
   export let showAttackTypes: AttackType[] = [];
+  export let attributeValue: number;
 
   type DataRecord = { attr: number, attack: Attack }
   
@@ -39,7 +39,7 @@
     attackTypeRecord.sta.color
   ][i]
 
-  $: attributeValue = $heroState.attributes.get(attributeType);
+  //$: attributeValue = item.scalingAttributes ? item.scalingAttributes[attributeType];
 
   $: {
     const newData: DataRecord[] = [];
@@ -77,12 +77,12 @@
     <VisXYContainer {data} width={150} height={100} duration={0} xDomain={[0, 100]} yDomain={[0, maxAttack > 250 ? maxAttack : 250]}>
       <VisLine {x} {y} {color} />
       <VisAxis type="x" tickValues={[0,25,50,75,100]} />
-      <VisAxis type="y" tickValues={[0,50,150,250,500]} />
+      <VisAxis type="y" tickValues={[0,150,300,450,600]} />
       <VisStackedBar barWidth={1} x={attributeValue} y={maxAttack > 500 ? maxAttack : 500} color={() => '#bbb'} />
     </VisXYContainer>
   </div>
-  <div class="text-xs text-zinc-500">
-    <AttributeBadge type={attributeType} />
+  <div class="text-xs text-zinc-500 flex">
+    <AttributeBadge type={attributeType} /><span class="ms-1">({attributeValue})</span>
   </div>
 </div>
 

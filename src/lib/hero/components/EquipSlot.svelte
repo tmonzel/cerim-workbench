@@ -3,10 +3,12 @@
 	import { heroState } from '$lib/hero';
 	import ItemCard from '$lib/item/components/ItemCard.svelte';
 	import ItemSelectList from '$lib/item/components/ItemSelectList.svelte';
-	import type { Item } from '$lib/item';
+	import { AttackItem, type Item } from '$lib/item';
+	import CheckboxControl from '$lib/components/CheckboxControl.svelte';
+	import type { HeroEquipSlot } from '../HeroEquipSlot';
 
   export let label: string;
-  export let slot: string | null = null;
+  export let slot: HeroEquipSlot;
   export let item: Item | null = null;
   export let selectableItems: Item[] = [];
   export let iconUrl: string | undefined = undefined;
@@ -25,14 +27,25 @@
     opened = false;
   }
 
+  export function useWithTwoHands(v: boolean): void {
+    slot.useWithTwoHands = v;
+    slot = slot;
+  }
+
   export function selectItem(item: Item | null): void {
-    slot = item ? item.id : null;
+    slot = slot.selectItem(item ? item.id : null);
     closeSelectionDialog();
   }
 </script>
 
 <div class="relative bg-stone-700/20 rounded-lg">
   <div class="absolute top-2 right-2 flex gap-7">
+    {#if item && item instanceof AttackItem}
+      <CheckboxControl checked={slot.useWithTwoHands} on:checked={((e) => useWithTwoHands(e.detail))}>
+        Use two-handed
+      </CheckboxControl>
+    {/if}
+
     {#if item && item.possibleUpgrades > 0}
       <EquipUpgradeBar {item} />
     {/if}
@@ -51,18 +64,19 @@
   on:click={() => openSelectionDialog()}
 >
     {#if item}
-      <span class="bg-indigo-100 text-amber-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-indigo-400/20 dark:text-indigo-300">
+      <span class="text-xs font-medium me-2 px-2.5 py-0.5 rounded bg-emerald-400/20 text-emerald-300">
         {label}
       </span>
 
       <div class="pt-3">
-        <ItemCard {item} displayMode="equipped" />
+        <ItemCard {item} />
       </div>
 
-      {#if !item.checkRequirements($heroState.attributes.getTotalValue())}
-      <div class="flex justify-center mt-5">
-        <span class="text-xs rounded-md bg-pink-600/10 px-1.5 py-0.5 font-medium text-pink-400 ring-1 ring-inset ring-pink-400">
-          Requirements not met
+      {#if !item.isEquippable()}
+      <div class="flex items-center mt-5 bg-red-600/20 justify-center text-red-400 rounded-md p-2 text-sm">
+        <span class="mat-icon">warning</span>
+        <span class="ms-1">
+          Item requirements not met. Penality applied.
         </span>
       </div>
       {/if}
@@ -94,7 +108,7 @@
       </div>
       {/if}
     </div>
-    <ItemSelectList items={selectableItems} selectedItemId={slot} on:selectItem={(e) => selectItem(e.detail)} />
+    <ItemSelectList items={selectableItems} selectedItemId={item?.id} on:selectItem={(e) => selectItem(e.detail)} />
   </div>
 </dialog>
 

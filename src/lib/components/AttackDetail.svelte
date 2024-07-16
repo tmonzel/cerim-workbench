@@ -4,6 +4,7 @@
 	import { attackTypeRecord } from '$lib/records';
 
   export let attack: Attack;
+  export let base: Attack = {};
   export let compact = false;
 
   let gradient = '';
@@ -38,9 +39,12 @@
 {:else}
 <div class="flex gap-4">
   {#each dist as d}
-    <div style:width={`${d.amount * 100}%`}>
+    <div style:width={`${d.amount * 100}%`} style="min-width: 55px;">
       <div style:background-color={attackTypeRecord[d.key].color} class="h-1"></div>
-      {(Math.floor(d.value))}
+      {(Math.floor(d.value))} 
+      {#if base[d.key]}
+      <span class="text-zinc-500 text-xs">({Math.floor(base[d.key] ?? 0)})</span>
+      {/if}
     </div>
   {/each}
 </div>

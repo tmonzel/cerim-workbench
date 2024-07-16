@@ -58,12 +58,9 @@
 </script>
 
 <div class="sticky top-0 px-5 py-3 item-list-header z-50 bg-neutral-800">
-
-  
   <div class="flex gap-x-3">
     <div>
-      <SelectControl 
-        noItemLabel="Select group" 
+      <SelectControl  
         items={groupSelectItems} 
         bind:value={$selectedGroup} 
       />
@@ -72,7 +69,7 @@
     <div class="grow">
       <input 
         type="text" 
-        class="bg-neutral-700/40 shadow-md border-0 text-md text-zinc-300 rounded-lg focus:ring-2 focus:ring-stone-500 focus:border-stone-500 block w-full p-2.5" 
+        class="bg-neutral-700/40 w-full shadow-md border-0 text-md text-zinc-300 rounded-lg focus:ring-2 focus:ring-stone-500 focus:border-stone-500" 
         placeholder="Search items..."
         bind:value={$searchInput}
         autofocus

@@ -8,6 +8,7 @@
 	import ItemDamageNegationGrid from './ItemDamageNegationGrid.svelte';
 	import ItemInfo from './ItemInfo.svelte';
 	import ItemModifierList from './ItemModifierList.svelte';
+	import ItemRarityBadge from './ItemRarityBadge.svelte';
 
   export let item: Item;
 </script>
@@ -19,6 +20,9 @@
   <div class="flex-auto">
     <div class="flex justify-between items-start">
       <div>
+        <div class="mb-1">
+          <ItemRarityBadge rarity={item.rarity} />
+        </div>
         <p class="text-lg font-medium leading-5 text-zinc-300">
           {#if item instanceof AttackItem && item.affinity && item.affinity !== AffinityType.STANDARD}
             <span class="font-bold">{affinityRecord[item.affinity].name}</span>

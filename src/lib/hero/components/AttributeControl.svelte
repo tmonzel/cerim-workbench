@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { DynamicNumber } from '$lib/core';
-	import { appState, heroState } from '$lib/hero';
+	import { heroState } from '$lib/hero';
+	import { appState } from '$lib/state';
 	import { createEventDispatcher } from 'svelte';
 
   export let attribute: { color: string; name: string };

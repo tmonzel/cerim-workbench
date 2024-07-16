@@ -14,7 +14,9 @@
   const tabs: { key: string; label: string }[] = [
     { key: 'general', label: 'General' },
     { key: 'protection', label: 'Protection' }
-  ]
+  ];
+
+  const statTypes = Object.values(StatType).filter(t => t !== StatType.ATTACK_SPEED);
 </script>
 
 <div class="hero-stats-panel">
@@ -44,7 +46,7 @@
         <DamageDistBar attack={hero.attack} />
       </dd>
     </div>
-    {#each Object.values(StatType) as name}
+    {#each statTypes as name}
       {@const stat = hero.stats.value[name]}
       <div class="px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
         <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-300">{statRecord[name].name}</dt>

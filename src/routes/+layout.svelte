@@ -9,6 +9,15 @@
   /** @type {import('./$types').PageData} */
 	export let data: DataSchema;
 
+  /** 
+   * TODOS FOR RELEASE
+   * - Attribute info graphs with next level increase info
+   * - Split L1 und L2 Damage
+   * - Next Rune level info
+   * - Next Weapon Upgrade info
+   * - Mobile optimizations (Hide modifiers on smaller screen sizes)
+  */
+
   // TODOS
   // Implement local storage
   // Weapon Status effects: hemorrhage, frostbite,poison
@@ -57,7 +66,7 @@ much more survivable and significantly decreasing your chances of being one-shot
 <div class="text-white p-10">
   <div class="text-md text-zinc-500">
     <div class="loader mb-2"></div>
-    Loading data&hellip;
+    Stay patient, tarnished&hellip;
   </div>
 </div>
 {/if}

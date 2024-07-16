@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { createBuild } from '$lib/api';
 	import { sharedDataState, type HeroState } from '$lib/hero';
-	import { onMount } from 'svelte';
 	import Dialog from './Dialog.svelte';
 
   export let hero: HeroState;
@@ -32,10 +31,6 @@
 
     sharedResultDialog.open();
   }
-
-  onMount(() => {
-    //sharedResultDialog.open();
-  })
 </script>
 
 <header>
