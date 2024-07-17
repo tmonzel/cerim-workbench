@@ -6,9 +6,11 @@ import type {
 	DamageType,
 	GraphMutation,
 	Guard,
+	ModifierData,
+	ModifierType,
 	Resistance,
 	ScalingBase
-} from '$lib/core/types';
+} from '$lib/core';
 
 export type ItemData = {
 	name: string;
@@ -29,10 +31,9 @@ export type ItemData = {
 	affinity?: AffinityType;
 	iconUrl?: string;
 	effects?: string[];
-	modifiers?: Record<ModifierType, ItemModifierData>;
+	modifiers?: Record<ModifierType, ModifierData>;
 	config?: ItemConfig;
 	affinities?: Partial<Record<AffinityType, ItemConfig>>;
-	defaults?: string | ItemPreset;
 	upgrades?: ItemUpgrade[];
 	attackInfo?: ItemAttackInfo;
 };
@@ -61,26 +62,8 @@ export type ItemAttackInfo = {
 
 export type ItemUpgrade = {
 	iconUrl?: string;
-	modifiers?: Record<ModifierType, ItemModifierData>;
+	modifiers?: Record<ModifierType, ModifierData>;
 };
-
-export type ItemPreset = {
-	base?: string;
-	maxTiers?: number;
-	config?: ItemConfig;
-	affinities?: Record<AffinityType, ItemConfig>;
-};
-
-export type ItemModifierData = Record<string, ItemModifierConfig>;
-export type ItemModifierConfig = { name?: string; modify: ItemModifierValue };
-export type ItemModifierValue = Record<string, number>;
-
-export type ModifierScaling = {
-	range: { [0]: number; [1]: number };
-	scale: { [0]: number; [1]: number };
-};
-
-export type ModifierType = 'flat' | 'percentual';
 
 export type ItemRequirements = {
 	attributes?: Partial<Record<AttributeType, number>>;
@@ -97,6 +80,6 @@ export type ItemConfig = {
 	schema?: string;
 	mutations?: GraphMutation[] | number | Partial<Record<AttackType, string>>;
 	cast?: 'sorceries' | 'incantations';
-	apply?: number[];
+	effects?: number[];
 	attackCorrectId?: string;
 };

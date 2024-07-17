@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { AttributeType } from '$lib/core/types';
+  import { AttributeType } from '$lib/core/types';
 	import { attributeStore, type HeroState } from '$lib/hero';
 	import { attributeRecord } from '$lib/records';
 	import AttributeControl from './AttributeControl.svelte';

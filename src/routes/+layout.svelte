@@ -15,6 +15,8 @@
    * - Split L1 und L2 Damage
    * - Next Rune level info
    * - Next Weapon Upgrade info
+   * - Equip Load calculation (low, mid and high)
+   * - Check share your build feature and item ids
    * - Mobile optimizations (Hide modifiers on smaller screen sizes)
   */
 

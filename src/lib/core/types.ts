@@ -113,3 +113,16 @@ export type UpgradeSchema = {
 	scaling: Record<string, number[]>;
 	guard: Record<GuardType, number[]>;
 };
+
+export type ModifierType = 'flat' | 'percentual';
+export type ModifierData = Record<string, ModifierConfig>;
+export type ModifierConfig = {
+	name?: string;
+	modify: Record<string, number>;
+};
+
+export type SpEffect = {
+	id: number;
+	statusTypes?: Record<string, number | number[]>;
+	modifiers?: Partial<Record<ModifierType, ModifierData>>;
+};

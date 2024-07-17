@@ -5,9 +5,11 @@ import {
 	StatusEffectType,
 	type AttackCorrect,
 	type GraphMutation,
+	type ModifierConfig,
 	type ScalingBase,
+	type SpEffect,
 	type UpgradeSchema
-} from '$lib/core/types';
+} from '$lib/core';
 import {
 	ItemCategory,
 	type ItemAttackInfo,
@@ -32,7 +34,7 @@ function mapItemConfig(row: ItemRow): ItemConfig {
 	const attack: Partial<Record<AttackType, number>> = {};
 	const scaling: ScalingBase = {};
 	const mutations: Partial<Record<AttackType, string>> = {};
-	const apply: number[] = [];
+	const effects: number[] = [];
 
 	if (row.attackBasePhysics) {
 		attack.phy = row.attackBasePhysics;
@@ -99,11 +101,11 @@ function mapItemConfig(row: ItemRow): ItemConfig {
 	}
 
 	if (row.spEffectBehaviorId0 !== -1) {
-		apply.push(row.spEffectBehaviorId0);
+		effects.push(row.spEffectBehaviorId0);
 	}
 
 	if (row.spEffectBehaviorId1 !== -1) {
-		apply.push(row.spEffectBehaviorId1);
+		effects.push(row.spEffectBehaviorId1);
 	}
 
 	const schemaId = row.reinforceTypeId.toFixed();
@@ -133,8 +135,8 @@ function mapItemConfig(row: ItemRow): ItemConfig {
 		mutations
 	};
 
-	if (apply.length > 0) {
-		config.apply = apply;
+	if (effects.length > 0) {
+		config.effects = effects;
 	}
 
 	if (row.enableMagic === 1) {
@@ -197,37 +199,130 @@ function mapItemRequirements(row: ItemRow): ItemRequirements {
 	return requirements;
 }
 
-export function parseSpEffectData(
-	file: string
-): Record<string, Partial<Record<StatusEffectType, number | number[]>>> {
+export function mapSpEffect(row: SpEffectParam): SpEffect {
+	const effect: SpEffect = {
+		id: row.id
+	};
+
+	const flatAttributesModifiers: ModifierConfig = {
+		modify: {}
+	};
+
+	const flatResistanceModifiers: ModifierConfig = {
+		modify: {}
+	};
+
+	const percentualStatModifiers: ModifierConfig = {
+		modify: {}
+	};
+
+	if (row.addLifeForceStatus) {
+		flatAttributesModifiers.modify.vig = row.addLifeForceStatus;
+	}
+
+	if (row.addEndureStatus) {
+		flatAttributesModifiers.modify.end = row.addEndureStatus;
+	}
+
+	if (row.addStrengthStatus) {
+		flatAttributesModifiers.modify.str = row.addStrengthStatus;
+	}
+
+	if (row.addDexterityStatus) {
+		flatAttributesModifiers.modify.dex = row.addDexterityStatus;
+	}
+
+	if (row.addWillpowerStatus) {
+		flatAttributesModifiers.modify.mnd = row.addWillpowerStatus;
+	}
+
+	if (row.addMagicStatus) {
+		flatAttributesModifiers.modify.int = row.addMagicStatus;
+	}
+
+	if (row.addFaithStatus) {
+		flatAttributesModifiers.modify.fth = row.addFaithStatus;
+	}
+
+	if (row.addLuckStatus) {
+		flatAttributesModifiers.modify.arc = row.addLuckStatus;
+	}
+
+	if (row.changeSleepResistPoint || row.changeMadnessResistPoint) {
+		flatResistanceModifiers.modify.focus =
+			row.changeSleepResistPoint ?? row.changeMadnessResistPoint;
+	}
+
+	if (row.maxHpRate !== 1) {
+		percentualStatModifiers.modify.hp = row.maxHpRate;
+	}
+
+	if (row.maxMpRate !== 1) {
+		percentualStatModifiers.modify.fp = row.maxMpRate;
+	}
+
+	if (row.maxStaminaRate !== 1) {
+		percentualStatModifiers.modify.stamina = row.maxStaminaRate;
+	}
+
+	switch (row.stateInfo) {
+		case SpEffectType.HEMORRHAGE:
+			effect.statusTypes = {
+				[StatusEffectType.HEMORRHAGE]: row.bloodAttackPower
+			};
+			break;
+		case SpEffectType.ROT:
+			effect.statusTypes = { [StatusEffectType.ROT]: row.diseaseAttackPower };
+			break;
+		case SpEffectType.FROSTBITE:
+			effect.statusTypes = { [StatusEffectType.FROSTBITE]: row.freezeAttackPower };
+			break;
+		case SpEffectType.MADNESS:
+			effect.statusTypes = { [StatusEffectType.MADNESS]: row.madnessAttackPower };
+			break;
+		case SpEffectType.POISON:
+			effect.statusTypes = { [StatusEffectType.POISON]: row.poizonAttackPower };
+			break;
+		case SpEffectType.BLIGHT:
+			effect.statusTypes = { [StatusEffectType.DEATH]: row.curseAttackPower };
+			break;
+		case SpEffectType.SLEEP:
+			effect.statusTypes = { [StatusEffectType.SLEEP]: row.sleepAttackPower };
+			break;
+		case SpEffectType.NONE:
+			effect.modifiers = {
+				flat: {},
+				percentual: {}
+			};
+
+			if (Object.keys(flatAttributesModifiers.modify).length > 0) {
+				effect.modifiers.flat!.attributes = flatAttributesModifiers;
+			}
+
+			if (Object.keys(flatResistanceModifiers.modify).length > 0) {
+				effect.modifiers.flat!.resistance = flatResistanceModifiers;
+			}
+
+			if (Object.keys(percentualStatModifiers.modify).length > 0) {
+				effect.modifiers.percentual!.stats = percentualStatModifiers;
+			}
+	}
+
+	return effect;
+}
+
+export function parseSpEffectData(file: string): Record<string, SpEffect> {
 	const { rows, defaults } = prepareXml<SpEffectParam>(file);
-	const record: Record<string, Partial<Record<StatusEffectType, number | number[]>>> = {};
+	const record: Record<string, SpEffect> = {};
 
 	for (const r of rows) {
-		const row = { ...defaults, ...r };
+		const spEff = mapSpEffect({ ...defaults, ...r });
 
-		switch (row.stateInfo) {
-			case SpEffectType.HEMORRHAGE:
-				record[row.id] = { [StatusEffectType.HEMORRHAGE]: row.bloodAttackPower };
-				break;
-			case SpEffectType.ROT:
-				record[row.id] = { [StatusEffectType.ROT]: row.diseaseAttackPower };
-				break;
-			case SpEffectType.FROSTBITE:
-				record[row.id] = { [StatusEffectType.FROSTBITE]: row.freezeAttackPower };
-				break;
-			case SpEffectType.MADNESS:
-				record[row.id] = { [StatusEffectType.MADNESS]: row.madnessAttackPower };
-				break;
-			case SpEffectType.POISON:
-				record[row.id] = { [StatusEffectType.POISON]: row.poizonAttackPower };
-				break;
-			case SpEffectType.BLIGHT:
-				record[row.id] = { [StatusEffectType.DEATH]: row.curseAttackPower };
-				break;
-			case SpEffectType.SLEEP:
-				record[row.id] = { [StatusEffectType.SLEEP]: row.sleepAttackPower };
+		if (!spEff.modifiers && !spEff.statusTypes) {
+			continue;
 		}
+
+		record[r.id] = spEff;
 	}
 
 	return record;
@@ -482,8 +577,6 @@ export function parseArmors(xmlFile: string): Record<string, ItemData> {
 	for (let i = 0; i < rows.length; i++) {
 		const row = { ...defaults, ...rows[i] };
 		const id = row.id.toFixed();
-		//const baseId = id.substring(0, id.length - 4);
-		//const variantId = id.slice(-4);
 
 		if (!row.paramdexName || row.paramdexName == '') {
 			console.log(`Armor name missing for #${id} (skipping)`);
@@ -501,6 +594,19 @@ export function parseArmors(xmlFile: string): Record<string, ItemData> {
 		let type = '';
 		let group = '';
 		let category: ItemCategory = ItemCategory.ARMOR;
+		const effects: number[] = [];
+
+		if (row.residentSpEffectId !== -1) {
+			effects.push(row.residentSpEffectId);
+		}
+
+		if (row.residentSpEffectId2 !== -1) {
+			effects.push(row.residentSpEffectId2);
+		}
+
+		if (row.residentSpEffectId3 !== -1) {
+			effects.push(row.residentSpEffectId3);
+		}
 
 		switch (row.equipModelCategory) {
 			case EquipModelCategory.HEAD:
@@ -534,7 +640,10 @@ export function parseArmors(xmlFile: string): Record<string, ItemData> {
 			rarity: row.rarity,
 			category,
 			type,
-			group
+			group,
+			config: {
+				effects
+			}
 		};
 
 		(item.iconUrl = `/images/items_webp/MENU_Knowledge_${iconId}.webp`),

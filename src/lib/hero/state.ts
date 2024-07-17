@@ -1,15 +1,7 @@
 import { AttackItem, itemStore, type Item } from '$lib/item';
 import { derived } from 'svelte/store';
 import type { EquipState, HeroState } from './types';
-import {
-	arcanceModifier,
-	attributeStore,
-	enduranceModifier,
-	intelligenceModifier,
-	mindModifier,
-	strengthModifier,
-	vigorModifier
-} from './attributes';
+import { attributeStore } from './attributes';
 import { slotStore } from './equip';
 import {
 	AffinityType,
@@ -25,6 +17,7 @@ import {
 } from '$lib/core';
 import type { DataDefaults } from '$lib/data';
 import { appState } from '$lib/state';
+import { attributeRecord } from '$lib/records';
 
 export const heroState = derived(
 	[attributeStore, slotStore, appState, itemStore],
@@ -134,12 +127,11 @@ export const heroState = derived(
 			hero.stats.add({ weight: item.weight });
 		}
 
-		vigorModifier.modify(hero);
-		enduranceModifier.modify(hero);
-		strengthModifier.modify(hero);
-		mindModifier.modify(hero);
-		intelligenceModifier.modify(hero);
-		arcanceModifier.modify(hero);
+		for (const attr of Object.values(attributeRecord)) {
+			if (attr.modifier) {
+				attr.modifier.modify(hero);
+			}
+		}
 
 		const totalAttributes = hero.attributes.getTotalValue();
 

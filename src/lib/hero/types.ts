@@ -10,6 +10,7 @@ import type {
 import type { AttributeType } from '$lib/core/types';
 import type { Item } from '$lib/item';
 import type { HeroEquipSlot } from './HeroEquipSlot';
+import type { AttributeModifier } from './modifiers';
 
 export type SlotState = Record<keyof EquipState, HeroEquipSlot>;
 
@@ -44,6 +45,12 @@ export type EquipState = {
 
 export type HeroStateModifier = {
 	modify(hero: HeroState): void;
+};
+
+export type HeroAttribute = {
+	name: string;
+	color: string;
+	modifier?: AttributeModifier;
 };
 
 export type AttributeState = Record<AttributeType, number>;

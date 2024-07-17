@@ -5,8 +5,9 @@ import {
 	StatusEffectType,
 	type AttackCorrect,
 	type GraphMutation,
+	type SpEffect,
 	type UpgradeSchema
-} from './core/types';
+} from './core';
 import { type ItemData } from './item/types';
 import { AccessoryItem, AttackItem, itemStore, ProtectionItem, type ItemState } from './item';
 import { writable } from 'svelte/store';
@@ -24,7 +25,7 @@ export type DataSchema = {
 	upgradeSchemata?: Record<string, UpgradeSchema>;
 	mutations?: Record<string, GraphMutation[]>;
 	attackCorrect?: Record<string, AttackCorrect>;
-	spEffects?: Record<number, Partial<Record<StatusEffectType, number>>>;
+	spEffects?: SpEffect;
 };
 
 export type DataDefaults = {
@@ -35,7 +36,7 @@ export type DataDefaults = {
 
 export const attackCorrectRecord: Record<string, AttackCorrect> = {};
 export const upgradeSchemata: Record<string, UpgradeSchema> = {};
-export const spEffectsMap = new Map<number, Partial<Record<StatusEffectType, number>>>();
+export const spEffectsMap = new Map<number, SpEffect>();
 export const dataStore = writable<DataSchema | null>(null);
 
 export function loadData(data: DataSchema) {

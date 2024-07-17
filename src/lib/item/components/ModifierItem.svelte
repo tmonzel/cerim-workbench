@@ -1,15 +1,17 @@
 <script lang="ts">
 	import AttributeBadge from '$lib/components/AttributeBadge.svelte';
+	import type { ModifierConfig, ModifierType } from '$lib/core';
 	import { attackTypeRecord, damageTypeRecord, resistanceRecord, statRecord } from '$lib/records';
-	import type { ItemModifierConfig, ModifierType } from '../types';
 
   export let type: ModifierType = 'flat';
   export let key: string;
-  export let config: ItemModifierConfig;
+  export let config: ModifierConfig;
 </script>
 
 <div class="modifier-item">
+  {#if config.name}
   <dt class="text-sm font-medium leading-6 text-zinc-200 sm:col-span-3">{config.name}</dt>
+  {/if}
   <dd>
     <dl>
     {#each Object.entries(config.modify) as [k, v]}

@@ -32,7 +32,7 @@ export class AttackItem extends Item {
 	statusEffects?: Partial<Record<StatusEffectType, number>>;
 	guard: Guard;
 	affinities: Map<string, ItemConfig>;
-	scaling?: ItemAttributeScaling;
+	scaling: ItemAttributeScaling = {};
 
 	private attackMutations: Partial<Record<AttackType, GraphMutation[]>>;
 	private _affinity: AffinityType | null;
@@ -91,11 +91,7 @@ export class AttackItem extends Item {
 	override applyAttributes(attributes: Partial<Record<string, number>>): this {
 		super.applyAttributes(attributes);
 
-		if (!this.scaling || !this.attack) {
-			return this;
-		}
-
-		this.scaledAttack = this.scaleDamage(attributes);
+		this.scaledAttack = this.calculateScaledAttack();
 
 		return this;
 	}
@@ -131,17 +127,29 @@ export class AttackItem extends Item {
 			}
 		}
 
-		if (this.config.apply) {
-			this.statusEffects = {};
+		this.statusEffects = {};
 
-			for (const id of this.config.apply) {
-				const upgradedId = id >= 105000 ? id + this.tier : id;
+		if (this.config.effects) {
+			for (const id of this.config.effects) {
+				const effect = spEffectsMap.get(id);
 
-				if (!spEffectsMap.has(upgradedId)) {
+				if (!effect || !effect.statusTypes) {
 					continue;
 				}
 
-				Object.assign(this.statusEffects, spEffectsMap.get(upgradedId));
+				if (this.tier > 0) {
+					const upgradeSpEffect = spEffectsMap.get(effect.id + this.tier);
+
+					if (upgradeSpEffect && upgradeSpEffect.statusTypes) {
+						Object.assign(this.statusEffects, upgradeSpEffect.statusTypes);
+					}
+				} else {
+					Object.assign(this.statusEffects, effect.statusTypes);
+				}
+
+				if (effect && effect.modifiers) {
+					this.setModifiers(effect.modifiers);
+				}
 			}
 		}
 
@@ -211,33 +219,6 @@ export class AttackItem extends Item {
 					attackTypes.push(AttackType.INCANTATION);
 				}
 
-				/*switch (attrType) {
-					case AttributeType.STRENGTH:
-						attackTypes = attackCorrect.str;
-						break;
-					case AttributeType.DEXTERITY:
-						attackTypes = attackCorrect.dex;
-						break;
-					case AttributeType.INTELLIGENCE:
-						attackTypes = [...attackCorrect.int];
-
-						if (this.config.cast === 'sorceries') {
-							attackTypes.push(AttackType.SORCERY);
-						}
-
-						break;
-					case AttributeType.FAITH:
-						attackTypes = [...attackCorrect.fth];
-
-						if (this.config.cast === 'incantations') {
-							attackTypes.push(AttackType.INCANTATION);
-						}
-
-						break;
-					case AttributeType.ARCANE:
-						attackTypes = attackCorrect.arc;
-				}*/
-
 				if (
 					!schema.scaling ||
 					!schema.scaling[attrType] ||
@@ -270,15 +251,54 @@ export class AttackItem extends Item {
 		this.scaling = attributeScaling;
 	}
 
-	scaleDamage(
-		attributes: Partial<Record<AttributeType, number>>,
-		ignoreRequirements: boolean = false
-	): Attack {
-		if (!this.scaling) {
-			return {};
+	calculateAttributeScaling(
+		attrValue: number,
+		attrType: AttributeType,
+		attackType: AttackType
+	): number {
+		const scaling = this.scaling[attrType];
+
+		if (!scaling || !scaling.attackTypes.includes(attackType)) {
+			return 0;
 		}
 
-		const scaledAttack = { ...this.attack };
+		const upgradeScaling = scaling.base / 100;
+		let attrScaling: number;
+
+		if (this.config.cast === 'sorceries' && attrType === AttributeType.INTELLIGENCE) {
+			attrScaling = calcCorrect(attrValue, this.attackMutations['mag'] ?? []) / 100;
+		} else {
+			attrScaling = calcCorrect(attrValue, this.attackMutations[attackType] ?? []) / 100;
+		}
+
+		return attrScaling * upgradeScaling;
+	}
+
+	calculateAttributeAttack(attrValue: number, attrType: AttributeType): Attack {
+		const attack: Attack = {};
+		const config = this.scaling[attrType];
+
+		for (const attackType of Object.values(AttackType)) {
+			if (!config || !config.attackTypes.includes(attackType)) {
+				continue;
+			}
+
+			const scaling = 1 + this.calculateAttributeScaling(attrValue, attrType, attackType);
+
+			if (this.config.cast === 'sorceries' && attackType === AttackType.SORCERY) {
+				attack[AttackType.SORCERY] = scaling * 100;
+			} else if (this.config.cast === 'incantations' && attackType === AttackType.INCANTATION) {
+				attack[AttackType.INCANTATION] = scaling * 100;
+			} else if (this.attack[attackType]) {
+				attack[attackType] = this.attack[attackType] * scaling;
+			}
+		}
+
+		return attack;
+	}
+
+	calculateScaledAttack(ignoreRequirements: boolean = false): Attack {
+		const scaledAttack: Attack = {};
 
 		for (const attackType of Object.values(AttackType)) {
 			const attackBase = this.attack[attackType] ?? 0;
@@ -299,23 +319,12 @@ export class AttackItem extends Item {
 			) {
 				scalingTotal = 0.6;
 			} else {
-				for (const [t, attrScale] of Object.entries(this.scaling)) {
-					if (!attrScale.attackTypes.includes(attackType)) {
-						continue;
-					}
-
-					const attrType = t as AttributeType;
-					const upgradeScaling = attrScale.base / 100;
-					const attrTotal = attributes[attrType] ?? 0;
-					let attrScaling: number;
-
-					if (this.config.cast === 'sorceries' && attrType === AttributeType.INTELLIGENCE) {
-						attrScaling = calcCorrect(attrTotal, this.attackMutations['mag'] ?? []) / 100;
-					} else {
-						attrScaling = calcCorrect(attrTotal, this.attackMutations[attackType] ?? []) / 100;
-					}
-
-					scalingTotal += attrScaling * upgradeScaling;
+				for (const attrType of Object.keys(this.scaling) as AttributeType[]) {
+					scalingTotal += this.calculateAttributeScaling(
+						this.appliedAttributes[attrType] ?? 0,
+						attrType,
+						attackType
+					);
 				}
 			}
 
@@ -327,60 +336,6 @@ export class AttackItem extends Item {
 				scaledAttack[attackType] = attackBase * scalingTotal;
 			}
 		}
-
-		/*for (const [t, attrScale] of Object.entries(this.scaling)) {
-			const attrType = t as AttributeType;
-
-			if (!attributes[attrType] || !this.config.scaling) {
-				continue;
-			}
-			
-			const attrTotal = attributes[attrType] ?? 0;
-			let scalingTotal = 1;
-
-			if (this.unqualifiedAttributes.includes(attrType)) {
-				scalingTotal = 0.6;
-			} else {
-
-			}
-
-
-			for (const damageType of Object.values(AttackType)) {
-				if (!this.attack[damageType] || !attrScale.allowedDamageTypes.includes(damageType)) {
-					continue;
-				}
-
-				const upgradeScaling = attrScale.base / 100;
-
-				let elementBase = this.attack[damageType] ?? 0;
-				elementBase *= upgradeScaling;
-
-				const attrScaling = calcCorrect(attrTotal, this.attackMutations[damageType] ?? []) / 100;
-
-				if (this.unqualifiedAttributes.includes(attrType)) {
-					// Apply 40% penalty
-					elementBase *= 0.6;
-				} else {
-					elementBase *= attrScaling;
-				}
-
-				if (this.config.cast === 'sorceries' && attrType === AttributeType.INTELLIGENCE) {
-					if (this.isEquippable() || ignoreRequirements) {
-						scaledAttack[AttackType.SORCERY] = (1 + upgradeScaling * attrScaling) * 100;
-					} else {
-						scaledAttack[AttackType.SORCERY] = 60;
-					}
-				} else if (this.config.cast === 'incantations' && attrType === AttributeType.FAITH) {
-					if (this.isEquippable() || ignoreRequirements) {
-						scaledAttack[AttackType.INCANTATION] = (1 + upgradeScaling * attrScaling) * 100;
-					} else {
-						scaledAttack[AttackType.INCANTATION] = 60;
-					}
-				} else if (scaledAttack[damageType] !== undefined) {
-					scaledAttack[damageType]! += elementBase;
-				}
-			}
-		}*/
 
 		return scaledAttack;
 	}

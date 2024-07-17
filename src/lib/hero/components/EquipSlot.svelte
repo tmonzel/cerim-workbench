@@ -76,7 +76,7 @@
       <div class="flex items-center mt-5 bg-red-600/20 justify-center text-red-400 rounded-md p-2 text-sm">
         <span class="mat-icon">warning</span>
         <span class="ms-1">
-          Item requirements not met. Penality applied.
+          Item requirements not met. Damage penality applied (-40%).
         </span>
       </div>
       {/if}

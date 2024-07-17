@@ -13,7 +13,7 @@
 
   <div class="flex gap-7">
     <div>
-      <div class="sticky top-5">
+      <div class="sticky top-5 z-10">
         <div class="px-4 sm:px-0 min-h-20">
           <h3 class="text-base font-semibold leading-7 text-white">Attributes</h3>
           <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-400/80">Spend attribute points to level up (1)</p>

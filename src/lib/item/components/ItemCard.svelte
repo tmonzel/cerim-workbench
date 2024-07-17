@@ -81,48 +81,23 @@
     {#if item instanceof AttackItem && item.scaling}
     <div class="mt-5 flex flex-wrap gap-x-5">
       {#if item.scaling.str}
-        <DamageScalingChart 
-          {item} 
-          attributeType={AttributeType.STRENGTH} 
-          showAttackTypes={item.scaling.str.attackTypes} 
-          attributeValue={item.appliedAttributes[AttributeType.STRENGTH] ?? 0}
-        />
+        <DamageScalingChart {item} attributeType={AttributeType.STRENGTH} />
       {/if}
 
       {#if item.scaling.dex}
-        <DamageScalingChart 
-          {item} 
-          attributeType={AttributeType.DEXTERITY} 
-          showAttackTypes={item.scaling.dex.attackTypes} 
-          attributeValue={item.appliedAttributes[AttributeType.DEXTERITY] ?? 0}
-        />
+        <DamageScalingChart {item} attributeType={AttributeType.DEXTERITY} />
       {/if}
 
       {#if item.scaling.int}
-        <DamageScalingChart 
-          {item} 
-          attributeType={AttributeType.INTELLIGENCE} 
-          showAttackTypes={item.scaling.int.attackTypes} 
-          attributeValue={item.appliedAttributes[AttributeType.INTELLIGENCE] ?? 0}
-        />
+        <DamageScalingChart {item} attributeType={AttributeType.INTELLIGENCE} />
       {/if}
 
       {#if item.scaling.fth}
-        <DamageScalingChart 
-          {item} 
-          attributeType={AttributeType.FAITH} 
-          showAttackTypes={item.scaling.fth.attackTypes} 
-          attributeValue={item.appliedAttributes[AttributeType.FAITH] ?? 0}
-        />
+        <DamageScalingChart {item} attributeType={AttributeType.FAITH} />
       {/if}
 
       {#if item.scaling.arc}
-        <DamageScalingChart 
-          {item} 
-          attributeType={AttributeType.ARCANE} 
-          showAttackTypes={item.scaling.arc.attackTypes} 
-          attributeValue={item.appliedAttributes[AttributeType.ARCANE] ?? 0}
-        />
+        <DamageScalingChart {item} attributeType={AttributeType.ARCANE} />
       {/if}
     </div>
     {/if}

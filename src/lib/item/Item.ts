@@ -1,18 +1,15 @@
 import {
 	AttributeType,
 	type DamageNegation,
+	type ModifierData,
+	type ModifierType,
 	type Resistance,
+	type SpEffect,
 	type UpgradeSchema
 } from '$lib/core/types';
+import { spEffectsMap } from '$lib/data';
 import { ItemModifier } from './ItemModifier';
-import type {
-	ItemCategory,
-	ItemConfig,
-	ItemData,
-	ItemModifierData,
-	ItemRarity,
-	ModifierType
-} from './types';
+import type { ItemCategory, ItemConfig, ItemData, ItemRarity } from './types';
 
 export abstract class Item {
 	readonly type: string;
@@ -36,6 +33,8 @@ export abstract class Item {
 	iconUrl?: string;
 	description?: string;
 	effects?: string[];
+
+	spEffects: SpEffect[] = [];
 
 	protected _appliedAttributes: Partial<Record<string, number>> = {};
 	protected _modified = false;
@@ -79,12 +78,24 @@ export abstract class Item {
 
 	setConfig(config: ItemConfig): void {
 		this.config = config;
+		this.modifiers = [];
+
+		if (config.effects) {
+			for (const id of config.effects) {
+				const effect = spEffectsMap.get(id);
+
+				if (effect && effect.modifiers) {
+					this.setModifiers(effect.modifiers);
+				}
+			}
+		}
+
 		this.update();
 	}
 
 	abstract update(): void;
 
-	setModifiers(modifiers: Record<ModifierType, ItemModifierData>): void {
+	setModifiers(modifiers: Partial<Record<ModifierType, ModifierData>>): void {
 		const newModifiers: ItemModifier[] = [];
 
 		for (const [type, data] of Object.entries(modifiers)) {
