@@ -13,7 +13,7 @@
 
 <div>
   {#if modifiedStats.length === 0}
-    <span class="inline-flex items-center text-sm rounded-md bg-teal-600/20 px-2 py-1 font-medium text-teal-500 ring-1 ring-inset ring-teal-500">
+    <span class="inline-flex items-center text-sm rounded-md bg-sky-500/20 px-2 py-1 font-medium text-sky-300 ">
       No modifiers applied
     </span>
   {/if}

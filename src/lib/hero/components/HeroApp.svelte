@@ -8,7 +8,7 @@
 
   export let hero: HeroState;
 </script>
-<div class="p-12">
+<div class="px-10 py-8">
   <Header {hero} />
 
   <div class="flex gap-7">
@@ -22,7 +22,7 @@
       </div>
     </div>
     
-    <div class="grow bg-zinc-800/20 rounded-xl p-5">
+    <div class="grow">
       <HeroBody {hero} />
     </div>
 

@@ -2,7 +2,6 @@ import { mutationRecord } from './records';
 import {
 	AffinityType,
 	AttributeType,
-	StatusEffectType,
 	type AttackCorrect,
 	type GraphMutation,
 	type SpEffect,
@@ -25,7 +24,7 @@ export type DataSchema = {
 	upgradeSchemata?: Record<string, UpgradeSchema>;
 	mutations?: Record<string, GraphMutation[]>;
 	attackCorrect?: Record<string, AttackCorrect>;
-	spEffects?: SpEffect;
+	spEffects?: Record<string, SpEffect>;
 };
 
 export type DataDefaults = {

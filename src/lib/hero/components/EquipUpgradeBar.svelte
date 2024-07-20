@@ -1,10 +1,13 @@
 <script lang="ts">
 	import Button from '$lib/components/Button.svelte';
 	import SelectControl from '$lib/components/SelectControl.svelte';
-	import type { AffinityType } from '$lib/core/types';
+	import { AffinityType } from '$lib/core/types';
 	import { AttackItem, itemStore, type Item } from '$lib/item';
+	import { affinityRecord } from '$lib/records';
 
   export let item: Item;
+
+  let availableAffinities: AffinityType[] = [];
 
   function upgrade(tier: number): void {
     item.upgrade(tier);
@@ -18,22 +21,33 @@
     }
   }
 
+  const affinityOptions = Object.entries(affinityRecord).map(entry => ({ name: entry[1].name, value: entry[0] }))
+
+  $: {
+    if(item instanceof AttackItem) {
+      availableAffinities = [...item.affinities.keys()] as AffinityType[];
+    }
+  }
+
 </script>
 <div class="flex gap-2">
-  {#if item instanceof AttackItem && item.affinities.size > 0}
+  {#if item instanceof AttackItem && availableAffinities.length > 0}
   <div class="flex">
-    <!--<span class="mat-icon me-1">construction</span>-->
     <SelectControl 
-      items={[{ name: "Standard", value: null }, ...item.getAvailableAffinities()]} 
-      noItemLabel="Standard" 
-      value={item.affinity} 
+      items={affinityOptions} 
+      value={item.affinity ?? AffinityType.STANDARD} 
       on:select={(e) => changeAffinity(e.detail)} 
-     />
-    <!--<ItemAffinitySelect 
-      value={item.affinity} 
-      on:affinityChange={(e) => changeAffinity(e.detail)}
-      selectableTypes
-    />-->
+      let:item={item}
+     >
+      <svelte:fragment slot="selected" let:selectedItem>
+        {#if selectedItem}
+        <img class="w-5 me-2" src={affinityRecord[selectedItem.value].iconUrl} alt="{item.name} Affinity Icon"/> {selectedItem.name}
+        {/if}
+        
+      </svelte:fragment>
+
+      <img class="w-5 me-2" src={affinityRecord[item.value].iconUrl} alt="{item.name} Affinity Icon"/> <span>{item.name}</span>
+     </SelectControl>
   </div>
   {/if}
 

@@ -1,11 +1,10 @@
 <script lang="ts">
 	import EquipUpgradeBar from './EquipUpgradeBar.svelte';
-	import { heroState } from '$lib/hero';
-	import ItemCard from '$lib/item/components/ItemCard.svelte';
 	import ItemSelectList from '$lib/item/components/ItemSelectList.svelte';
 	import { AttackItem, type Item } from '$lib/item';
 	import CheckboxControl from '$lib/components/CheckboxControl.svelte';
 	import type { HeroEquipSlot } from '../HeroEquipSlot';
+	import EquippedItemCard from '$lib/hero/components/EquippedItemCard.svelte';
 
   export let label: string;
   export let slot: HeroEquipSlot;
@@ -69,7 +68,7 @@
       </span>
 
       <div class="pt-3">
-        <ItemCard {item} />
+        <EquippedItemCard {item} />
       </div>
 
       {#if !item.isEquippable()}
@@ -92,12 +91,17 @@
   </button>
 </div>
 
-<dialog bind:this={selectionDialog} class="bg-neutral-900 me-0 mt-0 h-screen overflow-x-hidden overflow-y-scroll border-s border-zinc-800" style="min-width: 600px; scrollbar-width: thin; scrollbar-color: #444 transparent;">
-  <button type="button" class="fixed w-full top-0 left-0 right-0 bottom-0 bg-zinc-900/50" on:click={() => closeSelectionDialog()}>
+<dialog bind:this={selectionDialog} class="bg-neutral-900 me-0 mt-0 h-screen overflow-y-scroll border-s border-zinc-800" style="min-width: 600px; scrollbar-width: thin; scrollbar-color: #444 transparent;">
+  <button type="button" class="fixed w-full top-0 left-0 right-0 bottom-0 bg-zinc-900/50 backdrop-blur-sm flex items-center" on:click={() => closeSelectionDialog()}>
+    <!--{#if item}
+    <div style="margin-left:30%">
+      <img src={item.iconUrl} alt="Item icon" class="" style="width: 500px" />
+    </div>
+    {/if}-->
     <span class="sr-only">Close modal</span>
   </button> 
 
-  <div class="relative z-50 bg-neutral-800/30">
+  <div class="relative z-30 bg-neutral-800/30">
     <div class="text-stone-300 bg-neutral-800 text-xl p-2 flex justify-between items-center border-b border-zinc-700">
       <div class="p-4">
         Select <span class="font-semibold">{label}</span> Item

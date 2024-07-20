@@ -4,7 +4,6 @@
   export let items: { name: string; value: unknown }[] = []
   export let showMenu = false;
   export let value: unknown = null;
-  export let noItemLabel = 'Select item';
   export let compareWith = (v: unknown, v2: unknown) => v === v2; 
 
   let selectedItem: { name: string; value: unknown } | null = null;
@@ -28,14 +27,14 @@
   }
 </script>
 
-<div class="relative">
+<div class="relative z-30">
   <button 
     type="button" 
     class="relative w-full rounded-md p-1 bg-stone-700/50 pr-10 text-left focus:outline-none focus:ring-2 focus:ring-amber-300" aria-expanded={showMenu}
     on:click={() => showMenu = !showMenu}
     >
-    <span class="flex items-center">
-      <span class="ml-2 block">{selectedItem ? selectedItem.name : noItemLabel}</span>
+    <span class="flex items-center select-none ps-1">
+      <slot name="selected" {selectedItem} />
     </span>
     <span class="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2">
       <svg class="h-5 w-5 ring-amber-300" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -45,7 +44,7 @@
   </button>
 
   {#if showMenu}
-  <div class="absolute z-10 mt-1 p-1 rounded-md bg-zinc-900 flex flex-col gap-y-2" tabindex="-1" role="listbox">
+  <div class="absolute z-40 mt-2 p-1 -left-1 rounded-md bg-zinc-900 flex flex-col gap-y-2" tabindex="-1" role="listbox">
     {#each items as item, i}
     {@const selected = selectedItem === item}
     <button 
@@ -57,9 +56,9 @@
       class:bg-stone-800={selected}
       class:ring-2={selected}
     >
-      <div class="flex items-center">
+      <div class="flex items-center whitespace-nowrap">
         <!-- Selected: "font-semibold", Not Selected: "font-normal" -->
-        <span class="block truncate font-normal text-zinc-400">{item.name}</span>
+        <slot {item} />
       </div>
 
       <!--

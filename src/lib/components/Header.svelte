@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { createBuild } from '$lib/api';
+	import { calcNeededSouls } from '$lib/core';
 	import { sharedDataState, type HeroState } from '$lib/hero';
+	import { appState } from '$lib/state';
 	import Dialog from './Dialog.svelte';
 
   export let hero: HeroState;
@@ -35,13 +37,14 @@
 
 <header>
   <div class="flex justify-between">
-    <h1 class="text-4xl font-bold mb-8 dark:text-zinc-200">
+    <h1 class="text-3xl font-bold dark:text-zinc-200">
       <span>Tarnished</span> Creator
     </h1>
 
     <div class="leading-3 text-right">
       <span class="text-zinc-500 text-xs">Developed with <span class="mat-icon filled" style="font-size: 1.1em; transform: translateY(2px)">favorite</span> by Thomas Monzel</span><br>
-      <span class="text-zinc-600 text-xs">ELDEN RING is a trademark of FromSoftware.</span><br><br>
+      <span class="text-zinc-600 text-xs">ELDEN RING is a trademark of FromSoftware.</span><br>
+      <br>
 
       <a href="https://www.buymeacoffee.com/digitaleshandwerk" class="inline-block w-40" target="_blank">
         <img alt="Buy me a coffee button" src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=digitaleshandwerk&button_colour=FFDD00&font_colour=000000&font_family=Inter&outline_colour=000000&coffee_colour=ffffff" />
@@ -49,20 +52,20 @@
     </div>
   </div>
   
-  <div class="flex gap-20 mb-10 items-end">
+  <div class="flex gap-20 mb-3 items-end">
     <div>
-      <h3 class="text-lg text-zinc-500">Level</h3>
-      <p class="mt-2 text-5xl">{hero.level}</p>
+      <h3 class="text-md text-zinc-500">Level</h3>
+      <p class="mt-2 text-4xl">{hero.level}</p>
     </div>
 
     <div>
-      <h3 class="text-lg text-zinc-500">Attribute Points</h3>
-      <p class="mt-2 text-5xl">{hero.attributePoints}</p>
+      <h3 class="text-md text-zinc-500">Attribute Points</h3>
+      <p class="mt-2 text-4xl">{hero.attributePoints}</p>
     </div>
 
     <div>
-      <h3 class="text-lg text-zinc-500">Attack Power</h3>
-      <p class="mt-2 text-5xl">
+      <h3 class="text-md text-zinc-500">Attack Power</h3>
+      <p class="mt-2 text-4xl">
         {Math.round(hero.attack.getTotal() * 10) / 10}
       </p>
     </div>
@@ -84,8 +87,20 @@
     </div>
   </div>
 
-  <div class="my-10">
-    <hr class="h-1 bg-amber-300 border-amber-300 transition-all" style:width={hero.progress * 100 + "%"}>
+  <div class="relative mb-10">
+    
+    <div class="text-right transition-all" style:width={hero.progress * 100 + "%"}>
+      
+      <div class="font-light text-sm text-zinc-400 flex items-center mb-1 transition-opacity opacity-0" 
+        class:justify-end={hero.progress > 0.075} 
+        class:opacity-100={$appState.showAttributeInfo !== null}>
+        
+        {hero.souls}<span class="ms-1">(+{calcNeededSouls(hero.level + 1)})</span>
+        
+      </div>
+      
+      <hr class="h-1 bg-amber-300 border-amber-300 ">
+    </div>
     <hr class="opacity-30">
   </div>
 </header>

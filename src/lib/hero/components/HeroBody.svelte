@@ -2,9 +2,11 @@
 	import { ItemCategory } from '$lib/item/types';
 
 	import { Item, itemStore } from '$lib/item';
-	import { derived } from 'svelte/store';
+	import { derived, writable } from 'svelte/store';
 	import EquipSlot from './EquipSlot.svelte';
-	import { slotStore, type HeroState } from '$lib/hero';
+	import { slotStore, type HeroBodyState, type HeroState } from '$lib/hero';
+	import CheckboxControl from '$lib/components/CheckboxControl.svelte';
+	import { setContext } from 'svelte';
 	
   export let hero: HeroState;
 
@@ -46,9 +48,25 @@
     }
 
     return record;
-  })
+  });
+
+  const bodyState = writable<HeroBodyState>({
+    guardInfo: false,
+    scalingInfo: true,
+  });
+
+  setContext('bodyState', bodyState);
 </script>
-<div class="flex gap-5 justify-center">
+<div class="mb-5 flex justify-center gap-5">
+  <CheckboxControl bind:checked={$bodyState.guardInfo}>
+    Guard Info
+  </CheckboxControl>
+
+  <CheckboxControl bind:checked={$bodyState.scalingInfo}>
+    Scaling Info
+  </CheckboxControl>
+</div>
+<div class="flex gap-5 justify-center bg-zinc-800/30 rounded-xl p-5">
   <div class="flex flex-col gap-5" style="max-width: 52rem;">
     <EquipSlot 
       bind:slot={$slotStore.mainHand}

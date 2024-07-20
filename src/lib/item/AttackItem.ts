@@ -61,10 +61,11 @@ export class AttackItem extends Item {
 		}
 	}
 
-	getAvailableAffinities(): { name: string; value: string }[] {
+	getAvailableAffinities(): { name: string; value: AffinityType; iconUrl: string }[] {
 		return Array.from(this.affinities.keys()).map((key) => ({
 			name: affinityRecord[key].name,
-			value: key
+			value: key as AffinityType,
+			iconUrl: affinityRecord[key].iconUrl
 		}));
 	}
 
@@ -127,9 +128,13 @@ export class AttackItem extends Item {
 			}
 		}
 
-		this.statusEffects = {};
+		if (this.statusEffects) {
+			this.statusEffects = {};
+		}
 
 		if (this.config.effects) {
+			this.statusEffects = {};
+
 			for (const id of this.config.effects) {
 				const effect = spEffectsMap.get(id);
 

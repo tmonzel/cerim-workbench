@@ -5,16 +5,21 @@
 	import { sum } from '$lib/core';
 	import { AffinityType, AttributeType } from '$lib/core/types';
 	import { affinityRecord, itemTypeRecord } from '$lib/records';
-	import type { Item } from '../Item';
-	import ItemDamageNegationGrid from './ItemDamageNegationGrid.svelte';
-	import ItemGuardGrid from './ItemGuardGrid.svelte';
-	import ItemResistanceGrid from './ItemResistanceGrid.svelte';
-	import ItemModifierList from './ItemModifierList.svelte';
-	import ItemInfo from './ItemInfo.svelte';
-	import { AttackItem } from '../AttackItem';
-	import ItemRarityBadge from './ItemRarityBadge.svelte';
+	import type { Item } from '$lib/item/Item';
+	import ItemDamageNegationGrid from '$lib/item/components/ItemDamageNegationGrid.svelte';
+	import ItemGuardGrid from '$lib/item/components/ItemGuardGrid.svelte';
+	import ItemResistanceGrid from '$lib/item/components/ItemResistanceGrid.svelte';
+	import ItemModifierList from '$lib/item/components/ItemModifierList.svelte';
+	import ItemInfo from '$lib/item/components/ItemInfo.svelte';
+	import { AttackItem } from '$lib/item/AttackItem';
+	import ItemRarityBadge from '$lib/item/components/ItemRarityBadge.svelte';
+	import { getContext } from 'svelte';
+	import type { HeroBodyState } from '../types';
+	import type { Readable } from 'svelte/store';
 
   export let item: Item;
+
+  const bodyState = getContext<Readable<HeroBodyState>>('bodyState');
 
   let totalDamageNegation: number;
   
@@ -78,7 +83,7 @@
 
     <ItemInfo {item} invalidAttributes={item.invalidAttributes} />
 
-    {#if item instanceof AttackItem && item.scaling}
+    {#if item instanceof AttackItem && item.scaling && $bodyState.scalingInfo}
     <div class="mt-5 flex flex-wrap gap-x-5">
       {#if item.scaling.str}
         <DamageScalingChart {item} attributeType={AttributeType.STRENGTH} />
@@ -117,7 +122,7 @@
       </div>
       {/if}
 
-      {#if item instanceof AttackItem}
+      {#if item instanceof AttackItem && $bodyState.guardInfo}
       <div class="px-4 py-4 sm:grid sm:gap-2 sm:px-0">
         <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-300">Guard</dt>
         <dd><ItemGuardGrid guard={item.guard} /></dd>

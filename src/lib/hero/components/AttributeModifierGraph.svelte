@@ -38,12 +38,15 @@
 
 <div style="--vis-axis-grid-color: rgba(255, 255, 255, 0.1);" class="flex flex-col items-center">
   <div class="mb-2">
-    <VisXYContainer {data} height={150} width={250} duration={0} xDomain={[0, maxProgress]}>
+    <VisXYContainer {data} width={180} height={100} duration={0}>
       <VisLine {x} {y} color={() => '#fcd34d'} />
       <VisAxis type="x" tickValues={[0, 25, 50, 75, 100]} />
-      <VisAxis type="y" label={label} />
+      <VisAxis type="y" />
       <VisStackedBar barWidth={1} x={progress} y={currentValue} color={() => '#aaa'} />
     </VisXYContainer>
+  </div>
+  <div class="text-center text-sm text-zinc-300">
+    {label}
   </div>
   <div class="text-xs text-zinc-500 flex items-center justify-between">
     <span class="flex-1">{Math.round(currentValue * 10) / 10}</span>

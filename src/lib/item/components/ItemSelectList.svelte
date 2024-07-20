@@ -1,19 +1,34 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	import { writable } from 'svelte/store';
+	import { derived, writable } from 'svelte/store';
 	import type { Item } from '../Item';
 	import ItemListCard from './ItemListCard.svelte';
 	import SelectControl from '$lib/components/SelectControl.svelte';
 	import { itemGroupRecord } from '$lib/records';
+	import CheckboxControl from '$lib/components/CheckboxControl.svelte';
 
   export let items: Item[];
   export let selectedItemId: string | null = null;
 
   let groupSelectItems: { value: string; name: string }[] = [];
 
-  const searchInput = writable<string>('');
-  
-  let selectedGroup = writable<string | null>(null);
+  type FilterState = {
+    search: string,
+    scaling: Record<string, boolean>;
+  }
+
+  const selectedGroup = writable<string | null>(null);
+  const filters = writable<FilterState>({
+    search: '',
+    scaling: {
+      str: false,
+      dex: false,
+      int: false,
+      fth: false,
+      arc: false
+    }
+  })
+
   let availableGroups: string[] = [];
 
   $: {
@@ -39,14 +54,47 @@
     } else {
       selectedGroup.set(availableGroups[0]);
     }
-    
   }
 
-  $: filteredItems = items.filter(item => {
-    const isType = $selectedGroup ? item.group === $selectedGroup : true;
-    const isSearch = $searchInput !== '' ? item.name.toLowerCase().indexOf($searchInput.toLocaleLowerCase()) !== -1 : true;
-    
-    return isType && isSearch;
+  const groupedItems = derived(selectedGroup, (group) => {
+    return items.filter(item => item.group === group);
+  })
+
+  const filteredItems = derived([groupedItems, filters], ([items, f]) => {
+    return items.filter(item => {
+      const isSearch = f.search !== '' ? item.name.toLowerCase().indexOf(f.search.toLocaleLowerCase()) !== -1 : true;
+      
+      let isStrScaling = true;
+      let isDexScaling = true;
+      let isIntScaling = true;
+      let isFaithScaling = true;
+      let isArcaneScaling = true;
+
+      if(item.config && item.config.scaling) {
+        
+        if(f.scaling.str && item.config.scaling.str === undefined) {
+          isStrScaling = false;
+        }
+
+        if(f.scaling.dex && item.config.scaling.dex === undefined) {
+          isDexScaling = false;
+        }
+
+        if(f.scaling.int && item.config.scaling.int === undefined) {
+          isIntScaling = false;
+        }
+
+        if(f.scaling.fth && item.config.scaling.fth === undefined) {
+          isFaithScaling = false;
+        }
+
+        if(f.scaling.arc && item.config.scaling.arc === undefined) {
+          isArcaneScaling = false;
+        }
+      }
+      
+      return isSearch && isStrScaling && isDexScaling && isIntScaling && isFaithScaling && isArcaneScaling;
+    })
   });
 
   const dispatch = createEventDispatcher<{ selectItem: Item | null }>();
@@ -63,27 +111,62 @@
       <SelectControl  
         items={groupSelectItems} 
         bind:value={$selectedGroup} 
-      />
+        let:item
+      >
+        <svelte:fragment slot="selected" let:selectedItem>
+          {#if selectedItem}
+            {selectedItem.name}
+          {/if}
+        </svelte:fragment>
+
+        <span>{item.name}</span>
+      </SelectControl>
     </div>
     <!-- svelte-ignore a11y-autofocus -->
     <div class="grow">
       <input 
         type="text" 
-        class="bg-neutral-700/40 w-full shadow-md border-0 text-md text-zinc-300 rounded-lg focus:ring-2 focus:ring-stone-500 focus:border-stone-500" 
-        placeholder="Search items..."
-        bind:value={$searchInput}
+        class="bg-neutral-700/40 w-full py-1 shadow-md border-0 text-md text-zinc-300 rounded-lg focus:ring-2 focus:ring-stone-500 focus:border-stone-500" 
+        placeholder="Search {$selectedGroup}..."
+        bind:value={$filters.search}
         autofocus
       />
     </div>
   </div>
+  <div class="pt-2">
+    <div class="text-sm my-2 text-zinc-300">Attribute Scaling</div>
+    <div class="flex gap-5">
+      <CheckboxControl bind:checked={$filters.scaling.str}>
+        Strength
+      </CheckboxControl>
+      <CheckboxControl bind:checked={$filters.scaling.dex}>
+        Dexterity
+      </CheckboxControl>
+      <CheckboxControl bind:checked={$filters.scaling.int}>
+        Intelligence
+      </CheckboxControl>
+      <CheckboxControl bind:checked={$filters.scaling.fth}>
+        Faith
+      </CheckboxControl>
+      <CheckboxControl bind:checked={$filters.scaling.arc}>
+        Arcane
+      </CheckboxControl>
+    </div>
+  </div>
 </div>
 
-<ul class="flex flex-col p-5">
-  {#if filteredItems.length === 0}
-    <li class="text-white p-5">No items found for <span class="italic">"{$searchInput}"</span></li>
-  {/if}
+<div class="flex justify-end px-4 pt-4">
+  {$filteredItems.length} / {$groupedItems.length}
+</div>
 
-  {#each filteredItems as item}
+{#if $filteredItems.length === 0}
+<div class="text-sky-200 p-4 flex items-center rounded-lg bg-sky-900/50 m-4">
+  <span class="mat-icon me-2">warning</span>Sorry, no items found
+</div>
+{/if}
+<ul class="flex flex-col p-5">
+
+  {#each $filteredItems as item}
   <li>
     <button 
       type="button" 

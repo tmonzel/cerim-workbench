@@ -94,6 +94,7 @@ export enum AffinityType {
 export type Affinity = {
 	name: string;
 	schema: string;
+	iconUrl: string;
 };
 
 export type Resistance = Record<ResistanceType, number>;

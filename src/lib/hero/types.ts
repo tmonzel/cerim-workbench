@@ -17,8 +17,10 @@ export type SlotState = Record<keyof EquipState, HeroEquipSlot>;
 export type HeroState = {
 	level: number;
 	progress: number;
+	souls: number;
 	attributePoints: number;
 	equip: EquipState;
+	weightRatio: number;
 	effects: string[];
 	stats: DynamicStats;
 	attributes: DynamicAttributes;
@@ -41,6 +43,11 @@ export type EquipState = {
 	hand: Item | null;
 	mainHand: Item | null;
 	offHand: Item | null;
+};
+
+export type HeroBodyState = {
+	guardInfo: boolean;
+	scalingInfo: boolean;
 };
 
 export type HeroStateModifier = {

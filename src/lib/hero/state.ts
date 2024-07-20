@@ -6,6 +6,7 @@ import { slotStore } from './equip';
 import {
 	AffinityType,
 	calcCorrect,
+	calcNeededSouls,
 	DynamicAttack,
 	DynamicAttributes,
 	DynamicDamageNegation,
@@ -16,14 +17,13 @@ import {
 	list
 } from '$lib/core';
 import type { DataDefaults } from '$lib/data';
-import { appState } from '$lib/state';
 import { attributeRecord } from '$lib/records';
+import { HERO_MAX_LEVEL } from '$lib/config';
 
 export const heroState = derived(
-	[attributeStore, slotStore, appState, itemStore],
-	([attributes, slots, app, items]) => {
-		const numDistributedPoints = Object.values(attributes).reduce((p, c) => p + c, 0);
-		const level = Math.floor(numDistributedPoints / app.attributePointsPerLevel);
+	[attributeStore, slotStore, itemStore],
+	([attributes, slots, items]) => {
+		const level = Object.values(attributes).reduce((p, c) => p + c, 0);
 
 		const equip: EquipState = {
 			rune: null,
@@ -61,13 +61,20 @@ export const heroState = derived(
 			{ breakpoint: 792, grow: 180 }
 		]);
 
+		const souls = [...Array<number>(level)].reduce(
+			(p, c, index) => p + Math.floor(calcNeededSouls(index + 1)),
+			0
+		);
+
 		const hero: HeroState = {
 			level,
-			progress: level / app.maxLevel,
-			attributePoints: app.attributePointsPerLevel * app.maxLevel - numDistributedPoints,
+			progress: level / HERO_MAX_LEVEL,
+			souls,
+			attributePoints: HERO_MAX_LEVEL - level,
 			stats: new DynamicStats(),
 			equip,
 			effects: [],
+			weightRatio: 0,
 			attributes: new DynamicAttributes(attributes),
 			attack: new DynamicAttack(),
 
@@ -162,33 +169,47 @@ export const heroState = derived(
 			}
 		}
 
+		hero.weightRatio = (hero.stats.get('weight') * 100) / hero.stats.get('equipLoad');
+
 		return hero;
 	}
 );
 
-export const sharedDataState = derived([attributeStore, itemStore], ([attributes, items]) => {
-	const itemModifications: Record<string, { affinity?: AffinityType; tier?: number }> = {};
+export const sharedDataState = derived(
+	[attributeStore, itemStore, slotStore],
+	([attributes, items, slots]) => {
+		const itemModifications: Record<string, { affinity?: AffinityType; tier?: number }> = {};
 
-	for (const item of Object.values(items)) {
-		if (!item.modified) {
-			continue;
+		for (const item of Object.values(items)) {
+			if (!item.modified) {
+				continue;
+			}
+
+			const mod: { affinity?: AffinityType; tier?: number } = {};
+
+			if (item instanceof AttackItem && item.affinity) {
+				mod.affinity = item.affinity;
+			}
+
+			if (item.tier > 0) {
+				mod.tier = item.tier;
+			}
+
+			itemModifications[item.id] = mod;
 		}
 
-		const mod: { affinity?: AffinityType; tier?: number } = {};
+		const equip: Record<string, string> = {};
 
-		if (item instanceof AttackItem && item.affinity) {
-			mod.affinity = item.affinity;
+		for (const [slotName, slot] of Object.entries(slots)) {
+			if (slot.selectedItemId && items[slot.selectedItemId]) {
+				equip[slotName] = slot.selectedItemId;
+			}
 		}
 
-		if (item.tier > 0) {
-			mod.tier = item.tier;
-		}
-
-		itemModifications[item.id] = mod;
+		return {
+			attributes,
+			itemModifications,
+			equip
+		} satisfies DataDefaults;
 	}
-
-	return {
-		attributes,
-		itemModifications
-	} satisfies DataDefaults;
-});
+);
