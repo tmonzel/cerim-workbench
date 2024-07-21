@@ -5,6 +5,7 @@ import { attributeStore } from './attributes';
 import { slotStore } from './equip';
 import {
 	AffinityType,
+	AttackType,
 	AttributeType,
 	calcCorrect,
 	calcNeededSouls,
@@ -21,10 +22,11 @@ import type { DataDefaults } from '$lib/data';
 import { attributeRecord, heroTypeRecord } from '$lib/records';
 import { HERO_MAX_LEVEL } from '$lib/config';
 import { selectedHeroType } from './stores';
+import { appState } from '$lib/state';
 
 export const heroState = derived(
-	[selectedHeroType, attributeStore, slotStore, itemStore],
-	([heroType, attributeState, slots, items]) => {
+	[selectedHeroType, attributeStore, slotStore, itemStore, appState],
+	([heroType, attributeState, slots, items, config]) => {
 		const equip: EquipState = {
 			rune: null,
 			pouch: null,
@@ -81,7 +83,10 @@ export const heroState = derived(
 			effects: [],
 			weightRatio: 0,
 			attributes,
-			attack: new DynamicAttack(),
+			attack: {
+				mainHand: new DynamicAttack(),
+				offHand: new DynamicAttack()
+			},
 
 			resistance: new DynamicResistance({
 				immunity: baseResistance,
@@ -165,17 +170,27 @@ export const heroState = derived(
 
 			if (item instanceof AttackItem) {
 				if (slot.useWithTwoHands) {
-					hero.equip[part] = item.applyAttributes({
+					item.applyAttributes({
 						...totalAttributes,
 						str: totalAttributes.str * 1.5
 					});
+					item.scaleAttack(config.excludeStaminaFromAttackCalc ? [AttackType.STAMINA] : []);
+
+					hero.equip[part] = item;
 				} else {
-					hero.equip[part] = item.applyAttributes(totalAttributes);
+					item.applyAttributes(totalAttributes);
+					item.scaleAttack(config.excludeStaminaFromAttackCalc ? [AttackType.STAMINA] : []);
+
+					hero.equip[part] = item;
 				}
 
 				if (item.scaledAttack) {
 					for (const damage of list(item.scaledAttack)) {
-						hero.attack.add({ [damage.key]: item.scaledAttack[damage.key] });
+						if (part === 'mainHand') {
+							hero.attack.mainHand.add({ [damage.key]: item.scaledAttack[damage.key] });
+						} else if (part === 'offHand') {
+							hero.attack.offHand.add({ [damage.key]: item.scaledAttack[damage.key] });
+						}
 					}
 				}
 			} else {

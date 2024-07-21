@@ -40,12 +40,21 @@
   {#if activeTab === 'general'}
   <dl class="divide-y divide-gray-100/20">
     <div class="px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-      <dt class="text-sm font-medium leading-6 text-zinc-500">Attack</dt>
+      <dt class="text-sm font-medium leading-6 text-zinc-400">Attack<br><span class="text-xs">Mainhand</span></dt>
       <dd class="mt-1 text-sm leading-6 sm:col-span-2 sm:mt-0">
         <div class="mb-2 font-semibold">
-          {Math.round(hero.attack.getTotal() * 10) / 10}
+          {Math.round(hero.attack.mainHand.getTotal() * 10) / 10}
         </div>
-        <DamageDistBar attack={hero.attack} />
+        <DamageDistBar attack={hero.attack.mainHand} />
+      </dd>
+    </div>
+    <div class="px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+      <dt class="text-sm font-medium leading-6 text-zinc-400">Attack<br><span class="text-xs">Offhand</span></dt>
+      <dd class="mt-1 text-sm leading-6 sm:col-span-2 sm:mt-0">
+        <div class="mb-2 font-semibold">
+          {Math.round(hero.attack.offHand.getTotal() * 10) / 10}
+        </div>
+        <DamageDistBar attack={hero.attack.offHand} />
       </dd>
     </div>
     <div class="px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">

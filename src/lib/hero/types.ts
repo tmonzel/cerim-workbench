@@ -25,7 +25,10 @@ export type HeroState = {
 	effects: string[];
 	stats: DynamicStats;
 	attributes: DynamicAttributes;
-	attack: DynamicAttack;
+	attack: {
+		mainHand: DynamicAttack;
+		offHand: DynamicAttack;
+	};
 	resistance: DynamicResistance;
 	defense: DynamicDefense;
 	damageNegation: DynamicDamageNegation;

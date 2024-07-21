@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { DynamicNumber } from '$lib/core';
 	import { heroState, type HeroAttribute } from '$lib/hero';
-	import { appState } from '$lib/state';
+	import { uiState } from '$lib/state';
 	import { createEventDispatcher } from 'svelte';
 	import AttributeModifierGraph from './AttributeModifierGraph.svelte';
 
@@ -16,7 +16,7 @@
   let total = 0;
 
   $: {
-    $appState.showAttributeInfo = showTooltip ? attribute.name : null;
+    $uiState.showAttributeInfo = showTooltip ? attribute.name : null;
   }
 
   $: total = base + value.total;

@@ -9,14 +9,14 @@
   $: statMods = hero.stats.getModifiedValues();
   $: resistanceMods = hero.resistance.getModifiedValues();
   $: damageNegationMods = hero.damageNegation.getModifiedValues();
-  $: attackMods = hero.attack.getModifiedValues();
+  $: attackMods = hero.attack.mainHand.getModifiedValues();
 
   $: {
     allModifications = [...statMods, ...resistanceMods, ...damageNegationMods, ...attackMods];
   }
 </script>
 
-<div>
+<div class="rounded bg-indigo-600/10 text-indigo-400 p-4">
   {#if allModifications.length === 0}
     <span class="inline-flex items-center text-sm rounded-md bg-sky-500/20 px-2 py-1 font-medium text-sky-300 ">
       No modifiers applied
@@ -41,10 +41,10 @@
 
   {#if hero.effects.length > 0}
   <div>
-    <p class="text-sm font-medium mb-1">Effects</p>
+    <p class="text-sm font-medium mb-1 text-zinc-200">Effects</p>
     <ul class="list-disc ps-4">
     {#each hero.effects as effect}
-      <li class="text-sm text-zinc-500 mb-2">{effect}</li>
+      <li class="text-sm mb-2">{effect}</li>
     {/each}
     </ul>
   </div>

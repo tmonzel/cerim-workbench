@@ -89,14 +89,6 @@ export class AttackItem extends Item {
 		this.setConfig(config);
 	}
 
-	override applyAttributes(attributes: Partial<Record<string, number>>): this {
-		super.applyAttributes(attributes);
-
-		this.scaledAttack = this.calculateScaledAttack();
-
-		return this;
-	}
-
 	update(): void {
 		if (!this.config) {
 			return;
@@ -302,7 +294,7 @@ export class AttackItem extends Item {
 		return attack;
 	}
 
-	calculateScaledAttack(ignoreRequirements: boolean = false): Attack {
+	scaleAttack(excludeAttackTypes?: AttackType[]): void {
 		const scaledAttack: Attack = {};
 
 		for (const attackType of Object.values(AttackType)) {
@@ -316,12 +308,13 @@ export class AttackItem extends Item {
 				continue;
 			}
 
+			if (excludeAttackTypes && excludeAttackTypes.includes(attackType)) {
+				continue;
+			}
+
 			let scalingTotal = 1;
 
-			if (
-				this.invalidAttributes.some((attr) => this.scaling![attr] !== undefined) &&
-				!ignoreRequirements
-			) {
+			if (this.invalidAttributes.some((attr) => this.scaling![attr] !== undefined)) {
 				scalingTotal = 0.6;
 			} else {
 				for (const attrType of Object.keys(this.scaling) as AttributeType[]) {
@@ -342,6 +335,6 @@ export class AttackItem extends Item {
 			}
 		}
 
-		return scaledAttack;
+		this.scaledAttack = scaledAttack;
 	}
 }

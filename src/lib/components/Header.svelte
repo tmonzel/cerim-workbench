@@ -4,7 +4,8 @@
 	import { sharedDataState, type HeroState } from '$lib/hero';
 	import { selectedHeroType } from '$lib/hero/stores';
 	import { heroTypeRecord } from '$lib/records';
-	import { appState } from '$lib/state';
+	import { appState, uiState } from '$lib/state';
+	import CheckboxControl from './CheckboxControl.svelte';
 	import Dialog from './Dialog.svelte';
 	import SelectControl from './SelectControl.svelte';
 
@@ -47,9 +48,8 @@
     </h1>
 
     <div class="leading-3 text-right">
-      <span class="text-zinc-500 text-xs">Developed with <span class="mat-icon filled" style="font-size: 1.1em; transform: translateY(2px)">favorite</span> by Thomas Monzel</span><br>
-      <span class="text-zinc-600 text-xs">ELDEN RING is a trademark of FromSoftware.</span><br>
-      <br>
+      <p class="text-zinc-500 text-xs">Developed with <span class="mat-icon filled" style="font-size: 1.1em; transform: translateY(2px)">favorite</span> by Thomas Monzel <span>(v0.10)</span></p>
+      <p class="text-zinc-600 text-xs mb-3">ELDEN RING is a trademark of FromSoftware.</p>
 
       <a href="https://www.buymeacoffee.com/digitaleshandwerk" class="inline-block w-40" target="_blank">
         <img alt="Buy me a coffee button" src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=digitaleshandwerk&button_colour=FFDD00&font_colour=000000&font_family=Inter&outline_colour=000000&coffee_colour=ffffff" />
@@ -84,13 +84,18 @@
     </div>
 
     <div>
-      <h3 class="text-md text-zinc-500 mb-2">Attack Power</h3>
+      <h3 class="text-md text-zinc-500 mb-2">Attack Power (Mainhand/Offhand)</h3>
       <p class="text-4xl">
-        {Math.round(hero.attack.getTotal() * 10) / 10}
+        {Math.round(hero.attack.mainHand.getTotal() * 10) / 10} / {Math.round(hero.attack.offHand.getTotal() * 10) / 10}
       </p>
     </div>
 
     <div class="ml-auto flex items-end">
+      <div class="me-10 max-w-44">
+        <CheckboxControl bind:checked={$appState.excludeStaminaFromAttackCalc}>
+          Exclude Stamina from total attack damage
+        </CheckboxControl>
+      </div>
       <div>
         <button 
         type="button" 
@@ -114,7 +119,7 @@
       
       <div class="font-light text-sm text-zinc-400 flex items-center mb-1 transition-opacity opacity-0" 
         class:justify-end={hero.progress > 0.075} 
-        class:opacity-100={$appState.showAttributeInfo !== null}>
+        class:opacity-100={$uiState.showAttributeInfo !== null}>
         
         {hero.souls.toLocaleString()}<span class="ms-1">(+{calcNeededSouls(hero.level).toLocaleString()})</span>
       </div>

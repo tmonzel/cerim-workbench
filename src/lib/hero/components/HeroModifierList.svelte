@@ -28,7 +28,7 @@
 </script>
 
 <div>
-  <h3 class="text-sm">
+  <h3 class="text-sm text-zinc-200">
     {label}
   </h3>
   <dl class="divide-y divide-gray-100/20 mb-4">
@@ -37,8 +37,8 @@
   
       {#if value.offset > 0}
         <div class="py-2 sm:grid sm:grid-cols-2 sm:gap-4 sm:px-0">
-          <dt class="text-sm font-medium leading-6 text-zinc-500">{defs[mod.key].name}</dt>
-          <dd class="mt-1 text-sm leading 6 sm:col-span-1 sm:mt-0">
+          <dt class="text-sm font-medium leading-6">{defs[mod.key].name}</dt>
+          <dd class="mt-1 text-sm font-bold leading-6 sm:col-span-1 sm:mt-0">
             +{value.offset}
           </dd>
         </div>
@@ -46,8 +46,8 @@
   
       {#if value.multiplier !== 1}
         <div class="py-2 sm:grid sm:grid-cols-2 sm:gap-4 sm:px-0">
-          <dt class="text-sm font-medium leading-6 text-zinc-500">{defs[mod.key].name}</dt>
-          <dd class="mt-1 text-sm leading 6 sm:col-span-1 sm:mt-0">
+          <dt class="text-sm font-medium leading-6">{defs[mod.key].name}</dt>
+          <dd class="mt-1 text-sm font-bold leading-6 sm:col-span-1 sm:mt-0">
             {#if type === 'damageNegation'}
               {#if value.multiplier < 0}+{/if}{Math.round((1 - value.multiplier) * 100)}%
             {:else}
@@ -61,8 +61,8 @@
       {#if value.totalMultiplier !== 1}
         {@const percentage = value.totalMultiplier - 1}
         <div class="py-2 sm:grid sm:grid-cols-2 sm:gap-4 sm:px-0">
-          <dt class="text-sm font-medium leading-6 text-zinc-500">Total {defs[mod.key].name}</dt>
-          <dd class="mt-1 text-sm leading 6 sm:col-span-1 sm:mt-0">
+          <dt class="text-sm font-medium leading-6">Total {defs[mod.key].name}</dt>
+          <dd class="mt-1 text-sm font-bold leading-6 sm:col-span-1 sm:mt-0">
             {#if percentage > 0}+{/if}{Math.round(percentage * 100)}%
           </dd>
         </div>
