@@ -11,9 +11,12 @@
   
   /** 
    * TODOS FOR RELEASE
-   * - Attribute info graphs with next level increase info
+   * - Show SpEffects/Passives from items in item list
    * - Split L1 und L2 Damage
-   * - Next Rune level info
+   * - No weapon equipped deals also damage (fist)
+   * - Show SpEffect icons
+   * - PVP Data Switch
+   * - Exclude Stamina Damage switch
    * - Next Weapon Upgrade info
    * - Check share your build feature and item ids
    * - Mobile optimizations (Hide modifiers on smaller screen sizes)
@@ -21,15 +24,10 @@
 
   // TODOS
   // Implement local storage
-  // Weapon Status effects: hemorrhage, frostbite,poison
-  // UI: Little white gradient shine from top
-  // UI: Show weapon damage types
   // UI: Scrolling Header
   // UI: Compact mode for equipslots (3 modes maybe)
 
   // Damage Negation => 50 + (base negation) / 2. ()
-
-  // ADD RUNE LEVEL DEFENSE SCALE
 
   /**
    * RITUAL SHIELD TALISMAN

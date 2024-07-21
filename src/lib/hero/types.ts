@@ -15,6 +15,7 @@ import type { AttributeModifier } from './modifiers';
 export type SlotState = Record<keyof EquipState, HeroEquipSlot>;
 
 export type HeroState = {
+	type: HeroType;
 	level: number;
 	progress: number;
 	souls: number;
@@ -29,6 +30,12 @@ export type HeroState = {
 	defense: DynamicDefense;
 	damageNegation: DynamicDamageNegation;
 	guard: DynamicGuard;
+};
+
+export type HeroType = {
+	name: string;
+	level: number;
+	attributes: Record<AttributeType, number>;
 };
 
 export type EquipState = {

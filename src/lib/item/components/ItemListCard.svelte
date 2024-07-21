@@ -23,7 +23,7 @@
         <div class="mb-1">
           <ItemRarityBadge rarity={item.rarity} />
         </div>
-        <p class="text-lg font-medium leading-5 text-zinc-300">
+        <p class="text-lg font-medium leading-5">
           {#if item instanceof AttackItem && item.affinity && item.affinity !== AffinityType.STANDARD}
             <span class="font-bold">{affinityRecord[item.affinity].name}</span>
           {/if} 
@@ -54,7 +54,7 @@
 
     {#if item.damageNegation}
       <div class="px-4 py-4 sm:px-0">
-        <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-300 mb-2">Damage Negation</dt>
+        <dt class="text-sm font-medium leading-6 text-zinc-300 mb-2">Damage Negation</dt>
         <dd><ItemDamageNegationGrid damageNegation={item.damageNegation} /></dd>
       </div>
     {/if}

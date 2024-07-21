@@ -2,12 +2,17 @@
 	import { createBuild } from '$lib/api';
 	import { calcNeededSouls } from '$lib/core';
 	import { sharedDataState, type HeroState } from '$lib/hero';
+	import { selectedHeroType } from '$lib/hero/stores';
+	import { heroTypeRecord } from '$lib/records';
 	import { appState } from '$lib/state';
 	import Dialog from './Dialog.svelte';
+	import SelectControl from './SelectControl.svelte';
 
   export let hero: HeroState;
 
   let sharedResultDialog: Dialog;
+
+  const heroTypeItems = Object.entries(heroTypeRecord).map(t => ({ name: t[1].name, value: t[0] }))
 
   /*function importData() {
     let input = document.createElement('input');
@@ -52,26 +57,42 @@
     </div>
   </div>
   
-  <div class="flex gap-20 mb-3 items-end">
+  <div class="flex gap-20 mb-3">
     <div>
-      <h3 class="text-md text-zinc-500">Level</h3>
-      <p class="mt-2 text-4xl">{hero.level}</p>
+      <h3 class="text-md text-zinc-500 mb-2">Class</h3>
+      <div class="text-lg">
+        <SelectControl items={heroTypeItems} bind:value={$selectedHeroType} let:item>
+          <svelte:fragment slot="selected" let:selectedItem>
+            {#if selectedItem}
+              {selectedItem.name}
+            {/if}
+          </svelte:fragment>
+  
+          {item.name}
+        </SelectControl>
+      </div>
     </div>
 
     <div>
-      <h3 class="text-md text-zinc-500">Attribute Points</h3>
-      <p class="mt-2 text-4xl">{hero.attributePoints}</p>
+      <h3 class="text-md text-zinc-500 mb-2">Level</h3>
+      <p class="text-4xl">{hero.level}</p>
     </div>
 
     <div>
-      <h3 class="text-md text-zinc-500">Attack Power</h3>
-      <p class="mt-2 text-4xl">
+      <h3 class="text-md text-zinc-500 mb-2">Attribute Points</h3>
+      <p class="text-4xl">{hero.attributePoints}</p>
+    </div>
+
+    <div>
+      <h3 class="text-md text-zinc-500 mb-2">Attack Power</h3>
+      <p class="text-4xl">
         {Math.round(hero.attack.getTotal() * 10) / 10}
       </p>
     </div>
 
-    <div class="ml-auto">
-      <button 
+    <div class="ml-auto flex items-end">
+      <div>
+        <button 
         type="button" 
         class="px-3 py-2 font-medium border-2 rounded-xl flex items-center disabled:text-zinc-500 disabled:border-zinc-500 group"
         disabled={creatingUrl}
@@ -84,19 +105,18 @@
           {/if}
           <span>Share your build</span>
       </button>
+      </div>
     </div>
   </div>
 
   <div class="relative mb-10">
-    
     <div class="text-right transition-all" style:width={hero.progress * 100 + "%"}>
       
       <div class="font-light text-sm text-zinc-400 flex items-center mb-1 transition-opacity opacity-0" 
         class:justify-end={hero.progress > 0.075} 
         class:opacity-100={$appState.showAttributeInfo !== null}>
         
-        {hero.souls}<span class="ms-1">(+{calcNeededSouls(hero.level + 1)})</span>
-        
+        {hero.souls.toLocaleString()}<span class="ms-1">(+{calcNeededSouls(hero.level).toLocaleString()})</span>
       </div>
       
       <hr class="h-1 bg-amber-300 border-amber-300 ">

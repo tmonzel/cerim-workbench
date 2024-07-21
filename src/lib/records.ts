@@ -7,10 +7,162 @@ import {
 	type GraphMutation,
 	type Stat
 } from './core/types';
-import type { HeroAttribute } from './hero';
+import type { HeroAttribute, HeroType } from './hero';
 import { AttributeModifier } from './hero/modifiers';
 
 export const mutationRecord: Record<string, GraphMutation[]> = {};
+
+export const heroTypeRecord: Record<string, HeroType> = {
+	hero: {
+		name: 'Hero',
+		level: 7,
+		attributes: {
+			[AttributeType.VIGOR]: 14,
+			[AttributeType.ENDURANCE]: 12,
+			[AttributeType.STRENGTH]: 16,
+			[AttributeType.DEXTERITY]: 9,
+			[AttributeType.MIND]: 9,
+			[AttributeType.INTELLIGENCE]: 7,
+			[AttributeType.FAITH]: 8,
+			[AttributeType.ARCANE]: 11
+		}
+	},
+
+	bandit: {
+		name: 'Bandit',
+		level: 5,
+		attributes: {
+			[AttributeType.VIGOR]: 10,
+			[AttributeType.ENDURANCE]: 10,
+			[AttributeType.STRENGTH]: 9,
+			[AttributeType.DEXTERITY]: 13,
+			[AttributeType.MIND]: 11,
+			[AttributeType.INTELLIGENCE]: 9,
+			[AttributeType.FAITH]: 8,
+			[AttributeType.ARCANE]: 14
+		}
+	},
+
+	astrologer: {
+		name: 'Astrologer',
+		level: 6,
+		attributes: {
+			[AttributeType.VIGOR]: 9,
+			[AttributeType.ENDURANCE]: 9,
+			[AttributeType.STRENGTH]: 8,
+			[AttributeType.DEXTERITY]: 12,
+			[AttributeType.MIND]: 15,
+			[AttributeType.INTELLIGENCE]: 16,
+			[AttributeType.FAITH]: 7,
+			[AttributeType.ARCANE]: 9
+		}
+	},
+
+	warrior: {
+		name: 'Warrior',
+		level: 8,
+		attributes: {
+			[AttributeType.VIGOR]: 11,
+			[AttributeType.ENDURANCE]: 11,
+			[AttributeType.STRENGTH]: 10,
+			[AttributeType.DEXTERITY]: 16,
+			[AttributeType.MIND]: 12,
+			[AttributeType.INTELLIGENCE]: 10,
+			[AttributeType.FAITH]: 8,
+			[AttributeType.ARCANE]: 9
+		}
+	},
+
+	prisoner: {
+		name: 'Prisoner',
+		level: 9,
+		attributes: {
+			[AttributeType.VIGOR]: 11,
+			[AttributeType.ENDURANCE]: 11,
+			[AttributeType.STRENGTH]: 11,
+			[AttributeType.DEXTERITY]: 14,
+			[AttributeType.MIND]: 12,
+			[AttributeType.INTELLIGENCE]: 14,
+			[AttributeType.FAITH]: 6,
+			[AttributeType.ARCANE]: 9
+		}
+	},
+
+	confessor: {
+		name: 'Confessor',
+		level: 10,
+		attributes: {
+			[AttributeType.VIGOR]: 10,
+			[AttributeType.ENDURANCE]: 10,
+			[AttributeType.STRENGTH]: 12,
+			[AttributeType.DEXTERITY]: 12,
+			[AttributeType.MIND]: 13,
+			[AttributeType.INTELLIGENCE]: 9,
+			[AttributeType.FAITH]: 14,
+			[AttributeType.ARCANE]: 9
+		}
+	},
+
+	wretch: {
+		name: 'Wretch',
+		level: 1,
+		attributes: {
+			[AttributeType.VIGOR]: 10,
+			[AttributeType.ENDURANCE]: 10,
+			[AttributeType.STRENGTH]: 10,
+			[AttributeType.DEXTERITY]: 10,
+			[AttributeType.MIND]: 10,
+			[AttributeType.INTELLIGENCE]: 10,
+			[AttributeType.FAITH]: 10,
+			[AttributeType.ARCANE]: 10
+		}
+	},
+
+	vagabond: {
+		name: 'Vagabond',
+		level: 9,
+		attributes: {
+			[AttributeType.VIGOR]: 15,
+			[AttributeType.ENDURANCE]: 11,
+			[AttributeType.STRENGTH]: 14,
+			[AttributeType.DEXTERITY]: 13,
+			[AttributeType.MIND]: 10,
+			[AttributeType.INTELLIGENCE]: 9,
+			[AttributeType.FAITH]: 9,
+			[AttributeType.ARCANE]: 7
+		}
+	},
+
+	prophet: {
+		name: 'Prophet',
+		level: 7,
+		attributes: {
+			[AttributeType.VIGOR]: 10,
+			[AttributeType.ENDURANCE]: 8,
+			[AttributeType.STRENGTH]: 11,
+			[AttributeType.DEXTERITY]: 10,
+			[AttributeType.MIND]: 14,
+			[AttributeType.INTELLIGENCE]: 7,
+			[AttributeType.FAITH]: 16,
+			[AttributeType.ARCANE]: 10
+		}
+	},
+
+	samurai: {
+		name: 'Samurai',
+		level: 9,
+		attributes: {
+			[AttributeType.VIGOR]: 12,
+			[AttributeType.ENDURANCE]: 13,
+			[AttributeType.STRENGTH]: 12,
+			[AttributeType.DEXTERITY]: 15,
+			[AttributeType.MIND]: 11,
+			[AttributeType.INTELLIGENCE]: 9,
+			[AttributeType.FAITH]: 8,
+			[AttributeType.ARCANE]: 8
+		}
+	}
+};
 
 export const attributeRecord: Record<string, HeroAttribute> = {
 	[AttributeType.VIGOR]: {
@@ -24,6 +176,15 @@ export const attributeRecord: Record<string, HeroAttribute> = {
 					{ breakpoint: 40, grow: 1450, exp: -1.2 },
 					{ breakpoint: 60, grow: 1900, exp: -1.2 },
 					{ breakpoint: 99, grow: 2100 }
+				]
+			},
+			resistance: {
+				immunity: [
+					{ breakpoint: 0, grow: 0 },
+					{ breakpoint: 30, grow: 0 },
+					{ breakpoint: 40, grow: 30 },
+					{ breakpoint: 60, grow: 40 },
+					{ breakpoint: 99, grow: 50 }
 				]
 			},
 			defense: {
@@ -56,6 +217,15 @@ export const attributeRecord: Record<string, HeroAttribute> = {
 					{ breakpoint: 25, grow: 72, exp: 1.1 },
 					{ breakpoint: 60, grow: 120 },
 					{ breakpoint: 99, grow: 160 }
+				]
+			},
+			resistance: {
+				robustness: [
+					{ breakpoint: 0, grow: 0 },
+					{ breakpoint: 30, grow: 0 },
+					{ breakpoint: 40, grow: 30 },
+					{ breakpoint: 60, grow: 40 },
+					{ breakpoint: 99, grow: 50 }
 				]
 			}
 		})
@@ -115,6 +285,15 @@ export const attributeRecord: Record<string, HeroAttribute> = {
 					{ breakpoint: 60, grow: 350 },
 					{ breakpoint: 99, grow: 450 }
 				]
+			},
+			resistance: {
+				focus: [
+					{ breakpoint: 0, grow: 0 },
+					{ breakpoint: 30, grow: 0 },
+					{ breakpoint: 40, grow: 30 },
+					{ breakpoint: 60, grow: 40 },
+					{ breakpoint: 99, grow: 50 }
+				]
 			}
 		})
 	},
@@ -151,6 +330,15 @@ export const attributeRecord: Record<string, HeroAttribute> = {
 					{ breakpoint: 40, grow: 30 },
 					{ breakpoint: 60, grow: 40 },
 					{ breakpoint: 99, grow: 50 }
+				]
+			},
+			defense: {
+				hol: [
+					{ breakpoint: 0, grow: 0 },
+					{ breakpoint: 20, grow: 40 },
+					{ breakpoint: 35, grow: 50 },
+					{ breakpoint: 60, grow: 60 },
+					{ breakpoint: 99, grow: 70 }
 				]
 			},
 			stats: {

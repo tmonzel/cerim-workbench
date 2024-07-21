@@ -11,7 +11,8 @@ export enum StatType {
 	DISCOVERY = 'discovery',
 	WEIGHT = 'weight',
 	EQUIP_LOAD = 'equipLoad',
-	ATTACK_SPEED = 'attackSpeed'
+	ATTACK_SPEED = 'attackSpeed',
+	POISE = 'poise'
 }
 
 export enum DamageType {
@@ -63,7 +64,7 @@ export enum StatusEffectType {
 	MADNESS = 'mad'
 }
 
-export type ResistanceType = 'immunity' | 'robustness' | 'focus' | 'vitality' | 'poise';
+export type ResistanceType = 'immunity' | 'robustness' | 'focus' | 'vitality';
 
 export enum GuardType {
 	PHYSICAL = 'phy',
@@ -119,6 +120,7 @@ export type ModifierType = 'flat' | 'percentual';
 export type ModifierData = Record<string, ModifierConfig>;
 export type ModifierConfig = {
 	name?: string;
+	multiplier?: 'offset' | 'total';
 	modify: Record<string, number>;
 };
 

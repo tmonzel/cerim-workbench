@@ -5,6 +5,7 @@ import { attributeStore } from './attributes';
 import { slotStore } from './equip';
 import {
 	AffinityType,
+	AttributeType,
 	calcCorrect,
 	calcNeededSouls,
 	DynamicAttack,
@@ -17,14 +18,13 @@ import {
 	list
 } from '$lib/core';
 import type { DataDefaults } from '$lib/data';
-import { attributeRecord } from '$lib/records';
+import { attributeRecord, heroTypeRecord } from '$lib/records';
 import { HERO_MAX_LEVEL } from '$lib/config';
+import { selectedHeroType } from './stores';
 
 export const heroState = derived(
-	[attributeStore, slotStore, itemStore],
-	([attributes, slots, items]) => {
-		const level = Object.values(attributes).reduce((p, c) => p + c, 0);
-
+	[selectedHeroType, attributeStore, slotStore, itemStore],
+	([heroType, attributeState, slots, items]) => {
 		const equip: EquipState = {
 			rune: null,
 			pouch: null,
@@ -45,6 +45,10 @@ export const heroState = derived(
 			}
 		}
 
+		const type = heroTypeRecord[heroType];
+		const attributes = new DynamicAttributes(attributeState);
+		const level = attributes.getTotal() + type.level;
+
 		const baseDefense = calcCorrect(level + 79, [
 			{ breakpoint: 1, grow: 40 },
 			{ breakpoint: 150, grow: 100 },
@@ -62,11 +66,12 @@ export const heroState = derived(
 		]);
 
 		const souls = [...Array<number>(level)].reduce(
-			(p, c, index) => p + Math.floor(calcNeededSouls(index + 1)),
+			(p, c, index) => p + (index > 0 ? Math.floor(calcNeededSouls(index)) : 0),
 			0
 		);
 
 		const hero: HeroState = {
+			type,
 			level,
 			progress: level / HERO_MAX_LEVEL,
 			souls,
@@ -75,7 +80,7 @@ export const heroState = derived(
 			equip,
 			effects: [],
 			weightRatio: 0,
-			attributes: new DynamicAttributes(attributes),
+			attributes,
 			attack: new DynamicAttack(),
 
 			resistance: new DynamicResistance({
@@ -112,14 +117,19 @@ export const heroState = derived(
 				hero.resistance.add(item.resistance);
 			}
 
-			// Summarize damage negation
+			// Multiply damage negation
 			if (item.damageNegation) {
-				hero.damageNegation.add(item.damageNegation);
+				hero.damageNegation.multiply(item.damageNegation);
 			}
 
 			// Summarize guard
 			if (item instanceof AttackItem) {
 				hero.guard.add(item.guard);
+			}
+
+			// Summarize poise
+			if (item.poise) {
+				hero.stats.add({ poise: item.poise });
 			}
 
 			for (const mod of item.modifiers) {
@@ -141,6 +151,10 @@ export const heroState = derived(
 		}
 
 		const totalAttributes = hero.attributes.getTotalValue();
+
+		for (const attrType of Object.values(AttributeType)) {
+			totalAttributes[attrType] += type.attributes[attrType];
+		}
 
 		for (const [part, item] of Object.entries(equip) as [keyof EquipState, Item | null][]) {
 			if (!item) {
@@ -176,8 +190,8 @@ export const heroState = derived(
 );
 
 export const sharedDataState = derived(
-	[attributeStore, itemStore, slotStore],
-	([attributes, items, slots]) => {
+	[attributeStore, itemStore, slotStore, selectedHeroType],
+	([attributes, items, slots, heroType]) => {
 		const itemModifications: Record<string, { affinity?: AffinityType; tier?: number }> = {};
 
 		for (const item of Object.values(items)) {
@@ -207,6 +221,7 @@ export const sharedDataState = derived(
 		}
 
 		return {
+			heroType,
 			attributes,
 			itemModifications,
 			equip

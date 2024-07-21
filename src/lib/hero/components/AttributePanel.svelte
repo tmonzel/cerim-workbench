@@ -11,8 +11,9 @@
   {#each Object.values(AttributeType) as type}
     <div class="mb-5">
       <AttributeControl 
+        base={hero.type.attributes[type]}
         attribute={attributeRecord[type]} 
-        num={hero.attributes.value[type]} 
+        value={hero.attributes.value[type]} 
         on:changeValue={(e) => {
           attributeStore.update((store) => ({ ...store, [type]: e.detail }))
         }

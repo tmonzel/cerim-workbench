@@ -33,6 +33,7 @@ export abstract class Item {
 	iconUrl?: string;
 	description?: string;
 	effects?: string[];
+	poise?: number;
 
 	spEffects: SpEffect[] = [];
 
@@ -66,6 +67,7 @@ export abstract class Item {
 		this.damageNegation = data.damageNegation;
 		this.resistance = data.resistance;
 		this.rarity = data.rarity;
+		this.poise = data.poise;
 
 		if (data.modifiers) {
 			this.setModifiers(data.modifiers);

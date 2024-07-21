@@ -11,6 +11,7 @@ import { type ItemData } from './item/types';
 import { AccessoryItem, AttackItem, itemStore, ProtectionItem, type ItemState } from './item';
 import { writable } from 'svelte/store';
 import { attributeStore, slotStore, type SlotState } from './hero';
+import { selectedHeroType } from './hero/stores';
 
 export type DataSchema = {
 	defaults?: DataDefaults;
@@ -28,6 +29,7 @@ export type DataSchema = {
 };
 
 export type DataDefaults = {
+	heroType: string;
 	attributes?: Record<AttributeType, number>;
 	equip?: Record<string, string>;
 	itemModifications?: Record<string, { tier?: number; affinity?: AffinityType }>;
@@ -116,6 +118,14 @@ export function loadData(data: DataSchema) {
 		}
 
 		return slotState;
+	});
+
+	selectedHeroType.update((type) => {
+		if (!data.defaults || !data.defaults.heroType) {
+			return type;
+		}
+
+		return data.defaults.heroType;
 	});
 
 	// Apply item defaults

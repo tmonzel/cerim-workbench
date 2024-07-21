@@ -643,27 +643,27 @@ export function parseArmors(xmlFile: string): Record<string, ItemData> {
 			group,
 			config: {
 				effects
-			}
+			},
+			poise: row.toughnessCorrectRate * 1000
 		};
 
 		(item.iconUrl = `/images/items_webp/MENU_Knowledge_${iconId}.webp`),
 			(item.damageNegation = {
-				standard: (1 - row.neutralDamageCutRate) * 100,
-				slash: (1 - row.slashDamageCutRate) * 100,
-				strike: (1 - row.blowDamageCutRate) * 100,
-				pierce: (1 - row.thrustDamageCutRate) * 100,
-				mag: (1 - row.magicDamageCutRate) * 100,
-				fir: (1 - row.fireDamageCutRate) * 100,
-				lit: (1 - row.thunderDamageCutRate) * 100,
-				hol: (1 - row.darkDamageCutRate) * 100
+				standard: row.neutralDamageCutRate,
+				slash: row.slashDamageCutRate,
+				strike: row.blowDamageCutRate,
+				pierce: row.thrustDamageCutRate,
+				mag: row.magicDamageCutRate,
+				fir: row.fireDamageCutRate,
+				lit: row.thunderDamageCutRate,
+				hol: row.darkDamageCutRate
 			});
 
 		item.resistance = {
 			focus: (row.resistSleep + row.resistMadness) / 2,
 			immunity: (row.resistDisease + row.resistPoison) / 2,
 			robustness: (row.resistBlood + row.resistFreeze) / 2,
-			vitality: row.resistCurse,
-			poise: row.toughnessCorrectRate * 1000
+			vitality: row.resistCurse
 		};
 
 		items[`${row.equipModelCategory}#${row.id}`] = item;

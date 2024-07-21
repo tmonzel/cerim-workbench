@@ -5,10 +5,9 @@
   export let resistance: Resistance;
 </script>
 
-<dl class="grid grid-cols-3 gap-4">
+<dl class="grid grid-cols-2 gap-3">
   <StatBadge name="Immunity">{resistance.immunity}</StatBadge>
   <StatBadge name="Robustness">{resistance.robustness}</StatBadge>
   <StatBadge name="Focus">{resistance.focus}</StatBadge>
   <StatBadge name="Vitality">{resistance.vitality}</StatBadge>
-  <StatBadge name="Poise">{resistance.poise}</StatBadge>
 </dl>

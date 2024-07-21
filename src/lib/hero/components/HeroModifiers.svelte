@@ -1,54 +1,50 @@
 <script lang="ts">
 	import { type HeroState } from '../types';
-	import { DynamicNumber } from '$lib/core';
-	import { statRecord } from '$lib/records';
-	import type { StatType } from '$lib/core/types';
+	import HeroModifierList from './HeroModifierList.svelte';
 
   export let hero: HeroState;
 
-  let modifiedStats: { type: StatType; value: DynamicNumber }[] = [];
+  let allModifications = [];
 
-  $: modifiedStats = Object.entries(hero.stats.value).map(([k, v]) => ({ type: k as StatType, value: v })).filter(stat => stat.value.modified);
+  $: statMods = hero.stats.getModifiedValues();
+  $: resistanceMods = hero.resistance.getModifiedValues();
+  $: damageNegationMods = hero.damageNegation.getModifiedValues();
+  $: attackMods = hero.attack.getModifiedValues();
+
+  $: {
+    allModifications = [...statMods, ...resistanceMods, ...damageNegationMods, ...attackMods];
+  }
 </script>
 
 <div>
-  {#if modifiedStats.length === 0}
+  {#if allModifications.length === 0}
     <span class="inline-flex items-center text-sm rounded-md bg-sky-500/20 px-2 py-1 font-medium text-sky-300 ">
       No modifiers applied
     </span>
   {/if}
 
-  <dl class="divide-y divide-gray-100/20 mb-4">
-    {#each modifiedStats as stat}
-      {@const value = stat.value}
+  {#if attackMods.length > 0}
+  <HeroModifierList type="attack" modifications={attackMods} />
+  {/if}
+  
+  {#if statMods.length > 0}
+  <HeroModifierList type="stats" modifications={statMods} />
+  {/if}
+  
+  {#if resistanceMods.length > 0}
+  <HeroModifierList type="resistance" modifications={resistanceMods} />
+  {/if}
 
-      {#if value.offset > 0}
-        <div class="py-3 sm:grid sm:grid-cols-2 sm:gap-4 sm:px-0">
-          <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-300">{statRecord[stat.type].name}</dt>
-          <dd class="mt-1 text-sm leading 6 text-gray-700 dark:text-zinc-300 sm:col-span-1 sm:mt-0">
-            +{value.offset}
-          </dd>
-        </div>
-      {/if}
-
-      {#if value.multiplier !== 1}
-        {@const percentage = value.multiplier - 1}
-        <div class="py-3 sm:grid sm:grid-cols-2 sm:gap-4 sm:px-0">
-          <dt class="text-sm font-medium leading-6 text-gray-900 dark:text-zinc-300">Increased {statRecord[stat.type].name}</dt>
-          <dd class="mt-1 text-sm leading 6 text-gray-700 dark:text-zinc-300 sm:col-span-1 sm:mt-0">
-            {#if percentage > 0}+{/if}{Math.round(percentage * 100)}%
-          </dd>
-        </div>
-      {/if}
-    {/each}
-  </dl>
+  {#if damageNegationMods.length > 0}
+  <HeroModifierList type="damageNegation" modifications={damageNegationMods} />
+  {/if}
 
   {#if hero.effects.length > 0}
   <div>
-    <p class="text-sm font-medium dark:text-zinc-300 mb-1">Effects</p>
+    <p class="text-sm font-medium mb-1">Effects</p>
     <ul class="list-disc ps-4">
     {#each hero.effects as effect}
-      <li class="text-sm dark:text-zinc-500 mb-2">{effect}</li>
+      <li class="text-sm text-zinc-500 mb-2">{effect}</li>
     {/each}
     </ul>
   </div>

@@ -16,7 +16,9 @@ export class AttributeModifier implements HeroStateModifier {
 				case 'resistance':
 				case 'defense':
 					for (const [k, mutations] of Object.entries(value)) {
-						hero[key].value[k].add(calcCorrect(attr.total, mutations));
+						const addedValue = calcCorrect(attr.total + hero.type.attributes[this.type], mutations);
+
+						hero[key].value[k].add(addedValue);
 					}
 			}
 		}

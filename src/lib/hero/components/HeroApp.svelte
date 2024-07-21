@@ -15,7 +15,7 @@
     <div>
       <div class="sticky top-5 z-10">
         <div class="px-4 sm:px-0 min-h-20">
-          <h3 class="text-base font-semibold leading-7 text-white">Attributes</h3>
+          <h3 class="text-base font-semibold leading-7">Attributes</h3>
           <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-400/80">Spend attribute points to level up (1)</p>
         </div>
         <AttributePanel {hero} />
@@ -26,10 +26,10 @@
       <HeroBody {hero} />
     </div>
 
-    <div class="max-w-72">
+    <div class="max-w-72 hidden xl:block">
       <div class="sticky top-5">
         <div class="px-4 sm:px-0 mb-4">
-          <h3 class="text-base font-semibold leading-7 text-gray-900 dark:text-white">Modifiers</h3>
+          <h3 class="text-base font-semibold leading-7">Modifiers</h3>
           <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-400/80">What affects your stats?</p>
         </div>
         <HeroModifiers {hero} />
@@ -39,7 +39,7 @@
     <div class="max-w-72">
       <div class="sticky top-5">
         <div class="px-4 sm:px-0 mb-4">
-          <h3 class="text-base font-semibold leading-7 text-gray-900 dark:text-white">Stats</h3>
+          <h3 class="text-base font-semibold leading-7">Stats</h3>
           <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-400/80">Calculated hero stats based on attributes, gear etc.</p>
         </div>
         <HeroStats {hero} />
