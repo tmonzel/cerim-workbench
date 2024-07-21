@@ -48,7 +48,7 @@
     </h1>
 
     <div class="leading-3 text-right">
-      <p class="text-zinc-500 text-xs">Developed with <span class="mat-icon filled" style="font-size: 1.1em; transform: translateY(2px)">favorite</span> by Thomas Monzel <span>(v0.10)</span></p>
+      <p class="text-zinc-500 text-xs">Developed with <span class="mat-icon filled" style="font-size: 1.1em; transform: translateY(2px)">favorite</span> by Thomas Monzel <span>(v0.10.1)</span></p>
       <p class="text-zinc-600 text-xs mb-3">ELDEN RING is a trademark of FromSoftware.</p>
 
       <a href="https://www.buymeacoffee.com/digitaleshandwerk" class="inline-block w-40" target="_blank">

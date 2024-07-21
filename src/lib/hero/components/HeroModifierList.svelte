@@ -27,11 +27,11 @@
   }
 </script>
 
-<div>
+<div class="mb-2">
   <h3 class="text-sm text-zinc-200">
     {label}
   </h3>
-  <dl class="divide-y divide-gray-100/20 mb-4">
+  <dl class="divide-y divide-gray-100/20">
     {#each modifications as mod}
       {@const value = mod.value}
   

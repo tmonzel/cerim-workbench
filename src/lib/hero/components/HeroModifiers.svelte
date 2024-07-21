@@ -16,9 +16,9 @@
   }
 </script>
 
-<div class="rounded bg-indigo-600/10 text-indigo-400 p-4">
-  {#if allModifications.length === 0}
-    <span class="inline-flex items-center text-sm rounded-md bg-sky-500/20 px-2 py-1 font-medium text-sky-300 ">
+<div class="rounded bg-indigo-600/10 text-indigo-400 px-4 pt-2">
+  {#if allModifications.length === 0 && hero.effects.length === 0}
+    <span class="inline-flex items-center text-sm rounded-md font-medium py-2">
       No modifiers applied
     </span>
   {/if}
@@ -40,7 +40,7 @@
   {/if}
 
   {#if hero.effects.length > 0}
-  <div>
+  <div class="py-2">
     <p class="text-sm font-medium mb-1 text-zinc-200">Effects</p>
     <ul class="list-disc ps-4">
     {#each hero.effects as effect}
