@@ -13,21 +13,7 @@
 
   let sharedResultDialog: Dialog;
 
-  const heroTypeItems = Object.entries(heroTypeRecord).map(t => ({ name: t[1].name, value: t[0] }))
-
-  /*function importData() {
-    let input = document.createElement('input');
-    input.type = 'file';
-    input.accept = 'application/JSON';
-    input.onchange = async(_) => {
-      let files = Array.from(input.files!);
-      let text = await files[0].text();
-
-      loadData(JSON.parse(text));
-    };
-
-    input.click();
-  }*/
+  const heroTypeItems = Object.entries(heroTypeRecord).map(t => ({ name: t[1].name, value: t[0] }));
 
   let creatingUrl = false;
   let sharedUrl = '';

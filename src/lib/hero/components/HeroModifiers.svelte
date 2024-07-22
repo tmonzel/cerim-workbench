@@ -16,9 +16,9 @@
   }
 </script>
 
-<div class="rounded bg-indigo-600/10 text-indigo-400 px-4 pt-2">
+<div class="rounded bg-indigo-600/10 text-indigo-400 px-4 py-2">
   {#if allModifications.length === 0 && hero.effects.length === 0}
-    <span class="inline-flex items-center text-sm rounded-md font-medium py-2">
+    <span class="inline-flex items-center text-sm rounded-md font-medium">
       No modifiers applied
     </span>
   {/if}

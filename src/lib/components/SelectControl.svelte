@@ -30,7 +30,7 @@
 <div class="relative z-30">
   <button 
     type="button" 
-    class="relative w-full rounded-md p-1 bg-stone-700/50 pr-10 text-left focus:outline-none focus:ring-2 focus:ring-amber-300" aria-expanded={showMenu}
+    class="relative w-full rounded-md p-1 bg-zinc-700/50 pr-10 text-left focus:outline-none focus:ring-2 focus:ring-amber-300" aria-expanded={showMenu}
     on:click={() => showMenu = !showMenu}
     >
     <span class="flex items-center select-none ps-1">
@@ -44,11 +44,11 @@
   </button>
 
   {#if showMenu}
-  <div class="absolute z-40 mt-2 p-1 -left-1 rounded-md bg-zinc-900 flex flex-col gap-y-2" tabindex="-1" role="listbox">
+  <div class="absolute z-40 mt-2 p-2 -left-1 shadow-lg rounded-md bg-zinc-800 border border-zinc-600 flex flex-col gap-y-2" tabindex="-1" role="listbox">
     {#each items as item, i}
     {@const selected = selectedItem === item}
     <button 
-      class="relative w-full rounded-md select-none py-1 pl-2 pr-12 flex justify-between hover:bg-stone-800 ring-amber-300" 
+      class="relative w-full rounded-md select-none py-1 pl-2 pr-12 flex justify-between hover:bg-zinc-700 ring-amber-300" 
       id="listbox-option-{i}" 
       role="option" 
       aria-selected={selected} 
