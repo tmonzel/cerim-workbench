@@ -34,7 +34,7 @@ function mapItemConfig(row: ItemRow): ItemConfig {
 	const attack: Partial<Record<AttackType, number>> = {};
 	const scaling: ScalingBase = {};
 	const mutations: Partial<Record<AttackType, string>> = {};
-	const effects: number[] = [];
+	const effects: Record<number, number> = {};
 
 	if (row.attackBasePhysics) {
 		attack.phy = row.attackBasePhysics;
@@ -101,11 +101,11 @@ function mapItemConfig(row: ItemRow): ItemConfig {
 	}
 
 	if (row.spEffectBehaviorId0 !== -1) {
-		effects.push(row.spEffectBehaviorId0);
+		effects[0] = row.spEffectBehaviorId0;
 	}
 
 	if (row.spEffectBehaviorId1 !== -1) {
-		effects.push(row.spEffectBehaviorId1);
+		effects[1] = row.spEffectBehaviorId1;
 	}
 
 	const schemaId = row.reinforceTypeId.toFixed();
@@ -135,7 +135,7 @@ function mapItemConfig(row: ItemRow): ItemConfig {
 		mutations
 	};
 
-	if (effects.length > 0) {
+	if (effects[0] || effects[1]) {
 		config.effects = effects;
 	}
 
@@ -337,7 +337,6 @@ export function parseReinforceData(file: string): Record<string, UpgradeSchema> 
 
 		const id = row.id.toFixed();
 		let schemaId = id.substring(0, id.length - 2);
-		//const upgradeId = id.slice(-2);
 
 		if (schemaId === '') {
 			schemaId = '0';
@@ -369,6 +368,10 @@ export function parseReinforceData(file: string): Record<string, UpgradeSchema> 
 					hol: [],
 					sta: [],
 					res: []
+				},
+				effects: {
+					[0]: [],
+					[1]: []
 				}
 			};
 		}
@@ -396,6 +399,9 @@ export function parseReinforceData(file: string): Record<string, UpgradeSchema> 
 
 		schema.guard.sta.push(row.staminaGuardDefRate);
 		schema.guard.res.push(row.sleepGuardDefRate);
+
+		schema.effects[0].push(row.spEffectId1);
+		schema.effects[1].push(row.spEffectId2);
 	}
 
 	return record;

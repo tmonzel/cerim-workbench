@@ -114,6 +114,7 @@ export type UpgradeSchema = {
 	attack: Record<string, number[]>;
 	scaling: Record<string, number[]>;
 	guard: Record<GuardType, number[]>;
+	effects: Record<number, number[]>;
 };
 
 export type ModifierType = 'flat' | 'percentual';

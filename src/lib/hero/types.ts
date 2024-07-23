@@ -14,6 +14,11 @@ import type { AttributeModifier } from './modifiers';
 
 export type SlotState = Record<keyof EquipState, HeroEquipSlot>;
 
+export type HeroContext = {
+	id: string;
+	name: string;
+};
+
 export type HeroState = {
 	type: HeroType;
 	level: number;
@@ -36,6 +41,7 @@ export type HeroState = {
 };
 
 export type HeroType = {
+	id: string;
 	name: string;
 	level: number;
 	attributes: Record<AttributeType, number>;

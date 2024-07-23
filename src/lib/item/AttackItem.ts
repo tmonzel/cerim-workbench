@@ -120,6 +120,15 @@ export class AttackItem extends Item {
 			}
 		}
 
+		const schema: UpgradeSchema =
+			typeof this.config.schema === 'string'
+				? upgradeSchemata[this.config.schema]
+				: upgradeSchemata['0'];
+
+		if (!schema) {
+			return;
+		}
+
 		if (this.statusEffects) {
 			this.statusEffects = {};
 		}
@@ -127,15 +136,17 @@ export class AttackItem extends Item {
 		if (this.config.effects) {
 			this.statusEffects = {};
 
-			for (const id of this.config.effects) {
+			for (const [index, id] of Object.entries(this.config.effects)) {
 				const effect = spEffectsMap.get(id);
 
 				if (!effect || !effect.statusTypes) {
 					continue;
 				}
 
-				if (this.tier > 0) {
-					const upgradeSpEffect = spEffectsMap.get(effect.id + this.tier);
+				const effectOffsets = schema.effects[Number(index)];
+
+				if (this.tier > 0 && effectOffsets[this.tier]) {
+					const upgradeSpEffect = spEffectsMap.get(effect.id + effectOffsets[this.tier]);
 
 					if (upgradeSpEffect && upgradeSpEffect.statusTypes) {
 						Object.assign(this.statusEffects, upgradeSpEffect.statusTypes);
@@ -148,15 +159,6 @@ export class AttackItem extends Item {
 					this.setModifiers(effect.modifiers);
 				}
 			}
-		}
-
-		const schema: UpgradeSchema =
-			typeof this.config.schema === 'string'
-				? upgradeSchemata[this.config.schema]
-				: upgradeSchemata['0'];
-
-		if (!schema) {
-			return;
 		}
 
 		this.possibleUpgrades = schema.tiers ?? 25;

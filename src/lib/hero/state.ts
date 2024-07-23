@@ -19,14 +19,14 @@ import {
 	list
 } from '$lib/core';
 import type { DataDefaults } from '$lib/data';
-import { attributeRecord, heroTypeRecord } from '$lib/records';
+import { attributeRecord } from '$lib/records';
 import { HERO_MAX_LEVEL } from '$lib/config';
-import { selectedHeroType } from './stores';
 import { appState } from '$lib/state';
+import { heroTypes } from './data';
 
 export const heroState = derived(
-	[selectedHeroType, attributeStore, slotStore, itemStore, appState],
-	([heroType, attributeState, slots, items, config]) => {
+	[appState, attributeStore, slotStore, itemStore],
+	([config, attributeState, slots, items]) => {
 		const equip: EquipState = {
 			rune: null,
 			pouch: null,
@@ -47,7 +47,7 @@ export const heroState = derived(
 			}
 		}
 
-		const type = heroTypeRecord[heroType];
+		const type = heroTypes.find((t) => t.id === config.heroType)!;
 		const attributes = new DynamicAttributes(attributeState);
 		const level = attributes.getTotal() + type.level;
 
@@ -205,8 +205,8 @@ export const heroState = derived(
 );
 
 export const sharedDataState = derived(
-	[attributeStore, itemStore, slotStore, selectedHeroType],
-	([attributes, items, slots, heroType]) => {
+	[attributeStore, itemStore, slotStore, appState],
+	([attributes, items, slots, app]) => {
 		const itemModifications: Record<string, { affinity?: AffinityType; tier?: number }> = {};
 
 		for (const item of Object.values(items)) {
@@ -236,7 +236,7 @@ export const sharedDataState = derived(
 		}
 
 		return {
-			heroType,
+			heroType: app.heroType,
 			attributes,
 			itemModifications,
 			equip

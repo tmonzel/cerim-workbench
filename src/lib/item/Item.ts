@@ -83,7 +83,7 @@ export abstract class Item {
 		this.modifiers = [];
 
 		if (config.effects) {
-			for (const id of config.effects) {
+			for (const [i, id] of Object.entries(config.effects)) {
 				const effect = spEffectsMap.get(id);
 
 				if (effect && effect.modifiers) {

@@ -80,6 +80,6 @@ export type ItemConfig = {
 	schema?: string;
 	mutations?: GraphMutation[] | number | Partial<Record<AttackType, string>>;
 	cast?: 'sorceries' | 'incantations';
-	effects?: number[];
+	effects?: Record<number, number>;
 	attackCorrectId?: string;
 };

@@ -154,6 +154,15 @@ export interface ReinforceParam extends DataRow {
 	madnessGuardDefRate: number;
 
 	maxReinforceLevel: number;
+
+	// Offsets
+	spEffectId1: number;
+	spEffectId2: number;
+	spEffectId3: number;
+
+	residentSpEffectId1: number;
+	residentSpEffectId2: number;
+	residentSpEffectId3: number;
 }
 
 export interface ItemRow extends DataRow {

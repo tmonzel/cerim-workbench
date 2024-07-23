@@ -11,7 +11,7 @@ import { type ItemData } from './item/types';
 import { AccessoryItem, AttackItem, itemStore, ProtectionItem, type ItemState } from './item';
 import { writable } from 'svelte/store';
 import { attributeStore, slotStore, type SlotState } from './hero';
-import { selectedHeroType } from './hero/stores';
+import { appState } from './state';
 
 export type DataSchema = {
 	defaults?: DataDefaults;
@@ -120,12 +120,12 @@ export function loadData(data: DataSchema) {
 		return slotState;
 	});
 
-	selectedHeroType.update((type) => {
+	appState.update((state) => {
 		if (!data.defaults || !data.defaults.heroType) {
-			return type;
+			return { ...state };
 		}
 
-		return data.defaults.heroType;
+		return { ...state, heroType: data.defaults.heroType };
 	});
 
 	// Apply item defaults
