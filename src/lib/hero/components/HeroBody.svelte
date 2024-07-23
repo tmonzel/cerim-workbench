@@ -4,7 +4,7 @@
 	import { Item, itemStore } from '$lib/item';
 	import { derived, writable } from 'svelte/store';
 	import EquipSlot from './EquipSlot.svelte';
-	import { slotStore, type HeroBodyState, type HeroState } from '$lib/hero';
+	import { heroContexts, slotStore, type HeroBodyState, type HeroState } from '$lib/hero';
 	import CheckboxControl from '$lib/components/CheckboxControl.svelte';
 	import { setContext } from 'svelte';
 	import { appState } from '$lib/state';
@@ -59,13 +59,20 @@
 	setContext('bodyState', bodyState);
 </script>
 
-<div class="mb-5 flex justify-center gap-5">
-	<CheckboxControl bind:checked={$bodyState.guardInfo}>Guard Info</CheckboxControl>
-	<CheckboxControl bind:checked={$bodyState.scalingInfo}>Scaling Info</CheckboxControl>
-</div>
+{#if $appState.heroContext === 'attack'}
+	<div class="mb-5 flex justify-end gap-5">
+		<CheckboxControl bind:checked={$bodyState.guardInfo}>Guard Info</CheckboxControl>
+		<CheckboxControl bind:checked={$bodyState.scalingInfo}>Scaling Info</CheckboxControl>
+		<div class="max-w-44">
+			<CheckboxControl bind:checked={$appState.excludeStaminaFromAttackCalc}>
+				Exclude Stamina from total attack damage
+			</CheckboxControl>
+		</div>
+	</div>
+{/if}
 <div class="bg-zinc-800/30 rounded-xl p-5">
 	{#if $appState.heroContext === 'attack'}
-		<div class="grid gap-5">
+		<div class="grid grid-cols-2 gap-5">
 			<EquipSlot
 				bind:slot={$slotStore.mainHand}
 				label="Main Hand"

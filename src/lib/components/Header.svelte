@@ -1,12 +1,13 @@
 <script lang="ts">
 	import { createBuild } from '$lib/api';
 	import { calcNeededSouls } from '$lib/core';
-	import { heroContexts, heroTypes, sharedDataState, type HeroState } from '$lib/hero';
+	import { heroTypes, sharedDataState, type HeroState } from '$lib/hero';
 	import HeroWeightStatus from '$lib/hero/components/HeroWeightStatus.svelte';
+	import { statRecord } from '$lib/records';
 	import { appState, uiState } from '$lib/state';
-	import CheckboxControl from './CheckboxControl.svelte';
 	import Dialog from './Dialog.svelte';
 	import SelectControl from './SelectControl.svelte';
+	import ValueBadge from './ValueBadge.svelte';
 
 	export let hero: HeroState;
 
@@ -26,7 +27,7 @@
 
 <header>
 	<div class="flex justify-between">
-		<h1 class="text-3xl font-bold dark:text-zinc-200 mb-7">
+		<!--<h1 class="text-3xl font-bold dark:text-zinc-200 mb-7">
 			<span>Tarnished</span> Creator
 		</h1>
 
@@ -38,12 +39,12 @@
 			>
 				<img
 					alt="Buy me a coffee button"
-					src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=digitaleshandwerk&button_colour=FFDD00&font_colour=000000&font_family=Inter&outline_colour=000000&coffee_colour=ffffff"
+					src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=digitaleshandwerk&button_colour=fcd34d&font_colour=000000&font_family=Inter&outline_colour=000000&coffee_colour=ffffff"
 				/>
 			</a>
 			<div>
 				<p class="text-zinc-500 text-xs leading-4">
-					Developed with <span
+					Handcrafted with <span
 						class="mat-icon filled"
 						style="font-size: 1.1em; transform: translateY(2px)">favorite</span
 					>
@@ -51,10 +52,25 @@
 				</p>
 				<p class="text-zinc-600 text-xs mb-3">ELDEN RING is a trademark of FromSoftware.</p>
 			</div>
-		</div>
+		</div>-->
 	</div>
 
 	<div class="flex gap-20 mb-3">
+		<div>
+			<h1 class="text-2xl font-bold dark:text-zinc-200 mb-2">
+				<span>Tarnished</span> Creator
+			</h1>
+			<div>
+				<p class="text-zinc-400 text-xs leading-4">
+					<span class="text-emerald-300">v0.10.1</span><br />Handcrafted with
+					<span class="mat-icon filled" style="font-size: 1.1em; transform: translateY(2px)"
+						>favorite</span
+					>
+					by Thomas Monzel
+				</p>
+				<p class="text-zinc-500 text-xs mb-3">ELDEN RING is a trademark of FromSoftware.</p>
+			</div>
+		</div>
 		<div>
 			<h3 class="text-md text-zinc-500 mb-2">Class</h3>
 			<div>
@@ -78,23 +94,111 @@
 			<p class="text-4xl">{hero.attributePoints}</p>
 		</div>
 
-		<div>
+		<div class="grid grid-cols-4 gap-x-10 gap-y-4">
+			<div>
+				<dt class="text-zinc-500">Health</dt>
+				<dd>
+					<ValueBadge value={hero.stats.value.hp} />
+				</dd>
+			</div>
+			<div>
+				<dt class="text-zinc-500">FP</dt>
+				<dd>
+					<ValueBadge value={hero.stats.value.fp} />
+				</dd>
+			</div>
+			<div>
+				<dt class="text-zinc-500">Stamina</dt>
+				<dd>
+					<ValueBadge value={hero.stats.value.stamina} />
+				</dd>
+			</div>
+			<div>
+				<dt class="text-zinc-500">{statRecord.discovery.name}</dt>
+				<dd>
+					{Math.floor(hero.stats.value.discovery.total * 100)}
+				</dd>
+			</div>
+			<div>
+				<dt class="text-zinc-500">Poise</dt>
+				<dd>
+					<ValueBadge value={hero.stats.value.poise} />
+				</dd>
+			</div>
+			<div>
+				<dt class="text-zinc-500">{statRecord.weight.name}</dt>
+				<dd>
+					<ValueBadge value={hero.stats.value.weight} />
+				</dd>
+			</div>
+			<div>
+				<dt class="text-zinc-500">{statRecord.equipLoad.name}</dt>
+				<dd>
+					<ValueBadge value={hero.stats.value.equipLoad} />
+				</dd>
+			</div>
+			<div>
+				<dt class="text-zinc-500">Weight Status</dt>
+				<dd>
+					<HeroWeightStatus weightRatio={hero.weightRatio} />
+				</dd>
+			</div>
+		</div>
+
+		<!--<div class="grid grid-cols-3">
+			<div>
+				<dt class=" text-zinc-500">{statRecord.weight.name}</dt>
+				<dd class="mt-1 text-gray-70 sm:col-span-2 sm:mt-0">
+					<ValueBadge value={hero.stats.value.weight} />
+				</dd>
+			</div>
+			<div>
+				<dt class=" text-zinc-500">{statRecord.equipLoad.name}</dt>
+				<dd class="mt-1 text-gray-70 sm:col-span-2 sm:mt-0">
+					<ValueBadge value={hero.stats.value.equipLoad} />
+				</dd>
+			</div>
+			<div>
+				<dt class=" text-zinc-500">Weight Status</dt>
+				<dd class="mt-1 text-gray-70 sm:col-span-2 sm:mt-0">
+					<HeroWeightStatus weightRatio={hero.weightRatio} />
+				</dd>
+			</div>
+		</div>-->
+
+		<!--<div>
 			<h3 class="text-md text-zinc-500 mb-2">Attack Power (Mainhand/Offhand)</h3>
 			<p class="text-4xl">
 				{Math.round(hero.attack.mainHand.getTotal() * 10) / 10} / {Math.round(
 					hero.attack.offHand.getTotal() * 10
 				) / 10}
 			</p>
-		</div>
+		</div>-->
 
-		<div class="ml-auto flex items-end">
-			<div class="me-10 max-w-44">
-				<CheckboxControl bind:checked={$appState.excludeStaminaFromAttackCalc}>
-					Exclude Stamina from total attack damage
-				</CheckboxControl>
-			</div>
-			<div class="me-10 max-w-44"></div>
-			<div>
+		<div class="ml-auto">
+			<!--<div class="flex text-right mb-2">
+				<a
+					href="https://www.buymeacoffee.com/digitaleshandwerk"
+					class="inline-block w-40 me-5"
+					target="_blank"
+				>
+					<img
+						alt="Buy me a coffee button"
+						src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=digitaleshandwerk&button_colour=fcd34d&font_colour=000000&font_family=Inter&outline_colour=000000&coffee_colour=ffffff"
+					/>
+				</a>
+				<div>
+					<p class="text-zinc-500 text-xs leading-4">
+						Handcrafted with <span
+							class="mat-icon filled"
+							style="font-size: 1.1em; transform: translateY(2px)">favorite</span
+						>
+						by Thomas Monzel <span>(v0.10.1)</span>
+					</p>
+					<p class="text-zinc-600 text-xs mb-3">ELDEN RING is a trademark of FromSoftware.</p>
+				</div>
+			</div>-->
+			<div class="flex justify-end">
 				<button
 					type="button"
 					class="px-3 py-2 font-medium border-2 rounded-xl flex items-center disabled:text-zinc-500 disabled:border-zinc-500 group"

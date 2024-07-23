@@ -61,7 +61,7 @@
 
 			<div class="col-span-2">
 				<dt class="text-sm font-medium leading-6 text-zinc-500">Elemental</dt>
-				<dd class="grid grid-cols-3 gap-2">
+				<dd class="grid grid-cols-2 gap-2">
 					<AttackTypeBadge type="mag">
 						<ValueBadge value={hero.defense.value['mag']} /> / {calcDamageNegation(
 							hero.damageNegation.value['mag'].multiplier

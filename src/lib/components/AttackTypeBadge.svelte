@@ -7,7 +7,6 @@
 </script>
 
 <div class="flex flex-col">
-	<div class="bg-zinc-500 h-1" style:background-color={attackTypeRecord[type].color}></div>
 	<span class="text-zinc-200 text-sm">
 		{#if value}
 			{Math.round(value * 10) / 10}
@@ -15,4 +14,5 @@
 			<slot></slot>
 		{/if}
 	</span>
+	<div class="bg-zinc-500 h-1" style:background-color={attackTypeRecord[type].color}></div>
 </div>
