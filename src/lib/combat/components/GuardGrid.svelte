@@ -13,7 +13,7 @@
 
 	<div class="col-span-3">
 		<StatBadge name="Elemental">
-			<span class="grid grid-cols-3 gap-2 mt-2">
+			<span class="grid grid-cols-2 gap-2 mt-2">
 				<AttackTypeBadge type="mag" value={guard.mag} />
 				<AttackTypeBadge type="fir" value={guard.fir} />
 				<AttackTypeBadge type="lit" value={guard.lit} />

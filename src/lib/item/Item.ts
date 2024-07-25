@@ -7,9 +7,8 @@ import {
 	type SpEffect,
 	type UpgradeSchema
 } from '$lib/core/types';
-import { spEffectsMap } from '$lib/data';
 import { ItemModifier } from './ItemModifier';
-import type { ItemCategory, ItemConfig, ItemData, ItemRarity } from './types';
+import type { ItemCategory, ItemData, ItemRarity } from './types';
 
 export abstract class Item {
 	readonly type: string;
@@ -22,9 +21,7 @@ export abstract class Item {
 	tier: number;
 	possibleUpgrades: number;
 	attributeRequirements?: Partial<Record<AttributeType, number>>;
-	invalidAttributes: AttributeType[] = [];
 
-	config!: ItemConfig;
 	resistance?: Resistance;
 	damageNegation?: DamageNegation;
 
@@ -33,19 +30,15 @@ export abstract class Item {
 	iconUrl?: string;
 	description?: string;
 	effects?: string[];
+	effectInfo: string[];
 	poise?: number;
 
 	spEffects: SpEffect[] = [];
 
-	protected _appliedAttributes: Partial<Record<string, number>> = {};
 	protected _modified = false;
 
 	get modified(): boolean {
 		return this._modified;
-	}
-
-	get appliedAttributes(): Partial<Record<string, number>> {
-		return this._appliedAttributes;
 	}
 
 	constructor(
@@ -68,31 +61,11 @@ export abstract class Item {
 		this.resistance = data.resistance;
 		this.rarity = data.rarity;
 		this.poise = data.poise;
+		this.effectInfo = data.effectInfo ?? [];
 
 		if (data.modifiers) {
 			this.setModifiers(data.modifiers);
 		}
-	}
-
-	isEquippable(): boolean {
-		return this.invalidAttributes.length === 0;
-	}
-
-	setConfig(config: ItemConfig): void {
-		this.config = config;
-		this.modifiers = [];
-
-		if (config.effects) {
-			for (const [i, id] of Object.entries(config.effects)) {
-				const effect = spEffectsMap.get(id);
-
-				if (effect && effect.modifiers) {
-					this.setModifiers(effect.modifiers);
-				}
-			}
-		}
-
-		this.update();
 	}
 
 	abstract update(): void;
@@ -105,23 +78,6 @@ export abstract class Item {
 		}
 
 		this.modifiers = newModifiers;
-	}
-
-	applyAttributes(attributes: Partial<Record<string, number>>): this {
-		this._appliedAttributes = attributes;
-
-		// Check and setup requirements
-		this.invalidAttributes = [];
-
-		if (this.attributeRequirements) {
-			for (const [t, n] of Object.entries(this.attributeRequirements)) {
-				if (typeof attributes[t] === 'number' && attributes[t] < n) {
-					this.invalidAttributes.push(t as AttributeType);
-				}
-			}
-		}
-
-		return this;
 	}
 
 	upgrade(tier: number): void {

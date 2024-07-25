@@ -2,12 +2,10 @@
 	import { createBuild } from '$lib/api';
 	import { calcNeededSouls } from '$lib/core';
 	import { heroTypes, sharedDataState, type HeroState } from '$lib/hero';
-	import HeroWeightStatus from '$lib/hero/components/HeroWeightStatus.svelte';
-	import { statRecord } from '$lib/records';
 	import { appState, uiState } from '$lib/state';
+	import ContextNav from './ContextNav.svelte';
 	import Dialog from './Dialog.svelte';
 	import SelectControl from './SelectControl.svelte';
-	import ValueBadge from './ValueBadge.svelte';
 
 	export let hero: HeroState;
 
@@ -55,128 +53,156 @@
 		</div>-->
 	</div>
 
-	<div class="flex gap-20 mb-3">
+	<div class="flex gap-x-20">
 		<div>
-			<h1 class="text-2xl font-bold dark:text-zinc-200 mb-2">
+			<h1 class="text-3xl font-bold dark:text-zinc-200 mb-7">
 				<span>Tarnished</span> Creator
 			</h1>
-			<div>
+
+			<div class="flex gap-14 mb-5">
+				<div class="min-w-40">
+					<h3 class="text-md text-zinc-500 mb-2">Class</h3>
+					<div>
+						<SelectControl options={heroTypes} bind:value={$appState.heroType} let:item>
+							<svelte:fragment slot="selected" let:item>
+								<div class="p-1 text-xl">{item?.name}</div>
+							</svelte:fragment>
+
+							{item.name}
+						</SelectControl>
+					</div>
+				</div>
+
+				<div class="min-w-20">
+					<h3 class="text-md text-zinc-500 mb-2">Level</h3>
+					<p class="text-4xl">{hero.level}</p>
+				</div>
+
+				<div class="min-w-20">
+					<h3 class="text-md text-zinc-500 mb-2">Attribute Points</h3>
+					<p class="text-4xl">{hero.attributePoints}</p>
+				</div>
+			</div>
+		</div>
+
+		<!--<div class="flex gap-14">
+			<div class="min-w-40">
+				<h3 class="text-md text-zinc-500 mb-2">Class</h3>
+				<div>
+					<SelectControl options={heroTypes} bind:value={$appState.heroType} let:item>
+						<svelte:fragment slot="selected" let:item>
+							<div class="p-1 text-xl">{item?.name}</div>
+						</svelte:fragment>
+
+						{item.name}
+					</SelectControl>
+				</div>
+			</div>
+
+			<div class="min-w-20">
+				<h3 class="text-md text-zinc-500 mb-2">Level</h3>
+				<p class="text-4xl">{hero.level}</p>
+			</div>
+
+			<div class="min-w-20">
+				<h3 class="text-md text-zinc-500 mb-2">Attribute Points</h3>
+				<p class="text-4xl">{hero.attributePoints}</p>
+			</div>
+
+			<div class="grid grid-cols-4 gap-x-5 gap-y-4">
+				<div>
+					<dt class="text-zinc-500">Health</dt>
+					<dd>
+						<ValueBadge value={hero.stats.value.hp} />
+					</dd>
+				</div>
+				<div>
+					<dt class="text-zinc-500">FP</dt>
+					<dd>
+						<ValueBadge value={hero.stats.value.fp} />
+					</dd>
+				</div>
+				<div>
+					<dt class="text-zinc-500">Stamina</dt>
+					<dd>
+						<ValueBadge value={hero.stats.value.stamina} />
+					</dd>
+				</div>
+				<div>
+					<dt class="text-zinc-500">{statRecord.discovery.name}</dt>
+					<dd>
+						{Math.floor(hero.stats.value.discovery.total * 100)}
+					</dd>
+				</div>
+				<div>
+					<dt class="text-zinc-500">Poise</dt>
+					<dd>
+						<ValueBadge value={hero.stats.value.poise} />
+					</dd>
+				</div>
+				<div>
+					<dt class="text-zinc-500">{statRecord.weight.name}</dt>
+					<dd>
+						<ValueBadge value={hero.stats.value.weight} />
+					</dd>
+				</div>
+				<div>
+					<dt class="text-zinc-500">{statRecord.equipLoad.name}</dt>
+					<dd>
+						<ValueBadge value={hero.stats.value.equipLoad} />
+					</dd>
+				</div>
+				<div>
+					<dt class="text-zinc-500">Weight Status</dt>
+					<dd>
+						<HeroWeightStatus weightRatio={hero.weightRatio} />
+					</dd>
+				</div>
+			</div>
+		</div>-->
+
+		<div class="ml-auto flex flex-col justify-between">
+			<div class="text-right">
 				<p class="text-zinc-400 text-xs leading-4">
 					<span class="text-emerald-300">v0.10.1</span><br />Handcrafted with
-					<span class="mat-icon filled" style="font-size: 1.1em; transform: translateY(2px)"
-						>favorite</span
-					>
+					<span class="mat-icon filled" style="font-size: 1.1em; transform: translateY(2px)">favorite</span>
 					by Thomas Monzel
 				</p>
 				<p class="text-zinc-500 text-xs mb-3">ELDEN RING is a trademark of FromSoftware.</p>
 			</div>
-		</div>
-		<div>
-			<h3 class="text-md text-zinc-500 mb-2">Class</h3>
-			<div>
-				<SelectControl options={heroTypes} bind:value={$appState.heroType} let:item>
-					<svelte:fragment slot="selected" let:item>
-						<div class="p-1 text-xl">{item?.name}</div>
-					</svelte:fragment>
+			<div class="flex justify-end items-center">
+				<div class="me-10">
+					<ContextNav />
+				</div>
 
-					{item.name}
-				</SelectControl>
-			</div>
-		</div>
-
-		<div>
-			<h3 class="text-md text-zinc-500 mb-2">Level</h3>
-			<p class="text-4xl">{hero.level}</p>
-		</div>
-
-		<div>
-			<h3 class="text-md text-zinc-500 mb-2">Attribute Points</h3>
-			<p class="text-4xl">{hero.attributePoints}</p>
-		</div>
-
-		<div class="grid grid-cols-4 gap-x-10 gap-y-4">
-			<div>
-				<dt class="text-zinc-500">Health</dt>
-				<dd>
-					<ValueBadge value={hero.stats.value.hp} />
-				</dd>
-			</div>
-			<div>
-				<dt class="text-zinc-500">FP</dt>
-				<dd>
-					<ValueBadge value={hero.stats.value.fp} />
-				</dd>
-			</div>
-			<div>
-				<dt class="text-zinc-500">Stamina</dt>
-				<dd>
-					<ValueBadge value={hero.stats.value.stamina} />
-				</dd>
-			</div>
-			<div>
-				<dt class="text-zinc-500">{statRecord.discovery.name}</dt>
-				<dd>
-					{Math.floor(hero.stats.value.discovery.total * 100)}
-				</dd>
-			</div>
-			<div>
-				<dt class="text-zinc-500">Poise</dt>
-				<dd>
-					<ValueBadge value={hero.stats.value.poise} />
-				</dd>
-			</div>
-			<div>
-				<dt class="text-zinc-500">{statRecord.weight.name}</dt>
-				<dd>
-					<ValueBadge value={hero.stats.value.weight} />
-				</dd>
-			</div>
-			<div>
-				<dt class="text-zinc-500">{statRecord.equipLoad.name}</dt>
-				<dd>
-					<ValueBadge value={hero.stats.value.equipLoad} />
-				</dd>
-			</div>
-			<div>
-				<dt class="text-zinc-500">Weight Status</dt>
-				<dd>
-					<HeroWeightStatus weightRatio={hero.weightRatio} />
-				</dd>
+				<div>
+					<button
+						type="button"
+						class="px-4 py-2 font-medium border-2 rounded-xl text-lg flex items-center disabled:text-zinc-500 disabled:border-zinc-500 group"
+						disabled={creatingUrl}
+						on:click={() => createSharedUrl()}
+					>
+						{#if creatingUrl}
+							<div class="spinner me-2"></div>
+						{:else}
+							<svg
+								class="fill-zinc-200 group-disabled:fill-zinc-500 me-2"
+								xmlns="http://www.w3.org/2000/svg"
+								height="24px"
+								viewBox="0 -960 960 960"
+								width="24px"
+								fill="#5f6368"
+								><path
+									d="M720-80q-50 0-85-35t-35-85q0-7 1-14.5t3-13.5L322-392q-17 15-38 23.5t-44 8.5q-50 0-85-35t-35-85q0-50 35-85t85-35q23 0 44 8.5t38 23.5l282-164q-2-6-3-13.5t-1-14.5q0-50 35-85t85-35q50 0 85 35t35 85q0 50-35 85t-85 35q-23 0-44-8.5T638-672L356-508q2 6 3 13.5t1 14.5q0 7-1 14.5t-3 13.5l282 164q17-15 38-23.5t44-8.5q50 0 85 35t35 85q0 50-35 85t-85 35Zm0-640q17 0 28.5-11.5T760-760q0-17-11.5-28.5T720-800q-17 0-28.5 11.5T680-760q0 17 11.5 28.5T720-720ZM240-440q17 0 28.5-11.5T280-480q0-17-11.5-28.5T240-520q-17 0-28.5 11.5T200-480q0 17 11.5 28.5T240-440Zm480 280q17 0 28.5-11.5T760-200q0-17-11.5-28.5T720-240q-17 0-28.5 11.5T680-200q0 17 11.5 28.5T720-160Zm0-600ZM240-480Zm480 280Z"
+								/></svg
+							>
+						{/if}
+						<span>Share your build</span>
+					</button>
+				</div>
 			</div>
 		</div>
-
-		<!--<div class="grid grid-cols-3">
-			<div>
-				<dt class=" text-zinc-500">{statRecord.weight.name}</dt>
-				<dd class="mt-1 text-gray-70 sm:col-span-2 sm:mt-0">
-					<ValueBadge value={hero.stats.value.weight} />
-				</dd>
-			</div>
-			<div>
-				<dt class=" text-zinc-500">{statRecord.equipLoad.name}</dt>
-				<dd class="mt-1 text-gray-70 sm:col-span-2 sm:mt-0">
-					<ValueBadge value={hero.stats.value.equipLoad} />
-				</dd>
-			</div>
-			<div>
-				<dt class=" text-zinc-500">Weight Status</dt>
-				<dd class="mt-1 text-gray-70 sm:col-span-2 sm:mt-0">
-					<HeroWeightStatus weightRatio={hero.weightRatio} />
-				</dd>
-			</div>
-		</div>-->
-
-		<!--<div>
-			<h3 class="text-md text-zinc-500 mb-2">Attack Power (Mainhand/Offhand)</h3>
-			<p class="text-4xl">
-				{Math.round(hero.attack.mainHand.getTotal() * 10) / 10} / {Math.round(
-					hero.attack.offHand.getTotal() * 10
-				) / 10}
-			</p>
-		</div>-->
-
-		<div class="ml-auto">
-			<!--<div class="flex text-right mb-2">
+		<!--<div class="flex text-right mb-2">
 				<a
 					href="https://www.buymeacoffee.com/digitaleshandwerk"
 					class="inline-block w-40 me-5"
@@ -187,43 +213,7 @@
 						src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=digitaleshandwerk&button_colour=fcd34d&font_colour=000000&font_family=Inter&outline_colour=000000&coffee_colour=ffffff"
 					/>
 				</a>
-				<div>
-					<p class="text-zinc-500 text-xs leading-4">
-						Handcrafted with <span
-							class="mat-icon filled"
-							style="font-size: 1.1em; transform: translateY(2px)">favorite</span
-						>
-						by Thomas Monzel <span>(v0.10.1)</span>
-					</p>
-					<p class="text-zinc-600 text-xs mb-3">ELDEN RING is a trademark of FromSoftware.</p>
-				</div>
 			</div>-->
-			<div class="flex justify-end">
-				<button
-					type="button"
-					class="px-3 py-2 font-medium border-2 rounded-xl flex items-center disabled:text-zinc-500 disabled:border-zinc-500 group"
-					disabled={creatingUrl}
-					on:click={() => createSharedUrl()}
-				>
-					{#if creatingUrl}
-						<div class="spinner me-2"></div>
-					{:else}
-						<svg
-							class="fill-zinc-200 group-disabled:fill-zinc-500 me-2"
-							xmlns="http://www.w3.org/2000/svg"
-							height="24px"
-							viewBox="0 -960 960 960"
-							width="24px"
-							fill="#5f6368"
-							><path
-								d="M720-80q-50 0-85-35t-35-85q0-7 1-14.5t3-13.5L322-392q-17 15-38 23.5t-44 8.5q-50 0-85-35t-35-85q0-50 35-85t85-35q23 0 44 8.5t38 23.5l282-164q-2-6-3-13.5t-1-14.5q0-50 35-85t85-35q50 0 85 35t35 85q0 50-35 85t-85 35q-23 0-44-8.5T638-672L356-508q2 6 3 13.5t1 14.5q0 7-1 14.5t-3 13.5l282 164q17-15 38-23.5t44-8.5q50 0 85 35t35 85q0 50-35 85t-85 35Zm0-640q17 0 28.5-11.5T760-760q0-17-11.5-28.5T720-800q-17 0-28.5 11.5T680-760q0 17 11.5 28.5T720-720ZM240-440q17 0 28.5-11.5T280-480q0-17-11.5-28.5T240-520q-17 0-28.5 11.5T200-480q0 17 11.5 28.5T240-440Zm480 280q17 0 28.5-11.5T760-200q0-17-11.5-28.5T720-240q-17 0-28.5 11.5T680-200q0 17 11.5 28.5T720-160Zm0-600ZM240-480Zm480 280Z"
-							/></svg
-						>
-					{/if}
-					<span>Share your build</span>
-				</button>
-			</div>
-		</div>
 	</div>
 
 	<div class="relative mb-10">
@@ -233,9 +223,7 @@
 				class:justify-end={hero.progress > 0.075}
 				class:opacity-100={$uiState.showAttributeInfo !== null}
 			>
-				{hero.souls.toLocaleString()}<span class="ms-1"
-					>(+{calcNeededSouls(hero.level).toLocaleString()})</span
-				>
+				{hero.souls.toLocaleString()}<span class="ms-1">(+{calcNeededSouls(hero.level).toLocaleString()})</span>
 			</div>
 
 			<hr class="h-1 bg-amber-300 border-amber-300" />
@@ -255,9 +243,7 @@
 			fill="#5f6368"><path d="M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z" /></svg
 		> Shared build created
 	</h3>
-	<label for="sharedBuildUrlInput" class="mb-2 block text-zinc-400"
-		>Your build is available at:</label
-	>
+	<label for="sharedBuildUrlInput" class="mb-2 block text-zinc-400">Your build is available at:</label>
 	<input
 		id="sharedBuildUrlInput"
 		type="text"

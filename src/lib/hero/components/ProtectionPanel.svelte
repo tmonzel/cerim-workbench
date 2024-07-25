@@ -2,7 +2,7 @@
 	import AttackTypeBadge from '$lib/components/AttackTypeBadge.svelte';
 	import StatBadge from '$lib/components/StatBadge.svelte';
 	import ValueBadge from '$lib/components/ValueBadge.svelte';
-	import type { HeroState } from '../types';
+	import type { HeroState } from '$lib/hero';
 
 	export let hero: HeroState;
 

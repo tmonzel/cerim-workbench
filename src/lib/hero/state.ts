@@ -1,11 +1,9 @@
-import { AttackItem, itemStore, type Item } from '$lib/item';
+import { itemStore } from '$lib/item';
 import { derived } from 'svelte/store';
-import type { EquipState, HeroState } from './types';
+import type { HeroState } from './types';
 import { attributeStore } from './attributes';
-import { slotStore } from './equip';
 import {
 	AffinityType,
-	AttackType,
 	AttributeType,
 	calcCorrect,
 	calcNeededSouls,
@@ -13,43 +11,31 @@ import {
 	DynamicAttributes,
 	DynamicDamageNegation,
 	DynamicDefense,
-	DynamicGuard,
+	DynamicNumber,
 	DynamicResistance,
-	DynamicStats,
-	list
+	DynamicStats
 } from '$lib/core';
 import type { DataDefaults } from '$lib/data';
 import { attributeRecord } from '$lib/records';
 import { HERO_MAX_LEVEL } from '$lib/config';
 import { appState } from '$lib/state';
 import { heroTypes } from './data';
+import { combatState, Weapon } from '$lib/combat';
+import { accessoryState } from '$lib/accessory';
+import { protectionState } from '$lib/protection';
+import { calcScaledAttack } from './helpers';
 
 export const heroState = derived(
-	[appState, attributeStore, slotStore, itemStore],
-	([config, attributeState, slots, items]) => {
-		const equip: EquipState = {
-			rune: null,
-			pouch: null,
-			pouch2: null,
-			pouch3: null,
-			pouch4: null,
-			head: null,
-			chest: null,
-			legs: null,
-			hand: null,
-			mainHand: null,
-			offHand: null
-		};
-
-		for (const [slotName, slot] of Object.entries(slots)) {
-			if (slot.selectedItemId && items[slot.selectedItemId]) {
-				equip[slotName as keyof EquipState] = items[slot.selectedItemId];
-			}
-		}
-
+	[appState, attributeStore, accessoryState, combatState, protectionState],
+	([config, attributeState, accessories, combat, protection]) => {
 		const type = heroTypes.find((t) => t.id === config.heroType)!;
 		const attributes = new DynamicAttributes(attributeState);
 		const level = attributes.getTotal() + type.level;
+
+		const souls = [...Array<number>(level)].reduce(
+			(p, c, index) => p + (index > 0 ? Math.floor(calcNeededSouls(index)) : 0),
+			0
+		);
 
 		const baseDefense = calcCorrect(level + 79, [
 			{ breakpoint: 1, grow: 40 },
@@ -67,11 +53,6 @@ export const heroState = derived(
 			{ breakpoint: 792, grow: 180 }
 		]);
 
-		const souls = [...Array<number>(level)].reduce(
-			(p, c, index) => p + (index > 0 ? Math.floor(calcNeededSouls(index)) : 0),
-			0
-		);
-
 		const hero: HeroState = {
 			type,
 			level,
@@ -79,22 +60,10 @@ export const heroState = derived(
 			souls,
 			attributePoints: HERO_MAX_LEVEL - level,
 			stats: new DynamicStats(),
-			equip,
 			effects: [],
 			weightRatio: 0,
+			totalAttributes: {},
 			attributes,
-			attack: {
-				mainHand: new DynamicAttack(),
-				offHand: new DynamicAttack()
-			},
-
-			resistance: new DynamicResistance({
-				immunity: baseResistance,
-				focus: baseResistance,
-				poise: baseResistance,
-				robustness: baseResistance,
-				vitality: baseResistance
-			}),
 
 			defense: new DynamicDefense({
 				standard: baseDefense,
@@ -106,13 +75,23 @@ export const heroState = derived(
 				lit: baseDefense,
 				mag: baseDefense
 			}),
+			resistance: new DynamicResistance({
+				immunity: baseResistance,
+				focus: baseResistance,
+				poise: baseResistance,
+				robustness: baseResistance,
+				vitality: baseResistance
+			}),
 
 			damageNegation: new DynamicDamageNegation(),
-			guard: new DynamicGuard()
+			poise: new DynamicNumber(),
+
+			mainHandAttack: new DynamicAttack(),
+			offHandAttack: new DynamicAttack()
 		};
 
 		// Apply item modifications
-		for (const item of Object.values(equip)) {
+		for (const item of [...accessories, ...protection, combat.mainHand, combat.offHand]) {
 			if (!item) {
 				continue;
 			}
@@ -127,9 +106,9 @@ export const heroState = derived(
 				hero.damageNegation.multiply(item.damageNegation);
 			}
 
-			// Summarize guard
-			if (item instanceof AttackItem) {
-				hero.guard.add(item.guard);
+			// Summarize poise
+			if (item.poise) {
+				hero.poise.add(item.poise);
 			}
 
 			// Summarize poise
@@ -158,44 +137,17 @@ export const heroState = derived(
 		const totalAttributes = hero.attributes.getTotalValue();
 
 		for (const attrType of Object.values(AttributeType)) {
-			totalAttributes[attrType] += type.attributes[attrType];
+			totalAttributes[attrType] += hero.type.attributes[attrType];
 		}
 
-		for (const [part, item] of Object.entries(equip) as [keyof EquipState, Item | null][]) {
-			if (!item) {
-				continue;
-			}
+		hero.totalAttributes = totalAttributes;
 
-			const slot = slots[part];
+		if (combat.mainHand) {
+			hero.mainHandAttack = calcScaledAttack(combat.mainHand, totalAttributes);
+		}
 
-			if (item instanceof AttackItem) {
-				if (slot.useWithTwoHands) {
-					item.applyAttributes({
-						...totalAttributes,
-						str: totalAttributes.str * 1.5
-					});
-					item.scaleAttack(config.excludeStaminaFromAttackCalc ? [AttackType.STAMINA] : []);
-
-					hero.equip[part] = item;
-				} else {
-					item.applyAttributes(totalAttributes);
-					item.scaleAttack(config.excludeStaminaFromAttackCalc ? [AttackType.STAMINA] : []);
-
-					hero.equip[part] = item;
-				}
-
-				if (item.scaledAttack) {
-					for (const damage of list(item.scaledAttack)) {
-						if (part === 'mainHand') {
-							hero.attack.mainHand.add({ [damage.key]: item.scaledAttack[damage.key] });
-						} else if (part === 'offHand') {
-							hero.attack.offHand.add({ [damage.key]: item.scaledAttack[damage.key] });
-						}
-					}
-				}
-			} else {
-				hero.equip[part] = item.applyAttributes(totalAttributes);
-			}
+		if (combat.offHand) {
+			hero.offHandAttack = calcScaledAttack(combat.offHand, totalAttributes);
 		}
 
 		hero.weightRatio = (hero.stats.get('weight') * 100) / hero.stats.get('equipLoad');
@@ -204,42 +156,39 @@ export const heroState = derived(
 	}
 );
 
-export const sharedDataState = derived(
-	[attributeStore, itemStore, slotStore, appState],
-	([attributes, items, slots, app]) => {
-		const itemModifications: Record<string, { affinity?: AffinityType; tier?: number }> = {};
+export const sharedDataState = derived([attributeStore, itemStore, appState], ([attributes, items, app]) => {
+	const itemModifications: Record<string, { affinity?: AffinityType; tier?: number }> = {};
 
-		for (const item of Object.values(items)) {
-			if (!item.modified) {
-				continue;
-			}
-
-			const mod: { affinity?: AffinityType; tier?: number } = {};
-
-			if (item instanceof AttackItem && item.affinity) {
-				mod.affinity = item.affinity;
-			}
-
-			if (item.tier > 0) {
-				mod.tier = item.tier;
-			}
-
-			itemModifications[item.id] = mod;
+	for (const item of Object.values(items)) {
+		if (!item.modified) {
+			continue;
 		}
 
-		const equip: Record<string, string> = {};
+		const mod: { affinity?: AffinityType; tier?: number } = {};
 
-		for (const [slotName, slot] of Object.entries(slots)) {
+		if (item instanceof Weapon && item.affinity) {
+			mod.affinity = item.affinity;
+		}
+
+		if (item.tier > 0) {
+			mod.tier = item.tier;
+		}
+
+		itemModifications[item.id] = mod;
+	}
+
+	const equip: Record<string, string> = {};
+
+	/*for (const [slotName, slot] of Object.entries(slots)) {
 			if (slot.selectedItemId && items[slot.selectedItemId]) {
 				equip[slotName] = slot.selectedItemId;
 			}
-		}
+		}*/
 
-		return {
-			heroType: app.heroType,
-			attributes,
-			itemModifications,
-			equip
-		} satisfies DataDefaults;
-	}
-);
+	return {
+		heroType: app.heroType,
+		attributes,
+		itemModifications,
+		equip
+	} satisfies DataDefaults;
+});

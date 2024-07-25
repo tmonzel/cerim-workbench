@@ -13,6 +13,7 @@ import type {
 } from '$lib/core';
 
 export type ItemData = {
+	id: number;
 	name: string;
 	type: string;
 	category: ItemCategory;
@@ -31,11 +32,15 @@ export type ItemData = {
 	affinity?: AffinityType;
 	iconUrl?: string;
 	effects?: string[];
+	effectInfo?: string[];
 	modifiers?: Record<ModifierType, ModifierData>;
 	config?: ItemConfig;
 	affinities?: Partial<Record<AffinityType, ItemConfig>>;
 	upgrades?: ItemUpgrade[];
 	attackInfo?: ItemAttackInfo;
+
+	isLightSource: boolean;
+	upgradePrice?: number;
 };
 
 export enum ItemCategory {
@@ -54,32 +59,3 @@ export enum ItemRarity {
 	RARE = 2,
 	LEGENDARY = 3
 }
-
-export type ItemAttackInfo = {
-	damage: DamageType[];
-	crit: number;
-};
-
-export type ItemUpgrade = {
-	iconUrl?: string;
-	modifiers?: Record<ModifierType, ModifierData>;
-};
-
-export type ItemRequirements = {
-	attributes?: Partial<Record<AttributeType, number>>;
-};
-
-export type ItemAttributeScaling = Partial<
-	Record<AttributeType, { base: number; attackTypes: AttackType[] }>
->;
-
-export type ItemConfig = {
-	attack?: Partial<Record<AttackType, number>>;
-	guard?: Guard;
-	scaling?: ScalingBase;
-	schema?: string;
-	mutations?: GraphMutation[] | number | Partial<Record<AttackType, string>>;
-	cast?: 'sorceries' | 'incantations';
-	effects?: Record<number, number>;
-	attackCorrectId?: string;
-};

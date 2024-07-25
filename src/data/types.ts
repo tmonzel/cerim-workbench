@@ -167,130 +167,19 @@ export interface ReinforceParam extends DataRow {
 
 export interface ItemRow extends DataRow {
 	weight: number;
-	iconId: number;
-	iconIdF: number;
-	iconIdM: number;
 
-	reinforceTypeId: number;
-	attackElementCorrectId: number;
+	equipModelId: number;
 	equipModelCategory: EquipModelCategory;
-	originEquipWep: number;
-
-	// Type
-	wepType: number;
 
 	// Name
 	paramdexName: string;
 
 	rarity: ItemRarity;
 
-	// CalcCorrect_IDs
-	correctType_Physics: number;
-	correctType_Magic: number;
-	correctType_Fire: number;
-	correctType_Thunder: number;
-	correctType_Dark: number;
-	correctType_Poison: number;
-	correctType_Sleep: number;
-	correctType_Madness: number;
-
-	// Requirements
-	properStrength: number;
-	properAgility: number;
-	properMagic: number;
-	properFaith: number;
-
-	// Attack bases
-	attackBasePhysics: number;
-	attackBaseMagic: number;
-	attackBaseFire: number;
-	attackBaseThunder: number;
-	attackBaseDark: number;
-	attackBaseStamina: number;
-
-	// Scaling
-	correctStrength: number;
-	correctAgility: number;
-	correctMagic: number;
-	correctFaith: number;
-	correctLuck: number;
-
-	// Guard
-	physGuardCutRate: number;
-	magGuardCutRate: number;
-	fireGuardCutRate: number;
-	thunGuardCutRate: number;
-	darkGuardCutRate: number;
-	staminaGuardDef: number;
-
-	isNormalAttackType: number;
-	isBlowAttackType: number;
-	isSlashAttackType: number;
-	isThrustAttackType: number;
-
-	// Crit
-	throwAtkRate: number;
-
-	// Defense
-	defensePhysics: number;
-	defenseMagic: number;
-	defenseFire: number;
-	defenseThunder: number;
-	defenseDark: number;
-	defenseSlash: number;
-	defenseBlow: number;
-	defenseThrust: number;
-
-	// Damage Neg
-	neutralDamageCutRate: number;
-	slashDamageCutRate: number;
-	blowDamageCutRate: number;
-	thrustDamageCutRate: number;
-	magicDamageCutRate: number;
-	fireDamageCutRate: number;
-	thunderDamageCutRate: number;
-	darkDamageCutRate: number;
-
-	poisonGuardResist: number;
-	diseaseGuardResist: number;
-	bloodGuardResist: number;
-	curseGuardResist: number;
-	sleepGuardResist: number;
-	madnessGuardResist: number;
-	freezeGuardResist: number;
-
-	// Poise
-	toughnessCorrectRate: number;
-
-	// Immunity
-	resistPoison: number;
-	resistDisease: number;
-
-	// Robustness
-	resistBlood: number;
-	resistFreeze: number;
-
-	// Vitality
-	resistCurse: number;
-
-	// Focus
-	resistSleep: number;
-	resistMadness: number;
-
-	// SpEffects Behaviors
-	spEffectBehaviorId0: number;
-	spEffectBehaviorId1: number;
-	spEffectBehaviorId2: number;
+	reinforceTypeId: number;
 
 	// SpEffects
 	residentSpEffectId: number;
 	residentSpEffectId2: number;
 	residentSpEffectId3: number;
-
-	enableMagic: number;
-	enableMiracle: number;
-
-	isDualBlade: number;
-	bothHandEquipable: number;
-	isEnhance: number; // Can it be strengthened with pine fat?
 }

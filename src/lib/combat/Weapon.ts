@@ -1,4 +1,4 @@
-import { calcCorrect, getScalingId, list } from '$lib/core';
+import { getScalingId, list } from '$lib/core';
 import {
 	AffinityType,
 	AttackType,
@@ -12,9 +12,9 @@ import {
 	type UpgradeSchema
 } from '$lib/core/types';
 import { attackCorrectRecord, spEffectsMap, upgradeSchemata } from '$lib/data';
+import { Item } from '$lib/item';
 import { affinityRecord, mutationRecord } from '$lib/records';
-import { Item } from './Item';
-import type { ItemAttackInfo, ItemAttributeScaling, ItemConfig, ItemData } from './types';
+import type { ItemAttackInfo, ItemAttributeScaling, ItemConfig, WeaponEntity } from './types';
 
 const scalingAttributes = [
 	AttributeType.STRENGTH,
@@ -24,7 +24,7 @@ const scalingAttributes = [
 	AttributeType.ARCANE
 ];
 
-export class AttackItem extends Item {
+export class Weapon extends Item {
 	attack: Attack = {};
 	scaledAttack?: Attack;
 	attackInfo: ItemAttackInfo;
@@ -33,32 +33,50 @@ export class AttackItem extends Item {
 	guard: Guard;
 	affinities: Map<string, ItemConfig>;
 	scaling: ItemAttributeScaling = {};
+	config!: ItemConfig;
 
-	private attackMutations: Partial<Record<AttackType, GraphMutation[]>>;
+	attackMutations: Partial<Record<AttackType, GraphMutation[]>>;
 	private _affinity: AffinityType | null;
 
 	get affinity(): AffinityType | null {
 		return this._affinity;
 	}
 
-	constructor(id: string, data: ItemData) {
-		super(id, data);
+	constructor(id: string, entity: WeaponEntity) {
+		super(id, entity);
 
 		this.attackMutations = {};
-		this.attackSpeed = data.attackSpeed ?? 1;
-		this.guard = data.guard ?? { phy: 0, mag: 0, fir: 0, lit: 0, hol: 0, sta: 0, res: 0 };
-		this.affinities = new Map(Object.entries(data.affinities ?? {}));
+		this.attackSpeed = entity.attackSpeed ?? 1;
+		this.guard = entity.guard ?? { phy: 0, mag: 0, fir: 0, lit: 0, hol: 0, sta: 0, res: 0 };
+		this.affinities = new Map(Object.entries(entity.affinities ?? {}));
 		this._affinity = null;
 
 		this.attackInfo = {
 			crit: 100,
 			damage: [DamageType.STANDARD],
-			...data.attackInfo
+			...entity.attackInfo
 		};
 
-		if (data.config) {
-			this.setConfig(data.config);
+		if (entity.config) {
+			this.setConfig(entity.config);
 		}
+	}
+
+	setConfig(config: ItemConfig): void {
+		this.config = config;
+		this.modifiers = [];
+
+		if (config.effects) {
+			for (const [i, id] of Object.entries(config.effects)) {
+				const effect = spEffectsMap.get(id);
+
+				if (effect && effect.modifiers) {
+					this.setModifiers(effect.modifiers);
+				}
+			}
+		}
+
+		this.update();
 	}
 
 	getAvailableAffinities(): { name: string; value: AffinityType; iconUrl: string }[] {
@@ -121,9 +139,7 @@ export class AttackItem extends Item {
 		}
 
 		const schema: UpgradeSchema =
-			typeof this.config.schema === 'string'
-				? upgradeSchemata[this.config.schema]
-				: upgradeSchemata['0'];
+			typeof this.config.schema === 'string' ? upgradeSchemata[this.config.schema] : upgradeSchemata['0'];
 
 		if (!schema) {
 			return;
@@ -218,12 +234,7 @@ export class AttackItem extends Item {
 					attackTypes.push(AttackType.INCANTATION);
 				}
 
-				if (
-					!schema.scaling ||
-					!schema.scaling[attrType] ||
-					!this.config.scaling ||
-					!this.config.scaling[attrType]
-				) {
+				if (!schema.scaling || !schema.scaling[attrType] || !this.config.scaling || !this.config.scaling[attrType]) {
 					continue;
 				}
 
@@ -248,95 +259,5 @@ export class AttackItem extends Item {
 
 		this.attack = attack;
 		this.scaling = attributeScaling;
-	}
-
-	calculateAttributeScaling(
-		attrValue: number,
-		attrType: AttributeType,
-		attackType: AttackType
-	): number {
-		const scaling = this.scaling[attrType];
-
-		if (!scaling || !scaling.attackTypes.includes(attackType)) {
-			return 0;
-		}
-
-		const upgradeScaling = scaling.base / 100;
-		let attrScaling: number;
-
-		if (this.config.cast === 'sorceries' && attrType === AttributeType.INTELLIGENCE) {
-			attrScaling = calcCorrect(attrValue, this.attackMutations['mag'] ?? []) / 100;
-		} else {
-			attrScaling = calcCorrect(attrValue, this.attackMutations[attackType] ?? []) / 100;
-		}
-
-		return attrScaling * upgradeScaling;
-	}
-
-	calculateAttributeAttack(attrValue: number, attrType: AttributeType): Attack {
-		const attack: Attack = {};
-		const config = this.scaling[attrType];
-
-		for (const attackType of Object.values(AttackType)) {
-			if (!config || !config.attackTypes.includes(attackType)) {
-				continue;
-			}
-
-			const scaling = 1 + this.calculateAttributeScaling(attrValue, attrType, attackType);
-
-			if (this.config.cast === 'sorceries' && attackType === AttackType.SORCERY) {
-				attack[AttackType.SORCERY] = scaling * 100;
-			} else if (this.config.cast === 'incantations' && attackType === AttackType.INCANTATION) {
-				attack[AttackType.INCANTATION] = scaling * 100;
-			} else if (this.attack[attackType]) {
-				attack[attackType] = this.attack[attackType] * scaling;
-			}
-		}
-
-		return attack;
-	}
-
-	scaleAttack(excludeAttackTypes?: AttackType[]): void {
-		const scaledAttack: Attack = {};
-
-		for (const attackType of Object.values(AttackType)) {
-			const attackBase = this.attack[attackType] ?? 0;
-
-			if (
-				!attackBase &&
-				attackType !== AttackType.SORCERY &&
-				attackType !== AttackType.INCANTATION
-			) {
-				continue;
-			}
-
-			if (excludeAttackTypes && excludeAttackTypes.includes(attackType)) {
-				continue;
-			}
-
-			let scalingTotal = 1;
-
-			if (this.invalidAttributes.some((attr) => this.scaling![attr] !== undefined)) {
-				scalingTotal = 0.6;
-			} else {
-				for (const attrType of Object.keys(this.scaling) as AttributeType[]) {
-					scalingTotal += this.calculateAttributeScaling(
-						this.appliedAttributes[attrType] ?? 0,
-						attrType,
-						attackType
-					);
-				}
-			}
-
-			if (this.config.cast === 'sorceries' && attackType === AttackType.SORCERY) {
-				scaledAttack[AttackType.SORCERY] = scalingTotal * 100;
-			} else if (this.config.cast === 'incantations' && attackType === AttackType.INCANTATION) {
-				scaledAttack[AttackType.INCANTATION] = scalingTotal * 100;
-			} else {
-				scaledAttack[attackType] = attackBase * scalingTotal;
-			}
-		}
-
-		this.scaledAttack = scaledAttack;
 	}
 }

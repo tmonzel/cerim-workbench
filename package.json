@@ -8,6 +8,7 @@
 		"preview": "vite preview",
 		"data:import:images": "magick ./mat/DDS/*.dds -set filename:fn '%[basename]' './static/images/items/%[filename:fn].png'",
 		"data:import": "tsx src/data/build.ts",
+		"data:import:weapons": "tsx src/data/weapon/build.ts",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"lint": "prettier --check . && eslint .",

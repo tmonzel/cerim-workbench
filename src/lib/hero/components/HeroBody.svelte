@@ -1,150 +1,47 @@
 <script lang="ts">
-	import { ItemCategory } from '$lib/item/types';
-
-	import { Item, itemStore } from '$lib/item';
-	import { derived, writable } from 'svelte/store';
-	import EquipSlot from './EquipSlot.svelte';
-	import { heroContexts, slotStore, type HeroBodyState, type HeroState } from '$lib/hero';
+	import { writable } from 'svelte/store';
+	import { type HeroBodyState, type HeroState } from '$lib/hero';
 	import CheckboxControl from '$lib/components/CheckboxControl.svelte';
-	import { setContext } from 'svelte';
 	import { appState } from '$lib/state';
+	import WeaponEquipSlot from '$lib/combat/components/WeaponEquipSlot.svelte';
+	import { combatEquip } from '$lib/combat';
+	import { protectionEquip } from '$lib/protection';
+	import ArmorEquipSlot from '$lib/protection/components/ArmorEquipSlot.svelte';
+	import AccessoryEquipSlot from '$lib/accessory/components/AccessoryEquipSlot.svelte';
+	import { accessoryEquip } from '$lib/accessory';
 
 	export let hero: HeroState;
-
-	const selectableItems = derived(itemStore, (items) => {
-		const record: Record<ItemCategory, Item[]> = {
-			[ItemCategory.WEAPON]: [],
-			[ItemCategory.HELMET]: [],
-			[ItemCategory.ARMOR]: [],
-			[ItemCategory.LEGS]: [],
-			[ItemCategory.ARMS]: [],
-			[ItemCategory.RUNE]: [],
-			[ItemCategory.TALISMAN]: []
-		};
-
-		for (const item of Object.values(items)) {
-			switch (item.category) {
-				case ItemCategory.WEAPON:
-					record[ItemCategory.WEAPON].push(item);
-					break;
-				case ItemCategory.HELMET:
-					record[ItemCategory.HELMET].push(item);
-					break;
-				case ItemCategory.ARMOR:
-					record[ItemCategory.ARMOR].push(item);
-					break;
-				case ItemCategory.LEGS:
-					record[ItemCategory.LEGS].push(item);
-					break;
-				case ItemCategory.ARMS:
-					record[ItemCategory.ARMS].push(item);
-					break;
-				case ItemCategory.RUNE:
-					record[ItemCategory.RUNE].push(item);
-					break;
-				case ItemCategory.TALISMAN:
-					record[ItemCategory.TALISMAN].push(item);
-					break;
-			}
-		}
-
-		return record;
-	});
 
 	const bodyState = writable<HeroBodyState>({
 		guardInfo: true,
 		scalingInfo: true
 	});
-
-	setContext('bodyState', bodyState);
 </script>
 
-{#if $appState.heroContext === 'attack'}
-	<div class="mb-5 flex justify-end gap-5">
-		<CheckboxControl bind:checked={$bodyState.guardInfo}>Guard Info</CheckboxControl>
-		<CheckboxControl bind:checked={$bodyState.scalingInfo}>Scaling Info</CheckboxControl>
-		<div class="max-w-44">
-			<CheckboxControl bind:checked={$appState.excludeStaminaFromAttackCalc}>
-				Exclude Stamina from total attack damage
-			</CheckboxControl>
+<div class:hidden={$appState.heroContext !== 'attack'}>
+	<div class="bg-zinc-800/30 rounded-xl p-5">
+		<div class="flex flex-col gap-5">
+			<WeaponEquipSlot label="Mainhand" bind:selectedId={$combatEquip.mainHand} attributes={hero.totalAttributes} />
+			<WeaponEquipSlot label="Offhand" bind:selectedId={$combatEquip.offHand} attributes={hero.totalAttributes} />
 		</div>
 	</div>
-{/if}
-<div class="bg-zinc-800/30 rounded-xl p-5">
-	{#if $appState.heroContext === 'attack'}
-		<div class="grid grid-cols-2 gap-5">
-			<EquipSlot
-				bind:slot={$slotStore.mainHand}
-				label="Main Hand"
-				selectableItems={$selectableItems[ItemCategory.WEAPON]}
-				item={hero.equip.mainHand}
-			/>
-			<EquipSlot
-				bind:slot={$slotStore.offHand}
-				label="Offhand"
-				selectableItems={$selectableItems[ItemCategory.WEAPON]}
-				item={hero.equip.offHand}
-			/>
-		</div>
-	{:else if $appState.heroContext === 'protect'}
-		<div class="grid grid-cols-2 gap-5">
-			<EquipSlot
-				label="Head"
-				bind:slot={$slotStore.head}
-				selectableItems={$selectableItems[ItemCategory.HELMET]}
-				item={hero.equip.head}
-			/>
-			<EquipSlot
-				label="Chest"
-				bind:slot={$slotStore.chest}
-				selectableItems={$selectableItems[ItemCategory.ARMOR]}
-				item={hero.equip.chest}
-			/>
-			<EquipSlot
-				label="Legs"
-				bind:slot={$slotStore.legs}
-				selectableItems={$selectableItems[ItemCategory.LEGS]}
-				item={hero.equip.legs}
-			/>
-			<EquipSlot
-				label="Hands"
-				bind:slot={$slotStore.hand}
-				selectableItems={$selectableItems[ItemCategory.ARMS]}
-				item={hero.equip.hand}
-			/>
-		</div>
-	{:else if $appState.heroContext === 'accessories'}
-		<div class="grid grid-cols-2 gap-5">
-			<EquipSlot
-				label="Greatrune"
-				bind:slot={$slotStore.rune}
-				selectableItems={$selectableItems[ItemCategory.RUNE]}
-				item={hero.equip.rune}
-			/>
-			<EquipSlot
-				label="Pouch"
-				bind:slot={$slotStore.pouch}
-				selectableItems={$selectableItems[ItemCategory.TALISMAN]}
-				item={hero.equip.pouch}
-			/>
-			<EquipSlot
-				label="Pouch II"
-				bind:slot={$slotStore.pouch2}
-				selectableItems={$selectableItems[ItemCategory.TALISMAN]}
-				item={hero.equip.pouch2}
-			/>
-			<EquipSlot
-				label="Pouch III"
-				bind:slot={$slotStore.pouch3}
-				selectableItems={$selectableItems[ItemCategory.TALISMAN]}
-				item={hero.equip.pouch3}
-			/>
-			<EquipSlot
-				label="Pouch IV"
-				bind:slot={$slotStore.pouch4}
-				selectableItems={$selectableItems[ItemCategory.TALISMAN]}
-				item={hero.equip.pouch4}
-			/>
-		</div>
-	{/if}
+</div>
+
+<div class="bg-zinc-800/30 rounded-xl p-5" class:hidden={$appState.heroContext !== 'accessories'}>
+	<div class="grid grid-cols-2 gap-5">
+		<AccessoryEquipSlot label="Greatrune" type="rune" bind:selectedId={$accessoryEquip.rune} />
+		<AccessoryEquipSlot label="Pouch" type="talisman" bind:selectedId={$accessoryEquip.pouch} />
+		<AccessoryEquipSlot label="Pouch II" type="talisman" bind:selectedId={$accessoryEquip.pouch2} />
+		<AccessoryEquipSlot label="Pouch III" type="talisman" bind:selectedId={$accessoryEquip.pouch3} />
+		<AccessoryEquipSlot label="Pouch IV" type="talisman" bind:selectedId={$accessoryEquip.pouch4} />
+	</div>
+</div>
+
+<div class="bg-zinc-800/30 rounded-xl p-5" class:hidden={$appState.heroContext !== 'protection'}>
+	<div class="grid grid-cols-2 gap-5">
+		<ArmorEquipSlot label="Head" type="helm" bind:selectedId={$protectionEquip.head} />
+		<ArmorEquipSlot label="Chest" type="armor" bind:selectedId={$protectionEquip.chest} />
+		<ArmorEquipSlot label="Legs" type="leg" bind:selectedId={$protectionEquip.legs} />
+		<ArmorEquipSlot label="Arms" type="gauntlet" bind:selectedId={$protectionEquip.arms} />
+	</div>
 </div>

@@ -3,16 +3,13 @@ import type {
 	DynamicAttributes,
 	DynamicDamageNegation,
 	DynamicDefense,
-	DynamicGuard,
+	DynamicNumber,
 	DynamicResistance,
 	DynamicStats
 } from '$lib/core';
 import type { AttributeType } from '$lib/core/types';
 import type { Item } from '$lib/item';
-import type { HeroEquipSlot } from './HeroEquipSlot';
 import type { AttributeModifier } from './modifiers';
-
-export type SlotState = Record<keyof EquipState, HeroEquipSlot>;
 
 export type HeroContext = {
 	id: string;
@@ -25,19 +22,19 @@ export type HeroState = {
 	progress: number;
 	souls: number;
 	attributePoints: number;
-	equip: EquipState;
 	weightRatio: number;
 	effects: string[];
+	totalAttributes: Record<string, number>;
+
 	stats: DynamicStats;
 	attributes: DynamicAttributes;
-	attack: {
-		mainHand: DynamicAttack;
-		offHand: DynamicAttack;
-	};
-	resistance: DynamicResistance;
 	defense: DynamicDefense;
+	resistance: DynamicResistance;
 	damageNegation: DynamicDamageNegation;
-	guard: DynamicGuard;
+	poise: DynamicNumber;
+
+	mainHandAttack: DynamicAttack;
+	offHandAttack: DynamicAttack;
 };
 
 export type HeroType = {

@@ -8,10 +8,13 @@ import {
 	type UpgradeSchema
 } from './core';
 import { type ItemData } from './item/types';
-import { AccessoryItem, AttackItem, itemStore, ProtectionItem, type ItemState } from './item';
+import { itemStore } from './item';
 import { writable } from 'svelte/store';
-import { attributeStore, slotStore, type SlotState } from './hero';
+import { attributeStore } from './hero';
 import { appState } from './state';
+import { Weapon, weaponStore } from './combat';
+import { Armor, armorStore } from './protection';
+import { Accessory, accessoryStore } from './accessory';
 
 export type DataSchema = {
 	defaults?: DataDefaults;
@@ -67,21 +70,25 @@ export function loadData(data: DataSchema) {
 
 	// Resolve item data
 	if (data.items) {
-		const items: ItemState = {};
+		const weapons: Record<string, Weapon> = {};
+		const armors: Record<string, Armor> = {};
+		const accessories: Record<string, Accessory> = {};
 
 		for (const id in data.items.weapons) {
-			items[id] = new AttackItem(id, data.items.weapons[id]);
+			weapons[id] = new Weapon(id, data.items.weapons[id]);
 		}
 
 		for (const id in data.items.armors) {
-			items[id] = new ProtectionItem(id, data.items.armors[id]);
+			armors[id] = new Armor(id, data.items.armors[id]);
 		}
 
 		for (const id in data.items.accessories) {
-			items[id] = new AccessoryItem(id, data.items.accessories[id]);
+			accessories[id] = new Accessory(id, data.items.accessories[id]);
 		}
 
-		itemStore.set(items);
+		armorStore.loadAll(armors);
+		weaponStore.loadAll(weapons);
+		accessoryStore.loadAll(accessories);
 	}
 
 	// Apply attribute defaults
@@ -102,7 +109,7 @@ export function loadData(data: DataSchema) {
 	});
 
 	// Apply slot defaults
-	slotStore.update((state) => {
+	/*slotStore.update((state) => {
 		if (!data.defaults || !data.defaults.equip) {
 			return { ...state };
 		}
@@ -118,7 +125,7 @@ export function loadData(data: DataSchema) {
 		}
 
 		return slotState;
-	});
+	});*/
 
 	appState.update((state) => {
 		if (!data.defaults || !data.defaults.heroType) {
@@ -141,7 +148,7 @@ export function loadData(data: DataSchema) {
 				item.upgrade(mod.tier);
 			}
 
-			if (item instanceof AttackItem && mod.affinity && mod.affinity !== AffinityType.STANDARD) {
+			if (item instanceof Weapon && mod.affinity && mod.affinity !== AffinityType.STANDARD) {
 				item.setAffinity(mod.affinity);
 			}
 		}

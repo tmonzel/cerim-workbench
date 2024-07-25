@@ -2,8 +2,9 @@
 	import Button from '$lib/components/Button.svelte';
 	import SelectControl from '$lib/components/SelectControl.svelte';
 	import { AffinityType } from '$lib/core/types';
-	import { AttackItem, itemStore, type Item } from '$lib/item';
+	import { itemStore, type Item } from '$lib/item';
 	import { affinityRecord } from '$lib/records';
+	import { Weapon } from '../Weapon';
 
 	export let item: Item;
 
@@ -15,7 +16,7 @@
 	}
 
 	function changeAffinity(aff: AffinityType): void {
-		if (item instanceof AttackItem) {
+		if (item instanceof Weapon) {
 			item.setAffinity(aff);
 			itemStore.update((items) => ({ ...items, [item!.id]: item! }));
 		}
@@ -28,14 +29,14 @@
 	}));
 
 	$: {
-		if (item instanceof AttackItem) {
+		if (item instanceof Weapon) {
 			availableAffinities = [...item.affinities.keys()] as AffinityType[];
 		}
 	}
 </script>
 
 <div class="flex gap-2">
-	{#if item instanceof AttackItem && availableAffinities.length > 0}
+	{#if item instanceof Weapon && availableAffinities.length > 0}
 		<div class="flex">
 			<SelectControl
 				options={affinityOptions}
@@ -59,11 +60,7 @@
 	{/if}
 
 	<div>
-		<Button
-			icon="add"
-			disabled={item.tier >= item.possibleUpgrades}
-			on:click={() => upgrade(item.tier + 1)}
-		/>
+		<Button icon="add" disabled={item.tier >= item.possibleUpgrades} on:click={() => upgrade(item.tier + 1)} />
 	</div>
 	<div>
 		<Button icon="remove" disabled={item.tier === 0} on:click={() => upgrade(item.tier - 1)} />
