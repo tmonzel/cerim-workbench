@@ -1,12 +1,11 @@
 <script lang="ts">
-	import { AttackType, type Attack, type AttributeType } from '$lib/core/types';
-	import { attackTypeRecord } from '$lib/records';
+	import { type Attack, type AttributeType } from '$lib/core/types';
 	import { VisXYContainer, VisLine, VisAxis, VisStackedBar } from '@unovis/svelte';
-	import AttributeBadge from '../../components/AttributeBadge.svelte';
-	import type { Weapon } from '$lib/combat';
-	import { calculateAttributeAttack } from '../helpers';
+	import { calculateAttributeAttack, type AttackItem } from '$lib/item';
+	import { attackTypes } from '$lib/core';
+	import AttributeBadge from '$lib/components/AttributeBadge.svelte';
 
-	export let item: Weapon;
+	export let item: AttackItem;
 	export let attributeType: AttributeType;
 	export let attributes: Record<string, number>;
 
@@ -31,14 +30,14 @@
 
 	const color = (d: DataRecord, i: number) =>
 		[
-			attackTypeRecord.phy.color,
-			attackTypeRecord.mag.color,
-			attackTypeRecord.lit.color,
-			attackTypeRecord.sor.color,
-			attackTypeRecord.fir.color,
-			attackTypeRecord.hol.color,
-			attackTypeRecord.inc.color,
-			attackTypeRecord.sta.color
+			attackTypes.phy.color,
+			attackTypes.mag.color,
+			attackTypes.lit.color,
+			attackTypes.sor.color,
+			attackTypes.fir.color,
+			attackTypes.hol.color,
+			attackTypes.inc.color,
+			attackTypes.sta.color
 		][i];
 
 	let currentAttack: Record<string, number> = {};

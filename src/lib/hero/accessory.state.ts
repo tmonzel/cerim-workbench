@@ -1,6 +1,6 @@
 import { derived, writable } from 'svelte/store';
-import { Accessory } from './Accessory';
-import { createEntityStore } from '$lib/core';
+import type { AccessoryItem } from '$lib/item';
+import { accessoryStore } from '$lib/stores';
 
 export type AccessoryEquipState = {
 	rune: string | null;
@@ -18,14 +18,8 @@ export const accessoryEquip = writable<AccessoryEquipState>({
 	pouch4: null
 });
 
-export const accessoryStore = createEntityStore<Accessory>({
-	loaded: false,
-	entities: {},
-	ids: []
-});
-
 export const accessoryState = derived([accessoryEquip, accessoryStore], ([equip, store]) => {
-	const accessories: Accessory[] = [];
+	const accessories: AccessoryItem[] = [];
 
 	for (const id of Object.values(equip)) {
 		if (!id || !store.entities[id]) {

@@ -12,7 +12,7 @@ export interface EntityStore<T> extends Writable<EntityState<T>> {
 	updateEntity(id: string, entity: T): void;
 }
 
-export function createEntityStore<T>(state: EntityState<T>): EntityStore<T> {
+export function createEntityStore<T>(state: EntityState<T> = { loaded: false, entities: {}, ids: [] }): EntityStore<T> {
 	const store = writable<EntityState<T>>(state);
 
 	const updateEntity = (id: string, entity: T): void => {

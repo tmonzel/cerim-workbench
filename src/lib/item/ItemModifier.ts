@@ -1,5 +1,5 @@
-import type { ModifierData, ModifierType } from '$lib/core';
 import type { HeroState, HeroStateModifier } from '$lib/hero';
+import type { ModifierData, ModifierType } from './types';
 
 export class ItemModifier implements HeroStateModifier {
 	constructor(
@@ -14,18 +14,18 @@ export class ItemModifier implements HeroStateModifier {
 					switch (this.type) {
 						case 'percentual':
 							if (value.multiplier && value.multiplier === 'total') {
-								//hero.attack.mainHand.addTotalMultiplier(value.modify);
-								//hero.attack.offHand.addTotalMultiplier(value.modify);
+								hero.mainHandAttack.addTotalMultiplier(value.modify);
+								hero.offHandAttack.addTotalMultiplier(value.modify);
 							} else {
-								//hero.attack.mainHand.addMultiplier(value.modify);
-								//hero.attack.offHand.addMultiplier(value.modify);
+								hero.mainHandAttack.addMultiplier(value.modify);
+								hero.offHandAttack.addMultiplier(value.modify);
 							}
 
 							break;
 						case 'flat':
 						default:
-						//hero.attack.mainHand.addOffset(value.modify);
-						//hero.attack.offHand.addOffset(value.modify);
+							hero.mainHandAttack.addOffset(value.modify);
+							hero.offHandAttack.addOffset(value.modify);
 					}
 					break;
 				case 'stats':

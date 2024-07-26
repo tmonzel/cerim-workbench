@@ -1,9 +1,3 @@
-export type Maybe<T> = T | null | undefined;
-
-export type Stat = {
-	name: string;
-};
-
 export enum StatType {
 	HEALTH = 'hp',
 	FOCUS_POINTS = 'fp',
@@ -92,41 +86,10 @@ export enum AffinityType {
 	OCCULT = 'occult'
 }
 
-export type Affinity = {
-	name: string;
-	schema: string;
-	iconUrl: string;
-};
-
 export type Resistance = Record<ResistanceType, number>;
 export type Guard = Record<GuardType, number>;
 export type Defense = Record<DamageType, number>;
 export type DamageNegation = Record<DamageType, number>;
 export type Attack = Partial<Record<AttackType, number>>;
 
-export type BaseScalingValue = { [0]: number; [1]: string | string[] } | number;
-export type ScalingBase = Partial<Record<AttributeType, BaseScalingValue>>;
-
 export type AttackCorrect = Record<string, AttackType[]>;
-
-export type UpgradeSchema = {
-	tiers: number;
-	attack: Record<string, number[]>;
-	scaling: Record<string, number[]>;
-	guard: Record<GuardType, number[]>;
-	effects: Record<number, number[]>;
-};
-
-export type ModifierType = 'flat' | 'percentual';
-export type ModifierData = Record<string, ModifierConfig>;
-export type ModifierConfig = {
-	name?: string;
-	multiplier?: 'offset' | 'total';
-	modify: Record<string, number>;
-};
-
-export type SpEffect = {
-	id: number;
-	statusTypes?: Record<string, number | number[]>;
-	modifiers?: Partial<Record<ModifierType, ModifierData>>;
-};

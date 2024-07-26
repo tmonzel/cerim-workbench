@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { combatState } from '$lib/combat';
-	import { validateRequirements } from '$lib/combat/helpers';
 	import DamageDistBar from '$lib/components/DamageDistBar.svelte';
+	import { validateRequirements } from '$lib/item';
+	import { combatState } from '../combat.state';
 	import type { HeroState } from '../types';
-	import WeaponScalingInfo from './WeaponScalingInfo.svelte';
+	import AttackScalingInfo from './AttackScalingInfo.svelte';
 
 	export let hero: HeroState;
 
@@ -30,7 +30,7 @@
 			</dd>
 		</div>
 
-		<WeaponScalingInfo weapon={$combatState.mainHand} {attributes} />
+		<AttackScalingInfo weapon={$combatState.mainHand} {attributes} />
 
 		{#if validateRequirements($combatState.mainHand.attributeRequirements ?? {}, attributes).length > 0}
 			<div class="bg-rose-900/20 text-rose-400 p-3 rounded-lg flex items-center mt-5">
@@ -54,7 +54,7 @@
 			</dd>
 		</div>
 
-		<WeaponScalingInfo weapon={$combatState.offHand} {attributes} />
+		<AttackScalingInfo weapon={$combatState.offHand} {attributes} />
 
 		{#if validateRequirements($combatState.offHand.attributeRequirements ?? {}, attributes).length > 0}
 			<div class="bg-rose-900/20 text-rose-400 p-3 rounded-lg flex items-center mt-5">

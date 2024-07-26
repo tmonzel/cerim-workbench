@@ -1,19 +1,21 @@
 <script lang="ts">
-	import { type Item } from '$lib/item';
 	import SidePanel from '$lib/components/SidePanel.svelte';
-	import AccessoryCard from './AccessoryCard.svelte';
-	import { accessoryStore } from '../state';
 	import ItemSelectList from '$lib/item/components/ItemSelectList.svelte';
-	import ItemUpgradeBar from '$lib/item/components/ItemUpgradeBar.svelte';
+	import ItemCard from '$lib/item/components/ItemCard.svelte';
+	import ItemModifierList from '$lib/item/components/ItemModifierList.svelte';
+	import type { Item } from '$lib/item';
+	import ResistanceGrid from '$lib/components/ResistanceGrid.svelte';
+	import DamageNegationGrid from '$lib/components/DamageNegationGrid.svelte';
+	import { armorStore } from '$lib/stores';
 
 	export let label: string;
-	export let type: string;
 	export let selectedId: string | null = null;
+	export let type: string;
 
-	let items = accessoryStore.all;
+	let items = armorStore.all;
 
 	$: filteredItems = $items.filter((item) => item.type === type);
-	$: selectedItem = selectedId ? $accessoryStore.entities[selectedId] : null;
+	$: selectedItem = selectedId ? $armorStore.entities[selectedId] : null;
 
 	let panel: SidePanel;
 
@@ -24,12 +26,6 @@
 </script>
 
 <div class="relative">
-	{#if selectedItem && selectedItem.possibleUpgrades > 0}
-		<div class="mb-2">
-			<ItemUpgradeBar store={accessoryStore} item={selectedItem} />
-		</div>
-	{/if}
-
 	<button
 		type="button"
 		class="group w-full bg-stone-700/20 rounded-lg p-5 text-left items-start shadow-md transition-all ease-out duration-200 hover:ring-2 hover:ring-amber-300 hover:bg-stone-800"
@@ -63,10 +59,24 @@
 			</div>
 
 			<div class="pt-3">
-				<AccessoryCard accessory={selectedItem} />
+				<ItemCard item={selectedItem}>
+					<dl class="divide-y divide-gray-100/20">
+						<div class="px-4 py-4 sm:px-0">
+							<dt class="text-sm font-medium mb-2">Resistance</dt>
+							<dd><ResistanceGrid data={selectedItem.resistance} /></dd>
+						</div>
+
+						<div class="px-4 py-4 sm:px-0">
+							<dt class="text-sm font-medium mb-2">Damage Negation</dt>
+							<dd><DamageNegationGrid data={selectedItem.damageNegation} /></dd>
+						</div>
+					</dl>
+
+					<ItemModifierList data={selectedItem.modifiers} />
+				</ItemCard>
 			</div>
 		{:else}
-			<div class="text-center py-5 flex flex-col items-center">
+			<div class="text-center py-10 flex flex-col items-center">
 				<p class="text-lg text-amber-300 font-semibold">{label}</p>
 			</div>
 		{/if}
@@ -75,7 +85,9 @@
 
 <SidePanel bind:this={panel}>
 	<div class="text-stone-300 bg-neutral-800 text-xl p-2 flex justify-between items-center border-b border-zinc-700">
-		<div class="p-4">Select Accessory</div>
+		<div class="p-4">
+			Select <span class="font-semibold">{label}</span> Item
+		</div>
 		{#if selectedItem}
 			<div>
 				<button class="bg-amber-300 text-amber-900 p-2.5 rounded-md" on:click={() => selectItem(null)}
@@ -84,10 +96,9 @@
 			</div>
 		{/if}
 	</div>
-
 	<ItemSelectList items={filteredItems} on:selectItem={(e) => selectItem(e.detail)} let:item>
-		<div class="max-w-xl">
-			<AccessoryCard accessory={item} />
-		</div>
+		<ItemCard {item}>
+			<ItemModifierList data={item.modifiers} />
+		</ItemCard>
 	</ItemSelectList>
 </SidePanel>

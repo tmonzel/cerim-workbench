@@ -1,7 +1,7 @@
-import { Item } from '$lib/item';
-import type { ItemData } from '$lib/item/types';
+import { Item } from './Item';
+import type { ItemData } from './types';
 
-export class Armor extends Item {
+export class AccessoryItem extends Item {
 	constructor(id: string, data: ItemData) {
 		super(id, data);
 	}

@@ -1,9 +1,8 @@
-import type { Weapon } from '$lib/combat';
-import { validateRequirements } from '$lib/combat/helpers';
 import { AttackType, AttributeType, calcCorrect, DynamicAttack, type Attack } from '$lib/core';
+import type { AttackItem } from '$lib/item';
 
 function calculateAttributeScaling(
-	weapon: Weapon,
+	weapon: AttackItem,
 	attrValue: number,
 	attrType: AttributeType,
 	attackType: AttackType
@@ -26,7 +25,7 @@ function calculateAttributeScaling(
 	return attrScaling * upgradeScaling;
 }
 
-export function calculateAttributeAttack(weapon: Weapon, attrValue: number, attrType: AttributeType): Attack {
+export function calculateAttributeAttack(weapon: AttackItem, attrValue: number, attrType: AttributeType): Attack {
 	const attack: Attack = {};
 	const config = weapon.scaling[attrType];
 
@@ -49,7 +48,11 @@ export function calculateAttributeAttack(weapon: Weapon, attrValue: number, attr
 	return attack;
 }
 
-function scaleAttack(weapon: Weapon, attributes: Record<string, number>, excludeAttackTypes?: AttackType[]): Attack {
+function scaleAttack(
+	weapon: AttackItem,
+	attributes: Record<string, number>,
+	excludeAttackTypes?: AttackType[]
+): Attack {
 	const scaledAttack: Attack = {};
 	const invalidAttributes = validateRequirements(weapon.attributeRequirements ?? {}, attributes);
 
@@ -86,7 +89,7 @@ function scaleAttack(weapon: Weapon, attributes: Record<string, number>, exclude
 	return scaledAttack;
 }
 
-export function calcScaledAttack(weapon: Weapon, attributes: Record<string, number>): DynamicAttack {
+export function calcScaledAttack(weapon: AttackItem, attributes: Record<string, number>): DynamicAttack {
 	const scaledAttack = scaleAttack(weapon, attributes);
 	const attack = new DynamicAttack();
 
@@ -95,4 +98,19 @@ export function calcScaledAttack(weapon: Weapon, attributes: Record<string, numb
 	}
 
 	return attack;
+}
+
+export function validateRequirements(
+	requirements: Record<string, number>,
+	attributes: Record<string, number>
+): string[] {
+	const invalidAttributes = [];
+
+	for (const [t, n] of Object.entries(requirements)) {
+		if (typeof attributes[t] === 'number' && attributes[t] < n) {
+			invalidAttributes.push(t);
+		}
+	}
+
+	return invalidAttributes;
 }

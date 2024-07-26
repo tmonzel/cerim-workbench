@@ -8,13 +8,11 @@ import {
 	StatusEffectType,
 	type Attack,
 	type GraphMutation,
-	type Guard,
-	type UpgradeSchema
+	type Guard
 } from '$lib/core/types';
-import { attackCorrectRecord, spEffectsMap, upgradeSchemata } from '$lib/data';
+import { attackCorrectRecord, mutationRecord, spEffectsMap, upgradeSchemata } from '$lib/data';
 import { Item } from '$lib/item';
-import { affinityRecord, mutationRecord } from '$lib/records';
-import type { ItemAttackInfo, ItemAttributeScaling, ItemConfig, WeaponEntity } from './types';
+import type { AttackInfo, ItemAttributeScaling, ItemConfig, UpgradeSchema, WeaponEntity } from './types';
 
 const scalingAttributes = [
 	AttributeType.STRENGTH,
@@ -24,10 +22,9 @@ const scalingAttributes = [
 	AttributeType.ARCANE
 ];
 
-export class Weapon extends Item {
+export class AttackItem extends Item {
 	attack: Attack = {};
-	scaledAttack?: Attack;
-	attackInfo: ItemAttackInfo;
+	attackInfo: AttackInfo;
 	attackSpeed: number;
 	statusEffects?: Partial<Record<StatusEffectType, number>>;
 	guard: Guard;
@@ -77,14 +74,6 @@ export class Weapon extends Item {
 		}
 
 		this.update();
-	}
-
-	getAvailableAffinities(): { name: string; value: AffinityType; iconUrl: string }[] {
-		return Array.from(this.affinities.keys()).map((key) => ({
-			name: affinityRecord[key].name,
-			value: key as AffinityType,
-			iconUrl: affinityRecord[key].iconUrl
-		}));
 	}
 
 	getScalingFlags(): { attr: AttributeType; id: string }[] {

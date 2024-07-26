@@ -1,6 +1,5 @@
+import { weaponStore } from '$lib/stores';
 import { derived, writable } from 'svelte/store';
-import { createEntityStore } from '$lib/core';
-import { Weapon } from './Weapon';
 
 export type CombatEquipState = {
 	mainHand: string | null;
@@ -11,8 +10,6 @@ export const combatEquip = writable<CombatEquipState>({
 	mainHand: null,
 	offHand: null
 });
-
-export const weaponStore = createEntityStore<Weapon>({ loaded: false, entities: {}, ids: [] });
 
 export const combatState = derived([weaponStore, combatEquip], ([store, equip]) => {
 	return {

@@ -1,4 +1,4 @@
-import { itemStore } from '$lib/item';
+import { calcScaledAttack, ProtectItem } from '$lib/item';
 import { derived } from 'svelte/store';
 import type { HeroState } from './types';
 import { attributeStore } from './attributes';
@@ -16,14 +16,13 @@ import {
 	DynamicStats
 } from '$lib/core';
 import type { DataDefaults } from '$lib/data';
-import { attributeRecord } from '$lib/records';
-import { HERO_MAX_LEVEL } from '$lib/config';
 import { appState } from '$lib/state';
-import { heroTypes } from './data';
-import { combatState, Weapon } from '$lib/combat';
-import { accessoryState } from '$lib/accessory';
-import { protectionState } from '$lib/protection';
-import { calcScaledAttack } from './helpers';
+import { attributeTypes, heroTypes } from './data';
+import { protectionState } from './protection.state';
+import { combatState } from './combat.state';
+import { accessoryState } from './accessory.state';
+
+export const HERO_MAX_LEVEL = 713;
 
 export const heroState = derived(
 	[appState, attributeStore, accessoryState, combatState, protectionState],
@@ -97,12 +96,8 @@ export const heroState = derived(
 			}
 
 			// Summarize resistance
-			if (item.resistance) {
+			if (item instanceof ProtectItem) {
 				hero.resistance.add(item.resistance);
-			}
-
-			// Multiply damage negation
-			if (item.damageNegation) {
 				hero.damageNegation.multiply(item.damageNegation);
 			}
 
@@ -128,7 +123,7 @@ export const heroState = derived(
 			hero.stats.add({ weight: item.weight });
 		}
 
-		for (const attr of Object.values(attributeRecord)) {
+		for (const attr of Object.values(attributeTypes)) {
 			if (attr.modifier) {
 				attr.modifier.modify(hero);
 			}
@@ -156,17 +151,17 @@ export const heroState = derived(
 	}
 );
 
-export const sharedDataState = derived([attributeStore, itemStore, appState], ([attributes, items, app]) => {
+export const sharedDataState = derived([attributeStore, appState], ([attributes, app]) => {
 	const itemModifications: Record<string, { affinity?: AffinityType; tier?: number }> = {};
 
-	for (const item of Object.values(items)) {
+	/*for (const item of Object.values(items)) {
 		if (!item.modified) {
 			continue;
 		}
 
 		const mod: { affinity?: AffinityType; tier?: number } = {};
 
-		if (item instanceof Weapon && item.affinity) {
+		if (item instanceof AttackItem && item.affinity) {
 			mod.affinity = item.affinity;
 		}
 
@@ -175,7 +170,7 @@ export const sharedDataState = derived([attributeStore, itemStore, appState], ([
 		}
 
 		itemModifications[item.id] = mod;
-	}
+	}*/
 
 	const equip: Record<string, string> = {};
 

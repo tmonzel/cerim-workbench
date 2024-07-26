@@ -1,40 +1,37 @@
 <script lang="ts">
 	import SidePanel from '$lib/components/SidePanel.svelte';
-	import type { Item } from '$lib/item';
-	import WeaponCard from './WeaponCard.svelte';
-	import { weaponStore } from '../state';
+	import type { AttackItem, Item } from '$lib/item';
 	import ItemSelectList from '$lib/item/components/ItemSelectList.svelte';
 	import ItemUpgradeBar from '$lib/item/components/ItemUpgradeBar.svelte';
 	import SelectControl from '$lib/components/SelectControl.svelte';
 	import { AffinityType } from '$lib/core';
-	import { Weapon } from '../Weapon';
-	import { affinityRecord, itemGroupRecord } from '$lib/records';
 	import ItemCard from '$lib/item/components/ItemCard.svelte';
 	import AttackDetail from '$lib/components/AttackDetail.svelte';
 	import AttackBadge from '$lib/components/AttackBadge.svelte';
-	import WeaponInfo from './WeaponInfo.svelte';
 	import { writable } from 'svelte/store';
-	import { validateRequirements } from '../helpers';
+	import { affinities, itemGroups } from '$lib/item/data';
+	import { weaponStore } from '$lib/stores';
+	import WeaponCard from '$lib/item/components/WeaponCard.svelte';
+	import WeaponInfo from '$lib/item/components/WeaponInfo.svelte';
 
 	export let label: string;
 	export let selectedId: string | null = null;
-	export let attributes: Record<string, number>;
 
 	let panel: SidePanel;
 	let items = weaponStore.all;
-	let availableGroups = ['daggers', 'swords', 'shields'].map((t) => ({ name: itemGroupRecord[t].name, id: t }));
+	let availableGroups = ['daggers', 'swords', 'shields'].map((t) => ({ name: itemGroups[t].name, id: t }));
 
 	const selectedGroup = writable<string | null>('daggers');
 
 	$: filteredItems = $items.filter((item) => item.group === $selectedGroup);
 	$: selectedItem = selectedId ? $weaponStore.entities[selectedId] : null;
 
-	function changeAffinity(weapon: Weapon, aff: AffinityType): void {
+	function changeAffinity(weapon: AttackItem, aff: AffinityType): void {
 		weapon.setAffinity(aff);
 		weaponStore.updateEntity(weapon.id, weapon);
 	}
 
-	const affinityOptions = Object.entries(affinityRecord).map((entry) => ({
+	const affinityOptions = Object.entries(affinities).map((entry) => ({
 		name: entry[1].name,
 		iconUrl: entry[1].iconUrl,
 		id: entry[0]
@@ -108,7 +105,7 @@
 			</div>
 
 			<div class="pt-3">
-				<WeaponCard weapon={selectedItem} />
+				<WeaponCard item={selectedItem} />
 			</div>
 		{:else}
 			<div class="text-center py-10 flex flex-col items-center">
@@ -156,7 +153,7 @@
 					<div class="mb-2">
 						<AttackDetail attack={item.attack} compact />
 					</div>
-					<WeaponInfo weapon={item} />
+					<WeaponInfo {item} />
 				</ItemCard>
 			</div>
 		</ItemSelectList>

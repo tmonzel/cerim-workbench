@@ -1,7 +1,7 @@
 <script lang="ts">
-	import AttackTypeBadge from '$lib/components/AttackTypeBadge.svelte';
-	import StatBadge from '$lib/components/StatBadge.svelte';
 	import type { Guard } from '$lib/core/types';
+	import AttackTypeBadge from './AttackTypeBadge.svelte';
+	import StatBadge from './StatBadge.svelte';
 
 	export let guard: Guard;
 </script>

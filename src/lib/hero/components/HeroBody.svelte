@@ -1,28 +1,21 @@
 <script lang="ts">
-	import { writable } from 'svelte/store';
-	import { type HeroBodyState, type HeroState } from '$lib/hero';
-	import CheckboxControl from '$lib/components/CheckboxControl.svelte';
+	import { type HeroState } from '$lib/hero';
 	import { appState } from '$lib/state';
-	import WeaponEquipSlot from '$lib/combat/components/WeaponEquipSlot.svelte';
-	import { combatEquip } from '$lib/combat';
-	import { protectionEquip } from '$lib/protection';
-	import ArmorEquipSlot from '$lib/protection/components/ArmorEquipSlot.svelte';
-	import AccessoryEquipSlot from '$lib/accessory/components/AccessoryEquipSlot.svelte';
-	import { accessoryEquip } from '$lib/accessory';
+	import { protectionEquip } from '../protection.state';
+	import { combatEquip } from '../combat.state';
+	import ArmorEquipSlot from './ArmorEquipSlot.svelte';
+	import WeaponEquipSlot from './WeaponEquipSlot.svelte';
+	import AccessoryEquipSlot from './AccessoryEquipSlot.svelte';
+	import { accessoryEquip } from '../accessory.state';
 
 	export let hero: HeroState;
-
-	const bodyState = writable<HeroBodyState>({
-		guardInfo: true,
-		scalingInfo: true
-	});
 </script>
 
 <div class:hidden={$appState.heroContext !== 'attack'}>
 	<div class="bg-zinc-800/30 rounded-xl p-5">
 		<div class="flex flex-col gap-5">
-			<WeaponEquipSlot label="Mainhand" bind:selectedId={$combatEquip.mainHand} attributes={hero.totalAttributes} />
-			<WeaponEquipSlot label="Offhand" bind:selectedId={$combatEquip.offHand} attributes={hero.totalAttributes} />
+			<WeaponEquipSlot label="Mainhand" bind:selectedId={$combatEquip.mainHand} />
+			<WeaponEquipSlot label="Offhand" bind:selectedId={$combatEquip.offHand} />
 		</div>
 	</div>
 </div>

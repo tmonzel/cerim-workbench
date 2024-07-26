@@ -1,20 +1,10 @@
-import { mutationRecord } from './records';
-import {
-	AffinityType,
-	AttributeType,
-	type AttackCorrect,
-	type GraphMutation,
-	type SpEffect,
-	type UpgradeSchema
-} from './core';
-import { type ItemData } from './item/types';
-import { itemStore } from './item';
+import { AffinityType, AttributeType, type AttackCorrect, type GraphMutation } from './core';
+import { type ItemData, type SpEffect, type UpgradeSchema } from './item/types';
+import { AccessoryItem, AttackItem, ProtectItem } from './item';
 import { writable } from 'svelte/store';
 import { attributeStore } from './hero';
 import { appState } from './state';
-import { Weapon, weaponStore } from './combat';
-import { Armor, armorStore } from './protection';
-import { Accessory, accessoryStore } from './accessory';
+import { accessoryStore, armorStore, weaponStore } from './stores';
 
 export type DataSchema = {
 	defaults?: DataDefaults;
@@ -39,6 +29,7 @@ export type DataDefaults = {
 };
 
 export const attackCorrectRecord: Record<string, AttackCorrect> = {};
+export const mutationRecord: Record<string, GraphMutation[]> = {};
 export const upgradeSchemata: Record<string, UpgradeSchema> = {};
 export const spEffectsMap = new Map<number, SpEffect>();
 export const dataStore = writable<DataSchema | null>(null);
@@ -70,20 +61,20 @@ export function loadData(data: DataSchema) {
 
 	// Resolve item data
 	if (data.items) {
-		const weapons: Record<string, Weapon> = {};
-		const armors: Record<string, Armor> = {};
-		const accessories: Record<string, Accessory> = {};
+		const weapons: Record<string, AttackItem> = {};
+		const armors: Record<string, ProtectItem> = {};
+		const accessories: Record<string, AccessoryItem> = {};
 
 		for (const id in data.items.weapons) {
-			weapons[id] = new Weapon(id, data.items.weapons[id]);
+			weapons[id] = new AttackItem(id, data.items.weapons[id]);
 		}
 
 		for (const id in data.items.armors) {
-			armors[id] = new Armor(id, data.items.armors[id]);
+			armors[id] = new ProtectItem(id, data.items.armors[id]);
 		}
 
 		for (const id in data.items.accessories) {
-			accessories[id] = new Accessory(id, data.items.accessories[id]);
+			accessories[id] = new AccessoryItem(id, data.items.accessories[id]);
 		}
 
 		armorStore.loadAll(armors);
@@ -136,7 +127,7 @@ export function loadData(data: DataSchema) {
 	});
 
 	// Apply item defaults
-	itemStore.update((store) => {
+	/*itemStore.update((store) => {
 		if (!data.defaults || !data.defaults.itemModifications) {
 			return { ...store };
 		}
@@ -148,13 +139,13 @@ export function loadData(data: DataSchema) {
 				item.upgrade(mod.tier);
 			}
 
-			if (item instanceof Weapon && mod.affinity && mod.affinity !== AffinityType.STANDARD) {
+			if (item instanceof AttackItem && mod.affinity && mod.affinity !== AffinityType.STANDARD) {
 				item.setAffinity(mod.affinity);
 			}
 		}
 
 		return { ...store };
-	});
+	});*/
 
 	dataStore.set(data);
 }

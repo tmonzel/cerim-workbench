@@ -1,6 +1,7 @@
 import { derived, writable } from 'svelte/store';
-import { createEntityStore, DynamicNumber } from '$lib/core';
-import type { Armor } from './Armor';
+import { DynamicNumber } from '$lib/core';
+import type { ProtectItem } from '$lib/item';
+import { armorStore } from '$lib/stores';
 
 export type ProtectionEquipState = {
 	head: string | null;
@@ -20,14 +21,8 @@ export const protectionEquip = writable<ProtectionEquipState>({
 	arms: null
 });
 
-export const armorStore = createEntityStore<Armor>({
-	loaded: false,
-	entities: {},
-	ids: []
-});
-
 export const protectionState = derived([armorStore, protectionEquip], ([store, equip]) => {
-	const armors: Armor[] = [];
+	const armors: ProtectItem[] = [];
 
 	for (const id of Object.values(equip)) {
 		if (!id || !store.entities[id]) {

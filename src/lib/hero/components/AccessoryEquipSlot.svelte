@@ -1,28 +1,35 @@
 <script lang="ts">
+	import { type Item } from '$lib/item';
 	import SidePanel from '$lib/components/SidePanel.svelte';
-	import ArmorCard from './ArmorCard.svelte';
-	import { armorStore } from '../state';
 	import ItemSelectList from '$lib/item/components/ItemSelectList.svelte';
-	import ItemCard from '$lib/item/components/ItemCard.svelte';
+	import ItemUpgradeBar from '$lib/item/components/ItemUpgradeBar.svelte';
+	import { accessoryStore } from '$lib/stores';
+	import AccessoryCard from '$lib/item/components/AccessoryCard.svelte';
 
 	export let label: string;
-	export let selectedId: string | null = null;
 	export let type: string;
+	export let selectedId: string | null = null;
 
-	let items = armorStore.all;
+	let items = accessoryStore.all;
 
 	$: filteredItems = $items.filter((item) => item.type === type);
-	$: selectedItem = selectedId ? $armorStore.entities[selectedId] : null;
+	$: selectedItem = selectedId ? $accessoryStore.entities[selectedId] : null;
 
 	let panel: SidePanel;
 
-	export function selectItem(armor: Armor | null): void {
-		selectedId = armor ? armor.id : null;
+	export function selectItem(item: Item | null): void {
+		selectedId = item ? item.id : null;
 		panel.close();
 	}
 </script>
 
 <div class="relative">
+	{#if selectedItem && selectedItem.possibleUpgrades > 0}
+		<div class="mb-2">
+			<ItemUpgradeBar store={accessoryStore} item={selectedItem} />
+		</div>
+	{/if}
+
 	<button
 		type="button"
 		class="group w-full bg-stone-700/20 rounded-lg p-5 text-left items-start shadow-md transition-all ease-out duration-200 hover:ring-2 hover:ring-amber-300 hover:bg-stone-800"
@@ -56,10 +63,10 @@
 			</div>
 
 			<div class="pt-3">
-				<ArmorCard armor={selectedItem} />
+				<AccessoryCard item={selectedItem} />
 			</div>
 		{:else}
-			<div class="text-center py-10 flex flex-col items-center">
+			<div class="text-center py-5 flex flex-col items-center">
 				<p class="text-lg text-amber-300 font-semibold">{label}</p>
 			</div>
 		{/if}
@@ -68,9 +75,7 @@
 
 <SidePanel bind:this={panel}>
 	<div class="text-stone-300 bg-neutral-800 text-xl p-2 flex justify-between items-center border-b border-zinc-700">
-		<div class="p-4">
-			Select <span class="font-semibold">{label}</span> Item
-		</div>
+		<div class="p-4">Select Accessory</div>
 		{#if selectedItem}
 			<div>
 				<button class="bg-amber-300 text-amber-900 p-2.5 rounded-md" on:click={() => selectItem(null)}
@@ -79,9 +84,10 @@
 			</div>
 		{/if}
 	</div>
+
 	<ItemSelectList items={filteredItems} on:selectItem={(e) => selectItem(e.detail)} let:item>
 		<div class="max-w-xl">
-			<ItemCard {item}></ItemCard>
+			<AccessoryCard {item} />
 		</div>
 	</ItemSelectList>
 </SidePanel>

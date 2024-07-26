@@ -1,14 +1,6 @@
-import {
-	AttributeType,
-	type DamageNegation,
-	type ModifierData,
-	type ModifierType,
-	type Resistance,
-	type SpEffect,
-	type UpgradeSchema
-} from '$lib/core/types';
+import { AttributeType } from '$lib/core/types';
 import { ItemModifier } from './ItemModifier';
-import type { ItemCategory, ItemData, ItemRarity } from './types';
+import type { ItemCategory, ItemData, ItemRarity, ModifierData, ModifierType, SpEffect, UpgradeSchema } from './types';
 
 export abstract class Item {
 	readonly type: string;
@@ -21,9 +13,6 @@ export abstract class Item {
 	tier: number;
 	possibleUpgrades: number;
 	attributeRequirements?: Partial<Record<AttributeType, number>>;
-
-	resistance?: Resistance;
-	damageNegation?: DamageNegation;
 
 	upgradeSchema?: UpgradeSchema;
 	modifiers: ItemModifier[] = [];
@@ -57,8 +46,6 @@ export abstract class Item {
 		this.attributeRequirements =
 			data.requirements && data.requirements.attributes ? data.requirements.attributes : undefined;
 		this.effects = data.effects;
-		this.damageNegation = data.damageNegation;
-		this.resistance = data.resistance;
 		this.rarity = data.rarity;
 		this.poise = data.poise;
 		this.effectInfo = data.effectInfo ?? [];
