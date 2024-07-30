@@ -9,5 +9,4 @@ export * from './DynamicGuard';
 export * from './DynamicResistance';
 export * from './DynamicStats';
 export * from './types';
-export * from './entity';
 export * from './data';

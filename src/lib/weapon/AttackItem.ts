@@ -1,18 +1,16 @@
-import { getScalingId, list } from '$lib/core';
 import {
 	AffinityType,
 	AttackType,
 	AttributeType,
 	DamageType,
 	GuardType,
-	StatusEffectType,
 	type Attack,
 	type GraphMutation,
 	type Guard
 } from '$lib/core/types';
 import { attackCorrectRecord, mutationRecord, spEffectsMap, upgradeSchemata } from '$lib/data';
-import { Item } from '$lib/item';
-import type { AttackInfo, ItemAttributeScaling, ItemConfig, UpgradeSchema, WeaponEntity } from './types';
+import { Item, type ItemConfig, type SpEffectModifier, type Upgradable } from '$lib/item';
+import type { AttackInfo, ItemAttributeScaling, UpgradeSchema, WeaponEntity } from './types';
 
 const scalingAttributes = [
 	AttributeType.STRENGTH,
@@ -22,15 +20,16 @@ const scalingAttributes = [
 	AttributeType.ARCANE
 ];
 
-export class AttackItem extends Item {
+export class AttackItem extends Item implements Upgradable {
 	attack: Attack = {};
 	attackInfo: AttackInfo;
 	attackSpeed: number;
-	statusEffects?: Partial<Record<StatusEffectType, number>>;
 	guard: Guard;
 	affinities: Map<string, ItemConfig>;
 	scaling: ItemAttributeScaling = {};
 	config!: ItemConfig;
+	possibleUpgrades = 0;
+	schema?: UpgradeSchema;
 
 	attackMutations: Partial<Record<AttackType, GraphMutation[]>>;
 	private _affinity: AffinityType | null;
@@ -47,11 +46,16 @@ export class AttackItem extends Item {
 		this.guard = entity.guard ?? { phy: 0, mag: 0, fir: 0, lit: 0, hol: 0, sta: 0, res: 0 };
 		this.affinities = new Map(Object.entries(entity.affinities ?? {}));
 		this._affinity = null;
+		this.possibleUpgrades = entity.upgrades ? entity.upgrades.length : 0;
+		this.attributeRequirements =
+			entity.requirements && entity.requirements.attributes ? entity.requirements.attributes : undefined;
 
 		this.attackInfo = {
 			crit: 100,
 			damage: [DamageType.STANDARD],
-			...entity.attackInfo
+			poise: entity.attackInfo.poise,
+			vsDragon: entity.attackInfo.vsDragon,
+			vsGhost: entity.attackInfo.vsGhost
 		};
 
 		if (entity.config) {
@@ -62,9 +66,10 @@ export class AttackItem extends Item {
 	setConfig(config: ItemConfig): void {
 		this.config = config;
 		this.modifiers = [];
+		this.schema = typeof config.schema === 'string' ? upgradeSchemata[config.schema] : upgradeSchemata['0'];
 
 		if (config.effects) {
-			for (const [i, id] of Object.entries(config.effects)) {
+			for (const id of Object.values(config.effects)) {
 				const effect = spEffectsMap.get(id);
 
 				if (effect && effect.modifiers) {
@@ -74,12 +79,6 @@ export class AttackItem extends Item {
 		}
 
 		this.update();
-	}
-
-	getScalingFlags(): { attr: AttributeType; id: string }[] {
-		return list(this.scaling ?? {}).map((s) => {
-			return { attr: s.key as AttributeType, id: getScalingId(s.value.base) };
-		});
 	}
 
 	setAffinity(affinity: AffinityType | null): void {
@@ -96,8 +95,15 @@ export class AttackItem extends Item {
 		this.setConfig(config);
 	}
 
+	upgrade(tier: number): void {
+		this.tier = tier;
+		this._modified = tier !== 0;
+
+		this.update();
+	}
+
 	update(): void {
-		if (!this.config) {
+		if (!this.config || !this.schema) {
 			return;
 		}
 
@@ -127,48 +133,35 @@ export class AttackItem extends Item {
 			}
 		}
 
-		const schema: UpgradeSchema =
-			typeof this.config.schema === 'string' ? upgradeSchemata[this.config.schema] : upgradeSchemata['0'];
-
-		if (!schema) {
-			return;
-		}
-
-		if (this.statusEffects) {
-			this.statusEffects = {};
-		}
-
 		if (this.config.effects) {
-			this.statusEffects = {};
+			const modifiers: SpEffectModifier[] = [];
 
 			for (const [index, id] of Object.entries(this.config.effects)) {
-				const effect = spEffectsMap.get(id);
+				let effectId = id;
 
-				if (!effect || !effect.statusTypes) {
+				const effectOffsets = this.schema.effects[Number(index)];
+
+				if (this.tier > 0 && effectOffsets[this.tier]) {
+					effectId = id + effectOffsets[this.tier];
+				}
+
+				const effect = spEffectsMap.get(effectId);
+
+				if (!effect) {
 					continue;
 				}
 
-				const effectOffsets = schema.effects[Number(index)];
-
-				if (this.tier > 0 && effectOffsets[this.tier]) {
-					const upgradeSpEffect = spEffectsMap.get(effect.id + effectOffsets[this.tier]);
-
-					if (upgradeSpEffect && upgradeSpEffect.statusTypes) {
-						Object.assign(this.statusEffects, upgradeSpEffect.statusTypes);
-					}
-				} else {
-					Object.assign(this.statusEffects, effect.statusTypes);
-				}
-
-				if (effect && effect.modifiers) {
-					this.setModifiers(effect.modifiers);
+				if (effect.modifiers) {
+					modifiers.push(...effect.modifiers);
 				}
 			}
+
+			this.setModifiers(modifiers);
 		}
 
-		this.possibleUpgrades = schema.tiers ?? 25;
+		this.possibleUpgrades = this.schema.tiers ?? 25;
 
-		if (!this.config.attack || !schema.attack) {
+		if (!this.config.attack || !this.schema.attack) {
 			return;
 		}
 
@@ -179,24 +172,24 @@ export class AttackItem extends Item {
 
 		if (this.possibleUpgrades > 0) {
 			for (const t of Object.values(AttackType)) {
-				if (!this.config.attack[t] || !schema.attack[t] || maxTiers === 0) {
+				if (!this.config.attack[t] || !this.schema.attack[t] || maxTiers === 0) {
 					continue;
 				}
 
 				const base = this.config.attack[t];
-				const multiplier = schema.attack[t][this.tier];
+				const multiplier = this.schema.attack[t][this.tier];
 
 				attack[t] = base * multiplier;
 			}
 
-			if (schema.guard && this.config.guard) {
+			if (this.schema.guard && this.config.guard) {
 				for (const t of Object.values(GuardType)) {
-					if (!this.config.guard[t] || maxTiers === 0 || !schema.guard[t]) {
+					if (!this.config.guard[t] || maxTiers === 0 || !this.schema.guard[t]) {
 						continue;
 					}
 
 					const base = this.config.guard[t];
-					const multiplierRange = schema.guard[t];
+					const multiplierRange = this.schema.guard[t];
 					const diff = multiplierRange[1] - multiplierRange[0];
 
 					const multiplier = multiplierRange[0] + this.tier * (diff / maxTiers);
@@ -223,13 +216,18 @@ export class AttackItem extends Item {
 					attackTypes.push(AttackType.INCANTATION);
 				}
 
-				if (!schema.scaling || !schema.scaling[attrType] || !this.config.scaling || !this.config.scaling[attrType]) {
+				if (
+					!this.schema.scaling ||
+					!this.schema.scaling[attrType] ||
+					!this.config.scaling ||
+					!this.config.scaling[attrType]
+				) {
 					continue;
 				}
 
 				const base = this.config.scaling[attrType] as number;
 
-				const multiplierRange = schema.scaling[attrType];
+				const multiplierRange = this.schema.scaling[attrType];
 				let multiplier = 1;
 
 				if (multiplierRange.length > 2) {

@@ -1,16 +1,19 @@
 import { AffinityType, AttributeType, type AttackCorrect, type GraphMutation } from './core';
-import { type ItemData, type SpEffect, type UpgradeSchema } from './item/types';
-import { AccessoryItem, AttackItem, ProtectItem } from './item';
+import { type ItemData, type SpEffect } from './item/types';
 import { writable } from 'svelte/store';
 import { attributeStore } from './hero';
 import { appState } from './state';
-import { accessoryStore, armorStore, weaponStore } from './stores';
+import { AttackItem } from './weapon/AttackItem';
+import { weaponStore } from './weapon/weapon.store';
+import type { UpgradeSchema, WeaponEntity } from './weapon';
+import { armorStore, ProtectItem } from './armor';
+import { AccessoryItem, accessoryStore } from './accessory';
 
 export type DataSchema = {
 	defaults?: DataDefaults;
 
 	items?: {
-		weapons: Record<string, ItemData>;
+		weapons: Record<string, WeaponEntity>;
 		armors: Record<string, ItemData>;
 		accessories: Record<string, ItemData>;
 	};
@@ -23,7 +26,7 @@ export type DataSchema = {
 
 export type DataDefaults = {
 	heroType: string;
-	attributes?: Record<AttributeType, number>;
+	attributes?: Record<string, number>;
 	equip?: Record<string, string>;
 	itemModifications?: Record<string, { tier?: number; affinity?: AffinityType }>;
 };

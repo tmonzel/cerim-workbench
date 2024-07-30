@@ -64,6 +64,15 @@ export interface SpEffectParam extends DataRow {
 	maxStaminaRate: number;
 	equipWeightChangeRate: number;
 	hpRecoverRate: number;
+
+	neutralDamageCutRate: number;
+	slashDamageCutRate: number;
+	blowDamageCutRate: number;
+	thrustDamageCutRate: number;
+	magicDamageCutRate: number;
+	fireDamageCutRate: number;
+	thunderDamageCutRate: number;
+	darkDamageCutRate: number;
 }
 
 export interface AttackCorrectParam extends DataRow {

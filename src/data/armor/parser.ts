@@ -1,12 +1,13 @@
-import { ItemCategory, type ItemData } from '$lib/item/types';
+import { ItemCategory, type ArmorEntity } from '$lib/item/types';
 import { existsSync } from 'fs';
 import { EquipModelCategory } from '../types';
 import { prepareXml } from '../helpers';
 import type { ArmorRow } from './type';
+import { DamageType } from '$lib';
 
-export function parseArmors(xmlFile: string): Record<string, ItemData> {
+export function parseArmors(xmlFile: string): Record<string, ArmorEntity> {
 	const { rows, defaults } = prepareXml<ArmorRow>(xmlFile);
-	const items: Record<string, ItemData> = {};
+	const items: Record<string, ArmorEntity> = {};
 
 	for (let i = 0; i < rows.length; i++) {
 		const row = { ...defaults, ...rows[i] };
@@ -14,6 +15,15 @@ export function parseArmors(xmlFile: string): Record<string, ItemData> {
 
 		if (!row.paramdexName || row.paramdexName == '') {
 			console.log(`Armor name missing for #${id} (skipping)`);
+			continue;
+		}
+
+		if (
+			row.paramdexName === 'Head' ||
+			row.paramdexName === 'Body' ||
+			row.paramdexName === 'Arms' ||
+			row.paramdexName === 'Legs'
+		) {
 			continue;
 		}
 
@@ -68,7 +78,7 @@ export function parseArmors(xmlFile: string): Record<string, ItemData> {
 			continue;
 		}
 
-		const item: ItemData = {
+		const item: ArmorEntity = {
 			name: row.paramdexName,
 			weight: row.weight,
 			rarity: row.rarity,
@@ -78,19 +88,36 @@ export function parseArmors(xmlFile: string): Record<string, ItemData> {
 			config: {
 				effects
 			},
-			poise: row.toughnessCorrectRate * 1000
+			poise: row.toughnessCorrectRate * 1000,
+			resistance: {
+				immunity: 0,
+				robustness: 0,
+				focus: 0,
+				vitality: 0
+			},
+			damageNegation: {
+				[DamageType.STANDARD]: 0,
+				[DamageType.STRIKE]: 0,
+				[DamageType.SLASH]: 0,
+				[DamageType.PIERCE]: 0,
+				[DamageType.HOLY]: 0,
+				[DamageType.LIGHTNING]: 0,
+				[DamageType.FIRE]: 0,
+				[DamageType.MAGIC]: 0
+			},
+			id: 0
 		};
 
 		(item.iconUrl = `/images/items_webp/MENU_Knowledge_${iconId}.webp`),
 			(item.damageNegation = {
-				standard: row.neutralDamageCutRate,
-				slash: row.slashDamageCutRate,
-				strike: row.blowDamageCutRate,
-				pierce: row.thrustDamageCutRate,
-				mag: row.magicDamageCutRate,
-				fir: row.fireDamageCutRate,
-				lit: row.thunderDamageCutRate,
-				hol: row.darkDamageCutRate
+				standard: (1 - row.neutralDamageCutRate) * 100,
+				slash: (1 - row.slashDamageCutRate) * 100,
+				strike: (1 - row.blowDamageCutRate) * 100,
+				pierce: (1 - row.thrustDamageCutRate) * 100,
+				mag: (1 - row.magicDamageCutRate) * 100,
+				fir: (1 - row.fireDamageCutRate) * 100,
+				lit: (1 - row.thunderDamageCutRate) * 100,
+				hol: (1 - row.darkDamageCutRate) * 100
 			});
 
 		item.resistance = {
@@ -100,7 +127,7 @@ export function parseArmors(xmlFile: string): Record<string, ItemData> {
 			vitality: row.resistCurse
 		};
 
-		items[`${row.equipModelCategory}#${row.id}`] = item;
+		items[`armor#${row.id}`] = item;
 	}
 	return items;
 }

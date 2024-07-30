@@ -1,7 +1,7 @@
 <script lang="ts">
 	import DamageDistBar from '$lib/components/DamageDistBar.svelte';
-	import { validateRequirements } from '$lib/item';
-	import { combatState } from '../combat.state';
+	import { validateRequirements } from '$lib/weapon/helpers';
+	import { equipStore } from '../equip.store';
 	import type { HeroState } from '../types';
 	import AttackScalingInfo from './AttackScalingInfo.svelte';
 
@@ -10,14 +10,14 @@
 	$: attributes = hero.totalAttributes;
 </script>
 
-{#if !$combatState.mainHand && !$combatState.offHand}
+{#if !$equipStore.mainHand && !$equipStore.offHand}
 	<div class="bg-rose-900/20 text-rose-400 p-3 rounded-lg flex items-center">
 		<span class="mat-icon me-2">warning</span>Equip a weapon to see scaling values.
 	</div>
 {/if}
 
 <div>
-	{#if $combatState.mainHand}
+	{#if $equipStore.mainHand}
 		<div class="px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
 			<dt class="text-sm font-medium leading-6">
 				Attack<br /><span class="text-xs text-zinc-500">Mainhand</span>
@@ -30,16 +30,16 @@
 			</dd>
 		</div>
 
-		<AttackScalingInfo weapon={$combatState.mainHand} {attributes} />
+		<AttackScalingInfo weapon={$equipStore.mainHand} {attributes} />
 
-		{#if validateRequirements($combatState.mainHand.attributeRequirements ?? {}, attributes).length > 0}
+		{#if validateRequirements($equipStore.mainHand.attributeRequirements ?? {}, attributes).length > 0}
 			<div class="bg-rose-900/20 text-rose-400 p-3 rounded-lg flex items-center mt-5">
 				<span class="mat-icon me-2">warning</span>
 				<span>Item requirements not met. Damage penality applied (-40%).</span>
 			</div>
 		{/if}
 	{/if}
-	{#if $combatState.offHand}
+	{#if $equipStore.offHand}
 		<hr class="my-10 opacity-20" />
 
 		<div class="px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
@@ -54,9 +54,9 @@
 			</dd>
 		</div>
 
-		<AttackScalingInfo weapon={$combatState.offHand} {attributes} />
+		<AttackScalingInfo weapon={$equipStore.offHand} {attributes} />
 
-		{#if validateRequirements($combatState.offHand.attributeRequirements ?? {}, attributes).length > 0}
+		{#if validateRequirements($equipStore.offHand.attributeRequirements ?? {}, attributes).length > 0}
 			<div class="bg-rose-900/20 text-rose-400 p-3 rounded-lg flex items-center mt-5">
 				<span class="mat-icon me-2">warning</span>
 				<span>Item requirements not met. Damage penality applied (-40%).</span>

@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { AffinityType } from '$lib/core';
-	import { AttackItem } from '../AttackItem';
-	import { affinities, itemTypes } from '../data';
+	import { itemTypes } from '../data';
 	import type { Item } from '../Item';
 	import ItemRarityBadge from './ItemRarityBadge.svelte';
 
@@ -15,9 +14,6 @@
 		</div>
 		<div>
 			<div class="font-medium text-lg">
-				{#if item instanceof AttackItem && item.affinity && item.affinity !== AffinityType.STANDARD}
-					<span class="font-bold">{affinities[item.affinity].name}</span>
-				{/if}
 				{item.name}
 				{#if item.tier > 0}(+{item.tier}){/if}
 			</div>

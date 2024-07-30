@@ -5,7 +5,7 @@
 	export let item: Item;
 </script>
 
-<div class="max-w-sm w-full lg:max-w-full lg:flex">
+<article class="max-w-sm w-full lg:max-w-full lg:flex">
 	{#if item.iconUrl}
 		<div class="me-5">
 			<img
@@ -21,4 +21,4 @@
 
 		<slot />
 	</div>
-</div>
+</article>

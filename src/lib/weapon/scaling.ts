@@ -1,5 +1,32 @@
 import { AttackType, AttributeType, calcCorrect, DynamicAttack, type Attack } from '$lib/core';
-import type { AttackItem } from '$lib/item';
+import type { AttackItem } from './AttackItem';
+import { validateRequirements } from './helpers';
+
+export function getScalingLetter(base: number): string {
+	const b = Math.floor(base);
+
+	if (b <= 24) {
+		return 'E';
+	}
+
+	if (b <= 59) {
+		return 'D';
+	}
+
+	if (b <= 89) {
+		return 'C';
+	}
+
+	if (b <= 139) {
+		return 'B';
+	}
+
+	if (b <= 175) {
+		return 'A';
+	}
+
+	return 'S';
+}
 
 function calculateAttributeScaling(
 	weapon: AttackItem,
@@ -98,19 +125,4 @@ export function calcScaledAttack(weapon: AttackItem, attributes: Record<string, 
 	}
 
 	return attack;
-}
-
-export function validateRequirements(
-	requirements: Record<string, number>,
-	attributes: Record<string, number>
-): string[] {
-	const invalidAttributes = [];
-
-	for (const [t, n] of Object.entries(requirements)) {
-		if (typeof attributes[t] === 'number' && attributes[t] < n) {
-			invalidAttributes.push(t);
-		}
-	}
-
-	return invalidAttributes;
 }

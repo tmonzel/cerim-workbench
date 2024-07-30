@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { StatusEffectType } from '$lib/core/types';
+	import { StatusEffectType } from '$lib/core';
 
-	export let effect: StatusEffectType;
+	export let effect: string;
 
-	const positions: Record<StatusEffectType, string> = {
+	const positions: Record<string, string> = {
 		[StatusEffectType.SLEEP]: '-5px -3px',
 		[StatusEffectType.POISON]: '-5px -33px',
 		[StatusEffectType.FROSTBITE]: '-75px -33px',
@@ -14,10 +14,7 @@
 	};
 </script>
 
-<div
-	class="inline-block status-effect-icon ring-1 ring-zinc-700"
-	style:background-position={positions[effect]}
-></div>
+<div class="inline-block status-effect-icon ring-1 ring-zinc-700" style:background-position={positions[effect]}></div>
 
 <style>
 	.status-effect-icon {

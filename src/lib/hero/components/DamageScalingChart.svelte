@@ -1,9 +1,10 @@
 <script lang="ts">
 	import { type Attack, type AttributeType } from '$lib/core/types';
 	import { VisXYContainer, VisLine, VisAxis, VisStackedBar } from '@unovis/svelte';
-	import { calculateAttributeAttack, type AttackItem } from '$lib/item';
 	import { attackTypes } from '$lib/core';
 	import AttributeBadge from '$lib/components/AttributeBadge.svelte';
+	import type { AttackItem } from '$lib/weapon/AttackItem';
+	import { calculateAttributeAttack } from '$lib/weapon/scaling';
 
 	export let item: AttackItem;
 	export let attributeType: AttributeType;

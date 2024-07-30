@@ -1,14 +1,9 @@
-import type {
-	AffinityType,
-	AttackType,
-	AttributeType,
-	DamageNegation,
-	DamageType,
-	GraphMutation,
-	Guard,
-	GuardType,
-	Resistance
-} from '$lib/core';
+import type { AttackType, AttributeType, GraphMutation, Guard } from '$lib/core';
+import type { Item } from './Item';
+
+export interface Upgradable {
+	upgrade(tier: number): void;
+}
 
 export type ItemData = {
 	id: number;
@@ -17,28 +12,14 @@ export type ItemData = {
 	category: ItemCategory;
 	group: string;
 	rarity: ItemRarity;
-	poise?: number;
-	weight?: number;
-	armor?: number;
+	weight: number;
 	tier?: number;
-	attackSpeed?: number;
 	description?: string;
-	requirements?: ItemRequirements;
-	resistance?: Resistance;
-	damageNegation?: DamageNegation;
-	guard?: Guard;
-	affinity?: AffinityType;
 	iconUrl?: string;
-	effects?: string[];
-	effectInfo?: string[];
-	modifiers?: Record<ModifierType, ModifierData>;
+	effects?: number[];
+	modifiers?: SpEffectModifier[];
 	config?: ItemConfig;
-	affinities?: Partial<Record<AffinityType, ItemConfig>>;
 	upgrades?: ItemUpgrade[];
-	attackInfo?: AttackInfo;
-
-	isLightSource: boolean;
-	upgradePrice?: number;
 };
 
 export enum ItemCategory {
@@ -62,38 +43,6 @@ export type Affinity = {
 	name: string;
 	schema: string;
 	iconUrl: string;
-};
-
-export interface WeaponEntity extends ItemData {
-	type: string;
-	group: string;
-	poise?: number;
-	weight?: number;
-	armor?: number;
-	tier?: number;
-	attackSpeed?: number;
-	requirements?: ItemRequirements;
-	guard?: Guard;
-	affinity?: AffinityType;
-	iconUrl?: string;
-	effects?: string[];
-	effectInfo?: string[];
-	modifiers?: Record<ModifierType, ModifierData>;
-	config?: ItemConfig;
-	affinities?: Partial<Record<AffinityType, ItemConfig>>;
-	upgrades?: ItemUpgrade[];
-	attackInfo?: AttackInfo;
-
-	isLightSource: boolean;
-	upgradePrice?: number;
-}
-
-export type AttackInfo = {
-	damage: DamageType[];
-	crit: number;
-	poise: number;
-	vsGhost: boolean;
-	vsDragon: boolean;
 };
 
 export type ItemConfig = {
@@ -123,14 +72,6 @@ export type ItemUpgrade = {
 	modifiers?: Record<ModifierType, ModifierData>;
 };
 
-export type UpgradeSchema = {
-	tiers: number;
-	attack: Record<string, number[]>;
-	scaling: Record<string, number[]>;
-	guard: Record<GuardType, number[]>;
-	effects: Record<number, number[]>;
-};
-
 export type ModifierType = 'flat' | 'percentual';
 export type ModifierData = Record<string, ModifierConfig>;
 export type ModifierConfig = {
@@ -141,6 +82,19 @@ export type ModifierConfig = {
 
 export type SpEffect = {
 	id: number;
-	statusTypes?: Record<string, number | number[]>;
-	modifiers?: Partial<Record<ModifierType, ModifierData>>;
+	modifiers?: SpEffectModifier[];
+};
+
+export type SpEffectModifier = {
+	group: 'stats' | 'resistance' | 'damageNegation' | 'attributes' | 'status';
+	type: 'flat' | 'percentual';
+
+	prop: string;
+	value: number;
+};
+
+export type ItemStoreState<T extends Item> = {
+	loaded: boolean;
+	entities: Record<string, T>;
+	ids: string[];
 };

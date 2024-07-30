@@ -1,19 +1,8 @@
-import {
-	AttackType,
-	AttributeType,
-	type AttackCorrect,
-	type GraphMutation,
-	type SpEffect,
-	type UpgradeSchema
-} from '$lib/core';
+import { AttackType, AttributeType, type AttackCorrect, type GraphMutation } from '$lib/core';
+import type { SpEffect, UpgradeSchema } from '$lib/item';
 import { prepareXml } from './helpers';
 import { mapSpEffect } from './mappers';
-import {
-	type AttackCorrectParam,
-	type CalcCorrectParam,
-	type ReinforceParam,
-	type SpEffectParam
-} from './types';
+import { type AttackCorrectParam, type CalcCorrectParam, type ReinforceParam, type SpEffectParam } from './types';
 
 export function parseSpEffectData(file: string): Record<string, SpEffect> {
 	const { rows, defaults } = prepareXml<SpEffectParam>(file);
@@ -22,7 +11,7 @@ export function parseSpEffectData(file: string): Record<string, SpEffect> {
 	for (const r of rows) {
 		const spEff = mapSpEffect({ ...defaults, ...r });
 
-		if (!spEff.modifiers && !spEff.statusTypes) {
+		if (!spEff.modifiers) {
 			continue;
 		}
 

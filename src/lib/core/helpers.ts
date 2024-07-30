@@ -64,32 +64,6 @@ export function calcNeededSouls(level: number): number {
 	return Math.floor((x + 0.1) * Math.pow(level + 81, 2) + 1);
 }
 
-export function getScalingId(base: number): string {
-	const b = Math.floor(base);
-
-	if (b <= 24) {
-		return 'E';
-	}
-
-	if (b <= 59) {
-		return 'D';
-	}
-
-	if (b <= 89) {
-		return 'C';
-	}
-
-	if (b <= 139) {
-		return 'B';
-	}
-
-	if (b <= 175) {
-		return 'A';
-	}
-
-	return 'S';
-}
-
 export function calcGraphParams(
 	x: number,
 	mutations: GraphMutation[]

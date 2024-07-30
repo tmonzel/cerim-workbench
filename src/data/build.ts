@@ -1,21 +1,9 @@
 import { writeFileSync } from 'fs';
-import {
-	parseAttackCorrectData,
-	parseCalcCorrectData,
-	parseReinforceData,
-	parseSpEffectData
-} from './parsers';
-import { parseWeapons } from './weapon/parser';
-import { parseArmors } from './armor/parser';
+import { parseAttackCorrectData, parseCalcCorrectData, parseReinforceData, parseSpEffectData } from './parsers';
 
-// Build item data
-/*writeFileSync(
-	`./static/data/items.json`,
-	JSON.stringify({
-		weapons: parseWeapons(`./mat/EquipParamWeapon.param.xml`),
-		armors: parseArmors(`./mat/EquipParamProtector.param.xml`)
-	})
-);
+import './weapon/build';
+import './armor/build';
+import './accessory/build';
 
 // Build calculation data
 writeFileSync(
@@ -26,4 +14,4 @@ writeFileSync(
 		attackCorrect: parseAttackCorrectData('./mat/AttackElementCorrectParam.param.xml'),
 		spEffects: parseSpEffectData('./mat/SpEffectParam.param.xml')
 	})
-);*/
+);

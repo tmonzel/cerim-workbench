@@ -11,17 +11,21 @@ export async function load({ fetch, setHeaders }) {
 	const dataResponse = await fetch(`${API_URL}/data.json`);
 	const data = await dataResponse.json();
 
-	const itemsResponse = await fetch(`${API_URL}/items.json`);
-	const items = await itemsResponse.json();
+	const weaponsResponse = await fetch(`${API_URL}/weapons.json`);
+	const weapons = await weaponsResponse.json();
 
-	const accessoriesResponse = await fetch(`${API_URL}/accessories.json`);
+	const armorsResponse = await fetch(`${API_URL}/armors.json`);
+	const armors = await armorsResponse.json();
+
+	const accessoriesResponse = await fetch(`${API_URL}/accessories_generated.json`);
 	const accessories = await accessoriesResponse.json();
 
 	return {
 		...data,
 		items: {
-			...items,
-			...accessories
+			weapons: weapons.data,
+			armors: armors.data,
+			accessories: accessories.data
 		}
 	};
 }

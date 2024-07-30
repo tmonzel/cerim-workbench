@@ -1,6 +1,6 @@
 import { XMLParser } from 'fast-xml-parser';
 import type { DataField, DataRow } from './types';
-import { readFileSync } from 'fs';
+import { existsSync, readFileSync } from 'fs';
 
 export function prepareXml<TRow extends DataRow>(
 	filePath: string
@@ -28,10 +28,7 @@ export function prepareXml<TRow extends DataRow>(
 	return { fields, rows, defaults };
 }
 
-export function mapXml<R>(
-	data: string,
-	mapper: <T extends DataRow>(row: T) => R
-): Record<number, R> {
+export function mapXml<R>(data: string, mapper: <T extends DataRow>(row: T) => R): Record<number, R> {
 	const xml = new XMLParser({
 		ignoreAttributes: false,
 		parseAttributeValue: true,
@@ -80,4 +77,16 @@ export function mapFmgXml(filePath: string): Record<number, string> {
 	}
 
 	return record;
+}
+
+export function getIconUrl(id: number): string {
+	return `/images/items_webp/MENU_Knowledge_${id}.webp`;
+}
+
+export function getIconFile(id: number): string {
+	return `./static/images/items_webp/MENU_Knowledge_${id}.webp`;
+}
+
+export function iconExists(id: number): boolean {
+	return existsSync(getIconFile(id));
 }

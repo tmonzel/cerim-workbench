@@ -1,15 +1,15 @@
-import { ItemCategory, type ItemData } from '$lib/item/types';
 import { existsSync } from 'fs';
 
 import { mapFmgXml, prepareXml } from '../helpers';
 import { affinityMap, mapAttackInfo, mapConfig, mapRequirements, weaponTypeMap } from './mappers';
 import type { WeaponRow } from './type';
+import { ItemCategory, type WeaponEntity } from '$lib/item';
 
-export function parseWeapons(xmlFile: string): ItemData[] {
+export function parseWeapons(xmlFile: string): Record<string, WeaponEntity> {
 	const { rows, defaults } = prepareXml<WeaponRow>(xmlFile);
-	const items: Record<string, ItemData> = {};
+	const items: Record<string, WeaponEntity> = {};
 
-	const effectMessages = mapFmgXml(`./mat/WeaponEffect.fmg.xml`);
+	//const effectMessages = mapFmgXml(`./mat/WeaponEffect.fmg.xml`);
 
 	for (let i = 0; i < rows.length; i++) {
 		const row = { ...defaults, ...rows[i] };
@@ -20,7 +20,7 @@ export function parseWeapons(xmlFile: string): ItemData[] {
 			continue;
 		}
 
-		const item: ItemData = {
+		const item: WeaponEntity = {
 			id: row.id,
 			name: row.paramdexName,
 			group: '',
@@ -29,12 +29,19 @@ export function parseWeapons(xmlFile: string): ItemData[] {
 			category: ItemCategory.WEAPON,
 			rarity: row.rarity,
 			isLightSource: row.lanternWep === 1,
-			upgradePrice: row.reinforcePrice
+			upgradePrice: row.reinforcePrice,
+			attackInfo: {
+				damage: [],
+				crit: 0,
+				poise: 0,
+				vsGhost: false,
+				vsDragon: false
+			}
 		};
 
-		if (row.spEffectMsgId0 && effectMessages[row.spEffectMsgId0]) {
+		/*if (row.spEffectMsgId0 && effectMessages[row.spEffectMsgId0]) {
 			item.effectInfo = [effectMessages[row.spEffectMsgId0]];
-		}
+		}*/
 
 		const weaponType = weaponTypeMap[row.wepType];
 
@@ -47,9 +54,7 @@ export function parseWeapons(xmlFile: string): ItemData[] {
 		const iconFile = `./static/images/items_webp/MENU_Knowledge_${iconId}.webp`;
 
 		if (!existsSync(iconFile)) {
-			console.log(
-				`Weapon image file ${iconFile} for ${row.paramdexName} does not exist (skipping)`
-			);
+			console.log(`Weapon image file ${iconFile} for ${row.paramdexName} does not exist (skipping)`);
 			continue;
 		}
 
@@ -59,8 +64,8 @@ export function parseWeapons(xmlFile: string): ItemData[] {
 		item.attackInfo = mapAttackInfo(row);
 		item.requirements = mapRequirements(row);
 
-		if (items[row.originEquipWep]) {
-			const item: ItemData = items[row.originEquipWep];
+		if (items[`weapon#${row.originEquipWep}`]) {
+			const item: WeaponEntity = items[`weapon#${row.originEquipWep}`];
 
 			if (!item.affinities) {
 				item.affinities = {};
@@ -70,9 +75,9 @@ export function parseWeapons(xmlFile: string): ItemData[] {
 		} else if (row.originEquipWep === row.id) {
 			item.config = mapConfig(row);
 
-			items[row.id] = item;
+			items[`weapon#${row.id}`] = item;
 		}
 	}
 
-	return Object.values(items);
+	return items;
 }

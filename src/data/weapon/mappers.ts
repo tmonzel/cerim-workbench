@@ -1,5 +1,5 @@
-import { AffinityType, AttackType, DamageType, type ScalingBase } from '$lib';
-import { type ItemAttackInfo, type ItemConfig, type ItemRequirements } from '$lib/item/types';
+import { AffinityType, AttackType, DamageType } from '$lib';
+import { type AttackInfo, type ItemConfig, type ItemRequirements, type ScalingBase } from '$lib/item/types';
 import type { WeaponRow } from './type';
 
 export const affinityMap: Record<number, AffinityType> = {
@@ -188,8 +188,8 @@ export function mapConfig(row: WeaponRow): ItemConfig {
 	return config;
 }
 
-export function mapAttackInfo(row: WeaponRow): ItemAttackInfo {
-	const attackInfo: ItemAttackInfo = {
+export function mapAttackInfo(row: WeaponRow): AttackInfo {
+	const attackInfo: AttackInfo = {
 		damage: [],
 		crit: 100 + (row.throwAtkRate ?? 0),
 		poise: row.saWeaponDamage,

@@ -3,7 +3,6 @@ import type {
 	DynamicAttributes,
 	DynamicDamageNegation,
 	DynamicDefense,
-	DynamicNumber,
 	DynamicResistance,
 	DynamicStats
 } from '$lib/core';
@@ -23,7 +22,6 @@ export type HeroState = {
 	souls: number;
 	attributePoints: number;
 	weightRatio: number;
-	effects: string[];
 	totalAttributes: Record<string, number>;
 
 	stats: DynamicStats;
@@ -31,7 +29,6 @@ export type HeroState = {
 	defense: DynamicDefense;
 	resistance: DynamicResistance;
 	damageNegation: DynamicDamageNegation;
-	poise: DynamicNumber;
 
 	mainHandAttack: DynamicAttack;
 	offHandAttack: DynamicAttack;

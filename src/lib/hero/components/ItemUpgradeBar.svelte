@@ -1,14 +1,13 @@
 <script lang="ts">
+	import type { AccessoryItem } from '$lib/accessory';
 	import Button from '$lib/components/Button.svelte';
-	import type { EntityStore } from '$lib/core';
-	import { type Item } from '$lib/item';
+	import type { AttackItem } from '$lib/weapon';
 
-	export let item: Item;
-	export let store: EntityStore<Item>;
+	export let item: AttackItem | AccessoryItem;
 
 	function upgrade(tier: number): void {
 		item.upgrade(tier);
-		store.updateEntity(item.id, item);
+		item = item;
 	}
 </script>
 

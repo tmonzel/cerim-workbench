@@ -55,7 +55,7 @@
 					<p class="mt-1 text-zinc-400">Greater runes and talismans</p>
 				</div>
 			{/if}
-			<HeroBody {hero} />
+			<HeroBody />
 		</div>
 
 		{#if $appState.heroContext === 'attack'}
