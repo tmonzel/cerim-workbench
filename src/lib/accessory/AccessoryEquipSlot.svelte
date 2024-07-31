@@ -4,8 +4,7 @@
 	import AccessoryFinder from './AccessoryFinder.svelte';
 	import type { AccessoryItem } from './AccessoryItem';
 	import EquipSlot from '$lib/hero/components/EquipSlot.svelte';
-	import ItemCard from '$lib/item/components/ItemCard.svelte';
-	import ModifierList from '$lib/item/components/ModifierList.svelte';
+	import AccessoryCard from './AccessoryCard.svelte';
 
 	export let label: string;
 	export let selectedItem: AccessoryItem | null = null;
@@ -28,9 +27,7 @@
 
 	<EquipSlot on:click={() => dialog.open()} {label} bind:selectedItem let:item>
 		{#if item}
-			<ItemCard {item}>
-				<ModifierList data={item.modifiers} />
-			</ItemCard>
+			<AccessoryCard {item} />
 		{/if}
 	</EquipSlot>
 </div>

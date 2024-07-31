@@ -1,10 +1,9 @@
 <script lang="ts">
 	import InputControl from '$lib/components/InputControl.svelte';
-	import ItemCard from '$lib/item/components/ItemCard.svelte';
-	import ModifierList from '$lib/item/components/ModifierList.svelte';
 	import { createEventDispatcher } from 'svelte';
 	import type { AccessoryItem } from './AccessoryItem';
 	import { createCollection } from '$lib/core';
+	import AccessoryCard from './AccessoryCard.svelte';
 
 	export let items: AccessoryItem[];
 	export let selectedItem: AccessoryItem | null = null;
@@ -58,9 +57,7 @@
 					class:bg-stone-800={selectedItem?.id === item.id}
 					class:ring-amber-300={selectedItem?.id === item.id}
 				>
-					<ItemCard {item}>
-						<ModifierList data={item.modifiers} />
-					</ItemCard>
+					<AccessoryCard {item} />
 				</button>
 			</li>
 		{/each}

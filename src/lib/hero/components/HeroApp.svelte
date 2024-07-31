@@ -68,7 +68,7 @@
 			</div>
 		{/if}
 
-		{#if $appStore.heroContext === 'protection'}
+		{#if $appStore.heroContext === 'protection' || $appStore.heroContext === 'accessories'}
 			<div class="min-w-96">
 				<div class="sticky top-5">
 					<div class="mb-10">
