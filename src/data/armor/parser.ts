@@ -35,9 +35,6 @@ export function parseArmors(xmlFile: string): Record<string, ArmorEntity> {
 			continue;
 		}
 
-		let type = '';
-		let group = '';
-		let category: ItemCategory = ItemCategory.ARMOR;
 		const effects: number[] = [];
 
 		if (row.residentSpEffectId !== -1) {
@@ -52,39 +49,11 @@ export function parseArmors(xmlFile: string): Record<string, ArmorEntity> {
 			effects.push(row.residentSpEffectId3);
 		}
 
-		switch (row.equipModelCategory) {
-			case EquipModelCategory.HEAD:
-				type = 'helm';
-				group = 'helmets';
-				category = ItemCategory.HELMET;
-				break;
-			case EquipModelCategory.ARMS:
-				type = 'gauntlet';
-				group = 'gauntlets';
-				category = ItemCategory.ARMS;
-				break;
-			case EquipModelCategory.BODY:
-				type = 'armor';
-				group = 'armors';
-				category = ItemCategory.ARMOR;
-				break;
-			case EquipModelCategory.LEGS:
-				type = 'leg';
-				group = 'legs';
-				category = ItemCategory.LEGS;
-		}
-
-		if (type === '' || group === '') {
-			continue;
-		}
-
 		const item: ArmorEntity = {
 			name: row.paramdexName,
 			weight: row.weight,
 			rarity: row.rarity,
-			category,
-			type,
-			group,
+			type: row.protectorCategory,
 			config: {
 				effects
 			},

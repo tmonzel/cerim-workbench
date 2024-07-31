@@ -57,40 +57,41 @@
 		</span>
 	</button>
 
-	{#if showMenu}
-		<div
-			class="absolute z-40 mt-2 p-2 -left-1 shadow-lg rounded-md bg-zinc-800 border border-zinc-600 flex flex-col gap-y-2"
-			tabindex="-1"
-			role="listbox"
-		>
-			{#each options as item, i}
-				{@const isSelected = compareWith($selected[selectBy], item)}
-				<button
-					class="relative w-full rounded-md select-none py-1 pl-2 pr-12 flex justify-between hover:bg-zinc-700 ring-amber-300"
-					id="listbox-option-{i}"
-					role="option"
-					aria-selected={isSelected}
-					on:click|stopPropagation={() => selectValue(item[selectBy])}
-					class:bg-stone-800={isSelected}
-					class:ring-2={isSelected}
-				>
-					<div class="flex items-center whitespace-nowrap">
-						<slot {item} />
-					</div>
+	<div
+		class="absolute z-40 hidden mt-2 p-2 -left-1 shadow-lg rounded-md bg-zinc-800 border border-zinc-600 flex-col gap-y-2 overflow-y-scroll max-h-96"
+		class:hidden={!showMenu}
+		class:flex={showMenu}
+		style="scrollbar-color: #444 transparent;"
+		tabindex="-1"
+		role="listbox"
+	>
+		{#each options as item, i}
+			{@const isSelected = compareWith($selected[selectBy], item)}
+			<button
+				class="relative w-full rounded-md select-none py-1 pl-2 pr-12 flex justify-between hover:bg-zinc-700 ring-amber-300"
+				id="listbox-option-{i}"
+				role="option"
+				aria-selected={isSelected}
+				on:click|stopPropagation={() => selectValue(item[selectBy])}
+				class:bg-stone-800={isSelected}
+				class:ring-2={isSelected}
+			>
+				<div class="flex items-center whitespace-nowrap">
+					<slot {item} />
+				</div>
 
-					{#if isSelected}
-						<span class="absolute inset-y-0 right-0 flex items-center pr-2">
-							<svg class="h-5 w-5 fill-amber-300" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-								<path
-									fill-rule="evenodd"
-									d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-									clip-rule="evenodd"
-								/>
-							</svg>
-						</span>
-					{/if}
-				</button>
-			{/each}
-		</div>
-	{/if}
+				{#if isSelected}
+					<span class="absolute inset-y-0 right-0 flex items-center pr-2">
+						<svg class="h-5 w-5 fill-amber-300" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+							<path
+								fill-rule="evenodd"
+								d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+								clip-rule="evenodd"
+							/>
+						</svg>
+					</span>
+				{/if}
+			</button>
+		{/each}
+	</div>
 </div>

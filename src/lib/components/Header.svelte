@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { createBuild } from '$lib/api';
 	import { calcNeededSouls } from '$lib/core';
-	import { heroTypes, sharedDataState, type HeroState } from '$lib/hero';
-	import { appState, uiState } from '$lib/state';
+	import { heroTypes, type HeroState } from '$lib/hero';
+	import { makeSharedBuildSnapshot } from '$lib/share';
+	import { appStore, uiState } from '$lib/state';
 	import ContextNav from './ContextNav.svelte';
 	import Dialog from './Dialog.svelte';
 	import SelectControl from './SelectControl.svelte';
@@ -16,7 +17,7 @@
 
 	async function createSharedUrl() {
 		creatingUrl = true;
-		sharedUrl = await createBuild($sharedDataState);
+		sharedUrl = await createBuild(makeSharedBuildSnapshot());
 		creatingUrl = false;
 
 		sharedResultDialog.open();
@@ -24,35 +25,6 @@
 </script>
 
 <header>
-	<div class="flex justify-between">
-		<!--<h1 class="text-3xl font-bold dark:text-zinc-200 mb-7">
-			<span>Tarnished</span> Creator
-		</h1>
-
-		<div class="flex text-right">
-			<a
-				href="https://www.buymeacoffee.com/digitaleshandwerk"
-				class="inline-block w-40 me-5"
-				target="_blank"
-			>
-				<img
-					alt="Buy me a coffee button"
-					src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=digitaleshandwerk&button_colour=fcd34d&font_colour=000000&font_family=Inter&outline_colour=000000&coffee_colour=ffffff"
-				/>
-			</a>
-			<div>
-				<p class="text-zinc-500 text-xs leading-4">
-					Handcrafted with <span
-						class="mat-icon filled"
-						style="font-size: 1.1em; transform: translateY(2px)">favorite</span
-					>
-					by Thomas Monzel <span>(v0.10.1)</span>
-				</p>
-				<p class="text-zinc-600 text-xs mb-3">ELDEN RING is a trademark of FromSoftware.</p>
-			</div>
-		</div>-->
-	</div>
-
 	<div class="flex gap-x-20">
 		<div>
 			<h1 class="text-3xl font-bold dark:text-zinc-200 mb-7">
@@ -63,7 +35,7 @@
 				<div class="min-w-40">
 					<h3 class="text-md text-zinc-500 mb-2">Class</h3>
 					<div>
-						<SelectControl options={heroTypes} bind:value={$appState.heroType} let:item>
+						<SelectControl options={heroTypes} bind:value={$appStore.heroType} let:item>
 							<svelte:fragment slot="selected" let:item>
 								<div class="p-1 text-xl">{item?.name}</div>
 							</svelte:fragment>
@@ -85,86 +57,10 @@
 			</div>
 		</div>
 
-		<!--<div class="flex gap-14">
-			<div class="min-w-40">
-				<h3 class="text-md text-zinc-500 mb-2">Class</h3>
-				<div>
-					<SelectControl options={heroTypes} bind:value={$appState.heroType} let:item>
-						<svelte:fragment slot="selected" let:item>
-							<div class="p-1 text-xl">{item?.name}</div>
-						</svelte:fragment>
-
-						{item.name}
-					</SelectControl>
-				</div>
-			</div>
-
-			<div class="min-w-20">
-				<h3 class="text-md text-zinc-500 mb-2">Level</h3>
-				<p class="text-4xl">{hero.level}</p>
-			</div>
-
-			<div class="min-w-20">
-				<h3 class="text-md text-zinc-500 mb-2">Attribute Points</h3>
-				<p class="text-4xl">{hero.attributePoints}</p>
-			</div>
-
-			<div class="grid grid-cols-4 gap-x-5 gap-y-4">
-				<div>
-					<dt class="text-zinc-500">Health</dt>
-					<dd>
-						<ValueBadge value={hero.stats.value.hp} />
-					</dd>
-				</div>
-				<div>
-					<dt class="text-zinc-500">FP</dt>
-					<dd>
-						<ValueBadge value={hero.stats.value.fp} />
-					</dd>
-				</div>
-				<div>
-					<dt class="text-zinc-500">Stamina</dt>
-					<dd>
-						<ValueBadge value={hero.stats.value.stamina} />
-					</dd>
-				</div>
-				<div>
-					<dt class="text-zinc-500">{statRecord.discovery.name}</dt>
-					<dd>
-						{Math.floor(hero.stats.value.discovery.total * 100)}
-					</dd>
-				</div>
-				<div>
-					<dt class="text-zinc-500">Poise</dt>
-					<dd>
-						<ValueBadge value={hero.stats.value.poise} />
-					</dd>
-				</div>
-				<div>
-					<dt class="text-zinc-500">{statRecord.weight.name}</dt>
-					<dd>
-						<ValueBadge value={hero.stats.value.weight} />
-					</dd>
-				</div>
-				<div>
-					<dt class="text-zinc-500">{statRecord.equipLoad.name}</dt>
-					<dd>
-						<ValueBadge value={hero.stats.value.equipLoad} />
-					</dd>
-				</div>
-				<div>
-					<dt class="text-zinc-500">Weight Status</dt>
-					<dd>
-						<HeroWeightStatus weightRatio={hero.weightRatio} />
-					</dd>
-				</div>
-			</div>
-		</div>-->
-
 		<div class="ml-auto flex flex-col justify-between">
 			<div class="text-right">
 				<p class="text-zinc-400 text-xs leading-4">
-					<span class="text-emerald-300">v0.11.0</span><br />Handcrafted with
+					<span class="text-emerald-300">v0.12</span><br />Handcrafted with
 					<span class="mat-icon filled" style="font-size: 1.1em; transform: translateY(2px)">favorite</span>
 					by Thomas Monzel
 				</p>

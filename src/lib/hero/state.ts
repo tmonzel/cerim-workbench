@@ -2,7 +2,6 @@ import { derived } from 'svelte/store';
 import type { HeroState } from './types';
 import { attributeStore } from './attributes';
 import {
-	AffinityType,
 	AttributeType,
 	calcCorrect,
 	calcNeededSouls,
@@ -15,16 +14,15 @@ import {
 	DynamicStats,
 	type DamageNegation
 } from '$lib/core';
-import type { DataDefaults } from '$lib/data';
-import { appState } from '$lib/state';
 import { attributeTypes, heroTypes } from './data';
 import { equipStore } from './equip.store';
 import { calcScaledAttack } from '$lib/weapon/scaling';
 import { ProtectItem } from '$lib/armor';
+import { appStore } from '$lib/state';
 
 export const HERO_MAX_LEVEL = 713;
 
-export const heroState = derived([appState, attributeStore, equipStore], ([config, attributeState, equip]) => {
+export const heroState = derived([appStore, attributeStore, equipStore], ([config, attributeState, equip]) => {
 	const type = heroTypes.find((t) => t.id === config.heroType)!;
 	const attributes = new DynamicAttributes(attributeState);
 	const level = attributes.getTotal() + type.level;
@@ -143,41 +141,4 @@ export const heroState = derived([appState, attributeStore, equipStore], ([confi
 	hero.weightRatio = (hero.stats.get('weight') * 100) / hero.stats.get('equipLoad');
 
 	return hero;
-});
-
-export const sharedDataState = derived([attributeStore, appState], ([attributes, app]) => {
-	const itemModifications: Record<string, { affinity?: AffinityType; tier?: number }> = {};
-
-	/*for (const item of Object.values(items)) {
-		if (!item.modified) {
-			continue;
-		}
-
-		const mod: { affinity?: AffinityType; tier?: number } = {};
-
-		if (item instanceof AttackItem && item.affinity) {
-			mod.affinity = item.affinity;
-		}
-
-		if (item.tier > 0) {
-			mod.tier = item.tier;
-		}
-
-		itemModifications[item.id] = mod;
-	}*/
-
-	const equip: Record<string, string> = {};
-
-	/*for (const [slotName, slot] of Object.entries(slots)) {
-			if (slot.selectedItemId && items[slot.selectedItemId]) {
-				equip[slotName] = slot.selectedItemId;
-			}
-		}*/
-
-	return {
-		heroType: app.heroType,
-		attributes,
-		itemModifications,
-		equip
-	} satisfies DataDefaults;
 });

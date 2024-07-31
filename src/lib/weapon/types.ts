@@ -1,14 +1,9 @@
-import type { AffinityType, AttackType, AttributeType, DamageType, Guard, GuardType } from '$lib/core';
+import type { AttackType, AttributeType, DamageType, Guard, GuardType } from '$lib/core';
 import type { ItemConfig, ItemData, ModifierData, ModifierType } from '$lib/item';
+import type { AffinityType } from './affinity';
 
 export interface WeaponEntity extends ItemData {
-	type: string;
-	group: string;
-	poise?: number;
-	armor?: number;
-	tier?: number;
-	attackSpeed?: number;
-	requirements?: ItemRequirements;
+	requirements: WeaponRequirements;
 	guard?: Guard;
 	affinity?: AffinityType;
 	affinities?: Partial<Record<AffinityType, ItemConfig>>;
@@ -18,11 +13,8 @@ export interface WeaponEntity extends ItemData {
 	upgradePrice?: number;
 }
 
-export type ItemRequirements = {
-	attributes?: Partial<Record<AttributeType, number>>;
-};
-
-export type ItemAttributeScaling = Record<string, { base: number; attackTypes: AttackType[] }>;
+export type WeaponRequirements = Partial<Record<AttributeType, number>>;
+export type WeaponScaling = Record<string, { base: number; attackTypes: AttackType[] }>;
 
 export type AttackInfo = {
 	damage: DamageType[];

@@ -1,43 +1,35 @@
-import { AffinityType, AttributeType, type AttackCorrect, type GraphMutation } from './core';
-import { type ItemData, type SpEffect } from './item/types';
-import { writable } from 'svelte/store';
-import { attributeStore } from './hero';
-import { appState } from './state';
+import { type AttackCorrect, type GraphMutation } from './core';
+import { type SpEffect } from './item/types';
 import { AttackItem } from './weapon/AttackItem';
 import { weaponStore } from './weapon/weapon.store';
 import type { UpgradeSchema, WeaponEntity } from './weapon';
-import { armorStore, ProtectItem } from './armor';
-import { AccessoryItem, accessoryStore } from './accessory';
+import { armorStore, ProtectItem, type ArmorEntity } from './armor';
+import { AccessoryItem, accessoryStore, type AccessoryEntity } from './accessory';
+import type { Item } from './item';
+
+const API_URL = './data';
 
 export type DataSchema = {
-	defaults?: DataDefaults;
-
-	items?: {
-		weapons: Record<string, WeaponEntity>;
-		armors: Record<string, ItemData>;
-		accessories: Record<string, ItemData>;
-	};
-
 	upgradeSchemata?: Record<string, UpgradeSchema>;
 	mutations?: Record<string, GraphMutation[]>;
 	attackCorrect?: Record<string, AttackCorrect>;
 	spEffects?: Record<string, SpEffect>;
 };
 
-export type DataDefaults = {
-	heroType: string;
-	attributes?: Record<string, number>;
-	equip?: Record<string, string>;
-	itemModifications?: Record<string, { tier?: number; affinity?: AffinityType }>;
-};
+export async function fetchData<T>(url: string): Promise<T> {
+	const response = await fetch(url);
+	return response.json();
+}
 
 export const attackCorrectRecord: Record<string, AttackCorrect> = {};
 export const mutationRecord: Record<string, GraphMutation[]> = {};
 export const upgradeSchemata: Record<string, UpgradeSchema> = {};
 export const spEffectsMap = new Map<number, SpEffect>();
-export const dataStore = writable<DataSchema | null>(null);
+export const itemMap = new Map<string, Item>();
 
-export function loadData(data: DataSchema) {
+export async function loadData() {
+	const data = await fetchData<DataSchema>(`${API_URL}/data.json`);
+
 	if (data.mutations) {
 		for (const name in data.mutations) {
 			mutationRecord[name] = data.mutations[name];
@@ -62,93 +54,38 @@ export function loadData(data: DataSchema) {
 		}
 	}
 
-	// Resolve item data
-	if (data.items) {
-		const weapons: Record<string, AttackItem> = {};
-		const armors: Record<string, ProtectItem> = {};
-		const accessories: Record<string, AccessoryItem> = {};
+	// Fetching attack item data
+	const weaponData = await fetchData<{ data: Record<string, WeaponEntity> }>(`${API_URL}/weapons.json`);
+	const weapons: Record<string, AttackItem> = {};
 
-		for (const id in data.items.weapons) {
-			weapons[id] = new AttackItem(id, data.items.weapons[id]);
-		}
-
-		for (const id in data.items.armors) {
-			armors[id] = new ProtectItem(id, data.items.armors[id]);
-		}
-
-		for (const id in data.items.accessories) {
-			accessories[id] = new AccessoryItem(id, data.items.accessories[id]);
-		}
-
-		armorStore.loadAll(armors);
-		weaponStore.loadAll(weapons);
-		accessoryStore.loadAll(accessories);
+	for (const id in weaponData.data) {
+		weapons[id] = new AttackItem(id, weaponData.data[id]);
+		itemMap.set(id, weapons[id]);
 	}
 
-	// Apply attribute defaults
-	attributeStore.update((state) => {
-		if (!data.defaults || !data.defaults.attributes) {
-			return { ...state };
-		}
+	weaponStore.set(weapons);
 
-		for (const t of Object.values(AttributeType)) {
-			if (!data.defaults.attributes[t]) {
-				continue;
-			}
+	// Fetching protector item data
+	const armorData = await fetchData<{ data: Record<string, ArmorEntity> }>(`${API_URL}/armors.json`);
+	const armors: Record<string, ProtectItem> = {};
 
-			state[t] = data.defaults.attributes[t];
-		}
+	for (const id in armorData.data) {
+		armors[id] = new ProtectItem(id, armorData.data[id]);
+		itemMap.set(id, armors[id]);
+	}
 
-		return { ...state };
-	});
+	armorStore.set(armors);
 
-	// Apply slot defaults
-	/*slotStore.update((state) => {
-		if (!data.defaults || !data.defaults.equip) {
-			return { ...state };
-		}
+	// Fetching accessory item data
+	const accessoryData = await fetchData<{ data: Record<string, AccessoryEntity> }>(
+		`${API_URL}/accessories_generated.json`
+	);
+	const accessories: Record<string, AccessoryItem> = {};
 
-		const slotState = { ...state };
+	for (const id in accessoryData.data) {
+		accessories[id] = new AccessoryItem(id, accessoryData.data[id]);
+		itemMap.set(id, accessories[id]);
+	}
 
-		for (const [k, v] of Object.entries(data.defaults.equip)) {
-			const slotKey = k as keyof SlotState;
-
-			if (slotState[slotKey]) {
-				slotState[slotKey].selectItem(v);
-			}
-		}
-
-		return slotState;
-	});*/
-
-	appState.update((state) => {
-		if (!data.defaults || !data.defaults.heroType) {
-			return { ...state };
-		}
-
-		return { ...state, heroType: data.defaults.heroType };
-	});
-
-	// Apply item defaults
-	/*itemStore.update((store) => {
-		if (!data.defaults || !data.defaults.itemModifications) {
-			return { ...store };
-		}
-
-		for (const [id, mod] of Object.entries(data.defaults.itemModifications)) {
-			const item = store[id];
-
-			if (item && mod.tier && mod.tier > 0) {
-				item.upgrade(mod.tier);
-			}
-
-			if (item instanceof AttackItem && mod.affinity && mod.affinity !== AffinityType.STANDARD) {
-				item.setAffinity(mod.affinity);
-			}
-		}
-
-		return { ...store };
-	});*/
-
-	dataStore.set(data);
+	accessoryStore.set(accessories);
 }

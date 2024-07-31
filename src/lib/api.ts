@@ -1,11 +1,11 @@
-import type { DataDefaults } from './data';
+import type { SharedBuild } from './share';
 
 export const API_URL = 'https://api.tmonzel.de/tarnished-creator';
 
-export async function createBuild(defaults: DataDefaults) {
+export async function createBuild(data: SharedBuild) {
 	const response = await fetch(`${API_URL}/shared_builds`, {
 		method: 'POST',
-		body: JSON.stringify(defaults),
+		body: JSON.stringify(data),
 		headers: {
 			'Content-Type': 'application/json'
 		}
@@ -16,7 +16,7 @@ export async function createBuild(defaults: DataDefaults) {
 	return `https://tarnished-creator.tmonzel.de/${json.data.uid}`;
 }
 
-export async function findBuild(uid: string): Promise<DataDefaults | undefined> {
+export async function findBuild(uid: string): Promise<SharedBuild | undefined> {
 	const response = await fetch(`${API_URL}/shared_builds/${uid}`, {
 		method: 'GET',
 		headers: {
@@ -30,5 +30,5 @@ export async function findBuild(uid: string): Promise<DataDefaults | undefined> 
 
 	const json = await response.json();
 
-	return json.data.state as DataDefaults;
+	return json.data.state as SharedBuild;
 }

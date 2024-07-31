@@ -32,7 +32,7 @@
 
 		<AttackScalingInfo weapon={$equipStore.mainHand} {attributes} />
 
-		{#if validateRequirements($equipStore.mainHand.attributeRequirements ?? {}, attributes).length > 0}
+		{#if validateRequirements($equipStore.mainHand.requirements ?? {}, attributes).length > 0}
 			<div class="bg-rose-900/20 text-rose-400 p-3 rounded-lg flex items-center mt-5">
 				<span class="mat-icon me-2">warning</span>
 				<span>Item requirements not met. Damage penality applied (-40%).</span>
@@ -56,7 +56,7 @@
 
 		<AttackScalingInfo weapon={$equipStore.offHand} {attributes} />
 
-		{#if validateRequirements($equipStore.offHand.attributeRequirements ?? {}, attributes).length > 0}
+		{#if validateRequirements($equipStore.offHand.requirements ?? {}, attributes).length > 0}
 			<div class="bg-rose-900/20 text-rose-400 p-3 rounded-lg flex items-center mt-5">
 				<span class="mat-icon me-2">warning</span>
 				<span>Item requirements not met. Damage penality applied (-40%).</span>

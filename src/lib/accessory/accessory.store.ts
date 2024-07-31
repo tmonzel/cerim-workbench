@@ -1,4 +1,4 @@
-import { createItemStore } from '$lib/item/store';
+import { writable } from 'svelte/store';
 import type { AccessoryItem } from './AccessoryItem';
 
-export const accessoryStore = createItemStore<AccessoryItem>();
+export const accessoryStore = writable<Record<string, AccessoryItem>>();

@@ -8,34 +8,32 @@
 
 	export let item: AttackItem;
 
-	$: invalidAttributes = validateRequirements(item.attributeRequirements ?? {}, $heroState.totalAttributes);
+	$: invalidAttributes = validateRequirements(item.requirements ?? {}, $heroState.totalAttributes);
 </script>
 
 <div class="flex gap-x-8 text-sm">
-	{#if item.attributeRequirements}
-		<div class="flex">
-			<svg
-				class="me-2"
-				class:fill-red-400={invalidAttributes.length > 0}
-				xmlns="http://www.w3.org/2000/svg"
-				height="24px"
-				viewBox="0 -960 960 960"
-				width="24px"
-				fill="#e4e4e7"
-				><path
-					d="M655-200 513-342l56-56 85 85 170-170 56 57-225 226Zm0-320L513-662l56-56 85 85 170-170 56 57-225 226ZM80-280v-80h360v80H80Zm0-320v-80h360v80H80Z"
-				/></svg
-			>
-			<div>
-				{#each Object.entries(item.attributeRequirements) as [attr, num]}
-					<div class="flex items-center">
-						<span style:background-color={attributeTypes[attr].color} class="me-2 w-2.5 h-2.5 rounded"></span>
-						<span class:text-red-400={invalidAttributes.includes(attr)}>{num}</span>
-					</div>
-				{/each}
-			</div>
+	<div class="flex">
+		<svg
+			class="me-2"
+			class:fill-red-400={invalidAttributes.length > 0}
+			xmlns="http://www.w3.org/2000/svg"
+			height="24px"
+			viewBox="0 -960 960 960"
+			width="24px"
+			fill="#e4e4e7"
+			><path
+				d="M655-200 513-342l56-56 85 85 170-170 56 57-225 226Zm0-320L513-662l56-56 85 85 170-170 56 57-225 226ZM80-280v-80h360v80H80Zm0-320v-80h360v80H80Z"
+			/></svg
+		>
+		<div>
+			{#each Object.entries(item.requirements) as [attr, num]}
+				<div class="flex items-center">
+					<span style:background-color={attributeTypes[attr].color} class="me-2 w-2.5 h-2.5 rounded"></span>
+					<span class:text-red-400={invalidAttributes.includes(attr)}>{num}</span>
+				</div>
+			{/each}
 		</div>
-	{/if}
+	</div>
 
 	<div class="flex">
 		<svg

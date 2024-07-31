@@ -8,9 +8,8 @@ export interface Upgradable {
 export type ItemData = {
 	id: number;
 	name: string;
-	type: string;
+	type: number;
 	category: ItemCategory;
-	group: string;
 	rarity: ItemRarity;
 	weight: number;
 	tier?: number;
@@ -38,12 +37,6 @@ export enum ItemRarity {
 	RARE = 2,
 	LEGENDARY = 3
 }
-
-export type Affinity = {
-	name: string;
-	schema: string;
-	iconUrl: string;
-};
 
 export type ItemConfig = {
 	attack?: Partial<Record<AttackType, number>>;

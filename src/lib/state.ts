@@ -10,7 +10,7 @@ export type UIState = {
 	showAttributeInfo: string | null;
 };
 
-export const appState = writable<AppState>({
+export const appStore = writable<AppState>({
 	heroType: 'wretch',
 	heroContext: 'attack',
 	excludeStaminaFromAttackCalc: false

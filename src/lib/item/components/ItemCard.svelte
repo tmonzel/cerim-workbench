@@ -1,6 +1,5 @@
 <script lang="ts">
 	import type { Item } from '../Item';
-	import ItemHeader from './ItemHeader.svelte';
 
 	export let item: Item;
 </script>
@@ -17,8 +16,6 @@
 	{/if}
 
 	<div class="grow">
-		<ItemHeader {item} />
-
 		<slot />
 	</div>
 </article>

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { appState } from '$lib/state';
+	import { appStore } from '$lib/state';
 
 	const contexts = [
 		{
@@ -25,13 +25,13 @@
 			<li class="me-2">
 				<button
 					class="inline-flex items-center justify-center px-4 py-2 transition-colors rounded-lg"
-					class:text-indigo-300={$appState.heroContext === context.name}
-					class:bg-indigo-900={$appState.heroContext === context.name}
-					on:click={() => ($appState.heroContext = context.name)}
+					class:text-indigo-300={$appStore.heroContext === context.name}
+					class:bg-indigo-900={$appStore.heroContext === context.name}
+					on:click={() => ($appStore.heroContext = context.name)}
 				>
 					<svg
 						class="w-4 h-4 me-2 text-zinc-600 group-hover:text-zinc-400"
-						class:fill-indigo-300={$appState.heroContext === context.name}
+						class:fill-indigo-300={$appStore.heroContext === context.name}
 						aria-hidden="true"
 						xmlns="http://www.w3.org/2000/svg"
 						fill="currentColor"

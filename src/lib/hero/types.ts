@@ -69,5 +69,3 @@ export type HeroAttribute = {
 	color: string;
 	modifier?: AttributeModifier;
 };
-
-export type AttributeState = Record<AttributeType, number>;

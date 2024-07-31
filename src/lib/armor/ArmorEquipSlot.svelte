@@ -5,6 +5,9 @@
 	import ModifierList from '$lib/item/components/ModifierList.svelte';
 	import type { ProtectItem } from './ProtectItem';
 	import ArmorFinder from './ArmorFinder.svelte';
+	import ArmorInfo from './ArmorInfo.svelte';
+	import ResistanceGrid from '$lib/components/ResistanceGrid.svelte';
+	import DamageNegationGrid from '$lib/components/DamageNegationGrid.svelte';
 
 	export let label: string;
 	export let selectedItem: ProtectItem | null = null;
@@ -22,7 +25,23 @@
 	<EquipSlot on:click={() => dialog.open()} {label} bind:selectedItem let:item>
 		{#if item}
 			<ItemCard {item}>
-				<ModifierList data={item.modifiers} />
+				<ArmorInfo {item} />
+
+				<dl class="divide-y divide-gray-100/20">
+					{#if item.modifiers.length > 0}
+						<ModifierList data={item.modifiers} />
+					{/if}
+
+					<div class="px-4 py-4 sm:px-0">
+						<dt class="text-sm font-medium mb-2">Resistance (⌀ {item.resistanceAvg})</dt>
+						<dd><ResistanceGrid data={item.resistance} /></dd>
+					</div>
+
+					<div class="px-4 py-4 sm:px-0">
+						<dt class="text-sm font-medium mb-2">Damage Negation (⌀ {item.damageNegationAvg})</dt>
+						<dd><DamageNegationGrid data={item.damageNegation} /></dd>
+					</div>
+				</dl>
 			</ItemCard>
 		{/if}
 	</EquipSlot>

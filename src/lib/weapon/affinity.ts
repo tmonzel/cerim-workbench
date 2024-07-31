@@ -1,5 +1,24 @@
-import { AffinityType } from '$lib/core';
-import type { Affinity } from '$lib/item';
+export enum AffinityType {
+	STANDARD = 'standard',
+	HEAVY = 'heavy',
+	KEEN = 'keen',
+	QUALITY = 'quality',
+	FIRE = 'fire',
+	FLAME = 'flame',
+	LIGHTNING = 'lightning',
+	SACRED = 'sacred',
+	MAGIC = 'magic',
+	COLD = 'cold',
+	POISON = 'poison',
+	BLOOD = 'blood',
+	OCCULT = 'occult'
+}
+
+export type Affinity = {
+	name: string;
+	schema: string;
+	iconUrl: string;
+};
 
 export const affinities: Record<string, Affinity> = {
 	[AffinityType.STANDARD]: {

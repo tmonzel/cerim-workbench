@@ -1,6 +1,7 @@
 import { AttributeType } from '$lib/core';
 import { writable } from 'svelte/store';
-import type { AttributeState } from './types';
+
+export type AttributeState = Record<AttributeType, number>;
 
 export const attributeStore = writable<AttributeState>({
 	[AttributeType.VIGOR]: 0,

@@ -1,24 +1,50 @@
 <script lang="ts">
-	import AttackBadge from '$lib/components/AttackBadge.svelte';
-	import AttackDetail from '$lib/components/AttackDetail.svelte';
 	import InputControl from '$lib/components/InputControl.svelte';
-	import { createItemCollection } from '$lib/item/collection';
-	import ItemCard from '$lib/item/components/ItemCard.svelte';
-	import ModifierList from '$lib/item/components/ModifierList.svelte';
 	import SortButton from '$lib/item/components/SortButton.svelte';
 	import { createEventDispatcher } from 'svelte';
-	import WeaponInfo from './WeaponInfo.svelte';
 	import type { AttackItem } from './AttackItem';
+	import { weaponTypeInfo } from './weapon.type';
+	import SelectControl from '$lib/components/SelectControl.svelte';
+	import { createCollection } from '$lib/core';
+	import WeaponCard from './WeaponCard.svelte';
 
 	export let items: AttackItem[];
 	export let selectedItem: AttackItem | null = null;
 
-	const { result, state } = createItemCollection(items, {
-		sort: {
-			weight: (item: AttackItem) => item.weight,
-			physicalAttack: (item: AttackItem) => item.attack.phy ?? 0
+	type FilterSchema = {
+		filters: { search: string; type: number | null };
+	};
+
+	const { result, sort, filters } = createCollection(
+		items,
+		{ filters: { search: '', type: null } },
+		{
+			filters: {
+				search: (item: AttackItem, value: string) => {
+					if (value === '') {
+						return true;
+					}
+
+					return item.name.toLowerCase().indexOf(value.toLowerCase()) !== -1;
+				},
+				type: (item: AttackItem, value: number | null) => (value ? item.type == value : true)
+			},
+			sort: {
+				weight: (item: AttackItem) => item.weight,
+				physicalAttack: (item: AttackItem) => item.attack.phy ?? 0,
+				magicalAttack: (item: AttackItem) => item.attack.mag ?? 0,
+				fireAttack: (item: AttackItem) => item.attack.fir ?? 0,
+				lightningAttack: (item: AttackItem) => item.attack.lit ?? 0,
+				holyAttack: (item: AttackItem) => item.attack.hol ?? 0
+			}
 		}
-	});
+	);
+
+	const typeOptions = [
+		{ id: null, name: 'All Types' },
+		...Object.entries(weaponTypeInfo).map(([id, info]) => ({ id, name: info.name }))
+	];
+
 	const dispatch = createEventDispatcher<{ selectItem: AttackItem | null }>();
 
 	export function selectItem(item: AttackItem | null): void {
@@ -29,8 +55,17 @@
 
 <div>
 	<div class="sticky top-0 z-20 p-5 bg-zinc-800">
-		<div class="mb-4">
-			<InputControl bind:value={$state.search} placeholder="Search weapon by name..." />
+		<div class="flex gap-x-2 mb-4">
+			<SelectControl options={typeOptions} bind:value={$filters.type} let:item>
+				<svelte:fragment slot="selected" let:item>
+					<div class="p-2">
+						{item.name}
+					</div>
+				</svelte:fragment>
+
+				{item.name}
+			</SelectControl>
+			<InputControl bind:value={$filters.search} placeholder="Search weapon by name..." />
 		</div>
 
 		<div class="flex gap-x-10">
@@ -40,13 +75,17 @@
 			<div>
 				<h6>Stats</h6>
 				<div class="flex gap-5">
-					<SortButton bind:state={$state.sort.weight}>Weight</SortButton>
+					<SortButton bind:state={$sort.weight}>Weight</SortButton>
 				</div>
 			</div>
 			<div>
 				<h6>Attack Type</h6>
 				<div class="flex gap-5">
-					<SortButton bind:state={$state.sort.physicalAttack}>Physical</SortButton>
+					<SortButton bind:state={$sort.physicalAttack}>Physical</SortButton>
+					<SortButton bind:state={$sort.magicalAttack}>Magical</SortButton>
+					<SortButton bind:state={$sort.fireAttack}>Fire</SortButton>
+					<SortButton bind:state={$sort.lightningAttack}>Lightning</SortButton>
+					<SortButton bind:state={$sort.holyAttack}>Holy</SortButton>
 				</div>
 			</div>
 		</div>
@@ -68,21 +107,7 @@
 					class:bg-stone-800={selectedItem?.id === item.id}
 					class:ring-amber-300={selectedItem?.id === item.id}
 				>
-					<ItemCard {item}>
-						<div class="mb-3 text-2xl">
-							<AttackBadge attack={item.attack} />
-						</div>
-
-						<div class="mb-3">
-							<AttackDetail attack={item.attack} />
-						</div>
-
-						<div class="mb-3">
-							<WeaponInfo {item} />
-						</div>
-
-						<ModifierList data={item.modifiers} />
-					</ItemCard>
+					<WeaponCard {item} />
 				</button>
 			</li>
 		{/each}

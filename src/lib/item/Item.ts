@@ -1,17 +1,14 @@
-import { AttributeType } from '$lib/core/types';
 import { ItemModifier } from './ItemModifier';
 import type { ItemCategory, ItemData, ItemRarity, SpEffectModifier } from './types';
 
 export class Item {
-	readonly type: string;
+	readonly type: number;
 	readonly name: string;
-	readonly group: string;
 	readonly weight: number;
 	readonly category: ItemCategory;
 	readonly rarity: ItemRarity;
 
 	tier: number;
-	attributeRequirements?: Partial<Record<AttributeType, number>>;
 
 	modifiers: ItemModifier[] = [];
 	iconUrl?: string;
@@ -29,7 +26,6 @@ export class Item {
 	) {
 		this.type = data.type;
 		this.name = data.name;
-		this.group = data.group;
 		this.category = data.category;
 		this.tier = data.tier ?? 0;
 		this.iconUrl = data.iconUrl;

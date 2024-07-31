@@ -1,4 +1,4 @@
-import { createItemStore } from '$lib/item/store';
+import { writable } from 'svelte/store';
 import type { AttackItem } from './AttackItem';
 
-export const weaponStore = createItemStore<AttackItem>();
+export const weaponStore = writable<Record<string, AttackItem>>({});

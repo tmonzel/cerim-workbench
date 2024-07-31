@@ -70,22 +70,6 @@ export enum GuardType {
 	RESISTANCE = 'res'
 }
 
-export enum AffinityType {
-	STANDARD = 'standard',
-	HEAVY = 'heavy',
-	KEEN = 'keen',
-	QUALITY = 'quality',
-	FIRE = 'fire',
-	FLAME = 'flame',
-	LIGHTNING = 'lightning',
-	SACRED = 'sacred',
-	MAGIC = 'magic',
-	COLD = 'cold',
-	POISON = 'poison',
-	BLOOD = 'blood',
-	OCCULT = 'occult'
-}
-
 export type Resistance = Record<ResistanceType, number>;
 export type Guard = Record<GuardType, number>;
 export type Defense = Record<DamageType, number>;

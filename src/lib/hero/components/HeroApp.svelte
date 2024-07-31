@@ -2,7 +2,7 @@
 	import CheckboxControl from '$lib/components/CheckboxControl.svelte';
 	import Header from '$lib/components/Header.svelte';
 	import { type HeroState } from '$lib/hero';
-	import { appState } from '$lib/state';
+	import { appStore } from '$lib/state';
 	import AttackPanel from './AttackPanel.svelte';
 	import AttributePanel from './AttributePanel.svelte';
 	import HeroBody from './HeroBody.svelte';
@@ -27,7 +27,7 @@
 		</div>
 
 		<div class="grow">
-			{#if $appState.heroContext === 'attack'}
+			{#if $appStore.heroContext === 'attack'}
 				<div class="flex justify-between mb-10">
 					<div>
 						<h3 class="font-semibold text-lg">Weapons</h3>
@@ -35,21 +35,19 @@
 					</div>
 
 					<div class="my-5 flex justify-end gap-5">
-						<CheckboxControl>Guard Info</CheckboxControl>
-						<CheckboxControl>Scaling Info</CheckboxControl>
 						<div class="max-w-44">
-							<CheckboxControl bind:checked={$appState.excludeStaminaFromAttackCalc}>
+							<CheckboxControl bind:checked={$appStore.excludeStaminaFromAttackCalc}>
 								Exclude Stamina from total attack damage
 							</CheckboxControl>
 						</div>
 					</div>
 				</div>
-			{:else if $appState.heroContext === 'protection'}
+			{:else if $appStore.heroContext === 'protection'}
 				<div class="mb-10">
 					<h3 class="font-semibold text-lg">Armor</h3>
 					<p class="mt-1 text-zinc-400">Dress yourself</p>
 				</div>
-			{:else if $appState.heroContext === 'accessories'}
+			{:else if $appStore.heroContext === 'accessories'}
 				<div class="mb-10">
 					<h3 class="font-semibold text-lg">Accessories</h3>
 					<p class="mt-1 text-zinc-400">Greater runes and talismans</p>
@@ -58,7 +56,7 @@
 			<HeroBody />
 		</div>
 
-		{#if $appState.heroContext === 'attack'}
+		{#if $appStore.heroContext === 'attack'}
 			<div class="max-w-96">
 				<div class="sticky top-5">
 					<div class="mb-10">
@@ -70,7 +68,7 @@
 			</div>
 		{/if}
 
-		{#if $appState.heroContext === 'protection'}
+		{#if $appStore.heroContext === 'protection'}
 			<div class="min-w-96">
 				<div class="sticky top-5">
 					<div class="mb-10">

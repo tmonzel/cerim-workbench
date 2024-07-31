@@ -10,3 +10,4 @@ export * from './DynamicResistance';
 export * from './DynamicStats';
 export * from './types';
 export * from './data';
+export * from './collection';

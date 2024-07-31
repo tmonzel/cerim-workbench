@@ -1,5 +1,4 @@
 import {
-	AffinityType,
 	AttackType,
 	AttributeType,
 	DamageType,
@@ -10,26 +9,20 @@ import {
 } from '$lib/core/types';
 import { attackCorrectRecord, mutationRecord, spEffectsMap, upgradeSchemata } from '$lib/data';
 import { Item, type ItemConfig, type SpEffectModifier, type Upgradable } from '$lib/item';
-import type { AttackInfo, ItemAttributeScaling, UpgradeSchema, WeaponEntity } from './types';
-
-const scalingAttributes = [
-	AttributeType.STRENGTH,
-	AttributeType.DEXTERITY,
-	AttributeType.INTELLIGENCE,
-	AttributeType.FAITH,
-	AttributeType.ARCANE
-];
+import { AffinityType } from './affinity';
+import { scalingAttributes } from './scaling';
+import type { AttackInfo, UpgradeSchema, WeaponEntity, WeaponRequirements, WeaponScaling } from './types';
 
 export class AttackItem extends Item implements Upgradable {
 	attack: Attack = {};
 	attackInfo: AttackInfo;
-	attackSpeed: number;
 	guard: Guard;
 	affinities: Map<string, ItemConfig>;
-	scaling: ItemAttributeScaling = {};
+	scaling: WeaponScaling = {};
 	config!: ItemConfig;
 	possibleUpgrades = 0;
 	schema?: UpgradeSchema;
+	requirements: WeaponRequirements;
 
 	attackMutations: Partial<Record<AttackType, GraphMutation[]>>;
 	private _affinity: AffinityType | null;
@@ -42,13 +35,11 @@ export class AttackItem extends Item implements Upgradable {
 		super(id, entity);
 
 		this.attackMutations = {};
-		this.attackSpeed = entity.attackSpeed ?? 1;
 		this.guard = entity.guard ?? { phy: 0, mag: 0, fir: 0, lit: 0, hol: 0, sta: 0, res: 0 };
 		this.affinities = new Map(Object.entries(entity.affinities ?? {}));
 		this._affinity = null;
 		this.possibleUpgrades = entity.upgrades ? entity.upgrades.length : 0;
-		this.attributeRequirements =
-			entity.requirements && entity.requirements.attributes ? entity.requirements.attributes : undefined;
+		this.requirements = entity.requirements;
 
 		this.attackInfo = {
 			crit: 100,
@@ -168,7 +159,7 @@ export class AttackItem extends Item implements Upgradable {
 		const attack: Attack = {};
 		const guard: Partial<Guard> = {};
 		const maxTiers = this.possibleUpgrades;
-		const attributeScaling: ItemAttributeScaling = {};
+		const attributeScaling: WeaponScaling = {};
 
 		if (this.possibleUpgrades > 0) {
 			for (const t of Object.values(AttackType)) {

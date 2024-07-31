@@ -2,6 +2,14 @@ import { AttackType, AttributeType, calcCorrect, DynamicAttack, type Attack } fr
 import type { AttackItem } from './AttackItem';
 import { validateRequirements } from './helpers';
 
+export const scalingAttributes = [
+	AttributeType.STRENGTH,
+	AttributeType.DEXTERITY,
+	AttributeType.INTELLIGENCE,
+	AttributeType.FAITH,
+	AttributeType.ARCANE
+];
+
 export function getScalingLetter(base: number): string {
 	const b = Math.floor(base);
 
@@ -81,7 +89,7 @@ function scaleAttack(
 	excludeAttackTypes?: AttackType[]
 ): Attack {
 	const scaledAttack: Attack = {};
-	const invalidAttributes = validateRequirements(weapon.attributeRequirements ?? {}, attributes);
+	const invalidAttributes = validateRequirements(weapon.requirements ?? {}, attributes);
 
 	for (const attackType of Object.values(AttackType)) {
 		const attackBase = weapon.attack[attackType] ?? 0;

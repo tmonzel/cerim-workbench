@@ -5,12 +5,7 @@
 	import Dialog from '$lib/components/Dialog.svelte';
 	import type { AttackItem } from './AttackItem';
 	import WeaponFinder from './WeaponFinder.svelte';
-	import ItemCard from '$lib/item/components/ItemCard.svelte';
-	import AttackBadge from '$lib/components/AttackBadge.svelte';
-	import AttackDetail from '$lib/components/AttackDetail.svelte';
-	import GuardGrid from '$lib/components/GuardGrid.svelte';
-	import WeaponInfo from './WeaponInfo.svelte';
-	import ModifierList from '$lib/item/components/ModifierList.svelte';
+	import WeaponCard from './WeaponCard.svelte';
 
 	export let label: string;
 	export let selectedItem: AttackItem | null = null;
@@ -36,26 +31,7 @@
 	</div>
 	<EquipSlot on:click={() => dialog.open()} {label} bind:selectedItem let:item>
 		{#if item}
-			<ItemCard {item}>
-				<div class="mb-3 text-2xl">
-					<AttackBadge attack={item.attack} />
-				</div>
-
-				<div class="mb-3">
-					<AttackDetail attack={item.attack} />
-				</div>
-
-				<div class="mb-3">
-					<WeaponInfo {item} />
-				</div>
-
-				<ModifierList data={item.modifiers} />
-
-				<div class="px-4 py-4 sm:px-0">
-					<dt class="text-sm font-medium mb-2">Damage Negation</dt>
-					<dd><GuardGrid data={item.guard} /></dd>
-				</div>
-			</ItemCard>
+			<WeaponCard {item} slotted />
 		{/if}
 	</EquipSlot>
 </div>

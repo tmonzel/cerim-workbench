@@ -1,35 +1,52 @@
 <script lang="ts">
 	import InputControl from '$lib/components/InputControl.svelte';
-	import { createItemCollection } from '$lib/item/collection';
 	import ItemCard from '$lib/item/components/ItemCard.svelte';
 	import SortButton from '$lib/item/components/SortButton.svelte';
 	import { createEventDispatcher } from 'svelte';
 	import type { ProtectItem } from './ProtectItem';
+	import ResistanceGrid from '$lib/components/ResistanceGrid.svelte';
+	import DamageNegationGrid from '$lib/components/DamageNegationGrid.svelte';
+	import ModifierList from '$lib/item/components/ModifierList.svelte';
+	import ArmorInfo from './ArmorInfo.svelte';
+	import { createCollection } from '$lib/core';
 
 	export let items: ProtectItem[];
 	export let selectedItem: ProtectItem | null = null;
 
-	const { result, state } = createItemCollection(items, {
-		sort: {
-			weight: (item) => item.weight,
-			poise: (item) => item.poise,
-			immunity: (item) => item.resistance.immunity,
-			robustness: (item) => item.resistance.robustness,
-			focus: (item) => item.resistance.focus,
-			vitality: (item) => item.resistance.vitality,
-			standard: (item) => item.damageNegation.standard,
-			strike: (item) => item.damageNegation.strike,
-			slash: (item) => item.damageNegation.slash,
-			pierce: (item) => item.damageNegation.pierce,
-			magic: (item) => item.damageNegation.mag,
-			fire: (item) => item.damageNegation.fir,
-			lightning: (item) => item.damageNegation.lit,
-			holy: (item) => item.damageNegation.hol,
+	const { result, sort, filters } = createCollection(
+		items,
+		{ filters: { search: '' } },
+		{
+			filters: {
+				search: (item: ProtectItem, value: string) => {
+					if (value === '') {
+						return true;
+					}
 
-			resistance: (item) => item.resistanceAvg,
-			damageNegation: (item) => item.damageNegationAvg
+					return item.name.toLowerCase().indexOf(value.toLowerCase()) !== -1;
+				}
+			},
+			sort: {
+				weight: (item) => item.weight,
+				poise: (item) => item.poise,
+				immunity: (item) => item.resistance.immunity,
+				robustness: (item) => item.resistance.robustness,
+				focus: (item) => item.resistance.focus,
+				vitality: (item) => item.resistance.vitality,
+				standard: (item) => item.damageNegation.standard,
+				strike: (item) => item.damageNegation.strike,
+				slash: (item) => item.damageNegation.slash,
+				pierce: (item) => item.damageNegation.pierce,
+				magic: (item) => item.damageNegation.mag,
+				fire: (item) => item.damageNegation.fir,
+				lightning: (item) => item.damageNegation.lit,
+				holy: (item) => item.damageNegation.hol,
+
+				resistance: (item) => item.resistanceAvg,
+				damageNegation: (item) => item.damageNegationAvg
+			}
 		}
-	});
+	);
 	const dispatch = createEventDispatcher<{ selectItem: ProtectItem | null }>();
 
 	export function selectItem(item: ProtectItem | null): void {
@@ -41,7 +58,7 @@
 <div>
 	<div class="sticky top-0 z-20 p-5 bg-zinc-800">
 		<div class="mb-4">
-			<InputControl bind:value={$state.search} placeholder="Search weapon by name..." />
+			<InputControl bind:value={$filters.search} placeholder="Search weapon by name..." />
 		</div>
 
 		<div class="flex gap-x-10">
@@ -51,32 +68,32 @@
 			<div>
 				<h6>Stats</h6>
 				<div class="flex gap-5">
-					<SortButton bind:state={$state.sort.weight}>Weight</SortButton>
-					<SortButton bind:state={$state.sort.poise}>Poise</SortButton>
+					<SortButton bind:state={$sort.weight}>Weight</SortButton>
+					<SortButton bind:state={$sort.poise}>Poise</SortButton>
 				</div>
 			</div>
 			<div>
 				<h6>Resistance</h6>
 				<div class="flex gap-5">
-					<SortButton bind:state={$state.sort.resistance}>Averages(⌀)</SortButton>
-					<SortButton bind:state={$state.sort.immunity}>Immunity</SortButton>
-					<SortButton bind:state={$state.sort.robustness}>Robustness</SortButton>
-					<SortButton bind:state={$state.sort.focus}>Focus</SortButton>
-					<SortButton bind:state={$state.sort.vitality}>Vitality</SortButton>
+					<SortButton bind:state={$sort.resistance}>Averages(⌀)</SortButton>
+					<SortButton bind:state={$sort.immunity}>Immunity</SortButton>
+					<SortButton bind:state={$sort.robustness}>Robustness</SortButton>
+					<SortButton bind:state={$sort.focus}>Focus</SortButton>
+					<SortButton bind:state={$sort.vitality}>Vitality</SortButton>
 				</div>
 			</div>
 			<div>
 				<h6>Damage Negation</h6>
 				<div class="flex gap-5">
-					<SortButton bind:state={$state.sort.damageNegation}>Averages(⌀)</SortButton>
-					<SortButton bind:state={$state.sort.standard}>Standard</SortButton>
-					<SortButton bind:state={$state.sort.strike}>Strike</SortButton>
-					<SortButton bind:state={$state.sort.slash}>Slash</SortButton>
-					<SortButton bind:state={$state.sort.pierce}>Pierce</SortButton>
-					<SortButton bind:state={$state.sort.magic}>Magic</SortButton>
-					<SortButton bind:state={$state.sort.fire}>Fire</SortButton>
-					<SortButton bind:state={$state.sort.lightning}>Lightning</SortButton>
-					<SortButton bind:state={$state.sort.holy}>Holy</SortButton>
+					<SortButton bind:state={$sort.damageNegation}>Averages(⌀)</SortButton>
+					<SortButton bind:state={$sort.standard}>Standard</SortButton>
+					<SortButton bind:state={$sort.strike}>Strike</SortButton>
+					<SortButton bind:state={$sort.slash}>Slash</SortButton>
+					<SortButton bind:state={$sort.pierce}>Pierce</SortButton>
+					<SortButton bind:state={$sort.magic}>Magic</SortButton>
+					<SortButton bind:state={$sort.fire}>Fire</SortButton>
+					<SortButton bind:state={$sort.lightning}>Lightning</SortButton>
+					<SortButton bind:state={$sort.holy}>Holy</SortButton>
 				</div>
 			</div>
 		</div>
@@ -99,7 +116,23 @@
 					class:ring-amber-300={selectedItem?.id === item.id}
 				>
 					<ItemCard {item}>
-						{item.name}
+						<ArmorInfo {item} />
+
+						<dl class="divide-y divide-gray-100/20">
+							{#if item.modifiers.length > 0}
+								<ModifierList data={item.modifiers} />
+							{/if}
+
+							<div class="px-4 py-4 sm:px-0">
+								<dt class="text-sm font-medium mb-2">Resistance (⌀ {item.resistanceAvg})</dt>
+								<dd><ResistanceGrid data={item.resistance} /></dd>
+							</div>
+
+							<div class="px-4 py-4 sm:px-0">
+								<dt class="text-sm font-medium mb-2">Damage Negation (⌀ {item.damageNegationAvg})</dt>
+								<dd><DamageNegationGrid data={item.damageNegation} /></dd>
+							</div>
+						</dl>
 					</ItemCard>
 				</button>
 			</li>

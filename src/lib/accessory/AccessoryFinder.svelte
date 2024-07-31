@@ -1,19 +1,32 @@
 <script lang="ts">
 	import InputControl from '$lib/components/InputControl.svelte';
-	import { createItemCollection } from '$lib/item/collection';
 	import ItemCard from '$lib/item/components/ItemCard.svelte';
 	import ModifierList from '$lib/item/components/ModifierList.svelte';
 	import { createEventDispatcher } from 'svelte';
 	import type { AccessoryItem } from './AccessoryItem';
+	import { createCollection } from '$lib/core';
 
 	export let items: AccessoryItem[];
 	export let selectedItem: AccessoryItem | null = null;
 
-	const { result, state } = createItemCollection(items, {
-		sort: {
-			weight: (item: AccessoryItem) => item.weight
+	const { result, sort, filters } = createCollection(
+		items,
+		{ filters: { search: '' } },
+		{
+			filters: {
+				search: (item: AccessoryItem, value: string) => {
+					if (value === '') {
+						return true;
+					}
+
+					return item.name.toLowerCase().indexOf(value.toLowerCase()) !== -1;
+				}
+			},
+			sort: {
+				weight: (item: AccessoryItem) => item.weight
+			}
 		}
-	});
+	);
 	const dispatch = createEventDispatcher<{ selectItem: AccessoryItem | null }>();
 
 	export function selectItem(item: AccessoryItem | null): void {
@@ -25,7 +38,7 @@
 <div>
 	<div class="sticky top-0 z-20 p-5 bg-zinc-800">
 		<div class="mb-4">
-			<InputControl bind:value={$state.search} placeholder="Search weapon by name..." />
+			<InputControl bind:value={$filters.search} placeholder="Search weapon by name..." />
 		</div>
 	</div>
 	{#if items.length === 0}

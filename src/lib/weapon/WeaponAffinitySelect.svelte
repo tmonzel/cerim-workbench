@@ -1,7 +1,6 @@
 <script lang="ts">
 	import SelectControl from '$lib/components/SelectControl.svelte';
-	import { AffinityType } from '$lib/core';
-	import { affinities } from './affinities';
+	import { affinities, AffinityType } from './affinity';
 	import type { AttackItem } from './AttackItem';
 
 	export let item: AttackItem;

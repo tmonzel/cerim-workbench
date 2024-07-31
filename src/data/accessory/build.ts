@@ -1,7 +1,8 @@
-import { ItemCategory, type AccessoryEntity } from '$lib/item';
+import { ItemCategory } from '$lib/item';
 import { writeFileSync } from 'fs';
-import { getIconUrl, iconExists, mapFmgXml, prepareXml } from '../helpers';
+import { getIconUrl, iconExists, prepareXml } from '../helpers';
 import type { AccessoryRow } from './type';
+import type { AccessoryEntity } from '$lib/accessory';
 
 export function parseAccessories(xmlFile: string): Record<string, AccessoryEntity> {
 	const { rows, defaults } = prepareXml<AccessoryRow>(xmlFile);
@@ -27,9 +28,8 @@ export function parseAccessories(xmlFile: string): Record<string, AccessoryEntit
 			rarity: row.rarity,
 			iconUrl: getIconUrl(row.iconId),
 			effects: [row.refId],
-			type: 'talisman',
-			category: ItemCategory.TALISMAN,
-			group: 'talismans'
+			type: 1,
+			category: ItemCategory.TALISMAN
 		};
 
 		entities[`accessory#${row.id}`] = entity;

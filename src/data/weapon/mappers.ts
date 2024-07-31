@@ -1,5 +1,7 @@
-import { AffinityType, AttackType, DamageType } from '$lib';
-import { type AttackInfo, type ItemConfig, type ItemRequirements, type ScalingBase } from '$lib/item/types';
+import { AttackType, DamageType } from '$lib';
+import type { ItemConfig, ScalingBase } from '$lib/item';
+import { type AttackInfo, type WeaponRequirements } from '$lib/weapon';
+import { AffinityType } from '$lib/weapon/affinity';
 import type { WeaponRow } from './type';
 
 export const affinityMap: Record<number, AffinityType> = {
@@ -216,25 +218,23 @@ export function mapAttackInfo(row: WeaponRow): AttackInfo {
 	return attackInfo;
 }
 
-export function mapRequirements(row: WeaponRow): ItemRequirements {
-	const requirements: ItemRequirements = {
-		attributes: {}
-	};
+export function mapRequirements(row: WeaponRow): WeaponRequirements {
+	const requirements: WeaponRequirements = {};
 
 	if (row.properStrength) {
-		requirements.attributes!.str = row.properStrength;
+		requirements.str = row.properStrength;
 	}
 
 	if (row.properAgility) {
-		requirements.attributes!.dex = row.properAgility;
+		requirements.dex = row.properAgility;
 	}
 
 	if (row.properMagic) {
-		requirements.attributes!.int = row.properMagic;
+		requirements.int = row.properMagic;
 	}
 
 	if (row.properFaith) {
-		requirements.attributes!.fth = row.properFaith;
+		requirements.fth = row.properFaith;
 	}
 
 	return requirements;
