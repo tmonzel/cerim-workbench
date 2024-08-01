@@ -1,5 +1,5 @@
+import type { AccessoryItem } from '$lib/accessory';
 import type { ProtectItem } from '$lib/armor';
-import type { AccessoryItem } from '$lib/item';
 import type { AttackItem } from '$lib/weapon';
 import { writable } from 'svelte/store';
 

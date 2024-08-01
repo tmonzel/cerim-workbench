@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { AttributeType } from '$lib/core';
-	import type { AttackItem } from '$lib/item';
+	import type { AttackItem } from '$lib/weapon';
 	import DamageScalingChart from './DamageScalingChart.svelte';
 
 	export let weapon: AttackItem;

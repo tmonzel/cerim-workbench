@@ -1,7 +1,7 @@
 <script lang="ts">
 	import CheckboxControl from '$lib/components/CheckboxControl.svelte';
 	import Header from '$lib/components/Header.svelte';
-	import { type HeroState } from '$lib/hero';
+	import { attackInfoState, combatStore, type HeroState } from '$lib/hero';
 	import { appStore } from '$lib/state';
 	import AttackPanel from './AttackPanel.svelte';
 	import AttributePanel from './AttributePanel.svelte';
@@ -63,7 +63,20 @@
 						<h3 class="font-semibold text-lg">Attack Scaling</h3>
 						<p class="mt-1 text-zinc-400">Calculated attack scaling based on chosen attributes</p>
 					</div>
-					<AttackPanel {hero} />
+
+					{#if !$attackInfoState.mainHand && !$attackInfoState.offHand}
+						<div class="bg-rose-900/20 text-rose-400 p-3 rounded-lg flex items-center">
+							<span class="mat-icon me-2">warning</span>Equip a weapon to see scaling values.
+						</div>
+					{/if}
+
+					{#if $attackInfoState.mainHand}
+						<AttackPanel {...$attackInfoState.mainHand} bind:twoHanding={$combatStore.mainHand.twoHanding} />
+					{/if}
+
+					{#if $attackInfoState.offHand}
+						<AttackPanel {...$attackInfoState.offHand} bind:twoHanding={$combatStore.offHand.twoHanding} />
+					{/if}
 				</div>
 			</div>
 		{/if}

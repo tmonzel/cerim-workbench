@@ -124,20 +124,11 @@ export const heroState = derived([appStore, attributeStore, equipStore], ([confi
 
 	const totalAttributes = hero.attributes.getTotalValue();
 
-	for (const attrType of Object.values(AttributeType)) {
-		totalAttributes[attrType] += hero.type.attributes[attrType];
+	for (const t of Object.values(AttributeType)) {
+		totalAttributes[t] += hero.type.attributes[t];
 	}
 
 	hero.totalAttributes = totalAttributes;
-
-	if (equip.mainHand) {
-		hero.mainHandAttack = calcScaledAttack(equip.mainHand, totalAttributes);
-	}
-
-	if (equip.offHand) {
-		hero.offHandAttack = calcScaledAttack(equip.offHand, totalAttributes);
-	}
-
 	hero.weightRatio = (hero.stats.get('weight') * 100) / hero.stats.get('equipLoad');
 
 	return hero;
