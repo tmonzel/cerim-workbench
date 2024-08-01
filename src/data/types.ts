@@ -191,4 +191,6 @@ export interface ItemRow extends DataRow {
 	residentSpEffectId: number;
 	residentSpEffectId2: number;
 	residentSpEffectId3: number;
+
+	sortGroupId: number;
 }

@@ -9,7 +9,6 @@ export type ItemData = {
 	id: number;
 	name: string;
 	type: number;
-	category: ItemCategory;
 	rarity: ItemRarity;
 	weight: number;
 	tier?: number;

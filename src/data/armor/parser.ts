@@ -1,9 +1,8 @@
-import { ItemCategory, type ArmorEntity } from '$lib/item/types';
 import { existsSync } from 'fs';
-import { EquipModelCategory } from '../types';
 import { prepareXml } from '../helpers';
 import type { ArmorRow } from './type';
 import { DamageType } from '$lib';
+import { ArmorWeightClass, type ArmorEntity } from '$lib/armor';
 
 export function parseArmors(xmlFile: string): Record<string, ArmorEntity> {
 	const { rows, defaults } = prepareXml<ArmorRow>(xmlFile);
@@ -18,6 +17,7 @@ export function parseArmors(xmlFile: string): Record<string, ArmorEntity> {
 			continue;
 		}
 
+		// Skip defaults
 		if (
 			row.paramdexName === 'Head' ||
 			row.paramdexName === 'Body' ||
@@ -49,6 +49,14 @@ export function parseArmors(xmlFile: string): Record<string, ArmorEntity> {
 			effects.push(row.residentSpEffectId3);
 		}
 
+		let weightClass: ArmorWeightClass = ArmorWeightClass.LIGHT;
+
+		if (row.sortGroupId > 70) {
+			weightClass = ArmorWeightClass.HEAVY;
+		} else if (row.sortGroupId > 40) {
+			weightClass = ArmorWeightClass.MEDIUM;
+		}
+
 		const item: ArmorEntity = {
 			name: row.paramdexName,
 			weight: row.weight,
@@ -74,7 +82,8 @@ export function parseArmors(xmlFile: string): Record<string, ArmorEntity> {
 				[DamageType.FIRE]: 0,
 				[DamageType.MAGIC]: 0
 			},
-			id: 0
+			id: 0,
+			weightClass
 		};
 
 		(item.iconUrl = `/images/items_webp/MENU_Knowledge_${iconId}.webp`),

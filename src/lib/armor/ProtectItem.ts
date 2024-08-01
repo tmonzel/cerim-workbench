@@ -1,7 +1,7 @@
 import { DamageType, type DamageNegation, type Resistance } from '$lib/core';
 import { spEffectsMap } from '$lib/data';
 import { Item } from '$lib/item';
-import type { ArmorEntity } from './types';
+import type { ArmorEntity, ArmorWeightClass } from './types';
 
 export class ProtectItem extends Item {
 	readonly resistance: Resistance;
@@ -11,6 +11,7 @@ export class ProtectItem extends Item {
 	readonly damageNegationAvg: number;
 
 	readonly poise: number;
+	readonly weightClass: ArmorWeightClass;
 
 	constructor(id: string, entity: ArmorEntity) {
 		super(id, entity);
@@ -55,6 +56,7 @@ export class ProtectItem extends Item {
 			Math.round((damageNegationValues.reduce((p, c) => p + c, 0) / damageNegationValues.length) * 10) / 10;
 
 		this.poise = entity.poise;
+		this.weightClass = entity.weightClass;
 
 		if (entity.config && entity.config.effects) {
 			for (const id of Object.values(entity.config.effects)) {

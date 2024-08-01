@@ -17,7 +17,12 @@ export function parseAccessories(xmlFile: string): Record<string, AccessoryEntit
 		const row = { ...defaults, ...rows[i] };
 
 		if (!iconExists(row.iconId)) {
-			console.log(`Accessory icon #${row.iconId} for ${row.paramdexName} does not exist (skipping)`);
+			console.log(`Accessory#${row.id} missing iconId ${row.iconId} (skipping)`);
+			continue;
+		}
+
+		if (!row.paramdexName || row.paramdexName === '') {
+			console.log(`Accessory#${row.id} without name (skipping)`);
 			continue;
 		}
 
