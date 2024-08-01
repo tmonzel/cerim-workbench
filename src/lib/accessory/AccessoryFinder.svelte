@@ -34,19 +34,19 @@
 	}
 </script>
 
-<div>
+<div style="width: 80vw; height: 80vh">
 	<div class="sticky top-0 z-20 p-5 bg-zinc-800">
 		<div class="mb-4">
-			<InputControl bind:value={$filters.search} placeholder="Search weapon by name..." />
+			<InputControl bind:value={$filters.search} placeholder="Find talismans..." class="text-xl" />
 		</div>
 	</div>
-	{#if items.length === 0}
-		<div class="text-sky-200 p-4 flex items-center rounded-lg bg-sky-900/50 m-4">
-			<span class="mat-icon me-2">warning</span>Sorry, no items found
+	{#if $result.length === 0}
+		<div class="bg-rose-900/20 text-rose-400 p-3 rounded-lg flex items-center m-5">
+			<span class="mat-icon me-2">warning</span>No items found for this criteria
 		</div>
 	{/if}
 
-	<ul class="grid grid-cols-2 px-5 py-2 gap-10">
+	<ul class="grid grid-cols-4 px-5 py-2 gap-10">
 		{#each $result as item}
 			<li>
 				<button

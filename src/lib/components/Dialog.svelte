@@ -15,16 +15,12 @@
 	}
 </script>
 
-<dialog
-	bind:this={selectionDialog}
-	class="bg-neutral-900"
-	style="scrollbar-width: thin; scrollbar-color: #444 transparent; height: 90vh; min-width: 80vw"
->
-	<button
-		type="button"
-		class="fixed w-full top-0 left-0 right-0 bottom-0 bg-zinc-900/80 flex items-center"
-		on:click={() => close()}
-	>
+{#if opened}
+	<div class="fixed z-10 top-0 left-0 right-0 bottom-0 bg-zinc-900/80" style="backdrop-filter: blur(2px)"></div>
+{/if}
+
+<dialog bind:this={selectionDialog} class="bg-neutral-900 z-30" style="scrollbar-color: #fcd34d transparent;">
+	<button type="button" class="fixed top-0 left-0 right-0 bottom-0" on:click={() => close()}>
 		<span class="sr-only">Close modal</span>
 	</button>
 

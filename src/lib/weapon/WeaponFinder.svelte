@@ -53,7 +53,7 @@
 	}
 </script>
 
-<div>
+<div style="width: 80vw; height: 80vh">
 	<div class="sticky top-0 z-20 p-5 bg-zinc-800">
 		<div class="flex gap-x-2 mb-4">
 			<SelectControl options={typeOptions} bind:value={$filters.type} let:item>
@@ -96,7 +96,7 @@
 		</div>
 	{/if}
 
-	<ul class="grid grid-cols-2 px-5 py-2 gap-10">
+	<ul class="grid grid-cols-3 px-5 py-2 gap-10">
 		{#each $result as item}
 			<li>
 				<button

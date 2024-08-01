@@ -51,7 +51,7 @@
 	}
 </script>
 
-<div>
+<div style="width: 80vw; height: 80vh">
 	<div class="sticky top-0 z-20 p-5 bg-zinc-800">
 		<div class="mb-4">
 			<InputControl bind:value={$filters.search} placeholder="Search weapon by name..." />
@@ -100,7 +100,7 @@
 		</div>
 	{/if}
 
-	<ul class="grid grid-cols-2 px-5 py-2 gap-10">
+	<ul class="grid grid-cols-3 px-5 py-2 gap-10">
 		{#each $result as item}
 			<li>
 				<button
