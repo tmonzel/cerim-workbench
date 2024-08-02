@@ -1,5 +1,6 @@
 import { AttackType, AttributeType, type AttackCorrect, type GraphMutation } from '$lib/core';
-import type { SpEffect, UpgradeSchema } from '$lib/item';
+import type { SpEffect } from '$lib/item';
+import type { UpgradeSchema } from '$lib/weapon';
 import { prepareXml } from './helpers';
 import { mapSpEffect } from './mappers';
 import { type AttackCorrectParam, type CalcCorrectParam, type ReinforceParam, type SpEffectParam } from './types';

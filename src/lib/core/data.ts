@@ -82,6 +82,9 @@ export const damageTypes: Record<string, { name: string }> = {
 	},
 	[DamageType.MAGIC]: {
 		name: 'Magic'
+	},
+	[DamageType.POISE]: {
+		name: 'Poise'
 	}
 };
 

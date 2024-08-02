@@ -1,5 +1,5 @@
 <script lang="ts">
-	import CheckboxControl from '$lib/components/CheckboxControl.svelte';
+	import ContextNav from '$lib/components/ContextNav.svelte';
 	import Header from '$lib/components/Header.svelte';
 	import { attackInfoState, combatStore, type HeroState } from '$lib/hero';
 	import { appStore } from '$lib/state';
@@ -27,37 +27,15 @@
 		</div>
 
 		<div class="grow">
-			{#if $appStore.heroContext === 'attack'}
-				<div class="flex justify-between mb-10">
-					<div>
-						<h3 class="font-semibold text-lg">Weapons</h3>
-						<p class="mt-1 text-zinc-400">Equip your desired weapons, upgrade and compare attack scalings</p>
-					</div>
+			<div class="mb-5">
+				<ContextNav />
+			</div>
 
-					<div class="my-5 flex justify-end gap-5">
-						<div class="max-w-44">
-							<CheckboxControl bind:checked={$appStore.excludeStaminaFromAttackCalc}>
-								Exclude Stamina from total attack damage
-							</CheckboxControl>
-						</div>
-					</div>
-				</div>
-			{:else if $appStore.heroContext === 'protection'}
-				<div class="mb-10">
-					<h3 class="font-semibold text-lg">Armor</h3>
-					<p class="mt-1 text-zinc-400">Dress yourself</p>
-				</div>
-			{:else if $appStore.heroContext === 'accessories'}
-				<div class="mb-10">
-					<h3 class="font-semibold text-lg">Accessories</h3>
-					<p class="mt-1 text-zinc-400">Greater runes and talismans</p>
-				</div>
-			{/if}
 			<HeroBody />
 		</div>
 
 		{#if $appStore.heroContext === 'attack'}
-			<div class="max-w-96">
+			<div class="max-w-80">
 				<div class="sticky top-5">
 					<div class="mb-10">
 						<h3 class="font-semibold text-lg">Attack Scaling</h3>
@@ -71,18 +49,26 @@
 					{/if}
 
 					{#if $attackInfoState.mainHand}
-						<AttackPanel {...$attackInfoState.mainHand} bind:twoHanding={$combatStore.mainHand.twoHanding} />
+						<AttackPanel
+							{...$attackInfoState.mainHand}
+							bind:twoHanding={$combatStore.mainHand.twoHanding}
+							caption="Mainhand"
+						/>
 					{/if}
 
 					{#if $attackInfoState.offHand}
-						<AttackPanel {...$attackInfoState.offHand} bind:twoHanding={$combatStore.offHand.twoHanding} />
+						<AttackPanel
+							{...$attackInfoState.offHand}
+							bind:twoHanding={$combatStore.offHand.twoHanding}
+							caption="Offhand"
+						/>
 					{/if}
 				</div>
 			</div>
 		{/if}
 
 		{#if $appStore.heroContext === 'protection' || $appStore.heroContext === 'accessories'}
-			<div class="min-w-96">
+			<div class="min-w-80">
 				<div class="sticky top-5">
 					<div class="mb-10">
 						<h3 class="font-semibold text-lg">Protection</h3>

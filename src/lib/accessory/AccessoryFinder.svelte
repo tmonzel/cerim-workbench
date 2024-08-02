@@ -34,8 +34,8 @@
 	}
 </script>
 
-<div style="width: 80vw; height: 80vh">
-	<div class="sticky top-0 z-20 p-5 bg-zinc-800">
+<div class="relative">
+	<div class="sticky top-0 z-30 p-5 bg-zinc-800">
 		<div class="mb-4">
 			<InputControl bind:value={$filters.search} placeholder="Find talismans..." class="text-xl" />
 		</div>
@@ -46,7 +46,7 @@
 		</div>
 	{/if}
 
-	<ul class="grid grid-cols-4 px-5 py-2 gap-10">
+	<ul class="grid grid-cols-3 px-5 py-2 gap-10">
 		{#each $result as item}
 			<li>
 				<button

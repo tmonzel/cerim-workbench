@@ -27,13 +27,26 @@ export enum SpEffectType {
 	BLIGHT = 116,
 	FROSTBITE = 260,
 	SLEEP = 436,
-	MADNESS = 437
+	MADNESS = 437,
+	ACCUMULATOR_3 = 305
 }
 
 export interface SpEffectParam extends DataRow {
 	stateInfo: SpEffectType;
 	iconId: number;
 	paramdexName: string;
+
+	effectEndurance: number; // -1 for permanent, 0 for one moment only
+	motionInterval: number; // How many second it occurs
+
+	conditionHp: number; // Trigger at hp below %
+	conditionHpRate: number; // Trigger at hp above % (-1)
+
+	magParamChange: number; // Affects Sorcery
+	miracleParamChange: number; // Affects Incantations
+	shamanParamChange: number; // Affects Pyromancy
+	throwAttackParamChange: number; // Affects throw attacks
+
 	bloodAttackPower: number;
 	sleepAttackPower: number;
 	curseAttackPower: number;
@@ -58,6 +71,7 @@ export interface SpEffectParam extends DataRow {
 	changeFreezeResistPoint: number;
 	changeSleepResistPoint: number;
 	changeMadnessResistPoint: number;
+	changeCurseResistPoint: number;
 
 	maxHpRate: number;
 	maxMpRate: number;
@@ -73,6 +87,54 @@ export interface SpEffectParam extends DataRow {
 	fireDamageCutRate: number;
 	thunderDamageCutRate: number;
 	darkDamageCutRate: number;
+	toughnessDamageCutRate: number; // Poise
+
+	atkEnemyDmgCorrectRate_Physics: number;
+	atkEnemyDmgCorrectRate_Magic: number;
+	atkEnemyDmgCorrectRate_Fire: number;
+	atkEnemyDmgCorrectRate_Thunder: number;
+	atkEnemyDmgCorrectRate_Dark: number;
+
+	defEnemyDmgCorrectRate_Physics: number;
+	defEnemyDmgCorrectRate_Magic: number;
+	defEnemyDmgCorrectRate_Fire: number;
+	defEnemyDmgCorrectRate_Thunder: number;
+	defEnemyDmgCorrectRate_Dark: number;
+	defObjectAttackPowerRate: number;
+	defObjDmgCorrectRate: number;
+	saReceiveDamageRate: number;
+
+	staminaRecoverChangeSpeed: number;
+	itemDropRate: number;
+	soulRate: number;
+	changeMagicSlot: number;
+
+	physicsAttackRate: number;
+	magicAttackRate: number;
+	fireAttackRate: number;
+	thunderAttackRate: number;
+	darkAttackRate: number;
+	staminaAttackRate: number;
+	slashAttackRate: number;
+	blowAttackRate: number;
+	thrustAttackRate: number;
+	neutralAttackRate: number;
+
+	// Conditions
+	magicSubCategoryChange1: number;
+	magicSubCategoryChange2: number;
+	magicSubCategoryChange3: number;
+
+	// Flask restore
+	changeHpEstusFlaskCorrectRate: number;
+	changeMpEstusFlaskCorrectRate: number;
+
+	changeHpPoint: number; // Flat hp per sec
+	changeMpPoint: number; // Flat fp per sec
+
+	// Accumulator
+	accumuOverFireId: number; // Ref SpEffect for accumulation
+	accumuUnderFireId: number;
 }
 
 export interface AttackCorrectParam extends DataRow {
@@ -189,8 +251,10 @@ export interface ItemRow extends DataRow {
 
 	// SpEffects
 	residentSpEffectId: number;
+	residentSpEffectId1: number;
 	residentSpEffectId2: number;
 	residentSpEffectId3: number;
+	residentSpEffectId4: number;
 
 	sortGroupId: number;
 }

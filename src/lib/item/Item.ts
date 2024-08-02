@@ -1,11 +1,10 @@
 import { ItemModifier } from './ItemModifier';
-import type { ItemCategory, ItemData, ItemRarity, SpEffectModifier } from './types';
+import type { ItemData, ItemRarity, SpEffectModifier } from './types';
 
 export class Item {
 	readonly type: number;
 	readonly name: string;
 	readonly weight: number;
-	readonly category: ItemCategory;
 	readonly rarity: ItemRarity;
 
 	tier: number;
@@ -26,7 +25,6 @@ export class Item {
 	) {
 		this.type = data.type;
 		this.name = data.name;
-		this.category = data.category;
 		this.tier = data.tier ?? 0;
 		this.iconUrl = data.iconUrl;
 		this.weight = data.weight ?? 0;

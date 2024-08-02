@@ -4,6 +4,7 @@ import { heroState } from './state';
 import type { AttackItem } from '$lib/weapon';
 import type { DynamicAttack } from '$lib/core';
 import { calcScaledAttack } from '$lib/weapon/scaling';
+import type { HeroState } from './types';
 
 export type WeaponAttackState = {
 	twoHanding: boolean;
@@ -38,36 +39,35 @@ function prepareAttributesForTwoHanding(attributes: Record<string, number>): Rec
 	return { ...attributes, str: attributes.str * 1.5 };
 }
 
+function createWeaponInfo(weapon: AttackItem, hero: HeroState, state: WeaponAttackState): EquippedWeaponInfo {
+	let attributes = hero.totalAttributes;
+
+	if (state.twoHanding) {
+		attributes = prepareAttributesForTwoHanding(attributes);
+	}
+
+	const attack = calcScaledAttack(weapon, attributes);
+	attack.addGroup(hero.attack);
+
+	return {
+		weapon,
+		attributes,
+		attack
+	};
+}
+
 export const attackInfoState = derived([equipStore, heroState, combatStore], ([equip, hero, combat]) => {
 	const state: AttackInfoState = {
 		mainHand: null,
 		offHand: null
 	};
 
-	let attributes = hero.totalAttributes;
-
 	if (equip.mainHand) {
-		if (combat.mainHand.twoHanding) {
-			attributes = prepareAttributesForTwoHanding(attributes);
-		}
-
-		state.mainHand = {
-			weapon: equip.mainHand,
-			attributes,
-			attack: calcScaledAttack(equip.mainHand, attributes)
-		};
+		state.mainHand = createWeaponInfo(equip.mainHand, hero, combat.mainHand);
 	}
 
 	if (equip.offHand) {
-		if (combat.offHand.twoHanding) {
-			attributes = prepareAttributesForTwoHanding(attributes);
-		}
-
-		state.offHand = {
-			weapon: equip.offHand,
-			attributes,
-			attack: calcScaledAttack(equip.offHand, attributes)
-		};
+		state.offHand = createWeaponInfo(equip.offHand, hero, combat.offHand);
 	}
 
 	return state;

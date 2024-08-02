@@ -12,7 +12,8 @@ export class DynamicDamageNegation extends DynamicGroup {
 			[DamageType.MAGIC]: new DynamicNumber(value?.mag),
 			[DamageType.HOLY]: new DynamicNumber(value?.hol),
 			[DamageType.LIGHTNING]: new DynamicNumber(value?.lit),
-			[DamageType.FIRE]: new DynamicNumber(value?.fir)
+			[DamageType.FIRE]: new DynamicNumber(value?.fir),
+			[DamageType.POISE]: new DynamicNumber(value?.poise)
 		});
 	}
 }

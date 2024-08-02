@@ -60,17 +60,13 @@
 		<div class="ml-auto flex flex-col justify-between">
 			<div class="text-right">
 				<p class="text-zinc-400 text-xs leading-4">
-					<span class="text-emerald-300">v0.12.1</span><br />Handcrafted with
+					<span class="text-emerald-300">v0.13</span><br />Handcrafted with
 					<span class="mat-icon filled" style="font-size: 1.1em; transform: translateY(2px)">favorite</span>
 					by Thomas Monzel
 				</p>
 				<p class="text-zinc-500 text-xs mb-3">ELDEN RING is a trademark of FromSoftware.</p>
 			</div>
 			<div class="flex justify-end items-center">
-				<div class="me-10">
-					<ContextNav />
-				</div>
-
 				<div>
 					<button
 						type="button"

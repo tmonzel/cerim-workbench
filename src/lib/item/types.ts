@@ -61,7 +61,8 @@ export type ItemAttributeScaling = Record<string, { base: number; attackTypes: A
 
 export type ItemUpgrade = {
 	iconUrl?: string;
-	modifiers?: Record<ModifierType, ModifierData>;
+	effects?: number[];
+	effectInfo?: string;
 };
 
 export type ModifierType = 'flat' | 'percentual';
@@ -74,11 +75,20 @@ export type ModifierConfig = {
 
 export type SpEffect = {
 	id: number;
+	duration: number;
+	trigger: {
+		interval: number;
+		onBelowHp: number;
+		onAboveHp: number;
+	};
+	accumulatorEffectId?: number;
+	affectedSpellTypes?: string[];
+	conditions?: number[];
 	modifiers?: SpEffectModifier[];
 };
 
 export type SpEffectModifier = {
-	group: 'stats' | 'resistance' | 'damageNegation' | 'attributes' | 'status';
+	group?: string;
 	type: 'flat' | 'percentual';
 
 	prop: string;

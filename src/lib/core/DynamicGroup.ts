@@ -30,6 +30,15 @@ export class DynamicGroup<T extends string = string> implements DynamicGroupInte
 		return Object.keys(this._value) as T[];
 	}
 
+	addGroup(group: DynamicGroup): void {
+		const record = group.value;
+
+		for (const k in this._value) {
+			this._value[k].addOffset(record[k].offset);
+			this._value[k].addMultiplier(record[k].multiplier - 1);
+		}
+	}
+
 	add(value: Partial<Record<T, number>>): void {
 		for (const k in value) {
 			this._value[k].add(value[k] ?? 0);
@@ -126,6 +135,20 @@ export class DynamicGroup<T extends string = string> implements DynamicGroupInte
 
 	get(key: T): number {
 		return this._value[key].total;
+	}
+
+	set(key: T, value: number): void {
+		this._value[key].set(value);
+	}
+
+	setOffset(key: T, value: number): void {
+		this._value[key].setOffset(value);
+	}
+
+	setAll(values: Partial<Record<T, number>>): void {
+		for (const k in values) {
+			this._value[k].set(values[k] ?? 0);
+		}
 	}
 
 	getTotal(): number {

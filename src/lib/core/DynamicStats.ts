@@ -9,9 +9,7 @@ export class DynamicStats extends DynamicGroup {
 			stamina: new DynamicNumber(value?.stamina),
 			discovery: new DynamicNumber(value?.discovery),
 			weight: new DynamicNumber(value?.weight),
-			equipLoad: new DynamicNumber(value?.equipLoad),
-			attackSpeed: new DynamicNumber(value?.attackSpeed),
-			poise: new DynamicNumber(value?.poise)
+			equipLoad: new DynamicNumber(value?.equipLoad)
 		});
 	}
 }

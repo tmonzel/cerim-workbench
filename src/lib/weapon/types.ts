@@ -1,5 +1,5 @@
 import type { AttackType, AttributeType, DamageType, Guard, GuardType } from '$lib/core';
-import type { ItemConfig, ItemData, ModifierData, ModifierType } from '$lib/item';
+import type { ItemConfig, ItemData } from '$lib/item';
 import type { AffinityType } from './affinity';
 
 export interface WeaponEntity extends ItemData {
@@ -22,11 +22,6 @@ export type AttackInfo = {
 	poise: number;
 	vsGhost: boolean;
 	vsDragon: boolean;
-};
-
-export type ItemUpgrade = {
-	iconUrl?: string;
-	modifiers?: Record<ModifierType, ModifierData>;
 };
 
 export type UpgradeSchema = {

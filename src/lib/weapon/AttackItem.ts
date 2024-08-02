@@ -1,12 +1,4 @@
-import {
-	AttackType,
-	AttributeType,
-	DamageType,
-	GuardType,
-	type Attack,
-	type GraphMutation,
-	type Guard
-} from '$lib/core/types';
+import { AttackType, AttributeType, GuardType, type Attack, type GraphMutation, type Guard } from '$lib/core/types';
 import { attackCorrectRecord, mutationRecord, spEffectsMap, upgradeSchemata } from '$lib/data';
 import { Item, type ItemConfig, type SpEffectModifier, type Upgradable } from '$lib/item';
 import { AffinityType } from './affinity';
@@ -40,14 +32,7 @@ export class AttackItem extends Item implements Upgradable {
 		this._affinity = null;
 		this.possibleUpgrades = entity.upgrades ? entity.upgrades.length : 0;
 		this.requirements = entity.requirements;
-
-		this.attackInfo = {
-			crit: 100,
-			damage: [DamageType.STANDARD],
-			poise: entity.attackInfo.poise,
-			vsDragon: entity.attackInfo.vsDragon,
-			vsGhost: entity.attackInfo.vsGhost
-		};
+		this.attackInfo = entity.attackInfo;
 
 		if (entity.config) {
 			this.setConfig(entity.config);

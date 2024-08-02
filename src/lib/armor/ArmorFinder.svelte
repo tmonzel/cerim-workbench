@@ -37,6 +37,7 @@
 				fire: (item) => item.damageNegation.fir,
 				lightning: (item) => item.damageNegation.lit,
 				holy: (item) => item.damageNegation.hol,
+				absPoise: (item) => item.damageNegation.poise,
 
 				resistance: (item) => item.resistanceAvg,
 				damageNegation: (item) => item.damageNegationAvg
@@ -51,7 +52,7 @@
 	}
 </script>
 
-<div style="width: 80vw; height: 80vh">
+<div class="relative">
 	<div class="sticky top-0 z-20 p-5 bg-zinc-800">
 		<div class="mb-4">
 			<InputControl bind:value={$filters.search} placeholder="Search weapon by name..." />
@@ -79,7 +80,7 @@
 				</div>
 			</div>
 			<div>
-				<h6>Damage Negation</h6>
+				<h6>Absorption</h6>
 				<div class="flex gap-5">
 					<SortButton bind:state={$sort.damageNegation}>Averages(⌀)</SortButton>
 					<SortButton bind:state={$sort.standard}>Standard</SortButton>

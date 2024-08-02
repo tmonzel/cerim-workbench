@@ -16,6 +16,8 @@ export class ProtectItem extends Item {
 	constructor(id: string, entity: ArmorEntity) {
 		super(id, entity);
 
+		this.poise = entity.poise;
+
 		this.damageNegation = entity.damageNegation ?? {
 			[DamageType.STANDARD]: 0,
 			[DamageType.STRIKE]: 0,
@@ -24,7 +26,8 @@ export class ProtectItem extends Item {
 			[DamageType.HOLY]: 0,
 			[DamageType.LIGHTNING]: 0,
 			[DamageType.FIRE]: 0,
-			[DamageType.MAGIC]: 0
+			[DamageType.MAGIC]: 0,
+			[DamageType.POISE]: 0
 		};
 
 		this.resistance = entity.resistance ?? {
@@ -55,7 +58,6 @@ export class ProtectItem extends Item {
 		this.damageNegationAvg =
 			Math.round((damageNegationValues.reduce((p, c) => p + c, 0) / damageNegationValues.length) * 10) / 10;
 
-		this.poise = entity.poise;
 		this.weightClass = entity.weightClass;
 
 		if (entity.config && entity.config.effects) {

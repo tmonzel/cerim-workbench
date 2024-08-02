@@ -39,7 +39,7 @@
 		{:else if modifier.group === 'attack'}
 			{attackTypes[modifier.prop].name} Damage
 		{:else if modifier.group === 'damageNegation'}
-			Negate {damageTypes[modifier.prop].name}
+			{damageTypes[modifier.prop].name} Absorption
 		{:else if modifier.group === 'status'}
 			<div class="flex">
 				<span class="me-2"><StatusEffectIcon effect={modifier.prop} /></span>

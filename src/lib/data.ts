@@ -27,7 +27,7 @@ export const upgradeSchemata: Record<string, UpgradeSchema> = {};
 export const spEffectsMap = new Map<number, SpEffect>();
 export const itemMap = new Map<string, Item>();
 
-export async function loadData() {
+export async function loadCalcData() {
 	const data = await fetchData<DataSchema>(`${API_URL}/data.json`);
 
 	if (data.mutations) {
@@ -53,7 +53,9 @@ export async function loadData() {
 			spEffectsMap.set(Number(id), data.spEffects[id]);
 		}
 	}
+}
 
+export async function loadWeapons() {
 	// Fetching attack item data
 	const weaponData = await fetchData<{ data: Record<string, WeaponEntity> }>(`${API_URL}/weapons.json`);
 	const weapons: Record<string, AttackItem> = {};
@@ -64,7 +66,9 @@ export async function loadData() {
 	}
 
 	weaponStore.set(weapons);
+}
 
+export async function loadArmors() {
 	// Fetching protector item data
 	const armorData = await fetchData<{ data: Record<string, ArmorEntity> }>(`${API_URL}/armors.json`);
 	const armors: Record<string, ProtectItem> = {};
@@ -75,11 +79,14 @@ export async function loadData() {
 	}
 
 	armorStore.set(armors);
+}
 
+export async function loadAccessories() {
 	// Fetching accessory item data
 	const accessoryData = await fetchData<{ data: Record<string, AccessoryEntity> }>(
 		`${API_URL}/accessories_generated.json`
 	);
+
 	const accessories: Record<string, AccessoryItem> = {};
 
 	for (const id in accessoryData.data) {

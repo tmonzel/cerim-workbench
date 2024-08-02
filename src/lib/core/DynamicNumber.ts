@@ -46,6 +46,11 @@ export class DynamicNumber {
 		this.update();
 	}
 
+	setOffset(num: number): void {
+		this._offset = num;
+		this.update();
+	}
+
 	add(num: number): void {
 		this._base += num;
 		this.update();
@@ -82,7 +87,6 @@ export class DynamicNumber {
 	private update(): void {
 		this._state.flat = this._base + this._offset;
 		this._state.total = this._state.flat * this._multiplier * this._totalMultiplier;
-		this._state.modified =
-			this._multiplier !== 1 || this._totalMultiplier !== 1 || this._offset !== 0;
+		this._state.modified = this._multiplier !== 1 || this._totalMultiplier !== 1 || this._offset !== 0;
 	}
 }

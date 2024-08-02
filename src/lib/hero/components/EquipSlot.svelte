@@ -37,7 +37,7 @@
 			</div>
 		</div>
 
-		<div class="pt-3">
+		<div class="mt-3">
 			<slot item={selectedItem} />
 		</div>
 	{:else}

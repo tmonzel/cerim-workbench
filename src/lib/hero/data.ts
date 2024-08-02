@@ -1,6 +1,7 @@
 import { AttributeType } from '$lib/core';
+import type { HeroAttribute } from './attributes';
 import { AttributeModifier } from './modifiers';
-import type { HeroAttribute, HeroType } from './types';
+import type { HeroType } from './types';
 
 export const heroTypes: HeroType[] = [
 	{

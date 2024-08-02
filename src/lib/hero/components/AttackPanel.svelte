@@ -10,15 +10,16 @@
 	export let attributes: Record<string, number>;
 	export let attack: DynamicAttack;
 	export let twoHanding: boolean = false;
+	export let caption: string = '';
 </script>
 
 <div>
 	<div class="px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
 		<dt class="text-sm font-medium leading-6">
-			Attack<br /><span class="text-xs text-zinc-500">Mainhand</span>
+			Attack<br /><span class="text-xs text-zinc-500">{caption}</span>
 		</dt>
 		<dd class="mt-1 text-sm leading-6 sm:col-span-2 sm:mt-0">
-			<div class="mb-4 font-semibold">
+			<div class="mb-4 font-medium text-xl">
 				{Math.round(attack.getTotal() * 10) / 10}
 			</div>
 			<DamageDistBar {attack} />

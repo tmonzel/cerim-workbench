@@ -2,7 +2,6 @@ import { existsSync } from 'fs';
 import { prepareXml } from '../helpers';
 import { affinityMap, mapAttackInfo, mapConfig, mapRequirements, weaponTypeMap } from './mappers';
 import type { WeaponRow } from './type';
-import { ItemCategory } from '$lib/item';
 import type { WeaponEntity } from '$lib/weapon';
 
 export function parseWeapons(xmlFile: string): Record<string, WeaponEntity> {
@@ -45,7 +44,6 @@ export function parseWeapons(xmlFile: string): Record<string, WeaponEntity> {
 			type: row.wepType,
 			weight: row.weight,
 			iconUrl: `/images/items_webp/MENU_Knowledge_${iconId}.webp`,
-			category: ItemCategory.WEAPON,
 			rarity: row.rarity,
 			isLightSource: row.lanternWep === 1,
 			upgradePrice: row.reinforcePrice,

@@ -73,21 +73,6 @@ export function parseArmors(xmlFile: string): Record<string, ArmorEntity> {
 				vitality: 0
 			},
 			damageNegation: {
-				[DamageType.STANDARD]: 0,
-				[DamageType.STRIKE]: 0,
-				[DamageType.SLASH]: 0,
-				[DamageType.PIERCE]: 0,
-				[DamageType.HOLY]: 0,
-				[DamageType.LIGHTNING]: 0,
-				[DamageType.FIRE]: 0,
-				[DamageType.MAGIC]: 0
-			},
-			id: 0,
-			weightClass
-		};
-
-		(item.iconUrl = `/images/items_webp/MENU_Knowledge_${iconId}.webp`),
-			(item.damageNegation = {
 				standard: (1 - row.neutralDamageCutRate) * 100,
 				slash: (1 - row.slashDamageCutRate) * 100,
 				strike: (1 - row.blowDamageCutRate) * 100,
@@ -95,8 +80,14 @@ export function parseArmors(xmlFile: string): Record<string, ArmorEntity> {
 				mag: (1 - row.magicDamageCutRate) * 100,
 				fir: (1 - row.fireDamageCutRate) * 100,
 				lit: (1 - row.thunderDamageCutRate) * 100,
-				hol: (1 - row.darkDamageCutRate) * 100
-			});
+				hol: (1 - row.darkDamageCutRate) * 100,
+				poise: (1 - row.toughnessDamageCutRate) * 100
+			},
+			id: 0,
+			weightClass
+		};
+
+		item.iconUrl = `/images/items_webp/MENU_Knowledge_${iconId}.webp`;
 
 		item.resistance = {
 			focus: (row.resistSleep + row.resistMadness) / 2,

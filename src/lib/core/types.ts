@@ -4,9 +4,7 @@ export enum StatType {
 	STAMINA = 'stamina',
 	DISCOVERY = 'discovery',
 	WEIGHT = 'weight',
-	EQUIP_LOAD = 'equipLoad',
-	ATTACK_SPEED = 'attackSpeed',
-	POISE = 'poise'
+	EQUIP_LOAD = 'equipLoad'
 }
 
 export enum DamageType {
@@ -17,7 +15,8 @@ export enum DamageType {
 	HOLY = 'hol',
 	LIGHTNING = 'lit',
 	FIRE = 'fir',
-	MAGIC = 'mag'
+	MAGIC = 'mag',
+	POISE = 'poise'
 }
 
 export type GraphMutation = {

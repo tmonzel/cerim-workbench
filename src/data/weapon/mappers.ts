@@ -200,19 +200,19 @@ export function mapAttackInfo(row: WeaponRow): AttackInfo {
 	};
 
 	if (row.isNormalAttackType) {
-		attackInfo.damage?.push(DamageType.STANDARD);
+		attackInfo.damage.push(DamageType.STANDARD);
 	}
 
 	if (row.isBlowAttackType) {
-		attackInfo.damage?.push(DamageType.STRIKE);
+		attackInfo.damage.push(DamageType.STRIKE);
 	}
 
 	if (row.isSlashAttackType) {
-		attackInfo.damage?.push(DamageType.SLASH);
+		attackInfo.damage.push(DamageType.SLASH);
 	}
 
 	if (row.isThrustAttackType) {
-		attackInfo.damage?.push(DamageType.PIERCE);
+		attackInfo.damage.push(DamageType.PIERCE);
 	}
 
 	return attackInfo;

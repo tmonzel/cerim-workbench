@@ -53,7 +53,7 @@
 	}
 </script>
 
-<div style="width: 80vw; height: 80vh">
+<div class="relative">
 	<div class="sticky top-0 z-20 p-5 bg-zinc-800">
 		<div class="flex gap-x-2 mb-4">
 			<SelectControl options={typeOptions} bind:value={$filters.type} let:item>

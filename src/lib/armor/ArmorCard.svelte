@@ -32,7 +32,7 @@
 		</div>
 
 		<div class="px-4 py-4 sm:px-0">
-			<dt class="text-sm font-medium mb-2">Damage Negation (⌀ {item.damageNegationAvg})</dt>
+			<dt class="text-sm font-medium mb-2">Absorption (⌀ {item.damageNegationAvg})</dt>
 			<dd><DamageNegationGrid data={item.damageNegation} /></dd>
 		</div>
 	</dl>

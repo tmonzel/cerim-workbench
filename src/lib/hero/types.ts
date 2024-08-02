@@ -3,12 +3,11 @@ import type {
 	DynamicAttributes,
 	DynamicDamageNegation,
 	DynamicDefense,
+	DynamicNumber,
 	DynamicResistance,
 	DynamicStats
 } from '$lib/core';
 import type { AttributeType } from '$lib/core/types';
-import type { Item } from '$lib/item';
-import type { AttributeModifier } from './modifiers';
 
 export type HeroContext = {
 	id: string;
@@ -24,14 +23,23 @@ export type HeroState = {
 	weightRatio: number;
 	totalAttributes: Record<string, number>;
 
+	attack: DynamicAttack;
 	stats: DynamicStats;
 	attributes: DynamicAttributes;
 	defense: DynamicDefense;
 	resistance: DynamicResistance;
 	damageNegation: DynamicDamageNegation;
 
-	mainHandAttack: DynamicAttack;
-	offHandAttack: DynamicAttack;
+	staminaRecoverySpeed: number; // Per Second
+
+	hpFlaskRestorationRate: DynamicNumber;
+	hpRestoration: DynamicNumber;
+
+	fpFlaskRestorationRate: DynamicNumber;
+	fpRestoration: DynamicNumber;
+
+	runeGainRate: DynamicNumber;
+	sorcerySlots: DynamicNumber;
 };
 
 export type HeroType = {
@@ -41,20 +49,6 @@ export type HeroType = {
 	attributes: Record<AttributeType, number>;
 };
 
-export type EquipState = {
-	rune: Item | null;
-	pouch: Item | null;
-	pouch2: Item | null;
-	pouch3: Item | null;
-	pouch4: Item | null;
-	head: Item | null;
-	chest: Item | null;
-	legs: Item | null;
-	hand: Item | null;
-	mainHand: Item | null;
-	offHand: Item | null;
-};
-
 export type HeroBodyState = {
 	guardInfo: boolean;
 	scalingInfo: boolean;
@@ -62,10 +56,4 @@ export type HeroBodyState = {
 
 export type HeroStateModifier = {
 	modify(hero: HeroState): void;
-};
-
-export type HeroAttribute = {
-	name: string;
-	color: string;
-	modifier?: AttributeModifier;
 };

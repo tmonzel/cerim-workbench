@@ -4,19 +4,33 @@ import type { AccessoryEntity } from './types';
 
 export class AccessoryItem extends Item implements Upgradable {
 	possibleUpgrades = 0;
+	effectInfo?: string;
+	activated: boolean;
+	isActivatable: boolean = false;
 
-	constructor(id: string, data: AccessoryEntity) {
-		super(id, data);
+	constructor(
+		id: string,
+		private entity: AccessoryEntity
+	) {
+		super(id, entity);
 
-		this.possibleUpgrades = data.upgrades ? data.upgrades.length : 0;
+		this.activated = true;
+		this.possibleUpgrades = entity.upgrades ? entity.upgrades.length : 0;
 
-		if (data.effects) {
-			for (const id of data.effects) {
-				const effect = spEffectsMap.get(id);
+		this.update();
+	}
 
-				if (effect && effect.modifiers) {
-					this.setModifiers(effect.modifiers);
-				}
+	applyEffects(ids: number[]): void {
+		for (const id of ids) {
+			const effect = spEffectsMap.get(id);
+
+			if (effect?.trigger && effect.trigger.onBelowHp >= 0) {
+				this.activated = false;
+				this.isActivatable = true;
+			}
+
+			if (effect && effect.modifiers) {
+				this.setModifiers(effect.modifiers);
 			}
 		}
 	}
@@ -25,20 +39,22 @@ export class AccessoryItem extends Item implements Upgradable {
 		this.tier = tier;
 		this._modified = tier !== 0;
 
-		if (this.data.upgrades && this.tier > 0) {
-			const upgrade = this.data.upgrades[this.tier - 1];
+		this.update();
+	}
 
-			if (upgrade.modifiers) {
-				this.setModifiers(upgrade.modifiers);
+	update(): void {
+		if (this.entity.upgrades && this.tier > 0) {
+			const upgrade = this.entity.upgrades[this.tier - 1];
+
+			if (upgrade) {
+				this.applyEffects(upgrade.effects ?? []);
+				this.iconUrl = upgrade.iconUrl;
+				this.effectInfo = upgrade.effectInfo;
 			}
-
-			this.iconUrl = upgrade.iconUrl;
 		} else {
-			if (this.data.modifiers) {
-				this.setModifiers(this.data.modifiers);
-			}
-
-			this.iconUrl = this.data.iconUrl;
+			this.applyEffects(this.entity.effects ?? []);
+			this.iconUrl = this.entity.iconUrl;
+			this.effectInfo = this.entity.effectInfo;
 		}
 	}
 }
