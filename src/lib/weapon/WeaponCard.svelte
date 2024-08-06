@@ -35,7 +35,7 @@
 
 	{#if slotted}
 		<div class="px-4 py-4 sm:px-0">
-			<dt class="text-sm font-medium mb-2">Damage Negation</dt>
+			<dt class="text-sm font-medium mb-2">Guard</dt>
 			<dd><GuardGrid data={item.guard} /></dd>
 		</div>
 	{/if}
