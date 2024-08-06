@@ -20,7 +20,7 @@
 </script>
 
 <div class="relative">
-	<div class="flex gap-2 mb-2">
+	<!--<div class="flex gap-2 mb-2">
 		{#if selectedItem && selectedItem.affinities.size > 0}
 			<WeaponAffinitySelect bind:item={selectedItem} />
 		{/if}
@@ -28,7 +28,7 @@
 		{#if selectedItem && selectedItem.possibleUpgrades > 0}
 			<ItemUpgradeBar bind:item={selectedItem} />
 		{/if}
-	</div>
+	</div>-->
 	<EquipSlot on:click={() => dialog.open()} {label} bind:selectedItem let:item>
 		{#if item}
 			<WeaponCard {item} slotted />

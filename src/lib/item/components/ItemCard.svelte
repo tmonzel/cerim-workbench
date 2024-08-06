@@ -6,8 +6,12 @@
 </script>
 
 <article class="max-w-sm w-full lg:max-w-full lg:flex">
-	<div class="me-5">
-		<img src={getIconUrl(item.iconId)} alt={item.name} class="object-cover transition-all group-hover:brightness-150" />
+	<div class="me-2">
+		<img
+			src={getIconUrl(item.iconId)}
+			alt={item.name}
+			class="md:w-72 object-cover transition-all group-hover:brightness-150"
+		/>
 	</div>
 
 	<div class="grow">

@@ -2,9 +2,7 @@
 	import AttackTypeBadge from '$lib/components/AttackTypeBadge.svelte';
 	import StatBadge from '$lib/components/StatBadge.svelte';
 	import ValueBadge from '$lib/components/ValueBadge.svelte';
-	import type { HeroState } from '$lib/hero';
-
-	export let hero: HeroState;
+	import { heroState } from '$lib/hero';
 
 	function roundNegation(m: number): number {
 		return Math.round(m * 1000) / 1000;
@@ -16,19 +14,19 @@
 		<dt class="text-sm font-medium leading-6">Resistance</dt>
 		<dd class="grid grid-cols-2 gap-4">
 			<StatBadge name="Immunity">
-				<ValueBadge value={hero.resistance.value['immunity']} />
+				<ValueBadge value={$heroState.resistance.value['immunity']} />
 			</StatBadge>
 
 			<StatBadge name="Robustness">
-				<ValueBadge value={hero.resistance.value['robustness']} />
+				<ValueBadge value={$heroState.resistance.value['robustness']} />
 			</StatBadge>
 
 			<StatBadge name="Focus">
-				<ValueBadge value={hero.resistance.value['focus']} />
+				<ValueBadge value={$heroState.resistance.value['focus']} />
 			</StatBadge>
 
 			<StatBadge name="Vitality">
-				<ValueBadge value={hero.resistance.value['vitality']} />
+				<ValueBadge value={$heroState.resistance.value['vitality']} />
 			</StatBadge>
 		</dd>
 	</div>
@@ -36,48 +34,60 @@
 		<dt class="text-sm font-medium leading-6 text-zinc-300">Defense / Absorption(%)</dt>
 		<dd class="grid grid-cols-2 gap-4">
 			<StatBadge name="Standard">
-				<ValueBadge value={hero.defense.value['standard']} /> / {roundNegation(
-					hero.damageNegation.value['standard'].total
+				<ValueBadge value={$heroState.defense.value['standard']} /> / {roundNegation(
+					$heroState.damageNegation.value['standard'].total
 				)}%
 			</StatBadge>
 
 			<StatBadge name="Strike">
-				<ValueBadge value={hero.defense.value['strike']} /> / {roundNegation(
-					hero.damageNegation.value['strike'].total
+				<ValueBadge value={$heroState.defense.value['strike']} /> / {roundNegation(
+					$heroState.damageNegation.value['strike'].total
 				)}%
 			</StatBadge>
 
 			<StatBadge name="Slash">
-				<ValueBadge value={hero.defense.value['slash']} /> / {roundNegation(hero.damageNegation.value['slash'].total)}%
+				<ValueBadge value={$heroState.defense.value['slash']} /> / {roundNegation(
+					$heroState.damageNegation.value['slash'].total
+				)}%
 			</StatBadge>
 
 			<StatBadge name="Pierce">
-				<ValueBadge value={hero.defense.value['pierce']} /> / {roundNegation(
-					hero.damageNegation.value['pierce'].total
+				<ValueBadge value={$heroState.defense.value['pierce']} /> / {roundNegation(
+					$heroState.damageNegation.value['pierce'].total
 				)}%
 			</StatBadge>
 
 			<StatBadge name="Poise">
-				<ValueBadge value={hero.defense.value['poise']} /> / {roundNegation(hero.damageNegation.value['poise'].total)}%
+				<ValueBadge value={$heroState.defense.value['poise']} /> / {roundNegation(
+					$heroState.damageNegation.value['poise'].total
+				)}%
 			</StatBadge>
 
 			<div class="col-span-2">
 				<dt class="text-sm font-medium leading-6 text-zinc-500">Elemental</dt>
 				<dd class="grid grid-cols-2 gap-2">
 					<AttackTypeBadge type="mag">
-						<ValueBadge value={hero.defense.value['mag']} /> / {roundNegation(hero.damageNegation.value['mag'].total)}%
+						<ValueBadge value={$heroState.defense.value['mag']} /> / {roundNegation(
+							$heroState.damageNegation.value['mag'].total
+						)}%
 					</AttackTypeBadge>
 
 					<AttackTypeBadge type="fir">
-						<ValueBadge value={hero.defense.value['fir']} /> / {roundNegation(hero.damageNegation.value['fir'].total)}%
+						<ValueBadge value={$heroState.defense.value['fir']} /> / {roundNegation(
+							$heroState.damageNegation.value['fir'].total
+						)}%
 					</AttackTypeBadge>
 
 					<AttackTypeBadge type="lit">
-						<ValueBadge value={hero.defense.value['lit']} /> / {roundNegation(hero.damageNegation.value['lit'].total)}%
+						<ValueBadge value={$heroState.defense.value['lit']} /> / {roundNegation(
+							$heroState.damageNegation.value['lit'].total
+						)}%
 					</AttackTypeBadge>
 
 					<AttackTypeBadge type="hol">
-						<ValueBadge value={hero.defense.value['hol']} /> / {roundNegation(hero.damageNegation.value['hol'].total)}%
+						<ValueBadge value={$heroState.defense.value['hol']} /> / {roundNegation(
+							$heroState.damageNegation.value['hol'].total
+						)}%
 					</AttackTypeBadge>
 				</dd>
 			</div>

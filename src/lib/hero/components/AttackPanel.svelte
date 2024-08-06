@@ -4,19 +4,19 @@
 	import type { DynamicAttack } from '$lib/core';
 	import type { AttackItem } from '$lib/weapon';
 	import { validateRequirements } from '$lib/weapon/helpers';
+	import { combatStore } from '../combat.store';
 	import AttackScalingInfo from './AttackScalingInfo.svelte';
 
 	export let weapon: AttackItem;
 	export let attributes: Record<string, number>;
 	export let attack: DynamicAttack;
 	export let twoHanding: boolean = false;
-	export let caption: string = '';
 </script>
 
 <div>
 	<div class="px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
 		<dt class="text-sm font-medium leading-6">
-			Attack<br /><span class="text-xs text-zinc-500">{caption}</span>
+			{weapon.name}<br /><span class="text-xs text-zinc-500">{$combatStore.activeHand}</span>
 		</dt>
 		<dd class="mt-1 text-sm leading-6 sm:col-span-2 sm:mt-0">
 			<div class="mb-4 font-medium text-xl">

@@ -45,7 +45,12 @@
 			{#if displayMode === 'detail'}
 				<AccessoryCard {item} slotted />
 			{:else if item.iconId}
-				<img src={getIconUrl(item.iconId)} alt={item.name} class="max-w-40" />
+				<img
+					src={getIconUrl(item.iconId)}
+					alt={item.name}
+					class="max-w-40 object-cover transition-all group-hover:brightness-150"
+					class:opacity-50={!item.activated}
+				/>
 			{/if}
 		{/if}
 	</EquipSlot>

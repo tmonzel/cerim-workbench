@@ -13,7 +13,7 @@
 	{#if selectedItem}
 		<div class="flex justify-between">
 			<div>
-				<span class="text-xs font-medium px-2.5 py-0.5 rounded bg-emerald-400/20 text-emerald-300">
+				<span class="text-xs font-medium px-2.5 py-0.5 rounded bg-zinc-400/20 text-zinc-300">
 					{label}
 				</span>
 			</div>

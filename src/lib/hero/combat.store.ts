@@ -4,18 +4,19 @@ import { heroState } from './state';
 import type { AttackItem } from '$lib/weapon';
 import type { DynamicAttack } from '$lib/core';
 import { calcScaledAttack } from '$lib/weapon/scaling';
-import type { HeroState } from './types';
 
 export type WeaponAttackState = {
 	twoHanding: boolean;
 };
 
 export type CombatState = {
+	activeHand: 'mainHand' | 'offHand';
 	mainHand: WeaponAttackState;
 	offHand: WeaponAttackState;
 };
 
 export const combatStore = writable<CombatState>({
+	activeHand: 'mainHand',
 	mainHand: {
 		twoHanding: false
 	},
@@ -24,26 +25,29 @@ export const combatStore = writable<CombatState>({
 	}
 });
 
-export type EquippedWeaponInfo = {
+export type AttackInfoState = {
 	weapon: AttackItem;
 	attributes: Record<string, number>;
 	attack: DynamicAttack;
-};
-
-export type AttackInfoState = {
-	mainHand: EquippedWeaponInfo | null;
-	offHand: EquippedWeaponInfo | null;
 };
 
 function prepareAttributesForTwoHanding(attributes: Record<string, number>): Record<string, number> {
 	return { ...attributes, str: attributes.str * 1.5 };
 }
 
-function createWeaponInfo(weapon: AttackItem, hero: HeroState, state: WeaponAttackState): EquippedWeaponInfo {
+export const attackInfoState = derived([equipStore, heroState, combatStore], ([equip, hero, combat]) => {
 	let attributes = hero.totalAttributes;
+
+	const state = combat[combat.activeHand];
 
 	if (state.twoHanding) {
 		attributes = prepareAttributesForTwoHanding(attributes);
+	}
+
+	const weapon = equip[combat.activeHand];
+
+	if (!weapon) {
+		return null;
 	}
 
 	const attack = calcScaledAttack(weapon, attributes);
@@ -54,21 +58,4 @@ function createWeaponInfo(weapon: AttackItem, hero: HeroState, state: WeaponAtta
 		attributes,
 		attack
 	};
-}
-
-export const attackInfoState = derived([equipStore, heroState, combatStore], ([equip, hero, combat]) => {
-	const state: AttackInfoState = {
-		mainHand: null,
-		offHand: null
-	};
-
-	if (equip.mainHand) {
-		state.mainHand = createWeaponInfo(equip.mainHand, hero, combat.mainHand);
-	}
-
-	if (equip.offHand) {
-		state.offHand = createWeaponInfo(equip.offHand, hero, combat.offHand);
-	}
-
-	return state;
 });

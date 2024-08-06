@@ -9,16 +9,9 @@
 	);
 </script>
 
-<div class="bg-zinc-800/30 rounded-xl p-5">
-	<div class="flex flex-col gap-5">
-		<AccessoryEquipSlot label="Pouch" items={$talismans} bind:selectedItem={$equipStore.pouch} displayMode="icon" />
-		<AccessoryEquipSlot label="Pouch II" items={$talismans} bind:selectedItem={$equipStore.pouch2} displayMode="icon" />
-		<AccessoryEquipSlot
-			label="Pouch III"
-			items={$talismans}
-			bind:selectedItem={$equipStore.pouch3}
-			displayMode="icon"
-		/>
-		<AccessoryEquipSlot label="Pouch IV" items={$talismans} bind:selectedItem={$equipStore.pouch4} displayMode="icon" />
-	</div>
+<div class="bg-zinc-800/30 rounded-xl p-5 grid grid-cols-2 gap-5">
+	<AccessoryEquipSlot label="Pouch" items={$talismans} bind:selectedItem={$equipStore.pouch} />
+	<AccessoryEquipSlot label="Pouch II" items={$talismans} bind:selectedItem={$equipStore.pouch2} />
+	<AccessoryEquipSlot label="Pouch III" items={$talismans} bind:selectedItem={$equipStore.pouch3} />
+	<AccessoryEquipSlot label="Pouch IV" items={$talismans} bind:selectedItem={$equipStore.pouch4} />
 </div>

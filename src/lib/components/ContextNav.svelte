@@ -4,14 +4,20 @@
 	const contexts = [
 		{
 			name: 'attack',
-			label: 'Combat',
+			label: 'Weapons',
 			icon: 'swords'
 		},
 
 		{
 			name: 'protection',
-			label: 'Protection',
+			label: 'Armor',
 			icon: 'shield'
+		},
+
+		{
+			name: 'accessories',
+			label: 'Accessories',
+			icon: 'diamond'
 		}
 	];
 </script>
@@ -22,8 +28,8 @@
 			<li class="me-2">
 				<button
 					class="inline-flex items-center justify-center px-4 py-2 transition-colors rounded-lg"
-					class:text-violet-300={$appStore.heroContext === context.name}
-					class:bg-violet-900={$appStore.heroContext === context.name}
+					class:text-teal-300={$appStore.heroContext === context.name}
+					class:bg-teal-900={$appStore.heroContext === context.name}
 					on:click={() => ($appStore.heroContext = context.name)}
 				>
 					<span class="mat-icon me-1">{context.icon}</span>{context.label}
