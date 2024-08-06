@@ -21,7 +21,7 @@
 
 <dialog
 	bind:this={selectionDialog}
-	class=" bg-neutral-800/30 z-30"
+	class=" bg-zinc-900 z-30"
 	style="scrollbar-color: #fcd34d transparent; width: 85vw; height: 85vh"
 >
 	<button type="button" class="fixed top-0 left-0 right-0 bottom-0" on:click={() => close()}>
@@ -29,7 +29,7 @@
 	</button>
 
 	<div>
-		<div class="text-stone-300 bg-zinc-800 text-xl p-5 flex justify-between items-center border-b border-zinc-700">
+		<div class="text-zinc-300 bg-zinc-800 text-xl p-5 flex justify-between items-center border-b border-zinc-700">
 			<div>
 				<slot name="title" />
 			</div>

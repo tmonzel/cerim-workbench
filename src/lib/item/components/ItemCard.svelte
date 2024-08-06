@@ -1,19 +1,14 @@
 <script lang="ts">
+	import { getIconUrl } from '$lib/helpers';
 	import type { Item } from '../Item';
 
 	export let item: Item;
 </script>
 
 <article class="max-w-sm w-full lg:max-w-full lg:flex">
-	{#if item.iconUrl}
-		<div class="me-5">
-			<img
-				src={item.iconUrl}
-				alt="Item icon"
-				class="w-full object-cover md:w-60 transition-all group-hover:brightness-150"
-			/>
-		</div>
-	{/if}
+	<div class="me-5">
+		<img src={getIconUrl(item.iconId)} alt={item.name} />
+	</div>
 
 	<div class="grow">
 		<slot />

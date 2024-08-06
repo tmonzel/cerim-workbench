@@ -13,7 +13,7 @@ export type ItemData = {
 	weight: number;
 	tier?: number;
 	description?: string;
-	iconUrl?: string;
+	iconId: string;
 	effects?: number[];
 	modifiers?: SpEffectModifier[];
 	config?: ItemConfig;
@@ -60,7 +60,7 @@ export type ItemRequirements = {
 export type ItemAttributeScaling = Record<string, { base: number; attackTypes: AttackType[] }>;
 
 export type ItemUpgrade = {
-	iconUrl?: string;
+	iconId: string;
 	effects?: number[];
 	effectInfo?: string;
 };

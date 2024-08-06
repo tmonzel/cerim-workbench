@@ -23,6 +23,6 @@
 		background-color: black;
 		background-size: 137px;
 		background-repeat: no-repeat;
-		background-image: url(images/STATUS_EFF.png);
+		background-image: url($lib/../assets/images/STATUS_EFF.png);
 	}
 </style>

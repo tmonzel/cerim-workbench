@@ -1,5 +1,5 @@
 import { writeFileSync } from 'fs';
-import { getIconUrl, iconExists, mapFmgXml, prepareXml } from '../helpers';
+import { iconExists, mapFmgXml, prepareXml } from '../helpers';
 import type { AccessoryRow } from './type';
 import type { AccessoryEntity } from '$lib/accessory';
 import type { ItemUpgrade } from '$lib/item';
@@ -19,7 +19,7 @@ export function parseAccessories(xmlFile: string): Record<string, AccessoryEntit
 	for (let i = 0; i < rows.length; i++) {
 		const row = { ...defaults, ...rows[i] };
 
-		if (!iconExists(row.iconId)) {
+		if (!iconExists(row.iconId.toFixed())) {
 			console.log(`Accessory#${row.id} missing iconId ${row.iconId} (skipping)`);
 			continue;
 		}
@@ -54,7 +54,7 @@ export function parseAccessories(xmlFile: string): Record<string, AccessoryEntit
 				name: row.paramdexName,
 				weight: row.weight,
 				rarity: row.rarity,
-				iconUrl: getIconUrl(row.iconId),
+				iconId: row.iconId.toFixed(),
 				effects,
 				type: 1,
 				effectInfo: infoMessages[row.id]
@@ -68,7 +68,7 @@ export function parseAccessories(xmlFile: string): Record<string, AccessoryEntit
 			}
 
 			upgradesByName[baseName].push({
-				iconUrl: getIconUrl(row.iconId),
+				iconId: row.iconId.toFixed(),
 				effects,
 				effectInfo: infoMessages[row.id]
 			});

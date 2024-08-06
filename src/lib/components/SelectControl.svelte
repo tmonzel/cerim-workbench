@@ -11,7 +11,7 @@
 	export let compareWith = (v: T, v2: any) => v === v2[selectBy];
 
 	const dispatch = createEventDispatcher<{ select: any }>();
-	const selected = writable<null | any>(null);
+	const selected = writable<null | T>(null);
 
 	$: {
 		for (const item of options) {

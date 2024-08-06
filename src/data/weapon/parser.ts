@@ -1,5 +1,4 @@
-import { existsSync } from 'fs';
-import { prepareXml } from '../helpers';
+import { iconExists, prepareXml } from '../helpers';
 import { affinityMap, mapAttackInfo, mapConfig, mapRequirements, weaponTypeMap } from './mappers';
 import type { WeaponRow } from './type';
 import type { WeaponEntity } from '$lib/weapon';
@@ -31,10 +30,9 @@ export function parseWeapons(xmlFile: string): Record<string, WeaponEntity> {
 		}
 
 		const iconId = String(row.iconId).padStart(5, '0');
-		const iconFile = `./static/images/items_webp/MENU_Knowledge_${iconId}.webp`;
 
-		if (!existsSync(iconFile)) {
-			console.log(`Weapon image file ${iconFile} for ${row.paramdexName} does not exist (skipping)`);
+		if (!iconExists(iconId)) {
+			console.log(`Weapon image file ${iconId} for ${row.paramdexName} does not exist (skipping)`);
 			continue;
 		}
 
@@ -43,7 +41,7 @@ export function parseWeapons(xmlFile: string): Record<string, WeaponEntity> {
 			name: row.paramdexName,
 			type: row.wepType,
 			weight: row.weight,
-			iconUrl: `/images/items_webp/MENU_Knowledge_${iconId}.webp`,
+			iconId,
 			rarity: row.rarity,
 			isLightSource: row.lanternWep === 1,
 			upgradePrice: row.reinforcePrice,

@@ -6,6 +6,7 @@
 	import EquipSlot from '$lib/hero/components/EquipSlot.svelte';
 	import AccessoryCard from './AccessoryCard.svelte';
 	import CheckboxControl from '$lib/components/CheckboxControl.svelte';
+	import { getIconUrl } from '$lib/helpers';
 
 	export let label: string;
 	export let selectedItem: AccessoryItem | null = null;
@@ -43,8 +44,8 @@
 		{#if item}
 			{#if displayMode === 'detail'}
 				<AccessoryCard {item} slotted />
-			{:else if item.iconUrl}
-				<img src={item.iconUrl} alt="Item icon" class="max-w-40 md:w-60 transition-all group-hover:brightness-150" />
+			{:else if item.iconId}
+				<img src={getIconUrl(item.iconId)} alt={item.name} class="max-w-40" />
 			{/if}
 		{/if}
 	</EquipSlot>

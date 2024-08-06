@@ -10,7 +10,7 @@ export class Item {
 	tier: number;
 
 	modifiers: ItemModifier[] = [];
-	iconUrl?: string;
+	iconId: string;
 	description?: string;
 
 	protected _modified = false;
@@ -26,7 +26,7 @@ export class Item {
 		this.type = data.type;
 		this.name = data.name;
 		this.tier = data.tier ?? 0;
-		this.iconUrl = data.iconUrl;
+		this.iconId = data.iconId;
 		this.weight = data.weight ?? 0;
 		this.description = data.description;
 

@@ -48,12 +48,12 @@ export class AccessoryItem extends Item implements Upgradable {
 
 			if (upgrade) {
 				this.applyEffects(upgrade.effects ?? []);
-				this.iconUrl = upgrade.iconUrl;
+				this.iconId = upgrade.iconId;
 				this.effectInfo = upgrade.effectInfo;
 			}
 		} else {
 			this.applyEffects(this.entity.effects ?? []);
-			this.iconUrl = this.entity.iconUrl;
+			this.iconId = this.entity.iconId;
 			this.effectInfo = this.entity.effectInfo;
 		}
 	}

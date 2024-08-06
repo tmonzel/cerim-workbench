@@ -1,7 +1,5 @@
-import { existsSync } from 'fs';
-import { prepareXml } from '../helpers';
+import { iconExists, prepareXml } from '../helpers';
 import type { ArmorRow } from './type';
-import { DamageType } from '$lib';
 import { ArmorWeightClass, type ArmorEntity } from '$lib/armor';
 
 export function parseArmors(xmlFile: string): Record<string, ArmorEntity> {
@@ -28,10 +26,9 @@ export function parseArmors(xmlFile: string): Record<string, ArmorEntity> {
 		}
 
 		const iconId = String(row.iconIdF).padStart(5, '0');
-		const iconFile = `./static/images/items_webp/MENU_Knowledge_${iconId}.webp`;
 
-		if (!existsSync(iconFile)) {
-			console.log(`Armor image file ${iconFile} for ${row.paramdexName} does not exist (skipping)`);
+		if (!iconExists(iconId)) {
+			console.log(`Armor image file ${iconId} for ${row.paramdexName} does not exist (skipping)`);
 			continue;
 		}
 
@@ -84,10 +81,9 @@ export function parseArmors(xmlFile: string): Record<string, ArmorEntity> {
 				poise: (1 - row.toughnessDamageCutRate) * 100
 			},
 			id: 0,
-			weightClass
+			weightClass,
+			iconId
 		};
-
-		item.iconUrl = `/images/items_webp/MENU_Knowledge_${iconId}.webp`;
 
 		item.resistance = {
 			focus: (row.resistSleep + row.resistMadness) / 2,

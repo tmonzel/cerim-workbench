@@ -59,7 +59,7 @@
 			<SelectControl options={typeOptions} bind:value={$filters.type} let:item>
 				<svelte:fragment slot="selected" let:item>
 					<div class="p-2">
-						{item.name}
+						{item?.name}
 					</div>
 				</svelte:fragment>
 

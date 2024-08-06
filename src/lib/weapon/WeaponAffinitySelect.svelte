@@ -10,7 +10,13 @@
 		item = item;
 	}
 
-	const affinityOptions = Object.entries(affinities).map((entry) => ({
+	type AffinityOption = {
+		name: string;
+		iconUrl: string;
+		id: string;
+	};
+
+	const affinityOptions: AffinityOption[] = Object.entries(affinities).map((entry) => ({
 		name: entry[1].name,
 		iconUrl: entry[1].iconUrl,
 		id: entry[0]
@@ -32,6 +38,6 @@
 		</div>
 	</svelte:fragment>
 
-	<img class="w-5 me-2" src={item.iconUrl} alt="{item.name} Affinity Icon" />
+	<img src={item.iconUrl} alt={`${item.name} Affinity`} class="w-5 me-2" />
 	<span>{item.name}</span>
 </SelectControl>

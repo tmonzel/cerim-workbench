@@ -1,7 +1,7 @@
 <script lang="ts">
 	import '../fonts.css';
 	import '../app.css';
-	import { loadAccessories, loadCalcData } from '$lib/data';
+	import { loadAccessories, loadArmors, loadCalcData, loadWeapons } from '$lib/data';
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
 	import { findBuild } from '$lib/api';
@@ -9,13 +9,11 @@
 
 	let loading = true;
 
-	const v = 100 - (100 - 0) * 1.15;
-
-	//console.log(100 - (100 - v) * 0.87);
-
 	onMount(async () => {
 		await loadCalcData();
 		await loadAccessories();
+		await loadArmors();
+		await loadWeapons();
 
 		if ($page.params.uid) {
 			// Fetch shared build configuration

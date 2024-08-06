@@ -79,14 +79,10 @@ export function mapFmgXml(filePath: string): Record<number, string> {
 	return record;
 }
 
-export function getIconUrl(id: number): string {
-	return `/images/items_webp/MENU_Knowledge_${id}.webp`;
-}
-
-export function getIconFile(id: number): string {
+export function getIconFile(id: string): string {
 	return `./static/images/items_webp/MENU_Knowledge_${id}.webp`;
 }
 
-export function iconExists(id: number): boolean {
+export function iconExists(id: string): boolean {
 	return existsSync(getIconFile(id));
 }
