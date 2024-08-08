@@ -9,7 +9,7 @@
 	);
 </script>
 
-<div class="bg-zinc-800/30 rounded-xl p-5 grid grid-cols-2 gap-5">
+<div class="grid grid-cols-2 gap-5">
 	<AccessoryEquipSlot label="Pouch" items={$talismans} bind:selectedItem={$equipStore.pouch} />
 	<AccessoryEquipSlot label="Pouch II" items={$talismans} bind:selectedItem={$equipStore.pouch2} />
 	<AccessoryEquipSlot label="Pouch III" items={$talismans} bind:selectedItem={$equipStore.pouch3} />

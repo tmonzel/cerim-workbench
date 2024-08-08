@@ -21,7 +21,7 @@ export const heroState = derived([appStore, attributeStore, equipStore], ([confi
 		}
 
 		// Sum item weights
-		hero.stats.add({ weight: item.weight });
+		hero.weight += item.weight;
 
 		if (item instanceof AccessoryItem && !item.activated) {
 			continue;
@@ -64,7 +64,7 @@ export const heroState = derived([appStore, attributeStore, equipStore], ([confi
 	}
 
 	hero.totalAttributes = totalAttributes;
-	hero.weightRatio = (hero.stats.get('weight') * 100) / hero.stats.get('equipLoad');
+	hero.weightRatio = (hero.weight * 100) / hero.stats.get('equipLoad');
 
 	return hero;
 });

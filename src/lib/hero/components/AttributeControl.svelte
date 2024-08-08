@@ -3,7 +3,6 @@
 	import { heroState, type HeroAttribute } from '$lib/hero';
 	import { uiState } from '$lib/state';
 	import { createEventDispatcher } from 'svelte';
-	import AttributeModifierGraph from './AttributeModifierGraph.svelte';
 
 	export let base: number;
 	export let attribute: HeroAttribute;
@@ -64,27 +63,4 @@
 		class="absolute z-10 rounded-md top-0 left-0 bottom-0 bg-zinc-400/20"
 		style:width={`${(total / 99) * 100}%`}
 	></div>
-
-	{#if attribute.modifier && showTooltip}
-		<div class="absolute z-50 transition-opacity tooltip">
-			<div class="p-5 rounded-lg shadow bg-zinc-800/95 border border-zinc-600">
-				<div class="flex">
-					{#each Object.entries(attribute.modifier.modifications) as [group, mod]}
-						{#each Object.entries(mod) as [stat, mutations]}
-							<div class="basis-1/2">
-								<AttributeModifierGraph label={`${group}:${stat}`} {mutations} progress={total} />
-							</div>
-						{/each}
-					{/each}
-				</div>
-			</div>
-		</div>
-	{/if}
 </div>
-
-<style>
-	.tooltip {
-		left: 50%;
-		bottom: 120%;
-	}
-</style>

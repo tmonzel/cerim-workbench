@@ -17,10 +17,7 @@
 </script>
 
 <div>
-	<div
-		class="bg-zinc-800/30 rounded-xl p-5 grow grid grid-cols-2 gap-5"
-		class:hidden={$appStore.heroContext !== 'protection'}
-	>
+	<div class="grow grid grid-cols-2 gap-5" class:hidden={$appStore.heroContext !== 'protection'}>
 		<ArmorEquipSlot label="Head" items={$helmets} bind:selectedItem={$equipStore.head} />
 		<ArmorEquipSlot label="Chest" items={$armors} bind:selectedItem={$equipStore.chest} />
 		<ArmorEquipSlot label="Legs" items={$legs} bind:selectedItem={$equipStore.legs} />

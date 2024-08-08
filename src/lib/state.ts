@@ -12,7 +12,7 @@ export type UIState = {
 
 export const appStore = writable<AppState>({
 	heroType: 'wretch',
-	heroContext: 'attack',
+	heroContext: 'dashboard',
 	excludeStaminaFromAttackCalc: false
 });
 

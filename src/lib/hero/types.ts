@@ -20,6 +20,7 @@ export type HeroState = {
 	progress: number;
 	souls: number;
 	attributePoints: number;
+	weight: number;
 	weightRatio: number;
 	totalAttributes: Record<string, number>;
 
@@ -30,7 +31,7 @@ export type HeroState = {
 	resistance: DynamicResistance;
 	damageNegation: DynamicDamageNegation;
 
-	staminaRecoverySpeed: number; // Per Second
+	/*staminaRecoverySpeed: number; // Per Second
 
 	hpFlaskRestorationRate: DynamicNumber;
 	hpRestoration: DynamicNumber;
@@ -39,7 +40,7 @@ export type HeroState = {
 	fpRestoration: DynamicNumber;
 
 	runeGainRate: DynamicNumber;
-	sorcerySlots: DynamicNumber;
+	sorcerySlots: DynamicNumber;*/
 };
 
 export type HeroType = {
@@ -48,6 +49,24 @@ export type HeroType = {
 	level: number;
 	attributes: Record<AttributeType, number>;
 };
+
+export enum HeroStat {
+	HP = 'hp',
+	FP = 'fp',
+	STAMINA = 'stamina',
+	DISCOVERY = 'discovery',
+	WEIGHT = 'weight',
+	EQUIP_LOAD = 'equipLoad',
+	POISE = 'poise',
+
+	IMMUNITY = 'immunity',
+	ROBUSTNESS = 'robustness',
+	FOCUS = 'focus',
+	VITALITY = 'vitality',
+
+	DEFENSE_STANDARD = 'def:standard',
+	DEFENSE_STRIKE = 'def:strike'
+}
 
 export type HeroBodyState = {
 	guardInfo: boolean;

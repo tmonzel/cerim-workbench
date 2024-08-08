@@ -44,6 +44,7 @@ export function createHero(type: HeroType, attributeState: Record<string, number
 		attributePoints: HERO_MAX_LEVEL - level,
 		attack: new DynamicAttack(),
 		stats: new DynamicStats(),
+		weight: 0,
 		weightRatio: 0,
 		totalAttributes: {},
 		attributes,
