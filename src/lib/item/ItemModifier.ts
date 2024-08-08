@@ -43,6 +43,10 @@ export class ItemModifier implements HeroStateModifier {
 				break;
 			case 'stats':
 			case 'resistance':
+				if (prop === 'immunity') {
+					hero.immunity.add(value);
+				}
+				break;
 			case 'attributes':
 				switch (this.type) {
 					case 'percentual':

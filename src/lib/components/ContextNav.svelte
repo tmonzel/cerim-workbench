@@ -32,9 +32,8 @@
 		{#each contexts as context}
 			<li>
 				<button
-					class="inline-flex items-center justify-center px-4 py-2 transition-colors rounded-lg bg-zinc-800/30"
-					class:text-teal-300={$appStore.heroContext === context.name}
-					class:bg-teal-900={$appStore.heroContext === context.name}
+					class="inline-flex items-center justify-center px-4 py-2 transition-colors rounded-lg nav-btn"
+					class:active={$appStore.heroContext === context.name}
 					on:click={() => ($appStore.heroContext = context.name)}
 				>
 					<span class="mat-icon me-1">{context.icon}</span>{context.label}
@@ -43,3 +42,14 @@
 		{/each}
 	</ul>
 </div>
+
+<style>
+	.nav-btn {
+		background-color: rgb(39 39 42 / 0.3);
+	}
+
+	.nav-btn.active {
+		color: #5eead4;
+		background-color: #172a29;
+	}
+</style>

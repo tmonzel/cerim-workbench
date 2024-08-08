@@ -1,7 +1,7 @@
 import { derived } from 'svelte/store';
 import { attributeStore } from './attributes';
 import { AttributeType, DamageType } from '$lib/core';
-import { attributeTypes, heroTypes } from './data';
+import { heroTypes } from './data';
 import { equipStore } from './equip.store';
 import { ProtectItem } from '$lib/armor';
 import { appStore } from '$lib/state';
@@ -29,7 +29,14 @@ export const heroState = derived([appStore, attributeStore, equipStore], ([confi
 
 		// Summarize resistance
 		if (item instanceof ProtectItem) {
-			hero.resistance.add(item.resistance);
+			hero.poise += item.poise;
+
+			hero.immunity.add(item.resistance.immunity);
+			hero.robustness.add(item.resistance.robustness);
+			hero.focus.add(item.resistance.focus);
+			hero.vitality.add(item.resistance.vitality);
+
+			//hero.resistance.add(item.resistance);
 			hero.damageNegation.setAll({
 				[DamageType.STANDARD]:
 					100 - (100 - hero.damageNegation.get('standard')) * (1 - item.damageNegation.standard / 100),
@@ -42,18 +49,10 @@ export const heroState = derived([appStore, attributeStore, equipStore], ([confi
 				[DamageType.MAGIC]: 100 - (100 - hero.damageNegation.get('mag')) * (1 - item.damageNegation.mag / 100),
 				[DamageType.POISE]: 100 - (100 - hero.damageNegation.get('poise')) * (1 - item.damageNegation.poise / 100)
 			});
-
-			hero.defense.add({ poise: item.poise });
 		}
 
 		for (const mod of item.modifiers) {
 			mod.modify(hero);
-		}
-	}
-
-	for (const attr of Object.values(attributeTypes)) {
-		if (attr.modifier) {
-			attr.modifier.modify(hero);
 		}
 	}
 
@@ -63,8 +62,28 @@ export const heroState = derived([appStore, attributeStore, equipStore], ([confi
 		totalAttributes[t] += hero.type.attributes[t];
 	}
 
+	hero.hp.update(totalAttributes);
+	hero.fp.update(totalAttributes);
+	hero.stamina.update(totalAttributes);
+	hero.discovery.update(totalAttributes);
+	hero.equipLoad.update(totalAttributes);
+
+	hero.immunity.update(totalAttributes);
+	hero.robustness.update(totalAttributes);
+	hero.focus.update(totalAttributes);
+	hero.vitality.update(totalAttributes);
+
+	hero.standardDefense.update(totalAttributes);
+	hero.strikeDefense.update(totalAttributes);
+	hero.slashDefense.update(totalAttributes);
+	hero.pierceDefense.update(totalAttributes);
+
+	hero.magicDefense.update(totalAttributes);
+	hero.fireDefense.update(totalAttributes);
+	hero.lightningDefense.update(totalAttributes);
+	hero.holyDefense.update(totalAttributes);
+
 	hero.totalAttributes = totalAttributes;
-	hero.weightRatio = (hero.weight * 100) / hero.stats.get('equipLoad');
 
 	return hero;
 });

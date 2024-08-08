@@ -5,10 +5,10 @@
 	import { appStore } from '$lib/state';
 	import AttackPanel from './AttackPanel.svelte';
 	import AttributePanel from './AttributePanel.svelte';
-	import Dashboard from './Dashboard.svelte';
 	import HeroBody from './HeroBody.svelte';
 	import HeroStats from './HeroStats.svelte';
 	import ProtectionStats from './ProtectionStats.svelte';
+	import HeroDashboard from './HeroDashboard.svelte';
 
 	export let hero: HeroState;
 
@@ -39,13 +39,11 @@
 			</div>
 		</div>
 
-		<div class="grow" class:hidden={$appStore.heroContext !== 'dashboard'}>
-			<div class="mb-10">
-				<h3 class="font-semibold text-lg">Overview</h3>
-				<p class="mt-1 text-zinc-400">All your stats and scalings</p>
+		{#if $appStore.heroContext === 'dashboard'}
+			<div class="grow">
+				<HeroDashboard />
 			</div>
-			<Dashboard />
-		</div>
+		{/if}
 
 		<div class="grow" class:hidden={$appStore.heroContext === 'dashboard'}>
 			<div class="mb-10">

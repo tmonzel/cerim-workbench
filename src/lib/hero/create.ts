@@ -4,11 +4,26 @@ import {
 	DynamicAttack,
 	DynamicAttributes,
 	DynamicDamageNegation,
-	DynamicDefense,
-	DynamicResistance,
 	DynamicStats
 } from '$lib/core';
 import { HERO_MAX_LEVEL } from './state';
+import { DiscoveryStat } from './stats/DiscoveryStat';
+import { EquipLoadStat } from './stats/EquipLoadStat';
+import { FireDefenseStat } from './stats/FireDefenseStat';
+import { FocusStat } from './stats/FocusStat';
+import { FPStat } from './stats/FPStat';
+import { HolyDefenseStat } from './stats/HolyDefenseStat';
+import { HPStat } from './stats/HPStat';
+import { ImmunityStat } from './stats/ImmunityStat';
+import { LightningDefenseStat } from './stats/LightningDefenseStat';
+import { MagicDefenseStat } from './stats/MagicDefenseStat';
+import { PierceDefenseStat } from './stats/PierceDefenseStat';
+import { RobustnessStat } from './stats/RobustnessStat';
+import { SlashDefenseStat } from './stats/SlashDefenseStat';
+import { StaminaStat } from './stats/StaminaStat';
+import { StandardDefenseStat } from './stats/StandardDefenseStat';
+import { StrikeDefenseStat } from './stats/StrikeDefenseStat';
+import { VitalityStat } from './stats/VitalityStat';
 import type { HeroState, HeroType } from './types';
 
 export function createHero(type: HeroType, attributeState: Record<string, number>): HeroState {
@@ -45,29 +60,32 @@ export function createHero(type: HeroType, attributeState: Record<string, number
 		attack: new DynamicAttack(),
 		stats: new DynamicStats(),
 		weight: 0,
-		weightRatio: 0,
+		poise: 0,
 		totalAttributes: {},
 		attributes,
 
-		defense: new DynamicDefense({
-			standard: baseDefense,
-			pierce: baseDefense,
-			slash: baseDefense,
-			strike: baseDefense,
-			fir: baseDefense,
-			hol: baseDefense,
-			lit: baseDefense,
-			mag: baseDefense,
-			poise: 0
-		}),
+		hp: new HPStat(),
+		fp: new FPStat(),
+		stamina: new StaminaStat(),
+		discovery: new DiscoveryStat(),
+		equipLoad: new EquipLoadStat(),
 
-		resistance: new DynamicResistance({
-			immunity: baseResistance,
-			focus: baseResistance,
-			poise: baseResistance,
-			robustness: baseResistance,
-			vitality: baseResistance
-		}),
+		// Resistance
+		immunity: new ImmunityStat(baseResistance),
+		robustness: new RobustnessStat(baseResistance),
+		focus: new FocusStat(baseResistance),
+		vitality: new VitalityStat(baseResistance),
+
+		// Defense
+		standardDefense: new StandardDefenseStat(baseDefense),
+		strikeDefense: new StrikeDefenseStat(baseDefense),
+		slashDefense: new SlashDefenseStat(baseDefense),
+		pierceDefense: new PierceDefenseStat(baseDefense),
+
+		magicDefense: new MagicDefenseStat(baseDefense),
+		fireDefense: new FireDefenseStat(baseDefense),
+		lightningDefense: new LightningDefenseStat(baseDefense),
+		holyDefense: new HolyDefenseStat(baseDefense),
 
 		damageNegation: new DynamicDamageNegation()
 	};
