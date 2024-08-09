@@ -12,13 +12,10 @@
 </script>
 
 <ItemCard {item}>
-	<ItemHeader
-		rarity={item.rarity}
-		weight={item.weight}
-		type={armorTypeInfo[item.type] ? armorTypeInfo[item.type].name : '-'}
-	>
+	<ItemHeader rarity={item.rarity} type={armorTypeInfo[item.type] ? armorTypeInfo[item.type].name : '-'}>
 		{item.name}
 	</ItemHeader>
+
 	<ArmorInfo {item} />
 
 	<dl class="divide-y divide-gray-100/20">

@@ -296,16 +296,15 @@ export function mapSpEffect(row: SpEffectParam): SpEffect {
 	if (row.itemDropRate) {
 		modifiers.push({
 			type: 'flat',
-			group: 'stats',
 			prop: 'discovery',
-			value: row.itemDropRate * 100
+			value: row.itemDropRate
 		});
 	}
 
 	if (row.staminaRecoverChangeSpeed) {
 		modifiers.push({
 			type: 'flat',
-			prop: 'staminaPerSec',
+			prop: 'staminaRecoverySpeed',
 			value: row.staminaRecoverChangeSpeed
 		});
 	}
@@ -321,7 +320,7 @@ export function mapSpEffect(row: SpEffectParam): SpEffect {
 	if (row.changeMagicSlot) {
 		modifiers.push({
 			type: 'flat',
-			prop: 'magicAttunementSlotCount',
+			prop: 'magicSlots',
 			value: row.changeMagicSlot
 		});
 	}

@@ -1,12 +1,13 @@
 import { derived } from 'svelte/store';
 import { attributeStore } from './attributes';
-import { AttributeType, DamageType } from '$lib/core';
+import { AttributeType, calcCorrect, DamageType } from '$lib/core';
 import { heroTypes } from './data';
 import { equipStore } from './equip.store';
 import { ProtectItem } from '$lib/armor';
 import { appStore } from '$lib/state';
 import { createHero } from './create';
 import { AccessoryItem } from '$lib/accessory';
+import { stats } from './stats';
 
 export const HERO_MAX_LEVEL = 713;
 
@@ -31,12 +32,11 @@ export const heroState = derived([appStore, attributeStore, equipStore], ([confi
 		if (item instanceof ProtectItem) {
 			hero.poise += item.poise;
 
-			hero.immunity.add(item.resistance.immunity);
-			hero.robustness.add(item.resistance.robustness);
-			hero.focus.add(item.resistance.focus);
-			hero.vitality.add(item.resistance.vitality);
+			hero.stats.immunity.base += item.resistance.immunity;
+			hero.stats.robustness.base += item.resistance.robustness;
+			hero.stats.focus.base += item.resistance.focus;
+			hero.stats.vitality.base += item.resistance.vitality;
 
-			//hero.resistance.add(item.resistance);
 			hero.damageNegation.setAll({
 				[DamageType.STANDARD]:
 					100 - (100 - hero.damageNegation.get('standard')) * (1 - item.damageNegation.standard / 100),
@@ -62,26 +62,13 @@ export const heroState = derived([appStore, attributeStore, equipStore], ([confi
 		totalAttributes[t] += hero.type.attributes[t];
 	}
 
-	hero.hp.update(totalAttributes);
-	hero.fp.update(totalAttributes);
-	hero.stamina.update(totalAttributes);
-	hero.discovery.update(totalAttributes);
-	hero.equipLoad.update(totalAttributes);
+	for (const [name, stat] of Object.entries(stats)) {
+		if (!stat.attributeScaling) {
+			continue;
+		}
 
-	hero.immunity.update(totalAttributes);
-	hero.robustness.update(totalAttributes);
-	hero.focus.update(totalAttributes);
-	hero.vitality.update(totalAttributes);
-
-	hero.standardDefense.update(totalAttributes);
-	hero.strikeDefense.update(totalAttributes);
-	hero.slashDefense.update(totalAttributes);
-	hero.pierceDefense.update(totalAttributes);
-
-	hero.magicDefense.update(totalAttributes);
-	hero.fireDefense.update(totalAttributes);
-	hero.lightningDefense.update(totalAttributes);
-	hero.holyDefense.update(totalAttributes);
+		hero.stats[name].base += calcCorrect(totalAttributes[stat.attributeScaling.type], stat.attributeScaling.mutations);
+	}
 
 	hero.totalAttributes = totalAttributes;
 

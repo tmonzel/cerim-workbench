@@ -2,33 +2,15 @@
 	import AttributeBadge from '$lib/components/AttributeBadge.svelte';
 	import StatusEffectIcon from '$lib/components/StatusEffectIcon.svelte';
 	import { attackTypes, damageTypes, resistanceTypes, statusTypes } from '$lib/core';
+	import { stats } from '$lib/hero';
 	import type { ItemModifier } from '../ItemModifier';
 
 	export let modifier: ItemModifier;
 
-	export const stats: Record<string, { name: string }> = {
-		hp: {
-			name: 'Health'
-		},
-		fp: {
-			name: 'FP'
-		},
-		stamina: {
-			name: 'Stamina'
-		},
-		discovery: {
-			name: 'Discovery'
-		},
-		weight: {
-			name: 'Weight'
-		},
-		equipLoad: {
-			name: 'Equip Load'
-		}
-	};
+	$: stat = stats[modifier.prop];
 </script>
 
-<div class="grid text-sm grid-cols-2" style="grid-template-columns: minmax(120px, auto) 1fr">
+<div class="grid text-sm grid-cols-2">
 	<dt class="font-medium text-zinc-200">
 		{#if modifier.group === 'attributes'}
 			<AttributeBadge type={modifier.prop} />
@@ -45,8 +27,10 @@
 				<span class="me-2"><StatusEffectIcon effect={modifier.prop} /></span>
 				{statusTypes[modifier.prop].name}
 			</div>
+		{:else if stat}
+			{stat.name}
 		{:else}
-			{stats[modifier.prop] ? stats[modifier.prop].name : '-'}
+			{modifier.prop}
 		{/if}
 	</dt>
 	<dd>
@@ -57,7 +41,7 @@
 				{#if modifier.value >= 1}+{/if}{Math.round((modifier.value - 1) * 100 * 10) / 10}%
 			{/if}
 		{:else}
-			{#if modifier.value >= 0}+{/if}{modifier.value}
+			{#if modifier.value >= 0}+{/if}{stat && stat.renderer ? stat.renderer(modifier.value) : modifier.value}
 		{/if}
 	</dd>
 </div>

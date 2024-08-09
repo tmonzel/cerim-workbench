@@ -6,6 +6,7 @@
 	import type { AttackItem } from './AttackItem';
 	import WeaponFinder from './WeaponFinder.svelte';
 	import WeaponCard from './WeaponCard.svelte';
+	import Button from '$lib/components/Button.svelte';
 
 	export let label: string;
 	export let selectedItem: AttackItem | null = null;
@@ -20,15 +21,21 @@
 </script>
 
 <div class="relative">
-	<!--<div class="flex gap-2 mb-2">
-		{#if selectedItem && selectedItem.affinities.size > 0}
-			<WeaponAffinitySelect bind:item={selectedItem} />
-		{/if}
+	{#if selectedItem}
+		<div class="absolute top-3 right-3 flex items-center gap-x-5 text-lg">
+			{#if selectedItem.affinities.size > 0}
+				<WeaponAffinitySelect bind:item={selectedItem} />
+			{/if}
 
-		{#if selectedItem && selectedItem.possibleUpgrades > 0}
-			<ItemUpgradeBar bind:item={selectedItem} />
-		{/if}
-	</div>-->
+			{#if selectedItem.possibleUpgrades > 0}
+				<ItemUpgradeBar bind:item={selectedItem} />
+			{/if}
+
+			<div>
+				<Button icon="clear" on:click={() => (selectedItem = null)} class="text-xl text-zinc-500 bg-zinc-700/30" />
+			</div>
+		</div>
+	{/if}
 	<EquipSlot on:click={() => dialog.open()} {label} bind:selectedItem let:item>
 		{#if item}
 			<WeaponCard {item} slotted />

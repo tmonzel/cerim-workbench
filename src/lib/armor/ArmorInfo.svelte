@@ -1,14 +1,13 @@
 <script lang="ts">
-	import { ArmorWeightClass } from './types';
-
 	import type { ProtectItem } from './ProtectItem';
+	import Icon from '$lib/components/Icon.svelte';
 
 	export let item: ProtectItem;
 </script>
 
-<div class="flex items-center gap-x-12 mt-3 mb-2">
+<div class="flex items-center gap-x-12 mt-3 mb-2 text-2xl font-light">
 	{#if item.weightClass}
-		<p class="text-xl font-light flex items-center gap-x-1">
+		<!--<p class="flex items-center gap-x-1">
 			<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#ddd"
 				><path
 					d="M80-80q0-111 29.5-189.5T185-400q46-52 103-80.5T400-520v-120q-137-17-228.5-84.5T80-880h800q0 88-91.5 155.5T560-640v120q55 11 112 39.5T775-400q46 52 75.5 130.5T880-80H640v-80h155q-18-152-113.5-220T480-448q-106 0-201.5 68T165-160h155v80H80Zm400-635q91 0 162-24.5T755-800H205q42 36 113 60.5T480-715Zm0 635q-33 0-56.5-23.5T400-160q0-17 6.5-31t17.5-25q24-24 81-50.5T640-320q-28 78-54 135t-50 81q-11 11-25 17.5T480-80Zm0-635Z"
@@ -21,15 +20,16 @@
 			{:else if item.weightClass === ArmorWeightClass.HEAVY}
 				Heavy
 			{/if}
-		</p>
+		</p>-->
 	{/if}
 
-	<p class="text-xl font-light flex items-center gap-x-1">
-		<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#ddd"
-			><path
-				d="M480-40q-186 0-313-69.5T40-280q0-69 64-126.5T280-494v82q-73 23-116.5 59T120-280q0 64 108 112t252 48q144 0 252-48t108-112q0-37-43.5-73T680-412v-82q112 30 176 87.5T920-280q0 101-127 170.5T480-40ZM360-200v-440H160v-80h640v80H600v440h-80v-200h-80v200h-80Zm120-560q-33 0-56.5-23.5T400-840q0-33 23.5-56.5T480-920q33 0 56.5 23.5T560-840q0 33-23.5 56.5T480-760Z"
-			/></svg
-		>
-		{item.poise}
+	{#if item.weight > 0}
+		<div class="flex items-center gap-x-1">
+			<Icon name="weight" />{item.weight}
+		</div>
+	{/if}
+
+	<p class="flex items-center gap-x-1">
+		<Icon name="guardian" />{item.poise}
 	</p>
 </div>

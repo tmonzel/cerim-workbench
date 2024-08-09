@@ -23,21 +23,26 @@
 	}));
 </script>
 
-<SelectControl
-	options={affinityOptions}
-	value={item.affinity ?? AffinityType.STANDARD}
-	on:select={(e) => changeAffinity(e.detail)}
-	let:item
->
-	<svelte:fragment slot="selected" let:item>
-		<div class="p-0.5 flex">
-			{#if item}
-				<img class="w-5 me-2" src={item.iconUrl} alt="{item.name} Affinity Icon" />
-				{item.name}
-			{/if}
-		</div>
-	</svelte:fragment>
+<div>
+	<SelectControl
+		class="p-1 text-zinc-300 bg-zinc-700/50"
+		options={affinityOptions}
+		value={item.affinity ?? AffinityType.STANDARD}
+		on:select={(e) => changeAffinity(e.detail)}
+		let:item
+	>
+		<svelte:fragment slot="selected" let:item>
+			<div class="p-0.5 flex">
+				{#if item}
+					<div><img class="w-7 me-2" src={item.iconUrl} alt="{item.name} Affinity Icon" /></div>
+					<div class="grow">
+						{item.name}
+					</div>
+				{/if}
+			</div>
+		</svelte:fragment>
 
-	<img src={item.iconUrl} alt={`${item.name} Affinity`} class="w-5 me-2" />
-	<span>{item.name}</span>
-</SelectControl>
+		<img src={item.iconUrl} alt={`${item.name} Affinity`} class="w-5 me-2" />
+		<span>{item.name}</span>
+	</SelectControl>
+</div>

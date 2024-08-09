@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { heroState } from '../state';
+	import { stats } from '../stats';
 	import StatCard from './StatCard.svelte';
 
 	let activeView: string | null = null;
@@ -32,34 +33,34 @@
 
 {#if !activeView}
 	<div class="grid grid-cols-2 gap-5 mb-5">
-		<StatCard stat={$heroState.hp} />
-		<StatCard stat={$heroState.fp} />
+		<StatCard name="hp" />
+		<StatCard name="fp" />
 	</div>
 	<div class="grid grid-cols-3 gap-5 mb-5">
-		<StatCard stat={$heroState.stamina} />
-		<StatCard stat={$heroState.discovery} />
-		<StatCard stat={$heroState.equipLoad} />
+		<StatCard name="stamina" />
+		<StatCard name="discovery" />
+		<StatCard name="equipLoad" />
 	</div>
 {/if}
 
 {#if activeView === 'resistances'}
 	<div class="grid grid-cols-2 gap-5 mb-5">
-		<StatCard stat={$heroState.immunity} />
-		<StatCard stat={$heroState.robustness} />
-		<StatCard stat={$heroState.focus} />
-		<StatCard stat={$heroState.vitality} />
+		<StatCard name="immunity" />
+		<StatCard name="robustness" />
+		<StatCard name="focus" />
+		<StatCard name="vitality" />
 	</div>
 {/if}
 
 {#if activeView === 'defense'}
 	<div class="grid grid-cols-4 gap-5 mb-5">
-		<StatCard stat={$heroState.standardDefense} />
-		<StatCard stat={$heroState.strikeDefense} />
-		<StatCard stat={$heroState.slashDefense} />
-		<StatCard stat={$heroState.pierceDefense} />
-		<StatCard stat={$heroState.magicDefense} />
-		<StatCard stat={$heroState.fireDefense} />
-		<StatCard stat={$heroState.holyDefense} />
+		<StatCard name="standardDefense" />
+		<StatCard name="strikeDefense" />
+		<StatCard name="slashDefense" />
+		<StatCard name="pierceDefense" />
+		<StatCard name="magicDefense" />
+		<StatCard name="fireDefense" />
+		<StatCard name="holyDefense" />
 	</div>
 {/if}
 

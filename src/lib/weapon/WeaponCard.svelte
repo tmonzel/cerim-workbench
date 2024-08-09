@@ -2,6 +2,7 @@
 	import AttackBadge from '$lib/components/AttackBadge.svelte';
 	import AttackDetail from '$lib/components/AttackDetail.svelte';
 	import GuardGrid from '$lib/components/GuardGrid.svelte';
+	import Icon from '$lib/components/Icon.svelte';
 	import ItemCard from '$lib/item/components/ItemCard.svelte';
 	import ItemHeader from '$lib/item/components/ItemHeader.svelte';
 	import ModifierList from '$lib/item/components/ModifierList.svelte';
@@ -19,8 +20,13 @@
 		{#if item.tier > 0}(+{item.tier}){/if}
 	</ItemHeader>
 
-	<div class="mb-3 text-2xl">
+	<div class="flex items-center justify-between gap-x-12 mt-3 mb-2 text-2xl font-light">
 		<AttackBadge attack={item.attack} />
+		{#if item.weight > 0}
+			<div class="flex items-center gap-x-1">
+				<Icon name="weight" />{item.weight}
+			</div>
+		{/if}
 	</div>
 
 	<div class="mb-3">

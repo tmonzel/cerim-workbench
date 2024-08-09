@@ -13,9 +13,14 @@
 
 <div class="flex gap-2">
 	<div>
-		<Button icon="add" disabled={item.tier >= item.possibleUpgrades} on:click={() => upgrade(item.tier + 1)} />
+		<Button
+			icon="add"
+			disabled={item.tier >= item.possibleUpgrades}
+			on:click={() => upgrade(item.tier + 1)}
+			class="text-xl"
+		/>
 	</div>
 	<div>
-		<Button icon="remove" disabled={item.tier === 0} on:click={() => upgrade(item.tier - 1)} />
+		<Button icon="remove" disabled={item.tier === 0} on:click={() => upgrade(item.tier - 1)} class="text-xl" />
 	</div>
 </div>

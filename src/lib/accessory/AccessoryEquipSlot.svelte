@@ -7,6 +7,7 @@
 	import AccessoryCard from './AccessoryCard.svelte';
 	import CheckboxControl from '$lib/components/CheckboxControl.svelte';
 	import { getIconUrl } from '$lib/helpers';
+	import Button from '$lib/components/Button.svelte';
 
 	export let label: string;
 	export let selectedItem: AccessoryItem | null = null;
@@ -27,23 +28,26 @@
 </script>
 
 <div class="relative">
-	<div class="flex justify-between rounded-t-lg">
-		{#if selectedItem && selectedItem.possibleUpgrades > 0}
-			<div class="mb-2">
+	{#if selectedItem}
+		<div class="absolute top-3 right-3 flex items-center gap-x-5">
+			<CheckboxControl bind:checked={selectedItem.activated}>Activated</CheckboxControl>
+
+			{#if selectedItem.possibleUpgrades > 0}
 				<ItemUpgradeBar bind:item={selectedItem} />
+			{/if}
+
+			<div>
+				<Button icon="clear" on:click={() => (selectedItem = null)} class="text-xl text-zinc-500 bg-zinc-700/30" />
 			</div>
-		{/if}
-		{#if selectedItem}
-			<div class="rounded-t p-2">
-				<CheckboxControl bind:checked={selectedItem.activated}>Activated</CheckboxControl>
-			</div>
-		{/if}
-	</div>
+		</div>
+	{/if}
 
 	<EquipSlot on:click={() => dialog.open()} {label} bind:selectedItem let:item>
 		{#if item}
 			{#if displayMode === 'detail'}
-				<AccessoryCard {item} slotted />
+				<div class="mt-7">
+					<AccessoryCard {item} slotted />
+				</div>
 			{:else if item.iconId}
 				<img
 					src={getIconUrl(item.iconId)}

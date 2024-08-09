@@ -31,6 +31,6 @@
 
 	<div class="min-w-20">
 		<h3 class="text-md text-zinc-500 mb-2">Weight</h3>
-		<p class="text-4xl">{$heroState.weight}</p>
+		<p class="text-4xl">{Math.round($heroState.weight * 10) / 10}</p>
 	</div>
 </div>

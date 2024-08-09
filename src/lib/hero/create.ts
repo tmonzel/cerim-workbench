@@ -4,26 +4,9 @@ import {
 	DynamicAttack,
 	DynamicAttributes,
 	DynamicDamageNegation,
-	DynamicStats
+	DynamicValue
 } from '$lib/core';
 import { HERO_MAX_LEVEL } from './state';
-import { DiscoveryStat } from './stats/DiscoveryStat';
-import { EquipLoadStat } from './stats/EquipLoadStat';
-import { FireDefenseStat } from './stats/FireDefenseStat';
-import { FocusStat } from './stats/FocusStat';
-import { FPStat } from './stats/FPStat';
-import { HolyDefenseStat } from './stats/HolyDefenseStat';
-import { HPStat } from './stats/HPStat';
-import { ImmunityStat } from './stats/ImmunityStat';
-import { LightningDefenseStat } from './stats/LightningDefenseStat';
-import { MagicDefenseStat } from './stats/MagicDefenseStat';
-import { PierceDefenseStat } from './stats/PierceDefenseStat';
-import { RobustnessStat } from './stats/RobustnessStat';
-import { SlashDefenseStat } from './stats/SlashDefenseStat';
-import { StaminaStat } from './stats/StaminaStat';
-import { StandardDefenseStat } from './stats/StandardDefenseStat';
-import { StrikeDefenseStat } from './stats/StrikeDefenseStat';
-import { VitalityStat } from './stats/VitalityStat';
 import type { HeroState, HeroType } from './types';
 
 export function createHero(type: HeroType, attributeState: Record<string, number>): HeroState {
@@ -58,34 +41,37 @@ export function createHero(type: HeroType, attributeState: Record<string, number
 		souls,
 		attributePoints: HERO_MAX_LEVEL - level,
 		attack: new DynamicAttack(),
-		stats: new DynamicStats(),
 		weight: 0,
 		poise: 0,
 		totalAttributes: {},
 		attributes,
 
-		hp: new HPStat(),
-		fp: new FPStat(),
-		stamina: new StaminaStat(),
-		discovery: new DiscoveryStat(),
-		equipLoad: new EquipLoadStat(),
+		stats: {
+			hp: new DynamicValue(),
+			fp: new DynamicValue(),
+			stamina: new DynamicValue(),
+			discovery: new DynamicValue(),
+			equipLoad: new DynamicValue(),
 
-		// Resistance
-		immunity: new ImmunityStat(baseResistance),
-		robustness: new RobustnessStat(baseResistance),
-		focus: new FocusStat(baseResistance),
-		vitality: new VitalityStat(baseResistance),
+			// Resistance
+			immunity: new DynamicValue(baseResistance),
+			robustness: new DynamicValue(baseResistance),
+			focus: new DynamicValue(baseResistance),
+			vitality: new DynamicValue(baseResistance),
 
-		// Defense
-		standardDefense: new StandardDefenseStat(baseDefense),
-		strikeDefense: new StrikeDefenseStat(baseDefense),
-		slashDefense: new SlashDefenseStat(baseDefense),
-		pierceDefense: new PierceDefenseStat(baseDefense),
+			// Defense
+			standardDefense: new DynamicValue(baseDefense),
+			strikeDefense: new DynamicValue(baseDefense),
+			slashDefense: new DynamicValue(baseDefense),
+			pierceDefense: new DynamicValue(baseDefense),
 
-		magicDefense: new MagicDefenseStat(baseDefense),
-		fireDefense: new FireDefenseStat(baseDefense),
-		lightningDefense: new LightningDefenseStat(baseDefense),
-		holyDefense: new HolyDefenseStat(baseDefense),
+			magicDefense: new DynamicValue(baseDefense),
+			fireDefense: new DynamicValue(baseDefense),
+			lightningDefense: new DynamicValue(baseDefense),
+			holyDefense: new DynamicValue(baseDefense),
+
+			staminaRecoverySpeed: new DynamicValue(45)
+		},
 
 		damageNegation: new DynamicDamageNegation()
 	};

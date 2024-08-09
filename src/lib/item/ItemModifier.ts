@@ -19,6 +19,27 @@ export class ItemModifier implements HeroStateModifier {
 		const prop = this.prop;
 		const value = this.value;
 
+		switch (prop) {
+			case 'discovery':
+			case 'staminaRecoverySpeed':
+			case 'hp':
+			case 'fp':
+			case 'stamina':
+			case 'equipLoad':
+			case 'immunity':
+			case 'robustness':
+			case 'focus':
+			case 'vitality':
+				switch (this.type) {
+					case 'percentual':
+						hero.stats[prop].multiply(value);
+						break;
+					case 'flat':
+					default:
+						hero.stats[prop].add(value);
+				}
+		}
+
 		switch (group) {
 			case 'attack':
 				switch (this.type) {
@@ -39,12 +60,6 @@ export class ItemModifier implements HeroStateModifier {
 					case 'flat':
 					default:
 						hero.damageNegation.addOffset({ [prop]: value });
-				}
-				break;
-			case 'stats':
-			case 'resistance':
-				if (prop === 'immunity') {
-					hero.immunity.add(value);
 				}
 				break;
 			case 'attributes':

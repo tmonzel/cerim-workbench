@@ -54,31 +54,33 @@
 			<HeroBody />
 		</div>
 
-		<div class="max-w-80" class:hidden={$appStore.heroContext === 'dashboard'}>
-			<div class="sticky top-5">
-				<div class="mb-10">
-					<h3 class="font-semibold text-lg">Attack Scaling</h3>
-					<p class="mt-1 text-zinc-400">Calculated attack scaling based on chosen attributes</p>
-				</div>
-
-				{#if $attackInfoState}
-					<AttackPanel {...$attackInfoState} />
-				{:else}
-					<div class="bg-rose-900/20 text-rose-400 p-3 rounded-lg flex items-center">
-						<span class="mat-icon me-2">warning</span>Equip a weapon to see scaling values.
+		{#if $appStore.heroContext !== 'dashboard'}
+			<div class="max-w-80">
+				<div class="sticky top-5">
+					<div class="mb-10">
+						<h3 class="font-semibold text-lg">Attack Scaling</h3>
+						<p class="mt-1 text-zinc-400">Calculated attack scaling based on chosen attributes</p>
 					</div>
-				{/if}
-			</div>
-		</div>
 
-		<div class="max-w-72" class:hidden={$appStore.heroContext === 'dashboard'}>
-			<div class="sticky top-5">
-				<div class="mb-10">
-					<h3 class="font-semibold text-lg">Stats</h3>
-					<p class="mt-1 text-zinc-400">Calculated hero stats based on attributes, gear etc.</p>
+					{#if $attackInfoState}
+						<AttackPanel {...$attackInfoState} />
+					{:else}
+						<div class="bg-rose-900/20 text-rose-400 p-3 rounded-lg flex items-center">
+							<span class="mat-icon me-2">warning</span>Equip a weapon to see scaling values.
+						</div>
+					{/if}
 				</div>
-				<TabPanel items={statTabs} />
 			</div>
-		</div>
+
+			<div class="max-w-72">
+				<div class="sticky top-5">
+					<div class="mb-10">
+						<h3 class="font-semibold text-lg">Stats</h3>
+						<p class="mt-1 text-zinc-400">Calculated hero stats based on attributes, gear etc.</p>
+					</div>
+					<TabPanel items={statTabs} />
+				</div>
+			</div>
+		{/if}
 	</div>
 </div>

@@ -1,17 +1,13 @@
-export abstract class DynamicStat {
+export class DynamicValue {
 	protected _offset: number = 0;
 	protected _added: number = 0;
 	protected _multiplier: number = 1;
-
-	get base(): number {
-		return this._base;
-	}
 
 	get offset(): number {
 		return this._offset;
 	}
 
-	constructor(protected _base: number = 0) {}
+	constructor(public base: number = 0) {}
 
 	add(amount: number): void {
 		this._added += amount;
@@ -22,7 +18,7 @@ export abstract class DynamicStat {
 	}
 
 	getTotal(): number {
-		return (this._base + this._offset + this._added) * this._multiplier;
+		return (this.base + this._offset + this._added) * this._multiplier;
 	}
 
 	toString(): string {

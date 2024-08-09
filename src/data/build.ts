@@ -4,6 +4,7 @@ import { parseAttackCorrectData, parseCalcCorrectData, parseReinforceData, parse
 import './weapon/build';
 import './armor/build';
 import './accessory/build';
+import './good/build';
 
 // Build calculation data
 writeFileSync(

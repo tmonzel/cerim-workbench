@@ -4,6 +4,7 @@
 	import type { ProtectItem } from './ProtectItem';
 	import ArmorFinder from './ArmorFinder.svelte';
 	import ArmorCard from './ArmorCard.svelte';
+	import Button from '$lib/components/Button.svelte';
 
 	export let label: string;
 	export let selectedItem: ProtectItem | null = null;
@@ -18,6 +19,13 @@
 </script>
 
 <div class="relative">
+	{#if selectedItem}
+		<div class="absolute top-3 right-3 flex items-center gap-x-5">
+			<div>
+				<Button icon="clear" on:click={() => (selectedItem = null)} class="text-xl text-zinc-500 bg-zinc-700/30" />
+			</div>
+		</div>
+	{/if}
 	<EquipSlot on:click={() => dialog.open()} {label} bind:selectedItem let:item>
 		{#if item}
 			<ArmorCard {item} />

@@ -6,11 +6,11 @@
 </script>
 
 <article class="max-w-sm w-full lg:max-w-full lg:flex">
-	<div class="me-2">
+	<div class="px-5">
 		<img
 			src={getIconUrl(item.iconId)}
 			alt={item.name}
-			class="md:w-72 object-cover transition-all group-hover:brightness-150"
+			class="md:max-w-64 object-cover transition-all group-hover:brightness-150"
 		/>
 	</div>
 
