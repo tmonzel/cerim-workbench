@@ -39,7 +39,7 @@
 
 	<ModifierList data={item.modifiers} />
 
-	{#if slotted}
+	{#if slotted && item.guard}
 		<div class="px-4 py-4 sm:px-0">
 			<dt class="text-sm font-medium mb-2">Guard</dt>
 			<dd><GuardGrid data={item.guard} /></dd>

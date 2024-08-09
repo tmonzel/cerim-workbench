@@ -1,6 +1,5 @@
-TODOS FOR RELEASE
+TODOS
 - Show SpEffects/Passives from items in item list
-- Split L1 und L2 Damage
 - No weapon equipped deals also damage (fist)
 - Show SpEffect icons
 - PVP Data Switch
@@ -8,12 +7,13 @@ TODOS FOR RELEASE
 - Next Weapon Upgrade info
 - Check share your build feature and item ids
 - Mobile optimizations (Hide modifiers on smaller screen sizes)
+- Implement local storage
+- UI: Scrolling Header
 
-
-TODOS
-Implement local storage
-UI: Scrolling Header
-UI: Compact mode for equipslots (3 modes maybe)
+TODOS FOR RELEASE
+- Great Rune slot
+- Pagination for Itemlists
+- Hide weapon guard info checkbox
 
 Damage Negation => 50 + (base negation) / 2. ()
 

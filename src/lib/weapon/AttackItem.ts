@@ -8,7 +8,7 @@ import type { AttackInfo, UpgradeSchema, WeaponEntity, WeaponRequirements, Weapo
 export class AttackItem extends Item implements Upgradable {
 	attack: Attack = {};
 	attackInfo: AttackInfo;
-	guard: Guard;
+	guard?: Guard;
 	affinities: Map<string, ItemConfig>;
 	scaling: WeaponScaling = {};
 	config!: ItemConfig;
@@ -27,7 +27,7 @@ export class AttackItem extends Item implements Upgradable {
 		super(id, entity);
 
 		this.attackMutations = {};
-		this.guard = entity.guard ?? { phy: 0, mag: 0, fir: 0, lit: 0, hol: 0, sta: 0, res: 0 };
+		this.guard = entity.guard;
 		this.affinities = new Map(Object.entries(entity.affinities ?? {}));
 		this._affinity = null;
 		this.possibleUpgrades = entity.upgrades ? entity.upgrades.length : 0;

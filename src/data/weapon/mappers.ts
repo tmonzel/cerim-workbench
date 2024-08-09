@@ -153,7 +153,13 @@ export function mapConfig(row: WeaponRow): ItemConfig {
 	const config: ItemConfig = {
 		attack,
 		scaling,
-		guard: {
+		schema: schema === '' ? '0' : schema,
+		attackCorrectId: String(row.attackElementCorrectId),
+		mutations
+	};
+
+	if (row.physGuardCutRate || row.magGuardCutRate) {
+		config.guard = {
 			phy: row.physGuardCutRate,
 			mag: row.magGuardCutRate,
 			fir: row.fireGuardCutRate,
@@ -169,11 +175,8 @@ export function mapConfig(row: WeaponRow): ItemConfig {
 					row.sleepGuardResist +
 					row.madnessGuardResist) /
 				7
-		},
-		schema: schema === '' ? '0' : schema,
-		attackCorrectId: String(row.attackElementCorrectId),
-		mutations
-	};
+		};
+	}
 
 	if (effects[0] || effects[1]) {
 		config.effects = effects;
