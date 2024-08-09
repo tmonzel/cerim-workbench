@@ -32,7 +32,7 @@
 		{#each contexts as context}
 			<li>
 				<button
-					class="inline-flex items-center justify-center px-4 py-2 transition-colors rounded-lg nav-btn"
+					class="inline-flex items-center justify-center px-4 py-2 transition-colors rounded-lg nav-btn select-none"
 					class:active={$appStore.heroContext === context.name}
 					on:click={() => ($appStore.heroContext = context.name)}
 				>

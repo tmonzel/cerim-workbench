@@ -20,7 +20,7 @@
 
 <button
 	type="button"
-	class="px-4 py-2 font-medium border-2 rounded-xl text-lg flex items-center disabled:text-zinc-500 disabled:border-zinc-500 group"
+	class="px-4 py-2 font-medium border-2 rounded-xl text-lg flex items-center disabled:text-zinc-500 disabled:border-zinc-500 select-none group"
 	disabled={creatingUrl}
 	on:click={() => createSharedUrl()}
 >
