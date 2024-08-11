@@ -28,14 +28,14 @@
 		<span class="sr-only">Close modal</span>
 	</button>
 
-	<div>
-		<div class="text-zinc-300 bg-zinc-800 text-xl p-5 flex justify-between items-center border-b border-zinc-700">
+	<div class="relative">
+		<header class="text-zinc-300 bg-zinc-800 text-xl p-5 flex justify-between items-center border-b border-zinc-700">
 			<div>
 				<slot name="title" />
 			</div>
 
 			<Button icon="close" on:click={() => close()}></Button>
-		</div>
+		</header>
 		<slot />
 	</div>
 </dialog>
