@@ -1,6 +1,7 @@
 <script lang="ts">
 	import HeroInfoBar from '$lib/hero/components/HeroInfoBar.svelte';
 	import ContextNav from './ContextNav.svelte';
+	import DonateButton from './DonateButton.svelte';
 	import RuneProgressBar from './RuneProgressBar.svelte';
 	import ShareButton from './ShareButton.svelte';
 </script>
@@ -13,15 +14,15 @@
 
 		<HeroInfoBar />
 
-		<div class="ml-auto flex flex-col justify-between">
-			<div class="text-right">
-				<p class="text-zinc-400 text-xs leading-4">
-					<span class="text-emerald-300">v0.13.1</span><br />Handcrafted with
-					<span class="mat-icon filled" style="font-size: 1.1em; transform: translateY(2px)">favorite</span>
-					by Thomas Monzel
-				</p>
-				<p class="text-zinc-500 text-xs mb-3">ELDEN RING is a trademark of FromSoftware.</p>
-			</div>
+		<div class="ml-auto text-right">
+			<p class="text-zinc-400 text-xs leading-4">
+				<span class="text-emerald-300">v0.18</span><br />Handcrafted with
+				<span class="mat-icon filled" style="font-size: 1.1em; transform: translateY(2px)">favorite</span>
+				by Thomas Monzel
+			</p>
+			<p class="text-zinc-500 text-xs mb-4">ELDEN RING is a trademark of FromSoftware.</p>
+
+			<DonateButton />
 		</div>
 	</div>
 

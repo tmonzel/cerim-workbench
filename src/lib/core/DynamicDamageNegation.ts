@@ -1,6 +1,6 @@
+import { DamageType } from './damage';
 import { DynamicGroup } from './DynamicGroup';
 import { DynamicNumber } from './DynamicNumber';
-import { DamageType } from './types';
 
 export class DynamicDamageNegation extends DynamicGroup {
 	constructor(value?: Partial<Record<string, number>>) {

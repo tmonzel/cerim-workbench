@@ -1,7 +1,7 @@
 <script lang="ts">
 	import StatBadge from '$lib/components/StatBadge.svelte';
-	import { damageTypes } from '$lib/core';
-	import { attributeTypes, heroState } from '$lib/hero';
+	import { attributeTypes, damageTypes } from '$lib/core';
+	import { heroState } from '$lib/hero';
 	import type { AttackItem } from './AttackItem';
 	import { validateRequirements } from './helpers';
 	import { getScalingLetter } from './scaling';

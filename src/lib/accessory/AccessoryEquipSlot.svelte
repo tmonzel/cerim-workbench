@@ -3,35 +3,30 @@
 	import Dialog from '$lib/components/Dialog.svelte';
 	import AccessoryFinder from './AccessoryFinder.svelte';
 	import type { AccessoryItem } from './AccessoryItem';
-	import EquipSlot from '$lib/hero/components/EquipSlot.svelte';
-	import AccessoryCard from './AccessoryCard.svelte';
+	import EquipSlot from '$lib/item/components/EquipSlot.svelte';
 	import CheckboxControl from '$lib/components/CheckboxControl.svelte';
 	import { getIconUrl } from '$lib/helpers';
 	import Button from '$lib/components/Button.svelte';
+	import ItemHeader from '$lib/item/components/ItemHeader.svelte';
+	import Icon from '$lib/components/Icon.svelte';
+	import ItemEffectBadge from '$lib/item/components/ItemEffectBadge.svelte';
+	import ItemChangeButton from '$lib/item/components/ItemChangeButton.svelte';
+	import { item } from '@unovis/ts/components/bullet-legend/style';
 
 	export let label: string;
 	export let selectedItem: AccessoryItem | null = null;
 	export let items: AccessoryItem[] = [];
-	export let displayMode: 'icon' | 'detail' = 'detail';
 
 	let dialog: Dialog;
 
-	export function selectItem(item: AccessoryItem | null): void {
+	function updateItem(item: AccessoryItem) {
 		selectedItem = item;
-		dialog.close();
-	}
-
-	export function activate(item: AccessoryItem | null): void {
-		selectedItem = item;
-		dialog.close();
 	}
 </script>
 
 <div class="relative">
 	{#if selectedItem}
 		<div class="absolute top-3 right-3 flex items-center gap-x-5">
-			<CheckboxControl bind:checked={selectedItem.activated}>Activated</CheckboxControl>
-
 			{#if selectedItem.possibleUpgrades > 0}
 				<ItemUpgradeBar bind:item={selectedItem} />
 			{/if}
@@ -42,20 +37,43 @@
 		</div>
 	{/if}
 
-	<EquipSlot on:click={() => dialog.open()} {label} bind:selectedItem let:item>
+	<EquipSlot {label} bind:item={selectedItem} on:click={() => dialog.open()} let:item>
 		{#if item}
-			{#if displayMode === 'detail'}
-				<div class="mt-7">
-					<AccessoryCard {item} slotted />
+			<div class="flex mt-7 gap-x-4">
+				<ItemChangeButton {item} on:click={() => dialog.open()} />
+
+				<div class="grow">
+					<ItemHeader rarity={item.rarity} type="Talisman">
+						{item.name}{#if item.tier > 0}(+{item.tier}){/if}
+					</ItemHeader>
+
+					{#if item.weight > 0}
+						<div class="mb-5 text-2xl font-light">
+							<div class="flex items-center gap-x-1">
+								<Icon name="weight" />{item.weight}
+							</div>
+						</div>
+					{/if}
+
+					{#if item.effectInfo}
+						<p class="text-sm text-zinc-500 italic mb-2">{item.effectInfo}</p>
+					{/if}
+
+					<ul>
+						{#each item.effects as effect}
+							<li class="flex gap-x-5">
+								<div class="grow">
+									<ItemEffectBadge {effect} />
+								</div>
+								<div class="pt-2">
+									<CheckboxControl bind:checked={effect.activated} on:checked={() => updateItem(item)}
+									></CheckboxControl>
+								</div>
+							</li>
+						{/each}
+					</ul>
 				</div>
-			{:else if item.iconId}
-				<img
-					src={getIconUrl(item.iconId)}
-					alt={item.name}
-					class="max-w-40 object-cover transition-all group-hover:brightness-150"
-					class:opacity-50={!item.activated}
-				/>
-			{/if}
+			</div>
 		{/if}
 	</EquipSlot>
 </div>

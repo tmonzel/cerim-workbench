@@ -1,5 +1,4 @@
-import { type AttackCorrect, type GraphMutation } from './core';
-import { type SpEffect } from './item/types';
+import { type AttackCorrect, type GraphMutation, type SpEffect } from './core';
 import { AttackItem } from './weapon/AttackItem';
 import { weaponStore } from './weapon/weapon.store';
 import type { UpgradeSchema, WeaponEntity } from './weapon';

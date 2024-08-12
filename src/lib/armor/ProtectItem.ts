@@ -1,6 +1,6 @@
 import { DamageType, type DamageNegation, type Resistance } from '$lib/core';
 import { spEffectsMap } from '$lib/data';
-import { Item } from '$lib/item';
+import { Item, type SpEffect } from '$lib/item';
 import type { ArmorEntity, ArmorWeightClass } from './types';
 
 export class ProtectItem extends Item {
@@ -61,13 +61,19 @@ export class ProtectItem extends Item {
 		this.weightClass = entity.weightClass;
 
 		if (entity.config && entity.config.effects) {
+			const effects: SpEffect[] = [];
+
 			for (const id of Object.values(entity.config.effects)) {
 				const effect = spEffectsMap.get(id);
 
-				if (effect && effect.modifiers) {
-					this.setModifiers(effect.modifiers);
+				if (!effect) {
+					continue;
 				}
+
+				effects.push(effect);
 			}
+
+			this.setEffects(effects);
 		}
 	}
 }

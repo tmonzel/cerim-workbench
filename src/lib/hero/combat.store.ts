@@ -11,18 +11,12 @@ export type WeaponAttackState = {
 
 export type CombatState = {
 	activeHand: 'mainHand' | 'offHand';
-	mainHand: WeaponAttackState;
-	offHand: WeaponAttackState;
+	twoHanding: boolean;
 };
 
 export const combatStore = writable<CombatState>({
 	activeHand: 'mainHand',
-	mainHand: {
-		twoHanding: false
-	},
-	offHand: {
-		twoHanding: false
-	}
+	twoHanding: false
 });
 
 export type AttackInfoState = {
@@ -31,17 +25,11 @@ export type AttackInfoState = {
 	attack: DynamicAttack;
 };
 
-function prepareAttributesForTwoHanding(attributes: Record<string, number>): Record<string, number> {
-	return { ...attributes, str: attributes.str * 1.5 };
-}
-
 export const attackInfoState = derived([equipStore, heroState, combatStore], ([equip, hero, combat]) => {
 	let attributes = hero.totalAttributes;
 
-	const state = combat[combat.activeHand];
-
-	if (state.twoHanding) {
-		attributes = prepareAttributesForTwoHanding(attributes);
+	if (combat.twoHanding) {
+		attributes = { ...attributes, str: attributes.str * 1.5 };
 	}
 
 	const weapon = equip[combat.activeHand];

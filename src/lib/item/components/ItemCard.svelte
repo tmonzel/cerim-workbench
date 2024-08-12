@@ -7,11 +7,7 @@
 
 <article class="max-w-sm w-full lg:max-w-full lg:flex">
 	<div class="px-5">
-		<img
-			src={getIconUrl(item.iconId)}
-			alt={item.name}
-			class="md:max-w-64 object-cover transition-all group-hover:brightness-150"
-		/>
+		<img src={getIconUrl(item.iconId)} alt={item.name} class="object-cover transition-all group-hover:brightness-150" />
 	</div>
 
 	<div class="grow">

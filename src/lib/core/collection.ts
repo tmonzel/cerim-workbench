@@ -73,11 +73,17 @@ export function createCollection<T>(items: T[], defaults: Partial<CollectionStat
 		}
 	}
 
+	const pagination = writable({
+		itemsPerPage: 50,
+		page: 1
+	});
+
 	const sort = writable(sortState);
 	const filters = writable(filtersState);
 
-	const result = derived([sort, filters], ([s, f]) => {
+	const result = derived([sort, filters, pagination], ([s, f, p]) => {
 		let r = [...items];
+		const page = p.page;
 
 		if (config.filters) {
 			for (const [prop, filter] of Object.entries(config.filters)) {
@@ -89,12 +95,19 @@ export function createCollection<T>(items: T[], defaults: Partial<CollectionStat
 			sorter.sort(r, s[sorter.prop]);
 		}
 
-		return r;
+		const startIndex = (page - 1) * p.itemsPerPage;
+
+		return {
+			page,
+			totalItems: r.length,
+			items: r.slice(startIndex, startIndex + p.itemsPerPage)
+		};
 	});
 
 	return {
 		sort,
 		filters,
+		pagination,
 		result
 	};
 }

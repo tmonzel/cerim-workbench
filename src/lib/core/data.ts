@@ -1,4 +1,4 @@
-import { AttackType, DamageType, StatusEffectType } from './types';
+import { AttackType, StatusEffectType } from './types';
 
 export const attackTypes: Record<string, { name: string; color: string }> = {
 	[AttackType.PHYSICAL]: {
@@ -40,55 +40,7 @@ export const attackTypes: Record<string, { name: string; color: string }> = {
 	}
 };
 
-export const resistanceTypes: Record<string, { name: string }> = {
-	immunity: {
-		name: 'Immunity'
-	},
-	robustness: {
-		name: 'Robustness'
-	},
-	focus: {
-		name: 'Focus'
-	},
-	vitality: {
-		name: 'Vitality'
-	},
-	poise: {
-		name: 'Poise'
-	}
-};
-
-export const damageTypes: Record<string, { name: string }> = {
-	[DamageType.STANDARD]: {
-		name: 'Standard'
-	},
-	[DamageType.STRIKE]: {
-		name: 'Strike'
-	},
-	[DamageType.SLASH]: {
-		name: 'Slash'
-	},
-	[DamageType.PIERCE]: {
-		name: 'Pierce'
-	},
-	[DamageType.HOLY]: {
-		name: 'Holy'
-	},
-	[DamageType.LIGHTNING]: {
-		name: 'Lightning'
-	},
-	[DamageType.FIRE]: {
-		name: 'Fire'
-	},
-	[DamageType.MAGIC]: {
-		name: 'Magic'
-	},
-	[DamageType.POISE]: {
-		name: 'Poise'
-	}
-};
-
-export const statusTypes: Record<StatusEffectType, { name: string }> = {
+export const statusTypes: Record<string, { name: string }> = {
 	[StatusEffectType.HEMORRHAGE]: {
 		name: 'Hemorrhage'
 	},

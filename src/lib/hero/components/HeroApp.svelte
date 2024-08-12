@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Header from '$lib/components/Header.svelte';
 	import TabPanel from '$lib/components/TabPanel.svelte';
-	import { attackInfoState, type HeroState } from '$lib/hero';
+	import { attackInfoState, combatStore, type HeroState } from '$lib/hero';
 	import { appStore } from '$lib/state';
 	import AttackPanel from './AttackPanel.svelte';
 	import AttributePanel from './AttributePanel.svelte';
@@ -63,7 +63,7 @@
 					</div>
 
 					{#if $attackInfoState}
-						<AttackPanel {...$attackInfoState} />
+						<AttackPanel {...$attackInfoState} bind:twoHanding={$combatStore.twoHanding} />
 					{:else}
 						<div class="bg-rose-900/20 text-rose-400 p-3 rounded-lg flex items-center">
 							<span class="mat-icon me-2">warning</span>Equip a weapon to see scaling values.

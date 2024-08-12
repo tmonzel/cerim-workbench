@@ -1,13 +1,12 @@
 import { derived } from 'svelte/store';
 import { attributeStore } from './attributes';
-import { AttributeType, calcCorrect, DamageType } from '$lib/core';
+import { AttributeType, calcCorrect, DamageType, statTypes, type SpEffect } from '$lib/core';
 import { heroTypes } from './data';
 import { equipStore } from './equip.store';
 import { ProtectItem } from '$lib/armor';
 import { appStore } from '$lib/state';
 import { createHero } from './create';
-import { AccessoryItem } from '$lib/accessory';
-import { stats } from './stats';
+import type { HeroState } from './types';
 
 export const HERO_MAX_LEVEL = 713;
 
@@ -23,10 +22,6 @@ export const heroState = derived([appStore, attributeStore, equipStore], ([confi
 
 		// Sum item weights
 		hero.weight += item.weight;
-
-		if (item instanceof AccessoryItem && !item.activated) {
-			continue;
-		}
 
 		// Summarize resistance
 		if (item instanceof ProtectItem) {
@@ -51,8 +46,12 @@ export const heroState = derived([appStore, attributeStore, equipStore], ([confi
 			});
 		}
 
-		for (const mod of item.modifiers) {
-			mod.modify(hero);
+		for (const effect of item.effects) {
+			if (!effect.activated) {
+				continue;
+			}
+
+			applyEffectModify(effect, hero);
 		}
 	}
 
@@ -62,7 +61,7 @@ export const heroState = derived([appStore, attributeStore, equipStore], ([confi
 		totalAttributes[t] += hero.type.attributes[t];
 	}
 
-	for (const [name, stat] of Object.entries(stats)) {
+	for (const [name, stat] of Object.entries(statTypes)) {
 		if (!stat.attributeScaling) {
 			continue;
 		}
@@ -74,3 +73,54 @@ export const heroState = derived([appStore, attributeStore, equipStore], ([confi
 
 	return hero;
 });
+
+export function applyEffectModify(effect: SpEffect, hero: HeroState): void {
+	for (const modifier of effect.modifiers ?? []) {
+		const key = modifier.key;
+		const value = modifier.value;
+
+		switch (key) {
+			case 'discovery':
+			case 'staminaRecoverySpeed':
+			case 'hp':
+			case 'fp':
+			case 'stamina':
+			case 'equipLoad':
+			case 'immunity':
+			case 'robustness':
+			case 'focus':
+			case 'vitality':
+				switch (modifier.operation) {
+					case 'multiply':
+						hero.stats[key].multiply(value);
+						break;
+					default:
+						hero.stats[key].add(value);
+				}
+		}
+
+		switch (modifier.type) {
+			case 'attack':
+				switch (modifier.operation) {
+					case 'multiply':
+						hero.attack.addMultiplier({ [key]: value });
+						break;
+					default:
+						hero.attack.addOffset({ [key]: value });
+				}
+				break;
+
+			case 'damageNegation':
+				switch (modifier.operation) {
+					case 'multiply':
+						hero.damageNegation.set(key, 100 - (100 - hero.damageNegation.get(key)) * value);
+						break;
+					default:
+						hero.damageNegation.addOffset({ [key]: value });
+				}
+				break;
+			case 'attributes':
+				hero.attributes.addOffset({ [key]: value });
+		}
+	}
+}

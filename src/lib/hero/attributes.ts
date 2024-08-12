@@ -1,17 +1,5 @@
-import { AttributeType, type GraphMutation } from '$lib/core';
+import { AttributeType } from '$lib/core';
 import { writable } from 'svelte/store';
-import type { AttributeModifier } from './modifiers';
-
-export type HeroAttribute = {
-	name: string;
-	color: string;
-	modifier?: AttributeModifier;
-};
-
-export type AttributeScaling = {
-	type: AttributeType;
-	mutations: GraphMutation[];
-};
 
 export type AttributeState = Record<AttributeType, number>;
 

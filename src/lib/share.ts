@@ -1,7 +1,7 @@
 import { get } from 'svelte/store';
-import { attributeStore, type AttributeState, type EquipState } from './hero';
+import { attributeStore, type AttributeState } from './hero';
 import { appStore, type AppState } from './state';
-import { equipStore } from './hero/equip.store';
+import { equipStore, type EquipState } from './hero/equip.store';
 import { itemMap } from './data';
 import { AffinityType, AttackItem } from './weapon';
 import { AccessoryItem } from './accessory';

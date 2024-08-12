@@ -8,3 +8,6 @@ export * from './DynamicValue';
 export * from './types';
 export * from './data';
 export * from './collection';
+export * from './attributes';
+export * from './stats';
+export * from './damage';

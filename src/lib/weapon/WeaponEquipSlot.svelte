@@ -1,12 +1,21 @@
 <script lang="ts">
 	import ItemUpgradeBar from '$lib/hero/components/ItemUpgradeBar.svelte';
 	import WeaponAffinitySelect from '$lib/weapon/WeaponAffinitySelect.svelte';
-	import EquipSlot from '$lib/hero/components/EquipSlot.svelte';
+	import EquipSlot from '$lib/item/components/EquipSlot.svelte';
 	import Dialog from '$lib/components/Dialog.svelte';
 	import type { AttackItem } from './AttackItem';
 	import WeaponFinder from './WeaponFinder.svelte';
 	import WeaponCard from './WeaponCard.svelte';
 	import Button from '$lib/components/Button.svelte';
+	import ItemHeader from '$lib/item/components/ItemHeader.svelte';
+	import { weaponTypeInfo } from './weapon.type';
+	import AttackBadge from '$lib/components/AttackBadge.svelte';
+	import Icon from '$lib/components/Icon.svelte';
+	import AttackDetail from '$lib/components/AttackDetail.svelte';
+	import WeaponInfo from './WeaponInfo.svelte';
+	import GuardGrid from '$lib/components/GuardGrid.svelte';
+	import ItemChangeButton from '$lib/item/components/ItemChangeButton.svelte';
+	import ItemEffectList from '$lib/item/components/ItemEffectList.svelte';
 
 	export let label: string;
 	export let selectedItem: AttackItem | null = null;
@@ -36,9 +45,44 @@
 			</div>
 		</div>
 	{/if}
-	<EquipSlot on:click={() => dialog.open()} {label} bind:selectedItem let:item>
+	<EquipSlot on:click={() => dialog.open()} {label} bind:item={selectedItem} let:item>
 		{#if item}
-			<WeaponCard {item} slotted />
+			<div class="flex mt-7 gap-x-4">
+				<ItemChangeButton {item} on:click={() => dialog.open()} />
+
+				<div class="grow">
+					<ItemHeader rarity={item.rarity} type={weaponTypeInfo[item.type] ? weaponTypeInfo[item.type].name : '-'}>
+						{item.name}
+						{#if item.tier > 0}(+{item.tier}){/if}
+					</ItemHeader>
+
+					<div class="flex items-center justify-between gap-x-12 mt-3 mb-2 text-2xl font-light">
+						<AttackBadge attack={item.attack} />
+						{#if item.weight > 0}
+							<div class="flex items-center gap-x-1">
+								<Icon name="weight" />{item.weight}
+							</div>
+						{/if}
+					</div>
+
+					<div class="mb-3">
+						<AttackDetail attack={item.attack} />
+					</div>
+
+					<div class="mb-3">
+						<WeaponInfo {item} />
+					</div>
+
+					<ItemEffectList {item} />
+
+					{#if item.guard}
+						<div class="px-4 py-4 sm:px-0">
+							<dt class="text-sm font-medium mb-2">Guard</dt>
+							<dd><GuardGrid data={item.guard} /></dd>
+						</div>
+					{/if}
+				</div>
+			</div>
 		{/if}
 	</EquipSlot>
 </div>

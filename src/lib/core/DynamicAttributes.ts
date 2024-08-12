@@ -1,6 +1,6 @@
+import { AttributeType } from './attributes';
 import { DynamicGroup } from './DynamicGroup';
 import { DynamicNumber } from './DynamicNumber';
-import { AttributeType } from './types';
 
 export class DynamicAttributes extends DynamicGroup {
 	constructor(value?: Partial<Record<string, number>>) {

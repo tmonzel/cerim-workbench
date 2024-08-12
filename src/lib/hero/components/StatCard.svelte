@@ -1,10 +1,10 @@
 <script lang="ts">
+	import { statTypes } from '$lib/core';
 	import StatValue from '$lib/hero/components/StatValue.svelte';
 	import AttributeModifierGraph from './AttributeModifierGraph.svelte';
-	import { stats } from '../stats';
 
 	export let name: string;
-	const stat = stats[name];
+	const stat = statTypes[name];
 </script>
 
 <article class="bg-zinc-800/50 rounded-lg p-6">

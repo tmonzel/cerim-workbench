@@ -1,5 +1,4 @@
 import { AttributeType } from '$lib/core';
-import type { HeroAttribute } from './attributes';
 import type { HeroType } from './types';
 
 export const heroTypes: HeroType[] = [
@@ -163,45 +162,3 @@ export const heroTypes: HeroType[] = [
 		}
 	}
 ];
-
-export const attributeTypes: Record<string, HeroAttribute> = {
-	[AttributeType.VIGOR]: {
-		name: 'Vigor',
-		color: '#4ade80'
-	},
-
-	[AttributeType.ENDURANCE]: {
-		name: 'Endurance',
-		color: '#fbbf24'
-	},
-
-	[AttributeType.STRENGTH]: {
-		name: 'Strength',
-		color: '#f87171'
-	},
-
-	[AttributeType.DEXTERITY]: {
-		name: 'Dexterity',
-		color: '#f0abfc'
-	},
-
-	[AttributeType.MIND]: {
-		name: 'Mind',
-		color: '#db2777'
-	},
-
-	[AttributeType.INTELLIGENCE]: {
-		name: 'Intelligence',
-		color: '#67e8f9'
-	},
-
-	[AttributeType.FAITH]: {
-		name: 'Faith',
-		color: '#bef264'
-	},
-
-	[AttributeType.ARCANE]: {
-		name: 'Arcane',
-		color: '#f3e8ff'
-	}
-};

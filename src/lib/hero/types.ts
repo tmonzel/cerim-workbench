@@ -1,15 +1,8 @@
 import type { AttributeType, DynamicAttack, DynamicAttributes, DynamicDamageNegation, DynamicValue } from '$lib/core';
-import type { AttributeScaling } from './attributes';
 
 export type HeroContext = {
 	id: string;
 	name: string;
-};
-
-export type HeroStat = {
-	name: string;
-	attributeScaling?: AttributeScaling;
-	renderer?: (value: number) => string;
 };
 
 export type HeroState = {

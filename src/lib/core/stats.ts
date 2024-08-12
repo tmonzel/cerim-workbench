@@ -1,7 +1,14 @@
-import { AttributeType, DynamicValue } from '$lib/core';
-import type { HeroStat } from './types';
+import { AttributeType, type AttributeScaling } from './attributes';
 
-export const stats: Record<string, HeroStat> = {
+export type Stat = {
+	type?: 'flat' | 'percentual';
+	name: string;
+	attributeScaling?: AttributeScaling;
+	renderer?: (value: number) => string;
+	resolver?: (value: number) => number;
+};
+
+export const statTypes: Record<string, Stat> = {
 	hp: {
 		name: 'HP',
 		attributeScaling: {
@@ -57,8 +64,8 @@ export const stats: Record<string, HeroStat> = {
 			]
 		},
 
-		renderer: (value: number) => {
-			return (value * 100).toFixed();
+		resolver: (value: number) => {
+			return value * 100;
 		}
 	},
 
@@ -237,7 +244,7 @@ export const stats: Record<string, HeroStat> = {
 	staminaRecoverySpeed: {
 		name: 'Stamina Recovery',
 		renderer: (value: number) => {
-			return `${value.toFixed()}/s`;
+			return `${value}/s`;
 		}
 	},
 

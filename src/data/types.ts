@@ -33,6 +33,7 @@ export enum SpEffectType {
 
 export interface SpEffectParam extends DataRow {
 	stateInfo: SpEffectType;
+	spCategory: number;
 	iconId: number;
 	paramdexName: string;
 

@@ -1,5 +1,4 @@
-import { ItemModifier } from './ItemModifier';
-import type { ItemData, ItemRarity, SpEffectModifier } from './types';
+import type { ItemData, ItemEffect, ItemRarity } from './types';
 
 export class Item {
 	readonly type: number;
@@ -9,7 +8,7 @@ export class Item {
 
 	tier: number;
 
-	modifiers: ItemModifier[] = [];
+	effects: ItemEffect[] = [];
 	iconId: string;
 	description?: string;
 
@@ -31,19 +30,9 @@ export class Item {
 		this.description = data.description;
 
 		this.rarity = data.rarity;
-
-		if (data.modifiers) {
-			this.setModifiers(data.modifiers);
-		}
 	}
 
-	setModifiers(modifiers: SpEffectModifier[]): void {
-		const newModifiers: ItemModifier[] = [];
-
-		for (const m of modifiers) {
-			newModifiers.push(new ItemModifier(m));
-		}
-
-		this.modifiers = newModifiers;
+	setEffects(effects: ItemEffect[]): void {
+		this.effects = effects;
 	}
 }

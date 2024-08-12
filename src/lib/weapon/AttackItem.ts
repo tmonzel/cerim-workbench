@@ -1,6 +1,6 @@
-import { AttackType, AttributeType, GuardType, type Attack, type GraphMutation, type Guard } from '$lib/core/types';
+import { AttackType, AttributeType, GuardType, type Attack, type GraphMutation, type Guard } from '$lib/core';
 import { attackCorrectRecord, mutationRecord, spEffectsMap, upgradeSchemata } from '$lib/data';
-import { Item, type ItemConfig, type SpEffectModifier, type Upgradable } from '$lib/item';
+import { Item, type ItemConfig, type SpEffect, type Upgradable } from '$lib/item';
 import { AffinityType } from './affinity';
 import { scalingAttributes } from './scaling';
 import type { AttackInfo, UpgradeSchema, WeaponEntity, WeaponRequirements, WeaponScaling } from './types';
@@ -41,17 +41,23 @@ export class AttackItem extends Item implements Upgradable {
 
 	setConfig(config: ItemConfig): void {
 		this.config = config;
-		this.modifiers = [];
+		this.effects = [];
 		this.schema = typeof config.schema === 'string' ? upgradeSchemata[config.schema] : upgradeSchemata['0'];
 
 		if (config.effects) {
+			const effects: SpEffect[] = [];
+
 			for (const id of Object.values(config.effects)) {
 				const effect = spEffectsMap.get(id);
 
-				if (effect && effect.modifiers) {
-					this.setModifiers(effect.modifiers);
+				if (!effect) {
+					continue;
 				}
+
+				effects.push(effect);
 			}
+
+			this.setEffects(effects);
 		}
 
 		this.update();
@@ -110,7 +116,7 @@ export class AttackItem extends Item implements Upgradable {
 		}
 
 		if (this.config.effects) {
-			const modifiers: SpEffectModifier[] = [];
+			const effects: SpEffect[] = [];
 
 			for (const [index, id] of Object.entries(this.config.effects)) {
 				let effectId = id;
@@ -127,12 +133,10 @@ export class AttackItem extends Item implements Upgradable {
 					continue;
 				}
 
-				if (effect.modifiers) {
-					modifiers.push(...effect.modifiers);
-				}
+				effects.push(effect);
 			}
 
-			this.setModifiers(modifiers);
+			this.setEffects(effects);
 		}
 
 		this.possibleUpgrades = this.schema.tiers ?? 25;

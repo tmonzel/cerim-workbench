@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { attributeTypes } from '$lib/hero';
+	import { attributeTypes } from '$lib/core';
 
 	export let type: string;
 </script>

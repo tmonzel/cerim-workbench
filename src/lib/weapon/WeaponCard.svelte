@@ -4,8 +4,8 @@
 	import GuardGrid from '$lib/components/GuardGrid.svelte';
 	import Icon from '$lib/components/Icon.svelte';
 	import ItemCard from '$lib/item/components/ItemCard.svelte';
+	import ItemEffectBadge from '$lib/item/components/ItemEffectBadge.svelte';
 	import ItemHeader from '$lib/item/components/ItemHeader.svelte';
-	import ModifierList from '$lib/item/components/ModifierList.svelte';
 	import type { AttackItem } from './AttackItem';
 	import { weaponTypeInfo } from './weapon.type';
 	import WeaponInfo from './WeaponInfo.svelte';
@@ -37,7 +37,13 @@
 		<WeaponInfo {item} />
 	</div>
 
-	<ModifierList data={item.modifiers} />
+	<ul>
+		{#each item.effects as effect}
+			<li>
+				<ItemEffectBadge {effect} />
+			</li>
+		{/each}
+	</ul>
 
 	{#if slotted && item.guard}
 		<div class="px-4 py-4 sm:px-0">

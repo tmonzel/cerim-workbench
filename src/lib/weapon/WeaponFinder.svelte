@@ -7,15 +7,12 @@
 	import SelectControl from '$lib/components/SelectControl.svelte';
 	import { createCollection } from '$lib/core';
 	import WeaponCard from './WeaponCard.svelte';
+	import Pagination from '$lib/components/Pagination.svelte';
 
 	export let items: AttackItem[];
 	export let selectedItem: AttackItem | null = null;
 
-	type FilterSchema = {
-		filters: { search: string; type: number | null };
-	};
-
-	const { result, sort, filters } = createCollection(
+	const { result, sort, filters, pagination } = createCollection(
 		items,
 		{ filters: { search: '', type: null } },
 		{
@@ -90,14 +87,25 @@
 			</div>
 		</div>
 	</div>
-	{#if items.length === 0}
+
+	{#if $result.totalItems > $pagination.itemsPerPage}
+		<div class="p-5 flex justify-end text-sm">
+			<Pagination
+				totalItems={$result.totalItems}
+				itemsPerPage={$pagination.itemsPerPage}
+				bind:currentPage={$pagination.page}
+			/>
+		</div>
+	{/if}
+
+	{#if $result.items.length === 0}
 		<div class="text-sky-200 p-4 flex items-center rounded-lg bg-sky-900/50 m-4">
 			<span class="mat-icon me-2">warning</span>Sorry, no items found
 		</div>
 	{/if}
 
-	<ul class="grid grid-cols-3 px-5 py-2 gap-10">
-		{#each $result as item}
+	<ul class="grid grid-cols-2 px-5 py-2 gap-10">
+		{#each $result.items as item}
 			<li>
 				<button
 					type="button"

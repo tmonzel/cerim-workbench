@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { heroState } from '../state';
-	import { stats } from '../stats';
 	import StatCard from './StatCard.svelte';
 
 	let activeView: string | null = null;

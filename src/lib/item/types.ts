@@ -1,4 +1,13 @@
-import type { AttackType, AttributeType, GraphMutation, Guard } from '$lib/core';
+import type {
+	AttackType,
+	AttributeType,
+	GraphMutation,
+	Guard,
+	SpEffect,
+	SpEffectCategory,
+	SpEffectCondition,
+	SpEffectModifier
+} from '$lib/core';
 import type { Item } from './Item';
 
 export interface Upgradable {
@@ -65,34 +74,21 @@ export type ItemUpgrade = {
 	effectInfo?: string;
 };
 
+export type ItemEffect = {
+	category: SpEffectCategory;
+	duration: number;
+	affectedSpellTypes?: string[];
+	conditions?: SpEffectCondition[];
+	modifiers?: SpEffectModifier[];
+	activated: boolean;
+};
+
 export type ModifierType = 'flat' | 'percentual';
 export type ModifierData = Record<string, ModifierConfig>;
 export type ModifierConfig = {
 	name?: string;
 	multiplier?: 'offset' | 'total';
 	modify: Record<string, number>;
-};
-
-export type SpEffect = {
-	id: number;
-	duration: number;
-	trigger: {
-		interval: number;
-		onBelowHp: number;
-		onAboveHp: number;
-	};
-	accumulatorEffectId?: number;
-	affectedSpellTypes?: string[];
-	conditions?: number[];
-	modifiers?: SpEffectModifier[];
-};
-
-export type SpEffectModifier = {
-	group?: string;
-	type: 'flat' | 'percentual';
-
-	prop: string;
-	value: number;
 };
 
 export type ItemStoreState<T extends Item> = {

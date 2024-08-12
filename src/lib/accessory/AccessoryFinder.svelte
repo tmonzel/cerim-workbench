@@ -4,11 +4,12 @@
 	import type { AccessoryItem } from './AccessoryItem';
 	import { createCollection } from '$lib/core';
 	import AccessoryCard from './AccessoryCard.svelte';
+	import Pagination from '$lib/components/Pagination.svelte';
 
 	export let items: AccessoryItem[];
 	export let selectedItem: AccessoryItem | null = null;
 
-	const { result, sort, filters } = createCollection(
+	const { result, filters, pagination } = createCollection(
 		items,
 		{ filters: { search: '' } },
 		{
@@ -40,14 +41,25 @@
 			<InputControl bind:value={$filters.search} placeholder="Find talismans..." class="text-xl" />
 		</div>
 	</div>
-	{#if $result.length === 0}
+
+	{#if $result.totalItems > $pagination.itemsPerPage}
+		<div class="p-5 flex justify-end text-sm">
+			<Pagination
+				totalItems={$result.totalItems}
+				itemsPerPage={$pagination.itemsPerPage}
+				bind:currentPage={$pagination.page}
+			/>
+		</div>
+	{/if}
+
+	{#if $result.items.length === 0}
 		<div class="bg-rose-900/20 text-rose-400 p-3 rounded-lg flex items-center m-5">
 			<span class="mat-icon me-2">warning</span>No items found for this criteria
 		</div>
 	{/if}
 
 	<ul class="grid grid-cols-3 px-5 py-2 gap-10">
-		{#each $result as item}
+		{#each $result.items as item}
 			<li>
 				<button
 					type="button"
