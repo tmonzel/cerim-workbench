@@ -1,6 +1,6 @@
 import { AttackType, AttributeType, GuardType, type Attack, type GraphMutation, type Guard } from '$lib/core';
-import { attackCorrectRecord, mutationRecord, spEffectsMap, upgradeSchemata } from '$lib/data';
-import { Item, type ItemConfig, type SpEffect, type Upgradable } from '$lib/item';
+import { attackCorrectRecord, mutationRecord, upgradeSchemata } from '$lib/data';
+import { Item, type ItemConfig, type Upgradable } from '$lib/item';
 import { AffinityType } from './affinity';
 import { scalingAttributes } from './scaling';
 import type { AttackInfo, UpgradeSchema, WeaponEntity, WeaponRequirements, WeaponScaling } from './types';
@@ -12,9 +12,10 @@ export class AttackItem extends Item implements Upgradable {
 	affinities: Map<string, ItemConfig>;
 	scaling: WeaponScaling = {};
 	config!: ItemConfig;
-	possibleUpgrades = 0;
+	possibleUpgrades: number;
 	schema?: UpgradeSchema;
 	requirements: WeaponRequirements;
+	tier: number;
 
 	attackMutations: Partial<Record<AttackType, GraphMutation[]>>;
 	private _affinity: AffinityType | null;
@@ -33,6 +34,7 @@ export class AttackItem extends Item implements Upgradable {
 		this.possibleUpgrades = entity.upgrades ? entity.upgrades.length : 0;
 		this.requirements = entity.requirements;
 		this.attackInfo = entity.attackInfo;
+		this.tier = entity.tier ?? 0;
 
 		if (entity.config) {
 			this.setConfig(entity.config);
@@ -43,22 +45,6 @@ export class AttackItem extends Item implements Upgradable {
 		this.config = config;
 		this.effects = [];
 		this.schema = typeof config.schema === 'string' ? upgradeSchemata[config.schema] : upgradeSchemata['0'];
-
-		if (config.effects) {
-			const effects: SpEffect[] = [];
-
-			for (const id of Object.values(config.effects)) {
-				const effect = spEffectsMap.get(id);
-
-				if (!effect) {
-					continue;
-				}
-
-				effects.push(effect);
-			}
-
-			this.setEffects(effects);
-		}
 
 		this.update();
 	}
@@ -73,15 +59,34 @@ export class AttackItem extends Item implements Upgradable {
 		}
 
 		this._affinity = affinity;
-		this._modified = affinity !== AffinityType.STANDARD;
 		this.setConfig(config);
 	}
 
 	upgrade(tier: number): void {
 		this.tier = tier;
-		this._modified = tier !== 0;
-
 		this.update();
+	}
+
+	updateEffects(): void {
+		if (!this.config.effects || !this.schema) {
+			return;
+		}
+
+		const ids: number[] = [];
+
+		for (const [index, id] of Object.entries(this.config.effects)) {
+			let effectId = id;
+
+			const effectOffsets = this.schema.effects[Number(index)];
+
+			if (this.tier > 0 && effectOffsets[this.tier]) {
+				effectId = id + effectOffsets[this.tier];
+			}
+
+			ids.push(effectId);
+		}
+
+		this.applyEffects(ids);
 	}
 
 	update(): void {
@@ -115,29 +120,7 @@ export class AttackItem extends Item implements Upgradable {
 			}
 		}
 
-		if (this.config.effects) {
-			const effects: SpEffect[] = [];
-
-			for (const [index, id] of Object.entries(this.config.effects)) {
-				let effectId = id;
-
-				const effectOffsets = this.schema.effects[Number(index)];
-
-				if (this.tier > 0 && effectOffsets[this.tier]) {
-					effectId = id + effectOffsets[this.tier];
-				}
-
-				const effect = spEffectsMap.get(effectId);
-
-				if (!effect) {
-					continue;
-				}
-
-				effects.push(effect);
-			}
-
-			this.setEffects(effects);
-		}
+		this.updateEffects();
 
 		this.possibleUpgrades = this.schema.tiers ?? 25;
 

@@ -1,10 +1,9 @@
 import { get } from 'svelte/store';
 import { attributeStore, type AttributeState } from './hero';
-import { appStore, type AppState } from './state';
-import { equipStore, type EquipState } from './hero/equip.store';
 import { itemMap } from './data';
 import { AffinityType, AttackItem } from './weapon';
 import { AccessoryItem } from './accessory';
+import { appStore, equipStore, type AppState, type EquipState } from './state';
 
 export type ItemSnapshot = {
 	id: string;
@@ -66,7 +65,7 @@ export function makeSharedBuildSnapshot(): SharedBuild {
 			id: item.id
 		};
 
-		if (item.tier > 0) {
+		if ((item instanceof AttackItem || item instanceof AccessoryItem) && item.tier > 0) {
 			equip[slot].tier = item.tier;
 		}
 

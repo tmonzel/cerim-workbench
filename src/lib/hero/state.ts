@@ -1,12 +1,14 @@
 import { derived } from 'svelte/store';
 import { attributeStore } from './attributes';
-import { AttributeType, calcCorrect, DamageType, statTypes, type SpEffect } from '$lib/core';
+import { AttributeType, calcCorrect, DamageType, DynamicAttack, statTypes } from '$lib/core';
 import { heroTypes } from './data';
-import { equipStore } from './equip.store';
 import { ProtectItem } from '$lib/armor';
-import { appStore } from '$lib/state';
 import { createHero } from './create';
 import type { HeroState } from './types';
+import type { AttackItem } from '$lib/weapon';
+import { calcScaledAttack } from '$lib/weapon/scaling';
+import { appStore, combatStore, equipStore } from '$lib/state';
+import type { ItemEffect } from '$lib/item';
 
 export const HERO_MAX_LEVEL = 713;
 
@@ -74,7 +76,36 @@ export const heroState = derived([appStore, attributeStore, equipStore], ([confi
 	return hero;
 });
 
-export function applyEffectModify(effect: SpEffect, hero: HeroState): void {
+export type AttackInfoState = {
+	weapon: AttackItem;
+	attributes: Record<string, number>;
+	attack: DynamicAttack;
+};
+
+export const attackInfoState = derived([equipStore, heroState, combatStore], ([equip, hero, combat]) => {
+	let attributes = hero.totalAttributes;
+
+	if (combat.twoHanding) {
+		attributes = { ...attributes, str: attributes.str * 1.5 };
+	}
+
+	const weapon = equip[combat.activeHand];
+
+	if (!weapon) {
+		return null;
+	}
+
+	const attack = calcScaledAttack(weapon, attributes);
+	attack.addGroup(hero.attack);
+
+	return {
+		weapon,
+		attributes,
+		attack
+	};
+});
+
+export function applyEffectModify(effect: ItemEffect, hero: HeroState): void {
 	for (const modifier of effect.modifiers ?? []) {
 		const key = modifier.key;
 		const value = modifier.value;

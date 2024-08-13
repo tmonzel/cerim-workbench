@@ -6,6 +6,7 @@
 	import { page } from '$app/stores';
 	import { findBuild } from '$lib/api';
 	import { applySharedBuild } from '$lib/share';
+	import { loadInventory } from '$lib/inventory';
 
 	let loading = true;
 
@@ -14,6 +15,7 @@
 		await loadAccessories();
 		await loadArmors();
 		await loadWeapons();
+		await loadInventory();
 
 		if ($page.params.uid) {
 			// Fetch shared build configuration

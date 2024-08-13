@@ -2,9 +2,9 @@
 	import CheckboxControl from '$lib/components/CheckboxControl.svelte';
 	import DamageDistBar from '$lib/components/DamageDistBar.svelte';
 	import type { DynamicAttack } from '$lib/core';
+	import { combatStore } from '$lib/state';
 	import type { AttackItem } from '$lib/weapon';
 	import { validateRequirements } from '$lib/weapon/helpers';
-	import { combatStore } from '../combat.store';
 	import AttackScalingInfo from './AttackScalingInfo.svelte';
 
 	export let weapon: AttackItem;

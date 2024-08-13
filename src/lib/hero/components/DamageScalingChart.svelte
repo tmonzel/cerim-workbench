@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { type Attack, type AttributeType } from '$lib/core/types';
+	import { AttributeType, type Attack } from '$lib/core';
 	import { VisXYContainer, VisLine, VisAxis, VisStackedBar } from '@unovis/svelte';
 	import { attackTypes } from '$lib/core';
 	import AttributeBadge from '$lib/components/AttributeBadge.svelte';

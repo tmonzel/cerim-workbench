@@ -1,5 +1,6 @@
 import type { AccessoryItem } from '$lib/accessory';
 import type { ProtectItem } from '$lib/armor';
+import type { GoodItem } from '$lib/inventory';
 import type { AttackItem } from '$lib/weapon';
 import { writable } from 'svelte/store';
 
@@ -17,7 +18,7 @@ export type EquipState = {
 	pouch3: AccessoryItem | null;
 	pouch4: AccessoryItem | null;
 
-	rune: AccessoryItem | null;
+	greatRune: GoodItem | null;
 };
 
 export const equipStore = writable<EquipState>({
@@ -34,5 +35,5 @@ export const equipStore = writable<EquipState>({
 	pouch3: null,
 	pouch4: null,
 
-	rune: null
+	greatRune: null
 });

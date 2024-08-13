@@ -1,9 +1,9 @@
-import { spEffectsMap } from '$lib/data';
-import { Item, type ItemEffect, type Upgradable } from '$lib/item';
+import { Item, type Upgradable } from '$lib/item';
 import type { AccessoryEntity } from './types';
 
 export class AccessoryItem extends Item implements Upgradable {
-	possibleUpgrades = 0;
+	possibleUpgrades: number;
+	tier: number;
 	effectInfo?: string;
 
 	constructor(
@@ -12,40 +12,14 @@ export class AccessoryItem extends Item implements Upgradable {
 	) {
 		super(id, entity);
 
+		this.tier = entity.tier ?? 0;
 		this.possibleUpgrades = entity.upgrades ? entity.upgrades.length : 0;
 
 		this.update();
 	}
 
-	applyEffects(ids: number[]): void {
-		const effects: ItemEffect[] = [];
-
-		for (const id of ids) {
-			const effect = spEffectsMap.get(id);
-			let activated = true;
-
-			if (!effect) {
-				continue;
-			}
-
-			if (effect?.trigger && effect.trigger.onBelowHp >= 0) {
-				activated = false;
-			}
-
-			effects.push({
-				category: effect.category,
-				duration: effect.duration,
-				modifiers: effect.modifiers,
-				activated
-			});
-		}
-
-		this.setEffects(effects);
-	}
-
 	upgrade(tier: number): void {
 		this.tier = tier;
-		this._modified = tier !== 0;
 
 		this.update();
 	}

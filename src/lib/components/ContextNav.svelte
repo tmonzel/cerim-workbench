@@ -23,6 +23,12 @@
 			name: 'accessories',
 			label: 'Accessories',
 			icon: 'diamond'
+		},
+
+		{
+			name: 'inventory',
+			label: 'Great Rune',
+			icon: 'package_2'
 		}
 	];
 </script>

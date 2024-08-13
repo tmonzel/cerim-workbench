@@ -6,7 +6,7 @@ import { armorStore, ProtectItem, type ArmorEntity } from './armor';
 import { AccessoryItem, accessoryStore, type AccessoryEntity } from './accessory';
 import type { Item } from './item';
 
-const API_URL = './data';
+const DATA_URL = './data';
 
 export type DataSchema = {
 	upgradeSchemata?: Record<string, UpgradeSchema>;
@@ -16,7 +16,7 @@ export type DataSchema = {
 };
 
 export async function fetchData<T>(url: string): Promise<T> {
-	const response = await fetch(url);
+	const response = await fetch(`${DATA_URL}${url}`);
 	return response.json();
 }
 
@@ -27,7 +27,7 @@ export const spEffectsMap = new Map<number, SpEffect>();
 export const itemMap = new Map<string, Item>();
 
 export async function loadCalcData() {
-	const data = await fetchData<DataSchema>(`${API_URL}/data.json`);
+	const data = await fetchData<DataSchema>(`/data.json`);
 
 	if (data.mutations) {
 		for (const name in data.mutations) {
@@ -56,7 +56,7 @@ export async function loadCalcData() {
 
 export async function loadWeapons() {
 	// Fetching attack item data
-	const weaponData = await fetchData<{ data: Record<string, WeaponEntity> }>(`${API_URL}/weapons.json`);
+	const weaponData = await fetchData<{ data: Record<string, WeaponEntity> }>(`/weapons.json`);
 	const weapons: Record<string, AttackItem> = {};
 
 	for (const id in weaponData.data) {
@@ -69,7 +69,7 @@ export async function loadWeapons() {
 
 export async function loadArmors() {
 	// Fetching protector item data
-	const armorData = await fetchData<{ data: Record<string, ArmorEntity> }>(`${API_URL}/armors.json`);
+	const armorData = await fetchData<{ data: Record<string, ArmorEntity> }>(`/armors.json`);
 	const armors: Record<string, ProtectItem> = {};
 
 	for (const id in armorData.data) {
@@ -82,9 +82,7 @@ export async function loadArmors() {
 
 export async function loadAccessories() {
 	// Fetching accessory item data
-	const accessoryData = await fetchData<{ data: Record<string, AccessoryEntity> }>(
-		`${API_URL}/accessories_generated.json`
-	);
+	const accessoryData = await fetchData<{ data: Record<string, AccessoryEntity> }>(`/accessories_generated.json`);
 
 	const accessories: Record<string, AccessoryItem> = {};
 

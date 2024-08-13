@@ -1,11 +1,11 @@
 <script lang="ts">
-	import type { DynamicNumber } from '$lib/core';
-	import { heroState, type HeroAttribute } from '$lib/hero';
+	import type { Attribute, DynamicNumber } from '$lib/core';
+	import { heroState } from '$lib/hero';
 	import { uiState } from '$lib/state';
 	import { createEventDispatcher } from 'svelte';
 
 	export let base: number;
-	export let attribute: HeroAttribute;
+	export let attribute: Attribute;
 	export let value: DynamicNumber;
 
 	const id = crypto.randomUUID();

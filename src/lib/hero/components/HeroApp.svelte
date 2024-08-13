@@ -1,8 +1,8 @@
 <script lang="ts">
 	import Header from '$lib/components/Header.svelte';
 	import TabPanel from '$lib/components/TabPanel.svelte';
-	import { attackInfoState, combatStore, type HeroState } from '$lib/hero';
-	import { appStore } from '$lib/state';
+	import { attackInfoState, type HeroState } from '$lib/hero';
+	import { appStore, combatStore } from '$lib/state';
 	import AttackPanel from './AttackPanel.svelte';
 	import AttributePanel from './AttributePanel.svelte';
 	import HeroBody from './HeroBody.svelte';

@@ -1,7 +1,7 @@
 import { writeFileSync } from 'fs';
 import { iconExists, mapFmgXml, prepareXml } from '../helpers';
 import type { GoodRow } from './type';
-import type { GoodEntity } from '$lib/good';
+import { GoodsType, type GoodEntity } from '$lib/inventory';
 
 export function parseGoods(xmlFile: string): Record<string, GoodEntity> {
 	const { rows, defaults } = prepareXml<GoodRow>(xmlFile);
@@ -15,6 +15,11 @@ export function parseGoods(xmlFile: string): Record<string, GoodEntity> {
 	for (let i = 0; i < rows.length; i++) {
 		const row = { ...defaults, ...rows[i] };
 		const iconId = String(row.iconId).padStart(5, '0');
+
+		if (row.goodsType !== GoodsType.GREAT_RUNE) {
+			// Only include great runes for now
+			continue;
+		}
 
 		if (!iconExists(iconId)) {
 			console.log(`Good#${row.id} icon image missing for #${iconId} (skipping)`);
@@ -34,9 +39,9 @@ export function parseGoods(xmlFile: string): Record<string, GoodEntity> {
 			name: row.paramdexName,
 			weight: row.weight,
 			rarity: row.rarity,
-			iconId: row.iconId.toFixed(),
+			iconId,
 			effects,
-			type: 1,
+			type: row.goodsType,
 			effectInfo: infoMessages[row.id]
 		};
 	}

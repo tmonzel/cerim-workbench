@@ -1,8 +1,5 @@
 <script lang="ts">
-	import ItemUpgradeBar from '$lib/hero/components/ItemUpgradeBar.svelte';
 	import Dialog from '$lib/components/Dialog.svelte';
-	import AccessoryFinder from './AccessoryFinder.svelte';
-	import type { AccessoryItem } from './AccessoryItem';
 	import EquipSlot from '$lib/item/components/EquipSlot.svelte';
 	import CheckboxControl from '$lib/components/CheckboxControl.svelte';
 	import Button from '$lib/components/Button.svelte';
@@ -10,15 +7,17 @@
 	import Icon from '$lib/components/Icon.svelte';
 	import ItemEffectBadge from '$lib/item/components/ItemEffectBadge.svelte';
 	import ItemChangeButton from '$lib/item/components/ItemChangeButton.svelte';
-	import { item } from '@unovis/ts/components/bullet-legend/style';
+	import type { InventoryItem } from './InventoryItem';
+	import GoodFinder from './GoodFinder.svelte';
+	import { goodTypeInfo } from './good.type';
 
 	export let label: string;
-	export let selectedItem: AccessoryItem | null = null;
-	export let items: AccessoryItem[] = [];
+	export let selectedItem: InventoryItem | null = null;
+	export let items: InventoryItem[] = [];
 
 	let dialog: Dialog;
 
-	function updateItem(item: AccessoryItem) {
+	function updateItem(item: InventoryItem) {
 		selectedItem = item;
 	}
 </script>
@@ -26,10 +25,6 @@
 <div class="relative">
 	{#if selectedItem}
 		<div class="absolute top-3 right-3 flex items-center gap-x-5">
-			{#if selectedItem.possibleUpgrades > 0}
-				<ItemUpgradeBar bind:item={selectedItem} />
-			{/if}
-
 			<div>
 				<Button icon="clear" on:click={() => (selectedItem = null)} class="text-xl text-zinc-500 bg-zinc-700/30" />
 			</div>
@@ -42,8 +37,8 @@
 				<ItemChangeButton {item} on:click={() => dialog.open()} />
 
 				<div class="grow">
-					<ItemHeader rarity={item.rarity} type="Talisman">
-						{item.name}{#if item.tier > 0}(+{item.tier}){/if}
+					<ItemHeader rarity={item.rarity} type={goodTypeInfo[item.type].name}>
+						{item.name}
 					</ItemHeader>
 
 					{#if item.weight > 0}
@@ -82,5 +77,5 @@
 		Select <span class="font-semibold">{label}</span> Item
 	</svelte:fragment>
 
-	<AccessoryFinder {items} bind:selectedItem on:selectItem={() => dialog.close()} />
+	<GoodFinder {items} bind:selectedItem on:selectItem={() => dialog.close()} />
 </Dialog>

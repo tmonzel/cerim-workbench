@@ -3,7 +3,6 @@ import type {
 	AttributeType,
 	GraphMutation,
 	Guard,
-	SpEffect,
 	SpEffectCategory,
 	SpEffectCondition,
 	SpEffectModifier

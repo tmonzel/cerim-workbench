@@ -1,13 +1,12 @@
 <script lang="ts">
-	import { equipStore } from '../equip.store';
 	import WeaponEquipSlot from '$lib/weapon/WeaponEquipSlot.svelte';
 	import { ArmorType, readArmorByType } from '$lib/armor';
 	import ArmorEquipSlot from '$lib/armor/ArmorEquipSlot.svelte';
-	import { appStore } from '$lib/state';
 	import { weaponStore } from '$lib/weapon';
 	import { derived } from 'svelte/store';
 	import AccessoryPanel from './AccessoryPanel.svelte';
-	import { combatStore } from '../combat.store';
+	import { appStore, equipStore, combatStore } from '$lib/state';
+	import InventoryPanel from '$lib/inventory/InventoryPanel.svelte';
 
 	const weapons = derived(weaponStore, (weapons) => Object.values(weapons));
 	const helmets = readArmorByType(ArmorType.HEAD);
@@ -22,6 +21,10 @@
 		<ArmorEquipSlot label="Chest" items={$armors} bind:selectedItem={$equipStore.chest} />
 		<ArmorEquipSlot label="Legs" items={$legs} bind:selectedItem={$equipStore.legs} />
 		<ArmorEquipSlot label="Arms" items={$gauntlets} bind:selectedItem={$equipStore.arms} />
+	</div>
+
+	<div class:hidden={$appStore.heroContext !== 'inventory'}>
+		<InventoryPanel />
 	</div>
 
 	<div class:hidden={$appStore.heroContext !== 'accessories'}>

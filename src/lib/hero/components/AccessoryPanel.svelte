@@ -1,7 +1,7 @@
 <script>
 	import { accessoryStore } from '$lib/accessory';
-	import { equipStore } from '../equip.store';
 	import AccessoryEquipSlot from '$lib/accessory/AccessoryEquipSlot.svelte';
+	import { equipStore } from '$lib/state';
 	import { derived } from 'svelte/store';
 
 	const talismans = derived(accessoryStore, (accessories) =>
