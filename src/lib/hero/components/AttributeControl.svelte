@@ -6,7 +6,8 @@
 
 	export let base: number;
 	export let attribute: Attribute;
-	export let value: DynamicNumber;
+	export let value: number;
+	export let offset: number = 0;
 
 	const id = crypto.randomUUID();
 	const dispatch = createEventDispatcher<{ changeValue: number }>();
@@ -15,17 +16,20 @@
 	let total = 0;
 
 	$: {
-		$uiState.showAttributeInfo = showTooltip ? attribute.name : null;
+		$uiState.showRuneInfo = showTooltip;
 	}
 
-	$: total = base + value.total;
+	$: total = base + value;
 
 	function changeValue(newValue: number) {
-		if (newValue < 0 || newValue > 99) {
+		if (newValue < 0) {
 			return;
 		}
 
-		//value = newValue;
+		if (newValue + base > 99) {
+			return 99 - base;
+		}
+
 		dispatch('changeValue', newValue);
 	}
 </script>
@@ -40,21 +44,21 @@
 			class="rounded-md border-0 px-4 text-zinc-200 hover:scale-150 transition-transform ease-out"
 			on:pointerover={() => (showTooltip = true)}
 			on:pointerout={() => (showTooltip = false)}
-			on:click={() => changeValue(value.base - 1)}
+			on:click={() => changeValue(value - 1)}
 		>
 			-
 		</button>
 	</div>
 	<div class="rounded-md border-0 py-1 text-center text-zinc-300">
-		{base + value.base}
-		{#if value.offset > 0}<span class="opacity-60">(+{value.offset})</span>{/if}
+		{base + value}
+		{#if offset > 0}<span class="opacity-60">(+{offset})</span>{/if}
 	</div>
 	<div class="absolute inset-y-0 right-0 flex items-center z-20">
 		<button
 			class="rounded-md border-0 bg-transparent px-4 text-zinc-200 hover:scale-150 transition-transform ease-out"
 			on:pointerover={() => (showTooltip = true)}
 			on:pointerout={() => (showTooltip = false)}
-			on:click={() => ($heroState.attributePoints > 0 ? changeValue(value.base + 1) : -1)}
+			on:click={() => ($heroState.attributePoints > 0 ? changeValue(value + 1) : -1)}
 		>
 			+
 		</button>

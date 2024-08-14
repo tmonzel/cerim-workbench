@@ -8,7 +8,7 @@
 
 	export let item: AttackItem;
 
-	$: invalidAttributes = validateRequirements(item.requirements ?? {}, $heroState.totalAttributes);
+	$: invalidAttributes = validateRequirements(item.requirements ?? {}, $heroState.attributes);
 </script>
 
 <div class="flex gap-x-8 text-sm">

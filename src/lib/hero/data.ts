@@ -1,8 +1,8 @@
 import { AttributeType } from '$lib/core';
 import type { HeroType } from './types';
 
-export const heroTypes: HeroType[] = [
-	{
+export const heroTypes: Record<string, HeroType> = {
+	hero: {
 		id: 'hero',
 		name: 'Hero',
 		level: 7,
@@ -18,7 +18,7 @@ export const heroTypes: HeroType[] = [
 		}
 	},
 
-	{
+	bandit: {
 		id: 'bandit',
 		name: 'Bandit',
 		level: 5,
@@ -34,7 +34,7 @@ export const heroTypes: HeroType[] = [
 		}
 	},
 
-	{
+	astrologer: {
 		id: 'astrologer',
 		name: 'Astrologer',
 		level: 6,
@@ -50,7 +50,7 @@ export const heroTypes: HeroType[] = [
 		}
 	},
 
-	{
+	warrior: {
 		id: 'warrior',
 		name: 'Warrior',
 		level: 8,
@@ -66,7 +66,7 @@ export const heroTypes: HeroType[] = [
 		}
 	},
 
-	{
+	prisoner: {
 		id: 'prisoner',
 		name: 'Prisoner',
 		level: 9,
@@ -82,7 +82,7 @@ export const heroTypes: HeroType[] = [
 		}
 	},
 
-	{
+	confessor: {
 		id: 'confessor',
 		name: 'Confessor',
 		level: 10,
@@ -98,7 +98,7 @@ export const heroTypes: HeroType[] = [
 		}
 	},
 
-	{
+	wretch: {
 		id: 'wretch',
 		name: 'Wretch',
 		level: 1,
@@ -114,7 +114,7 @@ export const heroTypes: HeroType[] = [
 		}
 	},
 
-	{
+	vagabond: {
 		id: 'vagabond',
 		name: 'Vagabond',
 		level: 9,
@@ -130,7 +130,7 @@ export const heroTypes: HeroType[] = [
 		}
 	},
 
-	{
+	prophet: {
 		id: 'prophet',
 		name: 'Prophet',
 		level: 7,
@@ -146,7 +146,7 @@ export const heroTypes: HeroType[] = [
 		}
 	},
 
-	{
+	samurai: {
 		id: 'samurai',
 		name: 'Samurai',
 		level: 9,
@@ -161,4 +161,4 @@ export const heroTypes: HeroType[] = [
 			[AttributeType.ARCANE]: 8
 		}
 	}
-];
+};

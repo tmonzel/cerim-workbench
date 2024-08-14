@@ -2,7 +2,7 @@ import { DamageType } from './damage';
 import { DynamicGroup } from './DynamicGroup';
 import { DynamicNumber } from './DynamicNumber';
 
-export class DynamicDamageNegation extends DynamicGroup {
+export class DynamicDamageNegation extends DynamicGroup<DamageType> {
 	constructor(value?: Partial<Record<string, number>>) {
 		super({
 			[DamageType.STANDARD]: new DynamicNumber(value?.standard),

@@ -1,51 +1,31 @@
 import { derived } from 'svelte/store';
-import { attributeStore } from './attributes';
-import { AttributeType, calcCorrect, DamageType, DynamicAttack, statTypes } from '$lib/core';
-import { heroTypes } from './data';
+import {
+	AttributeType,
+	calcCorrect,
+	calcNeededSouls,
+	DamageType,
+	DynamicAttack,
+	DynamicValue,
+	statTypes
+} from '$lib/core';
 import { ProtectItem } from '$lib/armor';
-import { createHero } from './create';
 import type { HeroState } from './types';
-import type { AttackItem } from '$lib/weapon';
-import { calcScaledAttack } from '$lib/weapon/scaling';
-import { appStore, combatStore, equipStore } from '$lib/state';
 import type { ItemEffect } from '$lib/item';
+import { heroAttributes, heroEquip, heroType } from '$lib/state';
+import { heroTypes } from './data';
 
 export const HERO_MAX_LEVEL = 713;
 
-export const heroState = derived([appStore, attributeStore, equipStore], ([config, attributeState, equip]) => {
-	const type = heroTypes.find((t) => t.id === config.heroType)!;
-	const hero = createHero(type, attributeState);
+export const heroTypeState = derived(heroType, (type) => {
+	return heroTypes[type];
+});
 
-	// Apply item modifications
+export const heroEffectState = derived(heroEquip, (equip) => {
+	const effects: ItemEffect[] = [];
+
 	for (const item of Object.values(equip)) {
 		if (!item) {
 			continue;
-		}
-
-		// Sum item weights
-		hero.weight += item.weight;
-
-		// Summarize resistance
-		if (item instanceof ProtectItem) {
-			hero.poise += item.poise;
-
-			hero.stats.immunity.base += item.resistance.immunity;
-			hero.stats.robustness.base += item.resistance.robustness;
-			hero.stats.focus.base += item.resistance.focus;
-			hero.stats.vitality.base += item.resistance.vitality;
-
-			hero.damageNegation.setAll({
-				[DamageType.STANDARD]:
-					100 - (100 - hero.damageNegation.get('standard')) * (1 - item.damageNegation.standard / 100),
-				[DamageType.STRIKE]: 100 - (100 - hero.damageNegation.get('strike')) * (1 - item.damageNegation.strike / 100),
-				[DamageType.SLASH]: 100 - (100 - hero.damageNegation.get('slash')) * (1 - item.damageNegation.slash / 100),
-				[DamageType.PIERCE]: 100 - (100 - hero.damageNegation.get('pierce')) * (1 - item.damageNegation.pierce / 100),
-				[DamageType.HOLY]: 100 - (100 - hero.damageNegation.get('hol')) * (1 - item.damageNegation.hol / 100),
-				[DamageType.LIGHTNING]: 100 - (100 - hero.damageNegation.get('lit')) * (1 - item.damageNegation.lit / 100),
-				[DamageType.FIRE]: 100 - (100 - hero.damageNegation.get('fir')) * (1 - item.damageNegation.fir / 100),
-				[DamageType.MAGIC]: 100 - (100 - hero.damageNegation.get('mag')) * (1 - item.damageNegation.mag / 100),
-				[DamageType.POISE]: 100 - (100 - hero.damageNegation.get('poise')) * (1 - item.damageNegation.poise / 100)
-			});
 		}
 
 		for (const effect of item.effects) {
@@ -53,57 +33,172 @@ export const heroState = derived([appStore, attributeStore, equipStore], ([confi
 				continue;
 			}
 
-			applyEffectModify(effect, hero);
+			effects.push(effect);
 		}
 	}
 
-	const totalAttributes = hero.attributes.getTotalValue();
+	return effects;
+});
 
-	for (const t of Object.values(AttributeType)) {
-		totalAttributes[t] += hero.type.attributes[t];
-	}
+export const heroModifiedAttributes = derived(heroEffectState, (effects) => {
+	const modifiedAttributes: Record<string, number> = {
+		[AttributeType.VIGOR]: 0,
+		[AttributeType.ENDURANCE]: 0,
+		[AttributeType.STRENGTH]: 0,
+		[AttributeType.DEXTERITY]: 0,
+		[AttributeType.MIND]: 0,
+		[AttributeType.INTELLIGENCE]: 0,
+		[AttributeType.FAITH]: 0,
+		[AttributeType.ARCANE]: 0
+	};
 
-	for (const [name, stat] of Object.entries(statTypes)) {
-		if (!stat.attributeScaling) {
+	for (const effect of effects) {
+		if (!effect.modifiers) {
 			continue;
 		}
 
-		hero.stats[name].base += calcCorrect(totalAttributes[stat.attributeScaling.type], stat.attributeScaling.mutations);
+		for (const mod of effect.modifiers) {
+			if (mod.type === 'attributes') {
+				modifiedAttributes[mod.key] = mod.value;
+			}
+		}
 	}
 
-	hero.totalAttributes = totalAttributes;
-
-	return hero;
+	return modifiedAttributes;
 });
 
-export type AttackInfoState = {
-	weapon: AttackItem;
-	attributes: Record<string, number>;
-	attack: DynamicAttack;
-};
+export const heroState = derived(
+	[heroEquip, heroAttributes, heroModifiedAttributes, heroTypeState],
+	([equip, attributes, modifiedAttributes, type]) => {
+		const level = Object.values(attributes).reduce((p, c) => p + c, 0) + type.level;
 
-export const attackInfoState = derived([equipStore, heroState, combatStore], ([equip, hero, combat]) => {
-	let attributes = hero.totalAttributes;
+		const souls = [...Array<number>(level)].reduce(
+			(p, c, index) => p + (index > 0 ? Math.floor(calcNeededSouls(index)) : 0),
+			0
+		);
 
-	if (combat.twoHanding) {
-		attributes = { ...attributes, str: attributes.str * 1.5 };
+		const baseDefense = calcCorrect(level + 79, [
+			{ breakpoint: 1, grow: 40 },
+			{ breakpoint: 150, grow: 100 },
+			{ breakpoint: 170, grow: 120 },
+			{ breakpoint: 240, grow: 135 },
+			{ breakpoint: 792, grow: 155 }
+		]);
+
+		const baseResistance = calcCorrect(level + 79, [
+			{ breakpoint: 1, grow: 75 },
+			{ breakpoint: 150, grow: 105 },
+			{ breakpoint: 190, grow: 145 },
+			{ breakpoint: 240, grow: 160 },
+			{ breakpoint: 792, grow: 180 }
+		]);
+
+		const hero: HeroState = {
+			level,
+			progress: level / HERO_MAX_LEVEL,
+			souls,
+			attributePoints: HERO_MAX_LEVEL - level,
+			attack: new DynamicAttack(),
+			weight: 0,
+			poise: 0,
+			attributes: {
+				vig: type.attributes.vig + attributes.vig + modifiedAttributes.vig,
+				end: type.attributes.end + attributes.end + modifiedAttributes.end,
+				str: type.attributes.str + attributes.str + modifiedAttributes.str,
+				dex: type.attributes.dex + attributes.dex + modifiedAttributes.dex,
+				mnd: type.attributes.mnd + attributes.mnd + modifiedAttributes.mnd,
+				int: type.attributes.int + attributes.int + modifiedAttributes.int,
+				fth: type.attributes.fth + attributes.fth + modifiedAttributes.fth,
+				arc: type.attributes.arc + attributes.arc + modifiedAttributes.arc
+			},
+
+			stats: {
+				hp: new DynamicValue(),
+				fp: new DynamicValue(),
+				stamina: new DynamicValue(),
+				discovery: new DynamicValue(),
+				equipLoad: new DynamicValue(),
+
+				// Resistance
+				immunity: new DynamicValue(baseResistance),
+				robustness: new DynamicValue(baseResistance),
+				focus: new DynamicValue(baseResistance),
+				vitality: new DynamicValue(baseResistance),
+
+				// Defense
+				standardDefense: new DynamicValue(baseDefense),
+				strikeDefense: new DynamicValue(baseDefense),
+				slashDefense: new DynamicValue(baseDefense),
+				pierceDefense: new DynamicValue(baseDefense),
+
+				magicDefense: new DynamicValue(baseDefense),
+				fireDefense: new DynamicValue(baseDefense),
+				lightningDefense: new DynamicValue(baseDefense),
+				holyDefense: new DynamicValue(baseDefense),
+
+				staminaRecoverySpeed: new DynamicValue(45)
+			},
+
+			damageNegation: {
+				[DamageType.STANDARD]: new DynamicValue(),
+				[DamageType.STRIKE]: new DynamicValue(),
+				[DamageType.SLASH]: new DynamicValue(),
+				[DamageType.PIERCE]: new DynamicValue(),
+				[DamageType.MAGIC]: new DynamicValue(),
+				[DamageType.HOLY]: new DynamicValue(),
+				[DamageType.LIGHTNING]: new DynamicValue(),
+				[DamageType.FIRE]: new DynamicValue(),
+				[DamageType.POISE]: new DynamicValue()
+			}
+		};
+
+		// Apply item modifications
+		for (const item of Object.values(equip)) {
+			if (!item) {
+				continue;
+			}
+
+			// Sum item weights
+			hero.weight += item.weight;
+
+			// Summarize resistance
+			if (item instanceof ProtectItem) {
+				hero.poise += item.poise;
+
+				hero.stats.immunity.base += item.resistance.immunity;
+				hero.stats.robustness.base += item.resistance.robustness;
+				hero.stats.focus.base += item.resistance.focus;
+				hero.stats.vitality.base += item.resistance.vitality;
+
+				for (const damageType of Object.values(DamageType)) {
+					hero.damageNegation[damageType].base =
+						100 - (100 - hero.damageNegation[damageType].base) * (1 - item.damageNegation[damageType] / 100);
+				}
+			}
+
+			for (const effect of item.effects) {
+				if (!effect.activated) {
+					continue;
+				}
+
+				applyEffectModify(effect, hero);
+			}
+		}
+
+		for (const [name, stat] of Object.entries(statTypes)) {
+			if (!stat.attributeScaling) {
+				continue;
+			}
+
+			hero.stats[name].base += calcCorrect(
+				hero.attributes[stat.attributeScaling.type],
+				stat.attributeScaling.mutations
+			);
+		}
+
+		return hero;
 	}
-
-	const weapon = equip[combat.activeHand];
-
-	if (!weapon) {
-		return null;
-	}
-
-	const attack = calcScaledAttack(weapon, attributes);
-	attack.addGroup(hero.attack);
-
-	return {
-		weapon,
-		attributes,
-		attack
-	};
-});
+);
 
 export function applyEffectModify(effect: ItemEffect, hero: HeroState): void {
 	for (const modifier of effect.modifiers ?? []) {
@@ -141,17 +236,8 @@ export function applyEffectModify(effect: ItemEffect, hero: HeroState): void {
 				}
 				break;
 
-			case 'damageNegation':
-				switch (modifier.operation) {
-					case 'multiply':
-						hero.damageNegation.set(key, 100 - (100 - hero.damageNegation.get(key)) * value);
-						break;
-					default:
-						hero.damageNegation.addOffset({ [key]: value });
-				}
-				break;
-			case 'attributes':
-				hero.attributes.addOffset({ [key]: value });
+			case 'absorption':
+				hero.damageNegation[key].base = 100 - (100 - hero.damageNegation[key].base) * value;
 		}
 	}
 }

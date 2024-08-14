@@ -1,16 +1,16 @@
 <script lang="ts">
 	import HeroInfoBar from '$lib/hero/components/HeroInfoBar.svelte';
-	import ContextNav from './ContextNav.svelte';
 	import DonateButton from './DonateButton.svelte';
 	import RuneProgressBar from './RuneProgressBar.svelte';
 	import ShareButton from './ShareButton.svelte';
 </script>
 
-<header class="mb-16">
+<header class="mb-12">
 	<div class="flex">
-		<div>
-			<h1 class="text-3xl font-bold text-zinc-300 me-20">Tarnished Creator</h1>
-			<h2 class="text-zinc-600 font-medium">An Elden Ring Hero Planner</h2>
+		<div class="me-16">
+			<h1 class="font-bold text-zinc-200 mb-2 leading-8" style="font-size: 2rem;">
+				<span class="text-zinc-200">Tarnished</span><br /><span class="">Creator</span>
+			</h1>
 		</div>
 
 		<HeroInfoBar />
@@ -29,10 +29,10 @@
 
 	<RuneProgressBar />
 
-	<div class="flex justify-between">
+	<!--<div class="flex justify-between">
 		<ContextNav />
 		<div class="flex justify-end items-center">
 			<ShareButton />
 		</div>
-	</div>
+	</div>-->
 </header>

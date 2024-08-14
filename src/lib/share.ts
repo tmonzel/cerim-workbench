@@ -1,9 +1,8 @@
 import { get } from 'svelte/store';
-import { attributeStore, type AttributeState } from './hero';
 import { itemMap } from './data';
 import { AffinityType, AttackItem } from './weapon';
 import { AccessoryItem } from './accessory';
-import { appStore, equipStore, type AppState, type EquipState } from './state';
+import { heroAttributes, heroEquip, heroType, type HeroEquipState } from './state';
 
 export type ItemSnapshot = {
 	id: string;
@@ -12,21 +11,18 @@ export type ItemSnapshot = {
 };
 
 export type SharedBuild = {
-	app: Partial<AppState>;
-	attributes?: Partial<AttributeState>;
+	type: string;
+	attributes: Record<string, number>;
 	equip?: Record<string, ItemSnapshot>;
 };
 
 export function applySharedBuild(build: SharedBuild): void {
-	appStore.update((state) => ({ ...state, ...build.app }));
-	attributeStore.update((state) => ({ ...state, ...build.attributes }));
-
-	equipStore.update((state) => {
+	heroEquip.update((state) => {
 		const equip = { ...state };
 
 		if (build.equip) {
 			for (const [key, config] of Object.entries(build.equip)) {
-				const slot = key as keyof EquipState;
+				const slot = key as keyof HeroEquipState;
 				const item = itemMap.get(config.id);
 
 				if (!item) {
@@ -50,13 +46,12 @@ export function applySharedBuild(build: SharedBuild): void {
 }
 
 export function makeSharedBuildSnapshot(): SharedBuild {
-	const app = get(appStore);
-	const attributeState = get(attributeStore);
-	const equipState = get(equipStore);
-
+	const currentType = get(heroType);
+	const currentEquip = get(heroEquip);
+	const currentAttributes = get(heroAttributes);
 	const equip: Record<string, ItemSnapshot> = {};
 
-	for (const [slot, item] of Object.entries(equipState)) {
+	for (const [slot, item] of Object.entries(currentEquip)) {
 		if (!item) {
 			continue;
 		}
@@ -75,8 +70,8 @@ export function makeSharedBuildSnapshot(): SharedBuild {
 	}
 
 	return {
-		app,
-		attributes: attributeState,
+		type: currentType,
+		attributes: currentAttributes,
 		equip
 	};
 }

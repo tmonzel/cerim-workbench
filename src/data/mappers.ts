@@ -1,5 +1,4 @@
-import { AttackType, DamageType, StatusEffectType } from '$lib';
-import type { SpEffect, SpEffectModifier } from '$lib/item/types';
+import { AttackType, DamageType, StatusEffectType, type SpEffect, type SpEffectModifier } from '$lib';
 import { type SpEffectParam } from './types';
 
 export function mapSpEffect(row: SpEffectParam): SpEffect {

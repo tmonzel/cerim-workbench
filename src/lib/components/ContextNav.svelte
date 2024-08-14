@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { appStore } from '$lib/state';
+	import { heroContext } from '$lib/state';
 
 	const contexts = [
 		{
@@ -39,8 +39,8 @@
 			<li>
 				<button
 					class="inline-flex items-center justify-center px-4 py-2 transition-colors rounded-lg nav-btn select-none"
-					class:active={$appStore.heroContext === context.name}
-					on:click={() => ($appStore.heroContext = context.name)}
+					class:active={$heroContext === context.name}
+					on:click={() => ($heroContext = context.name)}
 				>
 					<span class="mat-icon me-1">{context.icon}</span>{context.label}
 				</button>

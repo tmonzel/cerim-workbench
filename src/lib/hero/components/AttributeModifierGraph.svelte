@@ -18,7 +18,7 @@
 	let currentValue: number = 0;
 	let nextValue: number = 0;
 
-	$: progress = $heroState.totalAttributes[attributeType];
+	$: progress = $heroState.attributes[attributeType];
 
 	$: {
 		data = [];

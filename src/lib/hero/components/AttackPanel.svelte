@@ -2,7 +2,7 @@
 	import CheckboxControl from '$lib/components/CheckboxControl.svelte';
 	import DamageDistBar from '$lib/components/DamageDistBar.svelte';
 	import type { DynamicAttack } from '$lib/core';
-	import { combatStore } from '$lib/state';
+	import { heroAttack } from '$lib/state';
 	import type { AttackItem } from '$lib/weapon';
 	import { validateRequirements } from '$lib/weapon/helpers';
 	import AttackScalingInfo from './AttackScalingInfo.svelte';
@@ -16,7 +16,7 @@
 <div>
 	<div class="px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
 		<dt class="text-sm font-medium leading-6">
-			{weapon.name}<br /><span class="text-xs text-zinc-500">{$combatStore.activeHand}</span>
+			{weapon.name}<br /><span class="text-xs text-zinc-500">{$heroAttack.activeHand}</span>
 		</dt>
 		<dd class="mt-1 text-sm leading-6 sm:col-span-2 sm:mt-0">
 			<div class="mb-4 font-medium text-xl">

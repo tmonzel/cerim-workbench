@@ -9,8 +9,6 @@ export class InventoryItem extends Item {
 
 		this.effectInfo = entity.effectInfo;
 
-		console.log(entity.effects);
-
 		this.applyEffects(entity.effects ?? []);
 	}
 }

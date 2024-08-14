@@ -4,12 +4,12 @@
 	import { uiState } from '$lib/state';
 </script>
 
-<div class="relative mb-10">
+<div class="relative">
 	<div class="text-right transition-all" style:width={$heroState.progress * 100 + '%'}>
 		<div
 			class="font-light text-sm text-zinc-400 flex items-center mb-1 transition-opacity opacity-0"
 			class:justify-end={$heroState.progress > 0.075}
-			class:opacity-100={$uiState.showAttributeInfo !== null}
+			class:opacity-100={$uiState.showRuneInfo}
 		>
 			{$heroState.souls.toLocaleString()}<span class="ms-1"
 				>(+{calcNeededSouls($heroState.level).toLocaleString()})</span

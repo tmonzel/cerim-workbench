@@ -5,7 +5,6 @@
 	import Dialog from '$lib/components/Dialog.svelte';
 	import type { AttackItem } from './AttackItem';
 	import WeaponFinder from './WeaponFinder.svelte';
-	import WeaponCard from './WeaponCard.svelte';
 	import Button from '$lib/components/Button.svelte';
 	import ItemHeader from '$lib/item/components/ItemHeader.svelte';
 	import { weaponTypeInfo } from './weapon.type';

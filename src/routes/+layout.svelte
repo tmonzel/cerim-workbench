@@ -31,7 +31,7 @@
 </script>
 
 <svelte:head>
-	<title>Tarnished Creator | An Elden Ring Hero Planner</title>
+	<title>Tarnished Creator | A Hero Planner for Elden Ring</title>
 </svelte:head>
 
 {#if loading}
