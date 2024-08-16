@@ -1,9 +1,8 @@
 import { derived } from 'svelte/store';
-import { AttackType, AttributeType, calcCorrect, DamageType, statTypes } from '$lib/core';
+import { AttackType, AttributeType, calcCorrect, DamageType, heroTypes, statTypes } from '$lib/core';
 import { ProtectItem } from '$lib/armor';
 import type { ItemEffect } from '$lib/item';
 import { heroAttributes, heroEquip, heroType } from '$lib/state';
-import { heroTypes } from './data';
 import { createHero } from '$lib/core/hero';
 
 export const heroTypeState = derived(heroType, (type) => {
