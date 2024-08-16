@@ -5,8 +5,12 @@
 	export let item: Item;
 </script>
 
-<button class="group flex flex-col items-center" on:click>
-	<img src={getIconUrl(item.iconId)} alt={item.name} class="object-cover transition-all group-hover:brightness-150" />
+<button class="flex flex-col items-center" on:click>
+	<img
+		src={getIconUrl(item.iconId)}
+		alt={item.name}
+		class="object-cover transition-all duration-500 ease-out scale-95 group-hover:brightness-150"
+	/>
 
 	<!--<div class="flex rounded-lg text-stone-400/50 p-1">
 		<span

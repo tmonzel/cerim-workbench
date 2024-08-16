@@ -14,8 +14,8 @@ enum SortState {
 	DESC = 2
 }
 
-export type CollectionState = {
-	filters: Record<string, any>;
+export type CollectionState<FSchema> = {
+	filters: FSchema;
 	sort: Record<string, SortState>;
 };
 
@@ -56,9 +56,13 @@ const createSorter = <T>(prop: string, getProp: (item: T) => number): Sorter<T> 
 	};
 };
 
-export function createCollection<T>(items: T[], defaults: Partial<CollectionState>, config: CollectionConfig<T> = {}) {
+export function createCollection<T, F = Record<string, unknown>>(
+	items: T[],
+	defaults: Partial<CollectionState<F>>,
+	config: CollectionConfig<T> = {}
+) {
 	const sortState: Record<string, SortState> = defaults.sort ?? {};
-	const filtersState: Record<string, any> = defaults.filters ?? {};
+	const filtersState: F = defaults.filters ?? ({} as F);
 
 	const sorters: Sorter<T>[] = [];
 
@@ -73,23 +77,38 @@ export function createCollection<T>(items: T[], defaults: Partial<CollectionStat
 		}
 	}
 
+	let filteredItems = [...items];
 	const pagination = writable({
 		itemsPerPage: 50,
 		page: 1
 	});
 
 	const sort = writable(sortState);
-	const filters = writable(filtersState);
+	const { set, update, subscribe } = writable<F>(filtersState);
 
-	const result = derived([sort, filters, pagination], ([s, f, p]) => {
+	function setFilter(state: F): void {
 		let r = [...items];
-		const page = p.page;
 
 		if (config.filters) {
 			for (const [prop, filter] of Object.entries(config.filters)) {
-				r = r.filter((item) => filter(item, f[prop]));
+				r = r.filter((item) => filter(item, state[prop]));
 			}
 		}
+
+		filteredItems = r;
+		pagination.update((p) => ({ ...p, page: 1 }));
+		set(state);
+	}
+
+	const result = derived([sort, pagination], ([s, p]) => {
+		const r = filteredItems;
+		const page = p.page;
+
+		/*if (config.filters) {
+			for (const [prop, filter] of Object.entries(config.filters)) {
+				r = r.filter((item) => filter(item, f[prop]));
+			}
+		}*/
 
 		for (const sorter of sorters) {
 			sorter.sort(r, s[sorter.prop]);
@@ -106,7 +125,7 @@ export function createCollection<T>(items: T[], defaults: Partial<CollectionStat
 
 	return {
 		sort,
-		filters,
+		filters: { set: setFilter, update, subscribe },
 		pagination,
 		result
 	};

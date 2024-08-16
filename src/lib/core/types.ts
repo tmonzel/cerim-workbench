@@ -1,4 +1,17 @@
+import type { AttributeType } from './attributes';
 import type { DamageType } from './damage';
+import type { DynamicValue } from './DynamicValue';
+
+export type DynamicNumber = {
+	base: number;
+	offset: number;
+	multiplier: number;
+};
+
+export type Modifier = {
+	operation: 'multiply' | 'add';
+	value: number;
+};
 
 export type GraphMutation = {
 	breakpoint: number;
@@ -78,8 +91,27 @@ export enum SpEffectCondition {
 	GIANTSFLAME_INC = 21
 }
 
+export enum AttackStatusType {
+	NONE = 0,
+	MAGIC = 10,
+	FIRE = 11,
+	LIGHTNING = 12,
+	HOLY = 13,
+	POISON = 20,
+	SCARLET_ROT = 21,
+	HEMORRHAGE = 22,
+	FROSTBITE = 23,
+	SLEEP = 24,
+	MADNESS = 25,
+	BLIGHT = 26
+}
+
 export type SpEffect = {
 	id: number;
+
+	attackType: number;
+	attackStatus: AttackStatusType;
+
 	category: SpEffectCategory;
 	duration: number;
 	trigger: {
@@ -98,4 +130,33 @@ export type SpEffectModifier = {
 	operation?: 'add' | 'multiply';
 	key: string;
 	value: number;
+};
+
+export type Hero = {
+	level: number;
+	attributePoints: number;
+
+	progress: number;
+	souls: number;
+
+	weight: number;
+	poise: number;
+
+	attack: Record<AttackType, DynamicNumber>;
+	attributes: Record<AttributeType, number>;
+	damageNegation: Record<string, DynamicValue>;
+	stats: Record<string, DynamicValue>;
+};
+
+export type HeroType = {
+	id: string;
+	name: string;
+	level: number;
+	attributes: Record<AttributeType, number>;
+};
+
+export type Weapon = {
+	name: string;
+	requirements: Partial<Record<AttributeType, number>>;
+	attack: Partial<Record<AttackType, number>>;
 };

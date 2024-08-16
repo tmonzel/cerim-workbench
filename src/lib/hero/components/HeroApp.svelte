@@ -1,7 +1,6 @@
 <script lang="ts">
 	import Header from '$lib/components/Header.svelte';
 	import TabPanel from '$lib/components/TabPanel.svelte';
-	import { type HeroState } from '$lib/hero';
 	import { heroContext, heroAttack } from '$lib/state';
 	import AttackPanel from './AttackPanel.svelte';
 	import AttributePanel from './AttributePanel.svelte';
@@ -9,10 +8,10 @@
 	import HeroStats from './HeroStats.svelte';
 	import ProtectionStats from './ProtectionStats.svelte';
 	import HeroDashboard from './HeroDashboard.svelte';
-	import ContextNav from '$lib/components/ContextNav.svelte';
 	import { attackState } from '../attack.state';
+	import type { Hero } from '$lib/core';
 
-	export let hero: HeroState;
+	export let hero: Hero;
 
 	const statTabs = [
 		{
@@ -43,17 +42,11 @@
 
 		{#if $heroContext === 'dashboard'}
 			<div class="grow">
-				<div class="mb-10">
-					<ContextNav />
-				</div>
 				<HeroDashboard />
 			</div>
 		{/if}
 
 		<div class="grow" class:hidden={$heroContext === 'dashboard'}>
-			<div class="mb-10">
-				<ContextNav />
-			</div>
 			<!--<div class="mb-10">
 				<h3 class="font-semibold text-lg">Equipment</h3>
 				<p class="mt-1 text-zinc-400">Choose your weapons, armors and accessories</p>
@@ -71,7 +64,7 @@
 					</div>
 
 					{#if $attackState}
-						<AttackPanel {...$attackState} bind:twoHanding={$heroAttack.twoHanding} />
+						<AttackPanel state={$attackState} bind:twoHanding={$heroAttack.twoHanding} />
 					{:else}
 						<div class="bg-rose-900/20 text-rose-400 p-3 rounded-lg flex items-center">
 							<span class="mat-icon me-2">warning</span>Equip a weapon to see scaling values.

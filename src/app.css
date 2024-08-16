@@ -24,6 +24,15 @@ h1, h2 {
   background: rgba(252, 211, 77);
 }
 
+.finder-dialog {
+  width: 85vw; 
+  height: 85vh;
+}
+
+.share-dialog {
+  min-width: 50vw;
+}
+
 .mat-icon {
   font-family: 'Material Symbols Outlined';
   font-weight: normal;

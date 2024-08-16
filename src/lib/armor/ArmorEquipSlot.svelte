@@ -22,6 +22,10 @@
 	function updateItem(item: ProtectItem) {
 		selectedItem = item;
 	}
+
+	$: if (dialog && selectedItem) {
+		dialog.close();
+	}
 </script>
 
 <div class="relative">
@@ -34,7 +38,7 @@
 	{/if}
 	<EquipSlot on:click={() => dialog.open()} {label} bind:item={selectedItem} let:item>
 		{#if item}
-			<div class="flex mt-7 gap-x-4">
+			<div class="flex mt-7 gap-x-4 flex-wrap">
 				<ItemChangeButton {item} on:click={() => dialog.open()} />
 
 				<div class="grow">
@@ -75,10 +79,10 @@
 	</EquipSlot>
 </div>
 
-<Dialog bind:this={dialog}>
+<Dialog bind:this={dialog} class="finder-dialog">
 	<svelte:fragment slot="title">
 		Select <span class="font-semibold">{label}</span> Item
 	</svelte:fragment>
 
-	<ArmorFinder {items} bind:selectedItem on:selectItem={() => dialog.close()} />
+	<ArmorFinder {items} bind:selectedItem />
 </Dialog>

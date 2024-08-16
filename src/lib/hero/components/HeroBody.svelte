@@ -26,7 +26,7 @@
 </script>
 
 <div>
-	<div class="grow grid grid-cols-2 gap-5" class:hidden={$heroContext !== 'protection'}>
+	<div class="grow grid gap-5" class:hidden={$heroContext !== 'protection'}>
 		<ArmorEquipSlot label="Head" items={$helmets} bind:selectedItem={$heroEquip.head} />
 		<ArmorEquipSlot label="Chest" items={$armors} bind:selectedItem={$heroEquip.chest} />
 		<ArmorEquipSlot label="Legs" items={$legs} bind:selectedItem={$heroEquip.legs} />

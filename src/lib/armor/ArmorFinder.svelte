@@ -1,11 +1,10 @@
 <script lang="ts">
 	import InputControl from '$lib/components/InputControl.svelte';
 	import SortButton from '$lib/item/components/SortButton.svelte';
-	import { createEventDispatcher } from 'svelte';
 	import type { ProtectItem } from './ProtectItem';
 	import { createCollection } from '$lib/core';
 	import ArmorCard from './ArmorCard.svelte';
-	import Pagination from '$lib/components/Pagination.svelte';
+	import ItemList from '$lib/item/components/ItemList.svelte';
 
 	export let items: ProtectItem[];
 	export let selectedItem: ProtectItem | null = null;
@@ -45,12 +44,6 @@
 			}
 		}
 	);
-	const dispatch = createEventDispatcher<{ selectItem: ProtectItem | null }>();
-
-	export function selectItem(item: ProtectItem | null): void {
-		selectedItem = item;
-		dispatch('selectItem', item);
-	}
 </script>
 
 <div class="relative">
@@ -97,36 +90,14 @@
 		</div>
 	</div>
 
-	{#if $result.totalItems > $pagination.itemsPerPage}
-		<div class="p-5 flex justify-end text-sm">
-			<Pagination
-				totalItems={$result.totalItems}
-				itemsPerPage={$pagination.itemsPerPage}
-				bind:currentPage={$pagination.page}
-			/>
-		</div>
-	{/if}
-
-	{#if items.length === 0}
-		<div class="text-sky-200 p-4 flex items-center rounded-lg bg-sky-900/50 m-4">
-			<span class="mat-icon me-2">warning</span>Sorry, no items found
-		</div>
-	{/if}
-
-	<ul class="grid grid-cols-3 px-5 py-2 gap-10">
-		{#each $result.items as item}
-			<li>
-				<button
-					type="button"
-					class="w-full my-2 text-left text-white rounded-lg p-5 hover:bg-zinc-800/50 group"
-					on:click={() => selectItem(item)}
-					class:ring-2={selectedItem?.id === item.id}
-					class:bg-stone-800={selectedItem?.id === item.id}
-					class:ring-amber-300={selectedItem?.id === item.id}
-				>
-					<ArmorCard {item} />
-				</button>
-			</li>
-		{/each}
-	</ul>
+	<ItemList
+		items={$result.items}
+		itemsPerPage={$pagination.itemsPerPage}
+		bind:currentPage={$pagination.page}
+		totalItems={$result.totalItems}
+		bind:selectedItem
+		let:item
+	>
+		<ArmorCard {item} />
+	</ItemList>
 </div>

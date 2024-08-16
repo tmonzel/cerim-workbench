@@ -7,7 +7,7 @@
 	const stat = statTypes[name];
 </script>
 
-<article class="bg-zinc-800/50 rounded-lg p-6">
+<article class="bg-zinc-800/30 rounded-lg p-6">
 	<header class="mb-5">
 		<h3 class="mb-2 font-medium">{stat.name}</h3>
 		<span class="text-3xl">

@@ -17,10 +17,10 @@
 			icon="add"
 			disabled={item.tier >= item.possibleUpgrades}
 			on:click={() => upgrade(item.tier + 1)}
-			class="text-xl"
+			class="text-2xl"
 		/>
 	</div>
 	<div>
-		<Button icon="remove" disabled={item.tier === 0} on:click={() => upgrade(item.tier - 1)} class="text-xl" />
+		<Button icon="remove" disabled={item.tier === 0} on:click={() => upgrade(item.tier - 1)} class="text-2xl" />
 	</div>
 </div>

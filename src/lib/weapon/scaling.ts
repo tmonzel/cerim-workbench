@@ -1,6 +1,5 @@
-import { AttackType, AttributeType, calcCorrect, DynamicAttack, type Attack } from '$lib/core';
+import { AttackType, AttributeType, calcCorrect, type Attack } from '$lib/core';
 import type { AttackItem } from './AttackItem';
-import { validateRequirements } from './helpers';
 
 export const scalingAttributes = [
 	AttributeType.STRENGTH,
@@ -36,7 +35,7 @@ export function getScalingLetter(base: number): string {
 	return 'S';
 }
 
-function calculateAttributeScaling(
+export function calculateAttributeScaling(
 	weapon: AttackItem,
 	attrValue: number,
 	attrType: AttributeType,
@@ -83,11 +82,7 @@ export function calculateAttributeAttack(weapon: AttackItem, attrValue: number, 
 	return attack;
 }
 
-function scaleAttack(
-	weapon: AttackItem,
-	attributes: Record<string, number>,
-	excludeAttackTypes?: AttackType[]
-): Attack {
+/*export function scaleAttack(weapon: AttackItem, attributes: Record<string, number>): Attack {
 	const scaledAttack: Attack = {};
 	const invalidAttributes = validateRequirements(weapon.requirements ?? {}, attributes);
 
@@ -95,10 +90,6 @@ function scaleAttack(
 		const attackBase = weapon.attack[attackType] ?? 0;
 
 		if (!attackBase && attackType !== AttackType.SORCERY && attackType !== AttackType.INCANTATION) {
-			continue;
-		}
-
-		if (excludeAttackTypes && excludeAttackTypes.includes(attackType)) {
 			continue;
 		}
 
@@ -122,15 +113,4 @@ function scaleAttack(
 	}
 
 	return scaledAttack;
-}
-
-export function calcScaledAttack(weapon: AttackItem, attributes: Record<string, number>): DynamicAttack {
-	const scaledAttack = scaleAttack(weapon, attributes);
-	const attack = new DynamicAttack();
-
-	for (const key of Object.keys(scaledAttack) as AttackType[]) {
-		attack.add({ [key]: scaledAttack[key] });
-	}
-
-	return attack;
-}
+}*/

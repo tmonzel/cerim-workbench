@@ -1,12 +1,4 @@
-import type {
-	AttackType,
-	AttributeType,
-	GraphMutation,
-	Guard,
-	SpEffectCategory,
-	SpEffectCondition,
-	SpEffectModifier
-} from '$lib/core';
+import type { AttackType, AttributeType, SpEffectCategory, SpEffectCondition, SpEffectModifier } from '$lib/core';
 import type { Item } from './Item';
 
 export interface Upgradable {
@@ -24,7 +16,6 @@ export type ItemData = {
 	iconId: string;
 	effects?: number[];
 	modifiers?: SpEffectModifier[];
-	config?: ItemConfig;
 	upgrades?: ItemUpgrade[];
 };
 
@@ -45,19 +36,6 @@ export enum ItemRarity {
 	LEGENDARY = 3
 }
 
-export type ItemConfig = {
-	attack?: Partial<Record<AttackType, number>>;
-	guard?: Guard;
-	scaling?: ScalingBase;
-	schema?: string;
-	mutations?: GraphMutation[] | number | Partial<Record<AttackType, string>>;
-	cast?: 'sorceries' | 'incantations';
-	effects?: Record<number, number>;
-	attackCorrectId?: string;
-
-	buffable?: boolean;
-};
-
 export type BaseScalingValue = { [0]: number; [1]: string | string[] } | number;
 export type ScalingBase = Partial<Record<AttributeType, BaseScalingValue>>;
 
@@ -74,6 +52,7 @@ export type ItemUpgrade = {
 };
 
 export type ItemEffect = {
+	target: string;
 	category: SpEffectCategory;
 	duration: number;
 	affectedSpellTypes?: string[];

@@ -1,20 +1,33 @@
 <script lang="ts">
 	import InputControl from '$lib/components/InputControl.svelte';
 	import SortButton from '$lib/item/components/SortButton.svelte';
-	import { createEventDispatcher } from 'svelte';
 	import type { AttackItem } from './AttackItem';
 	import { weaponTypeInfo } from './weapon.type';
 	import SelectControl from '$lib/components/SelectControl.svelte';
-	import { createCollection } from '$lib/core';
+	import { createCollection, DamageType } from '$lib/core';
 	import WeaponCard from './WeaponCard.svelte';
-	import Pagination from '$lib/components/Pagination.svelte';
+	import ItemList from '$lib/item/components/ItemList.svelte';
+	import CheckboxControl from '$lib/components/CheckboxControl.svelte';
 
 	export let items: AttackItem[];
-	export let selectedItem: AttackItem | null = null;
+	export let selectedItem: AttackItem | undefined = undefined;
+
+	function createDamageFilter(type: DamageType) {
+		return (item: AttackItem, value: boolean) => (value ? item.attackInfo.damage.includes(type) : true);
+	}
 
 	const { result, sort, filters, pagination } = createCollection(
 		items,
-		{ filters: { search: '', type: null } },
+		{
+			filters: {
+				search: '',
+				type: null,
+				standardDamage: false,
+				slashDamage: false,
+				strikeDamage: false,
+				pierceDamage: false
+			}
+		},
 		{
 			filters: {
 				search: (item: AttackItem, value: string) => {
@@ -24,7 +37,11 @@
 
 					return item.name.toLowerCase().indexOf(value.toLowerCase()) !== -1;
 				},
-				type: (item: AttackItem, value: number | null) => (value ? item.type == value : true)
+				type: (item: AttackItem, value: number | null) => (value ? item.type == value : true),
+				standardDamage: createDamageFilter(DamageType.STANDARD),
+				slashDamage: createDamageFilter(DamageType.SLASH),
+				strikeDamage: createDamageFilter(DamageType.STRIKE),
+				pierceDamage: createDamageFilter(DamageType.PIERCE)
 			},
 			sort: {
 				weight: (item: AttackItem) => item.weight,
@@ -41,13 +58,6 @@
 		{ id: null, name: 'All Types' },
 		...Object.entries(weaponTypeInfo).map(([id, info]) => ({ id, name: info.name }))
 	];
-
-	const dispatch = createEventDispatcher<{ selectItem: AttackItem | null }>();
-
-	export function selectItem(item: AttackItem | null): void {
-		selectedItem = item;
-		dispatch('selectItem', item);
-	}
 </script>
 
 <div class="relative">
@@ -66,8 +76,11 @@
 		</div>
 
 		<div class="flex gap-x-10">
-			<div>
-				<h6 class="font-semibold">Sorting</h6>
+			<div class="grid grid-cols-2 gap-x-5 gap-y-2">
+				<CheckboxControl bind:checked={$filters.standardDamage}>Standard</CheckboxControl>
+				<CheckboxControl bind:checked={$filters.slashDamage}>Slash</CheckboxControl>
+				<CheckboxControl bind:checked={$filters.strikeDamage}>Strike</CheckboxControl>
+				<CheckboxControl bind:checked={$filters.pierceDamage}>Pierce</CheckboxControl>
 			</div>
 			<div>
 				<h6>Stats</h6>
@@ -88,36 +101,14 @@
 		</div>
 	</div>
 
-	{#if $result.totalItems > $pagination.itemsPerPage}
-		<div class="p-5 flex justify-end text-sm">
-			<Pagination
-				totalItems={$result.totalItems}
-				itemsPerPage={$pagination.itemsPerPage}
-				bind:currentPage={$pagination.page}
-			/>
-		</div>
-	{/if}
-
-	{#if $result.items.length === 0}
-		<div class="text-sky-200 p-4 flex items-center rounded-lg bg-sky-900/50 m-4">
-			<span class="mat-icon me-2">warning</span>Sorry, no items found
-		</div>
-	{/if}
-
-	<ul class="grid grid-cols-2 px-5 py-2 gap-10">
-		{#each $result.items as item}
-			<li>
-				<button
-					type="button"
-					class="w-full my-2 text-left text-white rounded-lg p-5 hover:bg-zinc-800/50 group"
-					on:click={() => selectItem(item)}
-					class:ring-2={selectedItem?.id === item.id}
-					class:bg-stone-800={selectedItem?.id === item.id}
-					class:ring-amber-300={selectedItem?.id === item.id}
-				>
-					<WeaponCard {item} />
-				</button>
-			</li>
-		{/each}
-	</ul>
+	<ItemList
+		items={$result.items}
+		itemsPerPage={$pagination.itemsPerPage}
+		bind:currentPage={$pagination.page}
+		totalItems={$result.totalItems}
+		bind:selectedItem
+		let:item
+	>
+		<WeaponCard {item} />
+	</ItemList>
 </div>

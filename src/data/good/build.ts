@@ -31,7 +31,22 @@ export function parseGoods(xmlFile: string): Record<string, GoodEntity> {
 			continue;
 		}
 
-		const effects: number[] = [row.refId_default];
+		let effects: number[] = [row.refId_default];
+
+		if (row.id === 191) {
+			// Godricks Great Rune
+			effects = [600];
+		}
+
+		if (row.id === 192) {
+			// Radahns Great Rune
+			effects = [610];
+		}
+
+		if (row.id === 193) {
+			// Morgotts Great Rune
+			effects = [620];
+		}
 
 		// Register base variant
 		entities[`good#${row.id}`] = {

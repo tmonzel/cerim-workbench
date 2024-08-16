@@ -20,7 +20,6 @@ export class AccessoryItem extends Item implements Upgradable {
 
 	upgrade(tier: number): void {
 		this.tier = tier;
-
 		this.update();
 	}
 

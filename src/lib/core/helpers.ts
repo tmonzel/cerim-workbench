@@ -1,4 +1,32 @@
-import { type GraphMutation } from './types';
+import type { AttributeType } from './attributes';
+import { type DynamicNumber, type GraphMutation } from './types';
+
+export function createDynamicNumber(base: number): DynamicNumber {
+	return {
+		base,
+		offset: 0,
+		multiplier: 1
+	};
+}
+
+export function calcTotal(value: DynamicNumber): number {
+	return (value.base + value.offset) * value.multiplier;
+}
+
+export function validateRequirements(
+	requirements: Record<string, number>,
+	attributes: Record<string, number>
+): AttributeType[] {
+	const invalidAttributes: AttributeType[] = [];
+
+	for (const [t, n] of Object.entries(requirements)) {
+		if (typeof attributes[t] === 'number' && attributes[t] < n) {
+			invalidAttributes.push(t as AttributeType);
+		}
+	}
+
+	return invalidAttributes;
+}
 
 export function sum<T extends string>(v: Partial<Record<T, number>>): number {
 	let s = 0;
@@ -8,21 +36,6 @@ export function sum<T extends string>(v: Partial<Record<T, number>>): number {
 	}
 
 	return s;
-}
-
-export function list<TValue, TKey extends string | number | symbol>(
-	obj: Partial<Record<TKey, TValue>>
-): { key: TKey; value: TValue }[] {
-	const r: { key: TKey; value: TValue }[] = [];
-
-	for (const k in obj) {
-		r.push({
-			key: k,
-			value: obj[k] as TValue
-		});
-	}
-
-	return r;
 }
 
 export function getValueDistribution<T extends string = string>(

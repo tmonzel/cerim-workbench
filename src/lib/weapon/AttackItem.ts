@@ -1,30 +1,41 @@
-import { AttackType, AttributeType, GuardType, type Attack, type GraphMutation, type Guard } from '$lib/core';
+import {
+	AttackType,
+	AttributeType,
+	GuardType,
+	type Attack,
+	type GraphMutation,
+	type Guard,
+	type Weapon
+} from '$lib/core';
 import { attackCorrectRecord, mutationRecord, upgradeSchemata } from '$lib/data';
-import { Item, type ItemConfig, type Upgradable } from '$lib/item';
+import { Item, type Upgradable } from '$lib/item';
 import { AffinityType } from './affinity';
 import { scalingAttributes } from './scaling';
-import type { AttackInfo, UpgradeSchema, WeaponEntity, WeaponRequirements, WeaponScaling } from './types';
+import type { AttackInfo, UpgradeSchema, WeaponConfig, WeaponEntity, WeaponScaling } from './types';
 
-export class AttackItem extends Item implements Upgradable {
+export class AttackItem extends Item implements Upgradable, Weapon {
 	attack: Attack = {};
 	attackInfo: AttackInfo;
 	guard?: Guard;
-	affinities: Map<string, ItemConfig>;
+	affinities: Map<string, WeaponConfig>;
 	scaling: WeaponScaling = {};
-	config!: ItemConfig;
+	config!: WeaponConfig;
 	possibleUpgrades: number;
 	schema?: UpgradeSchema;
-	requirements: WeaponRequirements;
 	tier: number;
-
+	requirements: Partial<Record<AttributeType, number>>;
 	attackMutations: Partial<Record<AttackType, GraphMutation[]>>;
+
 	private _affinity: AffinityType | null;
 
 	get affinity(): AffinityType | null {
 		return this._affinity;
 	}
 
-	constructor(id: string, entity: WeaponEntity) {
+	constructor(
+		id: string,
+		private entity: WeaponEntity
+	) {
 		super(id, entity);
 
 		this.attackMutations = {};
@@ -41,7 +52,7 @@ export class AttackItem extends Item implements Upgradable {
 		}
 	}
 
-	setConfig(config: ItemConfig): void {
+	setConfig(config: WeaponConfig): void {
 		this.config = config;
 		this.effects = [];
 		this.schema = typeof config.schema === 'string' ? upgradeSchemata[config.schema] : upgradeSchemata['0'];
@@ -50,12 +61,12 @@ export class AttackItem extends Item implements Upgradable {
 	}
 
 	setAffinity(affinity: AffinityType | null): void {
-		let config: ItemConfig;
+		let config: WeaponConfig;
 
 		if (affinity) {
-			config = this.affinities.get(affinity) ?? this.data.config!;
+			config = this.affinities.get(affinity) ?? this.entity.config!;
 		} else {
-			config = this.data.config!;
+			config = this.entity.config!;
 		}
 
 		this._affinity = affinity;

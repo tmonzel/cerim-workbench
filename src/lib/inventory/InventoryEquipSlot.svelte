@@ -72,7 +72,7 @@
 	</EquipSlot>
 </div>
 
-<Dialog bind:this={dialog}>
+<Dialog bind:this={dialog} class="finder-dialog">
 	<svelte:fragment slot="title">
 		Select <span class="font-semibold">{label}</span> Item
 	</svelte:fragment>

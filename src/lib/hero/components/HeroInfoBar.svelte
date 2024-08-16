@@ -1,7 +1,7 @@
 <script lang="ts">
 	import SelectControl from '$lib/components/SelectControl.svelte';
+	import { heroTypes } from '$lib/core';
 	import { heroType } from '$lib/state';
-	import { heroTypes } from '../data';
 	import { heroState } from '../state';
 
 	const options = Object.entries(heroTypes).map(([id, t]) => ({ id, name: t.name }));

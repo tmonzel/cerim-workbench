@@ -1,24 +1,21 @@
-export class DynamicValue {
-	protected _offset: number = 0;
-	protected _added: number = 0;
-	protected _multiplier: number = 1;
+import type { DynamicNumber } from './types';
 
-	get offset(): number {
-		return this._offset;
-	}
+export class DynamicValue implements DynamicNumber {
+	offset: number = 0;
+	multiplier: number = 1;
 
 	constructor(public base: number = 0) {}
 
 	add(amount: number): void {
-		this._added += amount;
+		this.offset += amount;
 	}
 
 	multiply(amount: number): void {
-		this._multiplier *= amount;
+		this.multiplier *= amount;
 	}
 
 	getTotal(): number {
-		return (this.base + this._offset + this._added) * this._multiplier;
+		return (this.base + this.offset) * this.multiplier;
 	}
 
 	toString(): string {

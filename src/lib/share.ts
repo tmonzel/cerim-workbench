@@ -2,7 +2,7 @@ import { get } from 'svelte/store';
 import { itemMap } from './data';
 import { AffinityType, AttackItem } from './weapon';
 import { AccessoryItem } from './accessory';
-import { heroAttributes, heroEquip, heroType, type HeroEquipState } from './state';
+import { heroAttack, heroAttributes, heroEquip, heroType, type HeroAttackState, type HeroEquipState } from './state';
 
 export type ItemSnapshot = {
 	id: string;
@@ -14,9 +14,14 @@ export type SharedBuild = {
 	type: string;
 	attributes: Record<string, number>;
 	equip?: Record<string, ItemSnapshot>;
+	attack: HeroAttackState;
 };
 
 export function applySharedBuild(build: SharedBuild): void {
+	heroType.set(build.type);
+	heroAttributes.set(build.attributes);
+	heroAttack.set(build.attack);
+
 	heroEquip.update((state) => {
 		const equip = { ...state };
 
@@ -49,6 +54,8 @@ export function makeSharedBuildSnapshot(): SharedBuild {
 	const currentType = get(heroType);
 	const currentEquip = get(heroEquip);
 	const currentAttributes = get(heroAttributes);
+	const currentAttack = get(heroAttack);
+
 	const equip: Record<string, ItemSnapshot> = {};
 
 	for (const [slot, item] of Object.entries(currentEquip)) {
@@ -72,6 +79,7 @@ export function makeSharedBuildSnapshot(): SharedBuild {
 	return {
 		type: currentType,
 		attributes: currentAttributes,
-		equip
+		equip,
+		attack: currentAttack
 	};
 }

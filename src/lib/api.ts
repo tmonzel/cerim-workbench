@@ -13,7 +13,7 @@ export async function createBuild(data: SharedBuild) {
 
 	const json = await response.json();
 
-	return `https://tarnished-creator.tmonzel.de/${json.data.uid}`;
+	return `https://tarnished-creator.com/${json.data.uid}`;
 }
 
 export async function findBuild(uid: string): Promise<SharedBuild | undefined> {

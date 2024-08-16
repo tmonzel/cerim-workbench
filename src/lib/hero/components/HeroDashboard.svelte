@@ -5,13 +5,17 @@
 </script>
 
 <div class="flex mb-5 border-b border-zinc-700">
-	<button class="rounded-tl-lg text-left nav-btn" class:active={!activeView} on:click={() => (activeView = null)}>
+	<button
+		class="rounded-tl-lg text-left nav-btn basis-1/3"
+		class:active={!activeView}
+		on:click={() => (activeView = null)}
+	>
 		<h3 class="font-semibold text-lg">General</h3>
 		<p class="mt-1 opacity-75">HP, FP, Stamina, Discovery & Equip Load</p>
 	</button>
 
 	<button
-		class="text-left nav-btn"
+		class="text-left nav-btn basis-1/3"
 		class:active={activeView === 'resistances'}
 		on:click={() => (activeView = 'resistances')}
 	>
@@ -20,7 +24,7 @@
 	</button>
 
 	<button
-		class="rounded-tr-lg text-left nav-btn"
+		class="rounded-tr-lg text-left nav-btn basis-1/3"
 		class:active={activeView === 'defense'}
 		on:click={() => (activeView = 'defense')}
 	>
@@ -30,11 +34,11 @@
 </div>
 
 {#if !activeView}
-	<div class="grid grid-cols-2 gap-5 mb-5">
+	<div class="grid xl:grid-cols-2 gap-5 mb-5">
 		<StatCard name="hp" />
 		<StatCard name="fp" />
 	</div>
-	<div class="grid grid-cols-3 gap-5 mb-5">
+	<div class="grid xl:grid-cols-3 gap-5 mb-5">
 		<StatCard name="stamina" />
 		<StatCard name="discovery" />
 		<StatCard name="equipLoad" />
@@ -51,7 +55,7 @@
 {/if}
 
 {#if activeView === 'defense'}
-	<div class="grid grid-cols-4 gap-5 mb-5">
+	<div class="grid lg:grid-cols-2 2xl:grid-cols-4 gap-5 mb-5">
 		<StatCard name="standardDefense" />
 		<StatCard name="strikeDefense" />
 		<StatCard name="slashDefense" />
@@ -68,12 +72,12 @@
 		padding-bottom: 1rem;
 		color: rgb(148, 148, 148);
 		border-bottom: 2px solid transparent;
-		background-color: rgb(39 39 42 / 0.3);
+		background-color: rgb(63 63 70 / 0.05);
 	}
 
 	.nav-btn.active {
-		color: rgb(209, 209, 209);
-		border-bottom: 2px solid #ff7951;
-		background-color: #272727;
+		color: #f5b4ae;
+		border-bottom: 2px solid #ff6b51;
+		background-color: #342323;
 	}
 </style>
