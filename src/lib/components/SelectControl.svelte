@@ -39,7 +39,7 @@
 <div class="relative">
 	<button
 		type="button"
-		class="relative w-full rounded-lg p-0.5 bg-zinc-700/50 pr-10 text-left focus:outline-none focus:ring-2 focus:ring-amber-300 {$$restProps.class ||
+		class="relative w-full rounded-lg p-0.5 bg-zinc-700/30 pr-10 text-left focus:outline-none focus:ring-2 focus:ring-amber-300 {$$restProps.class ||
 			''}"
 		aria-expanded={showMenu}
 		on:click|stopPropagation={() => (showMenu = !showMenu)}

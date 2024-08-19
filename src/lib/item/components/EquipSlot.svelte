@@ -5,12 +5,12 @@
 
 	export let label: string;
 	export let item: T | null = null;
+
+	// hover:bg-stone-800/50 hover:ring-2
 </script>
 
 {#if item}
-	<div
-		class="group w-full bg-zinc-700/10 rounded-lg ring-amber-300 transition-all p-5 text-left shadow-md hover:bg-stone-800/50 hover:ring-2"
-	>
+	<div class="group w-full bg-zinc-700/10 rounded-lg ring-amber-300 transition-all p-5 text-left shadow-md hover:bg-zinc-800/40 hover:shadow-xl">
 		<div class="flex justify-between">
 			<div>
 				<span class="text-xs font-medium px-2.5 py-0.5 rounded bg-zinc-400/20 text-zinc-300">

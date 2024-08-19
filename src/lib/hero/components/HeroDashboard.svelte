@@ -71,13 +71,13 @@
 		padding: 0.8rem 1.2rem;
 		padding-bottom: 1rem;
 		color: rgb(148, 148, 148);
-		border-bottom: 2px solid transparent;
+		border-bottom: 4px solid transparent;
 		background-color: rgb(63 63 70 / 0.05);
 	}
 
 	.nav-btn.active {
-		color: #f5b4ae;
-		border-bottom: 2px solid #ff6b51;
-		background-color: #342323;
+		color: #c7c7c7;
+		border-bottom: 4px solid #ff6b51;
+		background-color: rgb(63 63 70 / 0.2);
 	}
 </style>

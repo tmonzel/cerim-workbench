@@ -10,7 +10,7 @@
 	import CheckboxControl from '$lib/components/CheckboxControl.svelte';
 
 	export let items: AttackItem[];
-	export let selectedItem: AttackItem | undefined = undefined;
+	export let selectedItem: AttackItem | null = null;
 
 	function createDamageFilter(type: DamageType) {
 		return (item: AttackItem, value: boolean) => (value ? item.attackInfo.damage.includes(type) : true);

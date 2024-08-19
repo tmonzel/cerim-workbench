@@ -25,17 +25,16 @@
 
 <div>
 	<SelectControl
-		class="p-1 text-zinc-300 bg-zinc-700/50"
 		options={affinityOptions}
 		value={item.affinity ?? AffinityType.STANDARD}
 		on:select={(e) => changeAffinity(e.detail)}
 		let:item
 	>
 		<svelte:fragment slot="selected" let:item>
-			<div class="p-0.5 flex">
+			<div class="p-2 flex">
 				{#if item}
 					<div><img class="w-7 me-2" src={item.iconUrl} alt="{item.name} Affinity Icon" /></div>
-					<div class="grow">
+					<div class="grow text-xl">
 						{item.name}
 					</div>
 				{/if}

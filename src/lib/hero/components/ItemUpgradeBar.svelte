@@ -1,9 +1,8 @@
 <script lang="ts">
-	import type { AccessoryItem } from '$lib/accessory';
 	import Button from '$lib/components/Button.svelte';
-	import type { AttackItem } from '$lib/weapon';
+	import type { Upgradable } from '$lib/item';
 
-	export let item: AttackItem | AccessoryItem;
+	export let item: Upgradable;
 
 	function upgrade(tier: number): void {
 		item.upgrade(tier);
@@ -11,16 +10,11 @@
 	}
 </script>
 
-<div class="flex gap-2">
+<div class="flex gap-2 text-2xl">
 	<div>
-		<Button
-			icon="add"
-			disabled={item.tier >= item.possibleUpgrades}
-			on:click={() => upgrade(item.tier + 1)}
-			class="text-2xl"
-		/>
+		<Button theme="default" icon="add" disabled={item.tier >= item.possibleUpgrades} on:click={() => upgrade(item.tier + 1)} />
 	</div>
 	<div>
-		<Button icon="remove" disabled={item.tier === 0} on:click={() => upgrade(item.tier - 1)} class="text-2xl" />
+		<Button theme="default" icon="remove" disabled={item.tier === 0} on:click={() => upgrade(item.tier - 1)} />
 	</div>
 </div>

@@ -12,7 +12,7 @@
 	import ItemChangeButton from '$lib/item/components/ItemChangeButton.svelte';
 
 	export let label: string;
-	export let selectedItem: AccessoryItem | undefined = undefined;
+	export let selectedItem: AccessoryItem | null = null;
 	export let items: AccessoryItem[] = [];
 
 	let dialog: Dialog;
@@ -37,11 +37,7 @@
 				<Button icon="sync" on:click={() => dialog.open()} class="text-2xl text-zinc-500 bg-zinc-700/30" />
 			</div>
 			<div>
-				<Button
-					icon="clear"
-					on:click={() => (selectedItem = undefined)}
-					class="text-2xl text-zinc-500 bg-zinc-700/30"
-				/>
+				<Button icon="clear" on:click={() => (selectedItem = null)} class="text-2xl text-zinc-500 bg-zinc-700/30" />
 			</div>
 		</div>
 	{/if}

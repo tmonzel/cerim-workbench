@@ -56,7 +56,7 @@
 		</div>
 
 		{#if $heroContext !== 'dashboard'}
-			<div class="max-w-80">
+			<!--<div class="max-w-80">
 				<div class="sticky top-5">
 					<div class="mb-10">
 						<h3 class="font-semibold text-lg">Attack Scaling</h3>
@@ -71,7 +71,7 @@
 						</div>
 					{/if}
 				</div>
-			</div>
+			</div>-->
 
 			<div class="max-w-72">
 				<div class="sticky top-5">

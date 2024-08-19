@@ -34,8 +34,8 @@
 
 	let nextAttack: Record<string, number> = {};
 
-	$: currentAttack = data[position - 1].attack;
-	$: nextAttack = data[position].attack;
+	$: currentAttack = data[position].attack;
+	$: nextAttack = data[position + 1].attack;
 </script>
 
 <div style="--vis-axis-grid-color: rgba(255, 255, 255, 0.1)" class="flex flex-col items-end">

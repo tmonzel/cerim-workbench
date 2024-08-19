@@ -6,7 +6,7 @@
 	import { accessoryStore } from '$lib/accessory';
 	import { inventoryStore, GoodsType } from '$lib/inventory';
 	import { derived } from 'svelte/store';
-	import { heroAttack, heroContext, heroEquip } from '$lib/state';
+	import { heroContext, heroEquip } from '$lib/state';
 	import AccessoryEquipSlot from '$lib/accessory/AccessoryEquipSlot.svelte';
 	import InventoryEquipSlot from '$lib/inventory/InventoryEquipSlot.svelte';
 
@@ -49,27 +49,11 @@
 			<div class="grow">
 				<WeaponEquipSlot label="Mainhand" items={$weapons} bind:selectedItem={$heroEquip.mainHand} />
 			</div>
-			<button
-				class="w-10 rounded-lg flex justify-center items-center"
-				on:click={() => ($heroAttack.activeHand = 'mainHand')}
-				class:bg-zinc-800={$heroAttack.activeHand !== 'mainHand'}
-				class:bg-zinc-700={$heroAttack.activeHand === 'mainHand'}
-			>
-				<span class="mat-icon">chevron_right</span>
-			</button>
 		</div>
 		<div class="flex gap-3">
 			<div class="grow">
 				<WeaponEquipSlot label="Offhand" items={$weapons} bind:selectedItem={$heroEquip.offHand} />
 			</div>
-			<button
-				class="w-10 rounded-lg flex justify-center items-center"
-				class:bg-zinc-800={$heroAttack.activeHand !== 'offHand'}
-				class:bg-zinc-700={$heroAttack.activeHand === 'offHand'}
-				on:click={() => ($heroAttack.activeHand = 'offHand')}
-			>
-				<span class="mat-icon">chevron_right</span>
-			</button>
 		</div>
 	</div>
 </div>

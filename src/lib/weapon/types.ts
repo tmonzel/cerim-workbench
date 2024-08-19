@@ -1,4 +1,13 @@
-import type { AttackType, AttributeType, DamageType, GraphMutation, Guard, GuardType } from '$lib/core';
+import type {
+	Attack,
+	AttackType,
+	AttributeType,
+	DamageType,
+	DynamicNumber,
+	GraphMutation,
+	Guard,
+	GuardType
+} from '$lib/core';
 import type { ItemData, ScalingBase } from '$lib/item';
 import type { AffinityType } from './affinity';
 
@@ -43,4 +52,15 @@ export type WeaponConfig = {
 	attackCorrectId?: string;
 
 	buffable?: boolean;
+};
+
+export type AttributeAttackRecord = { value: number; attack: Attack };
+export type AttributeAttackScaling = Partial<Record<AttributeType, AttributeAttackRecord[]>>;
+
+export type AttackState = {
+	scaling: AttributeAttackScaling;
+	attack: Partial<Record<AttackType, DynamicNumber>>;
+	attributes: Record<AttributeType, number>;
+	invalidAttributes: AttributeType[];
+	totalDamage: number;
 };

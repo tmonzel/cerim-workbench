@@ -2,6 +2,8 @@ import type { AttackType, AttributeType, SpEffectCategory, SpEffectCondition, Sp
 import type { Item } from './Item';
 
 export interface Upgradable {
+	tier: number;
+	possibleUpgrades: number;
 	upgrade(tier: number): void;
 }
 

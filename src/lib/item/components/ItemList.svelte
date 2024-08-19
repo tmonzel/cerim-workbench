@@ -5,7 +5,7 @@
 	type T = $$Generic<Item>;
 
 	export let items: T[];
-	export let selectedItem: T | undefined = undefined;
+	export let selectedItem: T | null = null;
 	export let itemsPerPage: number = 100;
 	export let totalItems: number = 0;
 	export let currentPage: number = 1;

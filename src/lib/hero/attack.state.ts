@@ -1,19 +1,9 @@
-import { AttackType, AttributeType, calcTotal, validateRequirements, type Attack, type DynamicNumber } from '$lib/core';
+import { AttackType, AttributeType, calcTotal, validateRequirements } from '$lib/core';
 import { derived } from 'svelte/store';
 import { heroState } from './state';
 import { heroAttack, heroEquip } from '$lib/state';
 import { calculateAttributeAttack, calculateAttributeScaling, scalingAttributes } from '$lib/weapon/scaling';
-
-export type AttributeAttackRecord = { value: number; attack: Attack };
-export type AttributeAttackScaling = Partial<Record<AttributeType, AttributeAttackRecord[]>>;
-
-export type AttackState = {
-	scaling: AttributeAttackScaling;
-	attack: Partial<Record<AttackType, DynamicNumber>>;
-	attributes: Record<AttributeType, number>;
-	invalidAttributes: AttributeType[];
-	totalDamage: number;
-};
+import type { AttackState, AttributeAttackRecord, AttributeAttackScaling } from '$lib/weapon';
 
 export const attackState = derived([heroAttack, heroState, heroEquip], ([attack, hero, equip]) => {
 	let attributes = hero.attributes;
@@ -73,12 +63,6 @@ export const attackState = derived([heroAttack, heroState, heroEquip], ([attack,
 		for (let i = 0; i < 99; i++) {
 			const attack = calculateAttributeAttack(weapon, i, attr);
 			data.push({ value: i, attack });
-
-			//const newMax = Object.values(attack).find((v) => v > maxAttack);
-
-			/*if (newMax) {
-				maxAttack = newMax;
-			}*/
 		}
 
 		scaling[attr] = data;

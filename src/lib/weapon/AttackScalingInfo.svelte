@@ -1,9 +1,8 @@
 <script lang="ts">
-	import CheckboxControl from '$lib/components/CheckboxControl.svelte';
+	import Icon from '$lib/components/Icon.svelte';
 	import { AttackType, attackTypes, calcTotal, getValueDistribution, type Attack } from '$lib/core';
-	import { heroAttack } from '$lib/state';
-	import type { AttackState } from '../attack.state';
-	import AttackScalingGraph from './AttackScalingGraph.svelte';
+	import AttackScalingGraph from '$lib/hero/components/AttackScalingGraph.svelte';
+	import type { AttackState } from './types';
 
 	export let state: AttackState;
 	export let twoHanding: boolean = false;
@@ -25,12 +24,21 @@
 	}
 </script>
 
-<div>
-	<div class="px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-		<dt class="text-sm font-medium leading-6">
-			Total<br /><span class="text-xs text-zinc-500">{$heroAttack.activeHand}</span>
-		</dt>
-		<dd class="mt-1 text-sm leading-6 sm:col-span-2 sm:mt-0">
+<div class="rounded-lg">
+	<div class="py-3 flex gap-5">
+		<div class="text-sm font-medium leading-6">
+			<div class="mt-5 flex flex-wrap gap-5">
+				{#each Object.entries(state.scaling) as [t, data]}
+					<div>
+						<AttackScalingGraph {data} attributeType={t} position={state.attributes[t]} />
+					</div>
+				{/each}
+			</div>
+		</div>
+		<div class="flex items-center text-4xl text-zinc-500">
+			<Icon name="chevron_right" />
+		</div>
+		<div class="mt-1 text-sm leading-6 sm:mt-0 grow">
 			<div class="mb-4 font-light text-2xl">
 				{Math.round(state.totalDamage * 10) / 10}
 			</div>
@@ -46,19 +54,11 @@
 					{/if}
 				{/each}
 			</div>
-		</dd>
+		</div>
 	</div>
 
 	<div class="flex">
-		<CheckboxControl bind:checked={twoHanding}>Two-Handing</CheckboxControl>
-	</div>
-
-	<div class="mt-5 flex flex-wrap gap-5">
-		{#each Object.entries(state.scaling) as [t, data]}
-			<div>
-				<AttackScalingGraph {data} attributeType={t} position={state.attributes[t]} />
-			</div>
-		{/each}
+		<!--<CheckboxControl bind:checked={twoHanding}>Two-Handing</CheckboxControl>-->
 	</div>
 
 	{#if state.invalidAttributes.length > 0}
