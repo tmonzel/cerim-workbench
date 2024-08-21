@@ -1,7 +1,7 @@
 import { AttributeType } from './attributes';
 import { DamageType } from './damage';
 import { DynamicValue } from './DynamicValue';
-import { calcCorrect, calcNeededSouls, createDynamicNumber } from './helpers';
+import { calcCorrect, calcNeededSouls, createDynamicAttack, createDynamicNumber } from './helpers';
 import { AttackType, type Hero, type HeroType } from './types';
 
 const HERO_MAX_LEVEL = 713;
@@ -9,10 +9,7 @@ const HERO_MAX_LEVEL = 713;
 export function createHero(type: HeroType, attributes: Record<AttributeType, number>): Hero {
 	const level = Object.values(attributes).reduce((p, c) => p + c, 0) + type.level;
 
-	const souls = [...Array<number>(level)].reduce(
-		(p, c, index) => p + (index > 0 ? Math.floor(calcNeededSouls(index)) : 0),
-		0
-	);
+	const souls = [...Array<number>(level)].reduce((p, c, index) => p + (index > 0 ? Math.floor(calcNeededSouls(index)) : 0), 0);
 
 	const baseDefense = calcCorrect(level + 79, [
 		{ breakpoint: 1, grow: 40 },
@@ -35,16 +32,7 @@ export function createHero(type: HeroType, attributes: Record<AttributeType, num
 		progress: level / HERO_MAX_LEVEL,
 		souls,
 		attributePoints: HERO_MAX_LEVEL - level,
-		attack: {
-			[AttackType.PHYSICAL]: createDynamicNumber(0),
-			[AttackType.MAGIC]: createDynamicNumber(0),
-			[AttackType.FIRE]: createDynamicNumber(0),
-			[AttackType.LIGHTNING]: createDynamicNumber(0),
-			[AttackType.HOLY]: createDynamicNumber(0),
-			[AttackType.STAMINA]: createDynamicNumber(0),
-			[AttackType.SORCERY]: createDynamicNumber(0),
-			[AttackType.INCANTATION]: createDynamicNumber(0)
-		},
+		attack: createDynamicAttack(),
 		weight: 0,
 		poise: 0,
 		attributes: {

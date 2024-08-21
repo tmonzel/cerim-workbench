@@ -1,15 +1,16 @@
 <script lang="ts">
-	import InputControl from '$lib/components/InputControl.svelte';
-	import SortButton from '$lib/item/components/SortButton.svelte';
-	import type { ProtectItem } from './ProtectItem';
-	import { createCollection } from '$lib/core';
+	import { type ProtectItem } from '$lib/armor';
 	import ArmorCard from './ArmorCard.svelte';
-	import ItemList from '$lib/item/components/ItemList.svelte';
+	import ItemSlot from '$lib/item/components/ItemSlot.svelte';
+	import { createCollection } from '$lib';
+	import SortButton from '$lib/item/components/SortButton.svelte';
+	import EquippedArmor from './EquippedArmor.svelte';
 
-	export let items: ProtectItem[];
-	export let selectedItem: ProtectItem | null = null;
+	export let label: string;
+	export let item: ProtectItem | null = null;
+	export let items: ProtectItem[] = [];
 
-	const { result, sort, filters, pagination } = createCollection(
+	const { result, sort, pagination } = createCollection(
 		items,
 		{ filters: { search: '' } },
 		{
@@ -46,12 +47,14 @@
 	);
 </script>
 
-<div class="relative">
-	<div class="sticky top-0 z-20 p-5 bg-zinc-800">
-		<div class="mb-4">
-			<InputControl bind:value={$filters.search} placeholder="Search weapon by name..." />
-		</div>
+<ItemSlot {label} bind:selectedItem={item} result={$result} bind:pagination={$pagination} let:selectedItem>
+	{#if selectedItem}
+		<EquippedArmor item={selectedItem} on:update={(e) => (item = e.detail)} />
+	{:else}
+		Select Armor
+	{/if}
 
+	<svelte:fragment slot="utils">
 		<div class="flex gap-x-10">
 			<div>
 				<h6 class="font-semibold">Sorting</h6>
@@ -88,16 +91,9 @@
 				</div>
 			</div>
 		</div>
-	</div>
+	</svelte:fragment>
 
-	<ItemList
-		items={$result.items}
-		itemsPerPage={$pagination.itemsPerPage}
-		bind:currentPage={$pagination.page}
-		totalItems={$result.totalItems}
-		bind:selectedItem
-		let:item
-	>
+	<svelte:fragment slot="listItem" let:item>
 		<ArmorCard {item} />
-	</ItemList>
-</div>
+	</svelte:fragment>
+</ItemSlot>

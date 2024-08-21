@@ -1,9 +1,9 @@
 <script lang="ts">
+	import GuardGrid from '$lib/components/GuardGrid.svelte';
 	import StatBadge from '$lib/components/StatBadge.svelte';
 	import { attributeTypes, damageTypes, validateRequirements } from '$lib/core';
 	import { heroState } from '$lib/hero';
-	import type { AttackItem } from './AttackItem';
-	import { getScalingLetter } from './scaling';
+	import { getScalingLetter, type AttackItem } from '$lib/weapon';
 
 	export let item: AttackItem;
 
@@ -35,14 +35,7 @@
 	</div>
 
 	<div class="flex">
-		<svg
-			class="me-2"
-			xmlns="http://www.w3.org/2000/svg"
-			height="24px"
-			viewBox="0 -960 960 960"
-			width="24px"
-			fill="#e4e4e7"
-		>
+		<svg class="me-2" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e4e4e7">
 			<path d="m136-240-56-56 296-298 160 160 208-206H640v-80h240v240h-80v-104L536-320 376-480 136-240Z" />
 		</svg>
 		<div>
@@ -63,4 +56,8 @@
 	<StatBadge name="Critical">
 		{item.attackInfo.crit}
 	</StatBadge>
+
+	{#if item.guard}
+		<!--<GuardGrid data={item.guard} />-->
+	{/if}
 </div>

@@ -1,22 +1,25 @@
 <script lang="ts">
-	import InputControl from '$lib/components/InputControl.svelte';
-	import SortButton from '$lib/item/components/SortButton.svelte';
-	import type { AttackItem } from './AttackItem';
-	import { weaponTypeInfo } from './weapon.type';
-	import SelectControl from '$lib/components/SelectControl.svelte';
+	import ItemSlot from '$lib/item/components/ItemSlot.svelte';
 	import { createCollection, DamageType } from '$lib/core';
+	import { weaponTypeInfo, type AttackItem } from '$lib/weapon';
+	import EquippedWeapon from './EquippedWeapon.svelte';
 	import WeaponCard from './WeaponCard.svelte';
-	import ItemList from '$lib/item/components/ItemList.svelte';
+	import SelectControl from '$lib/components/SelectControl.svelte';
+	import InputControl from '$lib/components/InputControl.svelte';
 	import CheckboxControl from '$lib/components/CheckboxControl.svelte';
+	import SortButton from '$lib/item/components/SortButton.svelte';
 
-	export let items: AttackItem[];
-	export let selectedItem: AttackItem | null = null;
+	export let label: string;
+	export let item: AttackItem | null = null;
+	export let items: AttackItem[] = [];
+
+	const typeOptions = [{ id: null, name: 'All Types' }, ...Object.entries(weaponTypeInfo).map(([id, info]) => ({ id, name: info.name }))];
 
 	function createDamageFilter(type: DamageType) {
 		return (item: AttackItem, value: boolean) => (value ? item.attackInfo.damage.includes(type) : true);
 	}
 
-	const { result, sort, filters, pagination } = createCollection(
+	const { result, pagination, filters, sort } = createCollection(
 		items,
 		{
 			filters: {
@@ -53,15 +56,16 @@
 			}
 		}
 	);
-
-	const typeOptions = [
-		{ id: null, name: 'All Types' },
-		...Object.entries(weaponTypeInfo).map(([id, info]) => ({ id, name: info.name }))
-	];
 </script>
 
-<div class="relative">
-	<div class="sticky top-0 z-20 p-5 bg-zinc-800">
+<ItemSlot {label} bind:selectedItem={item} result={$result} bind:pagination={$pagination} let:selectedItem>
+	{#if selectedItem}
+		<EquippedWeapon item={selectedItem} on:update={(e) => (item = e.detail)} />
+	{:else}
+		Select Weapon
+	{/if}
+
+	<svelte:fragment slot="utils">
 		<div class="flex gap-x-2 mb-4">
 			<SelectControl options={typeOptions} bind:value={$filters.type} let:item>
 				<svelte:fragment slot="selected" let:item>
@@ -98,17 +102,10 @@
 					<SortButton bind:state={$sort.holyAttack}>Holy</SortButton>
 				</div>
 			</div>
-		</div>
-	</div>
-
-	<ItemList
-		items={$result.items}
-		itemsPerPage={$pagination.itemsPerPage}
-		bind:currentPage={$pagination.page}
-		totalItems={$result.totalItems}
-		bind:selectedItem
-		let:item
+		</div></svelte:fragment
 	>
+
+	<svelte:fragment slot="listItem" let:item>
 		<WeaponCard {item} />
-	</ItemList>
-</div>
+	</svelte:fragment>
+</ItemSlot>

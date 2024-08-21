@@ -12,10 +12,13 @@
 			<ItemRarityBadge {rarity} />
 		</div>
 		<div>
-			<div class="font-medium text-xl">
+			<div class="font-medium text-xl flex items-center">
 				<slot />
 			</div>
 			<p class="text-zinc-400">{type}</p>
 		</div>
+	</div>
+	<div class="hidden group-hover:block">
+		<slot name="options" />
 	</div>
 </header>

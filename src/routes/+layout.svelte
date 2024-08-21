@@ -7,6 +7,7 @@
 	import { findBuild } from '$lib/api';
 	import { applySharedBuild } from '$lib/share';
 	import { loadInventory } from '$lib/inventory';
+	import HeroApp from '$lib/hero/components/HeroApp.svelte';
 
 	let loading = true;
 
@@ -42,5 +43,7 @@
 		</div>
 	</div>
 {:else}
-	<slot />
+	<HeroApp>
+		<slot />
+	</HeroApp>
 {/if}

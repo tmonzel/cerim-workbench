@@ -1,48 +1,50 @@
 <script lang="ts">
 	import AttackBadge from '$lib/components/AttackBadge.svelte';
 	import AttackDetail from '$lib/components/AttackDetail.svelte';
-	import Button from '$lib/components/Button.svelte';
 	import CheckboxControl from '$lib/components/CheckboxControl.svelte';
-	import GuardGrid from '$lib/components/GuardGrid.svelte';
 	import Icon from '$lib/components/Icon.svelte';
 	import { heroState } from '$lib/hero';
-	import ItemUpgradeBar from '$lib/hero/components/ItemUpgradeBar.svelte';
 	import ItemChangeButton from '$lib/item/components/ItemChangeButton.svelte';
 	import ItemEffectBadge from '$lib/item/components/ItemEffectBadge.svelte';
 	import ItemHeader from '$lib/item/components/ItemHeader.svelte';
-	import { affinities, AffinityType } from './affinity';
-	import type { AttackItem } from './AttackItem';
+	import ItemUpgradeBar from '$lib/item/components/ItemUpgradeBar.svelte';
+	import { affinities, AffinityType, calculateAttackScaling, weaponTypeInfo, type AttackItem } from '$lib/weapon';
+	import { createEventDispatcher } from 'svelte';
 	import AttackScalingInfo from './AttackScalingInfo.svelte';
-	import { calculateAttackScaling } from './scaling';
-	import { weaponTypeInfo } from './weapon.type';
 	import WeaponAffinitySelect from './WeaponAffinitySelect.svelte';
 	import WeaponInfo from './WeaponInfo.svelte';
 
 	export let item: AttackItem;
 
+	const dispatch = createEventDispatcher();
+
 	function updateItem(item: AttackItem) {
 		item = item;
+		dispatch('update', item);
 	}
 
 	$: attackScaling = calculateAttackScaling(item, $heroState.attack, $heroState.attributes, false);
 </script>
 
-<!--<div class="absolute top-3 left-0 right-0 items-center justify-center hidden gap-x-5 text-lg group-hover:flex">
-	{#if item.possibleUpgrades > 0}
-		<ItemUpgradeBar bind:item />
-	{/if}
-	{#if item.affinities.size > 0}
-		<WeaponAffinitySelect bind:item />
-	{/if}
-</div>-->
-<div class="flex mt-7 gap-x-4">
+<article class="flex gap-x-4 px-5 pb-5">
 	<ItemChangeButton {item} />
 
 	<div class="grow">
 		<ItemHeader rarity={item.rarity} type={weaponTypeInfo[item.type] ? weaponTypeInfo[item.type].name : '-'}>
-			{#if item.affinity && item.affinity !== AffinityType.STANDARD}<span class="font-bold">{affinities[item.affinity].name}</span>{/if}
+			{#if item.affinity && item.affinity !== AffinityType.STANDARD}
+				<span class="font-bold me-1">{affinities[item.affinity].name}</span>
+			{/if}
 			{item.name}
 			{#if item.tier > 0}(+{item.tier}){/if}
+
+			<svelte:fragment slot="options">
+				<div class="flex justify-center gap-2">
+					{#if item.affinities.size > 0}
+						<WeaponAffinitySelect {item} on:update={(e) => updateItem(e.detail)} />
+					{/if}
+					<ItemUpgradeBar {item} on:update={(e) => updateItem(e.detail)} />
+				</div>
+			</svelte:fragment>
 		</ItemHeader>
 
 		<div class="flex items-center justify-between gap-x-12 mt-3 mb-2 text-2xl font-light">
@@ -62,13 +64,6 @@
 			<WeaponInfo {item} />
 		</div>
 
-		{#if attackScaling}
-			<div class="px-4 py-4 sm:px-0">
-				<dt class="text-sm font-medium mb-2 border-b pb-2 border-zinc-700">Attack Scaling</dt>
-				<dd><AttackScalingInfo state={attackScaling} /></dd>
-			</div>
-		{/if}
-
 		<ul>
 			{#each item.effects as effect}
 				<li class="flex gap-x-5">
@@ -84,11 +79,18 @@
 			{/each}
 		</ul>
 
+		{#if attackScaling}
+			<div class="px-4 py-4 sm:px-0">
+				<dt class="text-sm font-medium">Attack Scaling</dt>
+				<dd><AttackScalingInfo state={attackScaling} /></dd>
+			</div>
+		{/if}
+
 		{#if item.guard}
 			<!--<div class="px-4 py-4 sm:px-0">
-				<dt class="text-sm font-medium mb-2">Guard</dt>
-				<dd><GuardGrid data={item.guard} /></dd>
-			</div>-->
+					<dt class="text-sm font-medium mb-2">Guard</dt>
+					<dd><GuardGrid data={item.guard} /></dd>
+				</div>-->
 		{/if}
 	</div>
-</div>
+</article>

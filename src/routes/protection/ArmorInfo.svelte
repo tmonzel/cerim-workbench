@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { ProtectItem } from './ProtectItem';
+	import type { ProtectItem } from '$lib/armor';
 	import Icon from '$lib/components/Icon.svelte';
 
 	export let item: ProtectItem;

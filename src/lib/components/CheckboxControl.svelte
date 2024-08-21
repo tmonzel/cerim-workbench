@@ -18,17 +18,11 @@
 		{id}
 		bind:checked
 		type="checkbox"
-		bind:value
+		{value}
 		on:change={(e) => setChecked(checked)}
 		class="w-4 h-4 rounded cursor-pointer text-amber-300 bg-zinc-700 border-zinc-300 focus:ring-amber-300 focus:ring-2 tc-checkbox-input transition-all focus:ring-offset-zinc-800 checked:ring-1 checked:ring-amber-300"
 	/>
-	<label
-		for={id}
-		class="ms-2 text-sm select-none"
-		class:text-zinc-300={checked}
-		class:text-zinc-400={!checked}
-		style="line-height: 1.13rem;"
-	>
+	<label for={id} class="ms-2 text-sm select-none" class:text-zinc-300={checked} class:text-zinc-400={!checked} style="line-height: 1.13rem;">
 		<slot />
 	</label>
 </div>

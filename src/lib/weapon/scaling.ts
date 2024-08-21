@@ -3,12 +3,13 @@ import {
 	AttributeType,
 	calcCorrect,
 	calcTotal,
+	createDynamicAttack,
 	validateRequirements,
 	type Attack,
 	type DynamicNumber
 } from '$lib/core';
-import type { AttributeAttackRecord, AttributeAttackScaling } from '$lib/hero/attack.state';
 import type { AttackItem } from './AttackItem';
+import type { AttributeAttackRecord, AttributeAttackScaling } from './types';
 
 export const scalingAttributes = [
 	AttributeType.STRENGTH,
@@ -44,12 +45,7 @@ export function getScalingLetter(base: number): string {
 	return 'S';
 }
 
-export function calculateAttributeScaling(
-	weapon: AttackItem,
-	attrValue: number,
-	attrType: AttributeType,
-	attackType: AttackType
-): number {
+export function calculateAttributeScaling(weapon: AttackItem, attrValue: number, attrType: AttributeType, attackType: AttackType): number {
 	const scaling = weapon.scaling[attrType];
 
 	if (!scaling || !scaling.attackTypes.includes(attackType)) {
@@ -102,6 +98,7 @@ export function calculateAttackScaling(
 	}
 
 	let totalDamage = 0;
+	const atk = createDynamicAttack();
 	const scaling: AttributeAttackScaling = {};
 	const scaledAttack: Partial<Record<AttackType, number>> = {};
 	const invalidAttributes = validateRequirements(weapon.requirements ?? {}, attributes);
@@ -131,8 +128,14 @@ export function calculateAttackScaling(
 			scaledAttack[attackType] = attackBase * scalingTotal;
 		}
 
-		attack[attackType].base += scaledAttack[attackType] ?? 0;
-		totalDamage += calcTotal(attack[attackType]);
+		atk[attackType].base += scaledAttack[attackType] ?? 0;
+
+		// Add global hero attack
+		atk[attackType].base += attack[attackType].base;
+		atk[attackType].offset = attack[attackType].offset;
+		atk[attackType].multiplier = attack[attackType].multiplier;
+
+		totalDamage += calcTotal(atk[attackType]);
 	}
 
 	// Precalculate attribute scaling curves
@@ -153,7 +156,7 @@ export function calculateAttackScaling(
 
 	return {
 		scaling,
-		attack,
+		attack: atk,
 		attributes,
 		invalidAttributes,
 		totalDamage

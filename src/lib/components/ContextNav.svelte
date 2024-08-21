@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { heroContext } from '$lib/state';
+	import { page } from '$app/stores';
 
 	const contexts = [
 		{
-			name: 'dashboard',
+			name: '',
 			label: 'Dashboard',
 			icon: 'insert_chart'
 		},
@@ -37,13 +37,13 @@
 	<ul class="flex flex-wrap -mb-px gap-x-3 text-lg font-medium text-center text-zinc-400">
 		{#each contexts as context}
 			<li>
-				<button
+				<a
+					href={`/${context.name}`}
 					class="inline-flex items-center justify-center px-4 py-2 transition-colors rounded-lg nav-btn select-none"
-					class:active={$heroContext === context.name}
-					on:click={() => ($heroContext = context.name)}
+					class:active={$page.url.pathname === `/${context.name}`}
 				>
 					<span class="mat-icon me-1">{context.icon}</span>{context.label}
-				</button>
+				</a>
 			</li>
 		{/each}
 	</ul>

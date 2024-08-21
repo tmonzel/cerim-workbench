@@ -18,7 +18,7 @@
 
 		<div class="ml-auto text-right">
 			<p class="text-zinc-400 text-xs leading-4">
-				<span class="text-emerald-300">v0.20</span><br />Handcrafted with
+				<span class="text-emerald-300">v0.21</span><br />Handcrafted with
 				<span class="mat-icon filled" style="font-size: 1.1em; transform: translateY(2px)">favorite</span>
 				by Thomas Monzel
 			</p>

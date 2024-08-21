@@ -1,9 +1,9 @@
 <script lang="ts">
 	import InputControl from '$lib/components/InputControl.svelte';
-	import type { AccessoryItem } from './AccessoryItem';
 	import { createCollection } from '$lib/core';
 	import AccessoryCard from './AccessoryCard.svelte';
 	import ItemList from '$lib/item/components/ItemList.svelte';
+	import type { AccessoryItem } from '$lib/accessory';
 
 	export let items: AccessoryItem[];
 	export let selectedItem: AccessoryItem | undefined = undefined;

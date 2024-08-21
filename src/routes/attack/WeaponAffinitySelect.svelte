@@ -1,13 +1,16 @@
 <script lang="ts">
 	import SelectControl from '$lib/components/SelectControl.svelte';
-	import { affinities, AffinityType } from './affinity';
-	import type { AttackItem } from './AttackItem';
+	import { affinities, AffinityType, type AttackItem } from '$lib/weapon';
+	import { createEventDispatcher } from 'svelte';
 
 	export let item: AttackItem;
+
+	const dispatch = createEventDispatcher();
 
 	function changeAffinity(aff: AffinityType): void {
 		item.setAffinity(aff);
 		item = item;
+		dispatch('update', item);
 	}
 
 	type AffinityOption = {
@@ -24,17 +27,12 @@
 </script>
 
 <div>
-	<SelectControl
-		options={affinityOptions}
-		value={item.affinity ?? AffinityType.STANDARD}
-		on:select={(e) => changeAffinity(e.detail)}
-		let:item
-	>
+	<SelectControl options={affinityOptions} value={item.affinity ?? AffinityType.STANDARD} on:select={(e) => changeAffinity(e.detail)} let:item>
 		<svelte:fragment slot="selected" let:item>
-			<div class="p-2 flex">
+			<div class="p-1 flex items-center">
 				{#if item}
 					<div><img class="w-7 me-2" src={item.iconUrl} alt="{item.name} Affinity Icon" /></div>
-					<div class="grow text-xl">
+					<div class="grow text-lg">
 						{item.name}
 					</div>
 				{/if}

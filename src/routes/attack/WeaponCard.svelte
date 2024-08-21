@@ -6,8 +6,7 @@
 	import ItemCard from '$lib/item/components/ItemCard.svelte';
 	import ItemEffectBadge from '$lib/item/components/ItemEffectBadge.svelte';
 	import ItemHeader from '$lib/item/components/ItemHeader.svelte';
-	import type { AttackItem } from './AttackItem';
-	import { weaponTypeInfo } from './weapon.type';
+	import { affinities, AffinityType, weaponTypeInfo, type AttackItem } from '$lib/weapon';
 	import WeaponInfo from './WeaponInfo.svelte';
 
 	export let item: AttackItem;
@@ -16,6 +15,9 @@
 
 <ItemCard {item}>
 	<ItemHeader rarity={item.rarity} type={weaponTypeInfo[item.type] ? weaponTypeInfo[item.type].name : '-'}>
+		{#if item.affinity && item.affinity !== AffinityType.STANDARD}
+			<span class="font-bold me-1">{affinities[item.affinity].name}</span>
+		{/if}
 		{item.name}
 		{#if item.tier > 0}(+{item.tier}){/if}
 	</ItemHeader>

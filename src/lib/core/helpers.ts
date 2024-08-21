@@ -1,5 +1,18 @@
 import type { AttributeType } from './attributes';
-import { type DynamicNumber, type GraphMutation } from './types';
+import { AttackType, type DynamicNumber, type GraphMutation } from './types';
+
+export function createDynamicAttack() {
+	return {
+		[AttackType.PHYSICAL]: createDynamicNumber(0),
+		[AttackType.MAGIC]: createDynamicNumber(0),
+		[AttackType.FIRE]: createDynamicNumber(0),
+		[AttackType.LIGHTNING]: createDynamicNumber(0),
+		[AttackType.HOLY]: createDynamicNumber(0),
+		[AttackType.STAMINA]: createDynamicNumber(0),
+		[AttackType.SORCERY]: createDynamicNumber(0),
+		[AttackType.INCANTATION]: createDynamicNumber(0)
+	};
+}
 
 export function createDynamicNumber(base: number): DynamicNumber {
 	return {
@@ -13,10 +26,7 @@ export function calcTotal(value: DynamicNumber): number {
 	return (value.base + value.offset) * value.multiplier;
 }
 
-export function validateRequirements(
-	requirements: Record<string, number>,
-	attributes: Record<string, number>
-): AttributeType[] {
+export function validateRequirements(requirements: Record<string, number>, attributes: Record<string, number>): AttributeType[] {
 	const invalidAttributes: AttributeType[] = [];
 
 	for (const [t, n] of Object.entries(requirements)) {
@@ -38,9 +48,7 @@ export function sum<T extends string>(v: Partial<Record<T, number>>): number {
 	return s;
 }
 
-export function getValueDistribution<T extends string = string>(
-	v: Partial<Record<T, number>>
-): { amount: number; value: number; key: T }[] {
+export function getValueDistribution<T extends string = string>(v: Partial<Record<T, number>>): { amount: number; value: number; key: T }[] {
 	const dist: { amount: number; value: number; key: T }[] = [];
 	const total = sum(v);
 	const n = 100 / total;
@@ -77,10 +85,7 @@ export function calcNeededSouls(level: number): number {
 	return Math.floor((x + 0.1) * Math.pow(level + 81, 2) + 1);
 }
 
-export function calcGraphParams(
-	x: number,
-	mutations: GraphMutation[]
-): { stat: number[]; grow: number[]; exp: number[] } {
+export function calcGraphParams(x: number, mutations: GraphMutation[]): { stat: number[]; grow: number[]; exp: number[] } {
 	for (let i = 1; i < mutations.length; i++) {
 		const calc = mutations[i];
 

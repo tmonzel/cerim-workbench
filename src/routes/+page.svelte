@@ -1,6 +1,5 @@
-<script lang="ts">
-	import HeroApp from '$lib/hero/components/HeroApp.svelte';
-	import { heroState } from '$lib/hero';
+<script>
+	import HeroDashboard from '$lib/hero/components/HeroDashboard.svelte';
 </script>
 
-<HeroApp hero={$heroState} />
+<HeroDashboard />

@@ -2,7 +2,7 @@
 	import Icon from '$lib/components/Icon.svelte';
 	import { AttackType, attackTypes, calcTotal, getValueDistribution, type Attack } from '$lib/core';
 	import AttackScalingGraph from '$lib/hero/components/AttackScalingGraph.svelte';
-	import type { AttackState } from './types';
+	import type { AttackState } from '$lib/weapon';
 
 	export let state: AttackState;
 	export let twoHanding: boolean = false;

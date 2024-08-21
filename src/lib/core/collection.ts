@@ -1,4 +1,4 @@
-import { derived, writable } from 'svelte/store';
+import { derived, writable, type Readable, type Writable } from 'svelte/store';
 
 export type CollectionFilter<T, V = never> = (item: T, value: V) => boolean;
 export type CollectionSorter<T> = (item: T) => number;
@@ -8,11 +8,28 @@ export type CollectionConfig<T> = {
 	sort?: Record<string, CollectionSorter<T>>;
 };
 
-enum SortState {
+export enum SortState {
 	NONE = 0,
 	ASC = 1,
 	DESC = 2
 }
+
+export type CollectionFindResult<T> = {
+	totalItems: number;
+	items: T[];
+};
+
+export type CollectionPagination = {
+	itemsPerPage: number;
+	page: number;
+};
+
+export type Collection<T, F = Record<string, unknown>> = {
+	sort: Writable<Record<string, SortState>>;
+	filters: Writable<F>;
+	pagination: Writable<CollectionPagination>;
+	result: Readable<CollectionFindResult<T>>;
+};
 
 export type CollectionState<FSchema> = {
 	filters: FSchema;
@@ -60,7 +77,7 @@ export function createCollection<T, F = Record<string, unknown>>(
 	items: T[],
 	defaults: Partial<CollectionState<F>>,
 	config: CollectionConfig<T> = {}
-) {
+): Collection<T, F> {
 	const sortState: Record<string, SortState> = defaults.sort ?? {};
 	const filtersState: F = defaults.filters ?? ({} as F);
 
@@ -117,7 +134,6 @@ export function createCollection<T, F = Record<string, unknown>>(
 		const startIndex = (page - 1) * p.itemsPerPage;
 
 		return {
-			page,
 			totalItems: r.length,
 			items: r.slice(startIndex, startIndex + p.itemsPerPage)
 		};

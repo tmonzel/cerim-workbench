@@ -1,12 +1,11 @@
 <script lang="ts">
+	import type { AccessoryItem } from '$lib/accessory';
 	import Icon from '$lib/components/Icon.svelte';
 	import { getIconUrl } from '$lib/helpers';
 	import ItemEffectBadge from '$lib/item/components/ItemEffectBadge.svelte';
 	import ItemHeader from '$lib/item/components/ItemHeader.svelte';
-	import { goodTypeInfo } from './good.type';
-	import type { InventoryItem } from './InventoryItem';
 
-	export let item: InventoryItem;
+	export let item: AccessoryItem;
 </script>
 
 <article class="max-w-sm w-full lg:max-w-full lg:flex">
@@ -15,8 +14,11 @@
 	</div>
 
 	<div class="grow">
-		<ItemHeader rarity={item.rarity} type={goodTypeInfo[item.type].name}>
+		<ItemHeader rarity={item.rarity} type="Talisman">
 			{item.name}
+			{#if item.possibleUpgrades > 0}
+				(1/{item.possibleUpgrades + 1})
+			{/if}
 		</ItemHeader>
 
 		{#if item.weight > 0}
