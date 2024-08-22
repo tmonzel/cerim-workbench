@@ -118,14 +118,8 @@ export function createCollection<T, F = Record<string, unknown>>(
 	}
 
 	const result = derived([sort, pagination], ([s, p]) => {
-		const r = filteredItems;
+		const r = [...filteredItems];
 		const page = p.page;
-
-		/*if (config.filters) {
-			for (const [prop, filter] of Object.entries(config.filters)) {
-				r = r.filter((item) => filter(item, f[prop]));
-			}
-		}*/
 
 		for (const sorter of sorters) {
 			sorter.sort(r, s[sorter.prop]);
