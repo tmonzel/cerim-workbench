@@ -2,7 +2,7 @@
 	import { VisXYContainer, VisLine, VisAxis, VisStackedBar } from '@unovis/svelte';
 	import { attackTypes } from '$lib/core';
 	import AttributeBadge from '$lib/components/AttributeBadge.svelte';
-	import type { AttributeAttackRecord } from '../attack.state';
+	import type { AttributeAttackRecord } from '$lib/weapon';
 
 	export let data: AttributeAttackRecord[];
 	export let attributeType: string;
@@ -40,7 +40,7 @@
 
 <div style="--vis-axis-grid-color: rgba(255, 255, 255, 0.1)" class="flex flex-col items-end">
 	<div class="mb-2">
-		<VisXYContainer {data} width={150} height={100} duration={0} xDomain={[0, 99]} yDomain={[0, undefined]}>
+		<VisXYContainer {data} width={250} height={150} duration={0} xDomain={[0, 99]} yDomain={[0, undefined]}>
 			<VisLine {x} {y} {color} />
 			<VisAxis type="x" tickValues={[0, 25, 50, 75]} />
 			<VisAxis type="y" tickValues={[0, 50, 100, 200, 300, 400, 500]} />

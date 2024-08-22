@@ -18,9 +18,9 @@
 
 		<div class="ml-auto text-right">
 			<p class="text-zinc-400 text-xs leading-4">
-				<span class="text-emerald-300">v0.21</span><br />Handcrafted with
+				<span class="text-emerald-300">v0.22</span><br />Handcrafted with
 				<span class="mat-icon filled" style="font-size: 1.1em; transform: translateY(2px)">favorite</span>
-				by Thomas Monzel
+				by <a href="mailto:work@tmonzel.de">Thomas Monzel</a>
 			</p>
 			<p class="text-zinc-500 text-xs mb-4">ELDEN RING is a trademark of FromSoftware.</p>
 

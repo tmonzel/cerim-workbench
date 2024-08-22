@@ -18,7 +18,7 @@
 			<p class="text-zinc-400">{type}</p>
 		</div>
 	</div>
-	<div class="hidden group-hover:block">
+	<div>
 		<slot name="options" />
 	</div>
 </header>

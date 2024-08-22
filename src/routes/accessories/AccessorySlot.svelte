@@ -34,7 +34,7 @@
 	{#if selectedItem}
 		<EquippedAccessory item={selectedItem} on:update={(e) => (item = e.detail)} />
 	{:else}
-		Select Accessory
+		Accessory Slot
 	{/if}
 
 	<svelte:fragment slot="utils">

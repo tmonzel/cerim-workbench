@@ -2,7 +2,7 @@
 	import type { AccessoryItem } from '$lib/accessory';
 	import CheckboxControl from '$lib/components/CheckboxControl.svelte';
 	import Icon from '$lib/components/Icon.svelte';
-	import ItemChangeButton from '$lib/item/components/ItemChangeButton.svelte';
+	import ItemImage from '$lib/item/components/ItemImage.svelte';
 	import ItemEffectBadge from '$lib/item/components/ItemEffectBadge.svelte';
 	import ItemHeader from '$lib/item/components/ItemHeader.svelte';
 	import ItemUpgradeBar from '$lib/item/components/ItemUpgradeBar.svelte';
@@ -19,7 +19,7 @@
 </script>
 
 <div class="flex gap-x-4 px-5 pb-5">
-	<ItemChangeButton {item} />
+	<ItemImage {item} />
 
 	<div class="grow">
 		<ItemHeader rarity={item.rarity} type="Talisman">

@@ -62,7 +62,7 @@
 	{#if selectedItem}
 		<EquippedWeapon item={selectedItem} on:update={(e) => (item = e.detail)} />
 	{:else}
-		Select Weapon
+		Weapon Slot
 	{/if}
 
 	<svelte:fragment slot="utils">

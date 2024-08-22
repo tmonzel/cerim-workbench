@@ -4,7 +4,7 @@
 	import CheckboxControl from '$lib/components/CheckboxControl.svelte';
 	import Icon from '$lib/components/Icon.svelte';
 	import { heroState } from '$lib/hero';
-	import ItemChangeButton from '$lib/item/components/ItemChangeButton.svelte';
+	import ItemImage from '$lib/item/components/ItemImage.svelte';
 	import ItemEffectBadge from '$lib/item/components/ItemEffectBadge.svelte';
 	import ItemHeader from '$lib/item/components/ItemHeader.svelte';
 	import ItemUpgradeBar from '$lib/item/components/ItemUpgradeBar.svelte';
@@ -13,6 +13,7 @@
 	import AttackScalingInfo from './AttackScalingInfo.svelte';
 	import WeaponAffinitySelect from './WeaponAffinitySelect.svelte';
 	import WeaponInfo from './WeaponInfo.svelte';
+	import TotalDamageInfo from './TotalDamageInfo.svelte';
 
 	export let item: AttackItem;
 
@@ -27,9 +28,9 @@
 </script>
 
 <article class="flex gap-x-4 px-5 pb-5">
-	<ItemChangeButton {item} />
+	<ItemImage {item} />
 
-	<div class="grow">
+	<div class="grow px-10">
 		<ItemHeader rarity={item.rarity} type={weaponTypeInfo[item.type] ? weaponTypeInfo[item.type].name : '-'}>
 			{#if item.affinity && item.affinity !== AffinityType.STANDARD}
 				<span class="font-bold me-1">{affinities[item.affinity].name}</span>
@@ -81,8 +82,19 @@
 
 		{#if attackScaling}
 			<div class="px-4 py-4 sm:px-0">
-				<dt class="text-sm font-medium">Attack Scaling</dt>
+				<dt class="text-sm font-medium mb-4">Attack Scaling</dt>
 				<dd><AttackScalingInfo state={attackScaling} /></dd>
+			</div>
+		{/if}
+
+		<div class="flex">
+			<!--<CheckboxControl bind:checked={twoHanding}>Two-Handing</CheckboxControl>-->
+		</div>
+
+		{#if attackScaling.invalidAttributes.length > 0}
+			<div class="bg-rose-900/20 text-rose-400 p-3 rounded-lg flex items-center mt-5">
+				<span class="mat-icon me-2">warning</span>
+				<span>Item requirements not met. Damage penality applied (-40%).</span>
 			</div>
 		{/if}
 
@@ -92,5 +104,15 @@
 					<dd><GuardGrid data={item.guard} /></dd>
 				</div>-->
 		{/if}
+	</div>
+
+	<div class="px-10 basis-1/4 border-s border-zinc-700">
+		<div class="sticky top-5 z-10">
+			<div class="mb-10">
+				<h3 class="font-semibold text-lg">Total Damage</h3>
+				<p class="mt-1 text-zinc-400">Damage output including upgrade level, affinity type and attribute scaling</p>
+			</div>
+			<TotalDamageInfo state={attackScaling} />
+		</div>
 	</div>
 </article>

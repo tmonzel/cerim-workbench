@@ -18,9 +18,11 @@
 		await loadWeapons();
 		await loadInventory();
 
-		if ($page.params.uid) {
+		const uid = $page.url.searchParams.get('uid');
+
+		if (uid) {
 			// Fetch shared build configuration
-			const build = await findBuild($page.params.uid);
+			const build = await findBuild(uid);
 
 			if (build) {
 				applySharedBuild(build);

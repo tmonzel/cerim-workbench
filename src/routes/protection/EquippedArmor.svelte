@@ -3,7 +3,7 @@
 	import CheckboxControl from '$lib/components/CheckboxControl.svelte';
 	import DamageNegationGrid from '$lib/components/DamageNegationGrid.svelte';
 	import ResistanceGrid from '$lib/components/ResistanceGrid.svelte';
-	import ItemChangeButton from '$lib/item/components/ItemChangeButton.svelte';
+	import ItemImage from '$lib/item/components/ItemImage.svelte';
 	import ItemEffectBadge from '$lib/item/components/ItemEffectBadge.svelte';
 	import ItemHeader from '$lib/item/components/ItemHeader.svelte';
 	import { createEventDispatcher } from 'svelte';
@@ -20,7 +20,7 @@
 </script>
 
 <div class="px-5 pb-5 flex gap-x-4">
-	<ItemChangeButton {item} />
+	<ItemImage {item} />
 
 	<div class="grow">
 		<ItemHeader rarity={item.rarity} type={armorTypeInfo[item.type] ? armorTypeInfo[item.type].name : '-'}>
