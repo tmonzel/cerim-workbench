@@ -1,8 +1,7 @@
 <script lang="ts">
 	import { createCollection } from '$lib';
-	import type { InventoryItem } from '$lib/inventory';
+	import type { InventoryItem } from '$lib/item';
 	import ItemSlot from '$lib/item/components/ItemSlot.svelte';
-	import EquippedGood from './EquippedGood.svelte';
 	import GoodCard from './GoodCard.svelte';
 
 	export let label: string;
@@ -12,9 +11,9 @@
 	const { result, pagination } = createCollection(items, {});
 </script>
 
-<ItemSlot {label} bind:selectedItem={item} result={$result} bind:pagination={$pagination} let:selectedItem>
+<ItemSlot {label} dialogTitle="Choose Inventory Item" bind:selectedItem={item} result={$result} bind:pagination={$pagination} let:selectedItem>
 	{#if selectedItem}
-		<EquippedGood item={selectedItem} on:update={(e) => (item = e.detail)} />
+		<GoodCard editable item={selectedItem} on:update={(e) => (item = e.detail)} />
 	{:else}
 		Select Item
 	{/if}

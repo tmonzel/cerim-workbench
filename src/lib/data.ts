@@ -1,10 +1,17 @@
 import { type AttackCorrect, type GraphMutation, type SpEffect } from './core';
-import { AttackItem } from './weapon/AttackItem';
-import { weaponStore } from './weapon/weapon.store';
-import type { UpgradeSchema, WeaponEntity } from './weapon';
-import { armorStore, ProtectItem, type ArmorEntity } from './armor';
-import { AccessoryItem, accessoryStore, type AccessoryEntity } from './accessory';
-import type { Item } from './item';
+import {
+	AccessoryItem,
+	AttackItem,
+	InventoryItem,
+	ProtectItem,
+	type AccessoryEntity,
+	type ArmorEntity,
+	type GoodEntity,
+	type Item,
+	type UpgradeSchema,
+	type WeaponEntity
+} from './item';
+import { accessoryStore, armorStore, inventoryStore, weaponStore } from './item/stores';
 
 const DATA_URL = './data';
 
@@ -92,4 +99,17 @@ export async function loadAccessories() {
 	}
 
 	accessoryStore.set(accessories);
+}
+
+export async function loadInventory() {
+	const { data } = await fetchData<{ data: Record<string, GoodEntity> }>(`/goods.json`);
+
+	const items: Record<string, InventoryItem> = {};
+
+	for (const id in data) {
+		items[id] = new InventoryItem(id, data[id]);
+		itemMap.set(id, items[id]);
+	}
+
+	inventoryStore.set(items);
 }

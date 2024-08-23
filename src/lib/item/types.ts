@@ -1,4 +1,6 @@
-import type { AttackType, AttributeType, SpEffectCategory, SpEffectCondition, SpEffectModifier } from '$lib/core';
+import type { AttributeType } from '$lib/attribute';
+import type { AttackType, DamageType, GraphMutation, Guard, GuardType } from '$lib/core';
+import type { SpEffectCategory, SpEffectCondition, SpEffectModifier } from '$lib/effect/types';
 import type { Item } from './Item';
 
 export interface Upgradable {
@@ -7,7 +9,7 @@ export interface Upgradable {
 	upgrade(tier: number): void;
 }
 
-export type ItemData = {
+export type ItemEntity = {
 	id: number;
 	name: string;
 	type: number;
@@ -75,4 +77,46 @@ export type ItemStoreState<T extends Item> = {
 	loaded: boolean;
 	entities: Record<string, T>;
 	ids: string[];
+};
+
+export enum ActivateCondition {
+	SKILL_ATTACK = 112,
+	CHARGED_SKILL_ATTACK = 111
+}
+
+export enum ArmorWeightClass {
+	LIGHT = 1,
+	MEDIUM = 2,
+	HEAVY = 3
+}
+
+export type WeaponScaling = Record<string, { base: number; attackTypes: AttackType[] }>;
+
+export type AttackInfo = {
+	damage: DamageType[];
+	crit: number;
+	poise: number;
+	vsGhost: boolean;
+	vsDragon: boolean;
+};
+
+export type UpgradeSchema = {
+	tiers: number;
+	attack: Record<string, number[]>;
+	scaling: Record<string, number[]>;
+	guard: Record<GuardType, number[]>;
+	effects: Record<number, number[]>;
+};
+
+export type WeaponConfig = {
+	attack?: Partial<Record<AttackType, number>>;
+	guard?: Guard;
+	scaling?: ScalingBase;
+	schema?: string;
+	mutations?: GraphMutation[] | number | Partial<Record<AttackType, string>>;
+	cast?: 'sorceries' | 'incantations';
+	effects?: Record<number, number>;
+	attackCorrectId?: string;
+
+	buffable?: boolean;
 };

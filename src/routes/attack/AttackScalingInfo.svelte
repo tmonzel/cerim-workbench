@@ -1,31 +1,14 @@
 <script lang="ts">
-	import { AttackType, calcTotal, getValueDistribution, type Attack } from '$lib/core';
-	import AttackScalingGraph from '$lib/hero/components/AttackScalingGraph.svelte';
-	import type { AttackState } from '$lib/weapon';
+	import type { ScaledAttack } from '$lib/scaling';
+	import AttackScalingGraph from './AttackScalingGraph.svelte';
 
-	export let state: AttackState;
-
-	let dist: {
-		amount: number;
-		value: number;
-		key: AttackType;
-	}[] = [];
-
-	$: {
-		const flatAttack: Attack = {};
-
-		for (const [t, a] of Object.entries(state.attack)) {
-			flatAttack[t as AttackType] = calcTotal(a);
-		}
-
-		dist = getValueDistribution(flatAttack);
-	}
+	export let attack: ScaledAttack;
 </script>
 
 <div class="flex flex-wrap gap-5">
-	{#each Object.entries(state.scaling) as [t, data]}
+	{#each Object.entries(attack.scaling) as [t, data]}
 		<div>
-			<AttackScalingGraph {data} attributeType={t} position={state.attributes[t]} />
+			<AttackScalingGraph {data} attributeType={t} position={attack.attributes[t]} />
 		</div>
 	{/each}
 </div>

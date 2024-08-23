@@ -1,13 +1,12 @@
 <script lang="ts">
-	import GuardGrid from '$lib/components/GuardGrid.svelte';
-	import StatBadge from '$lib/components/StatBadge.svelte';
-	import { attributeTypes, damageTypes, validateRequirements } from '$lib/core';
-	import { heroState } from '$lib/hero';
-	import { getScalingLetter, type AttackItem } from '$lib/weapon';
+	import { attributeTypes } from '$lib/attribute';
+	import StatBadge from '$lib/stat/StatBadge.svelte';
+	import { damageTypes } from '$lib/core';
+	import type { AttackItem } from '$lib/item';
+	import { getScalingLetter } from '$lib/scaling';
 
 	export let item: AttackItem;
-
-	$: invalidAttributes = validateRequirements(item.requirements ?? {}, $heroState.attributes);
+	export let invalidAttributes: string[] = [];
 </script>
 
 <div class="flex gap-x-8 text-sm">

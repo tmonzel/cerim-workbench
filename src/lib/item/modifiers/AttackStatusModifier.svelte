@@ -12,7 +12,7 @@
 			<span class="me-2">
 				<StatusEffectIcon effect={key} />
 			</span>
-			{statusTypes[key].name}
+			{key}
 		</div>
 	</dt>
 	<dd>

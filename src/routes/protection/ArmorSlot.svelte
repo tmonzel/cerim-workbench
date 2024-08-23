@@ -1,16 +1,16 @@
 <script lang="ts">
-	import { type ProtectItem } from '$lib/armor';
 	import ArmorCard from './ArmorCard.svelte';
 	import ItemSlot from '$lib/item/components/ItemSlot.svelte';
 	import { createCollection } from '$lib';
 	import SortButton from '$lib/item/components/SortButton.svelte';
-	import EquippedArmor from './EquippedArmor.svelte';
+	import InputControl from '$lib/components/InputControl.svelte';
+	import type { ProtectItem } from '$lib/item';
 
 	export let label: string;
 	export let item: ProtectItem | null = null;
 	export let items: ProtectItem[] = [];
 
-	const { result, sort, pagination } = createCollection(
+	const { result, sort, filters, pagination } = createCollection(
 		items,
 		{ filters: { search: '' } },
 		{
@@ -47,14 +47,17 @@
 	);
 </script>
 
-<ItemSlot {label} bind:selectedItem={item} result={$result} bind:pagination={$pagination} let:selectedItem>
+<ItemSlot {label} dialogTitle="Choose Armor Item" bind:selectedItem={item} result={$result} bind:pagination={$pagination} let:selectedItem>
 	{#if selectedItem}
-		<EquippedArmor item={selectedItem} on:update={(e) => (item = e.detail)} />
+		<ArmorCard editable item={selectedItem} on:update={(e) => (item = e.detail)} />
 	{:else}
 		Armor Slot
 	{/if}
 
 	<svelte:fragment slot="utils">
+		<div class="mb-5">
+			<InputControl bind:value={$filters.search} placeholder="Find armor piece..." class="text-xl" />
+		</div>
 		<div class="flex gap-x-10">
 			<div>
 				<h6 class="font-semibold">Sorting</h6>

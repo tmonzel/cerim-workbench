@@ -8,6 +8,7 @@
 	type T = $$Generic<Item>;
 
 	export let label: string;
+	export let dialogTitle: string = '';
 	export let selectedItem: T | null = null;
 	export let result: CollectionFindResult<T>;
 	export let pagination: CollectionPagination;
@@ -25,7 +26,7 @@
 	</div>
 
 	{#if selectedItem}
-		<div class="flex justify-between p-5">
+		<div class="flex justify-between px-5 pt-5">
 			<div></div>
 			<div class="flex gap-2 invisible group-hover:visible">
 				<Button icon="sync" class="text-2xl text-zinc-500 bg-zinc-700/30" on:click={() => dialog.open()} />
@@ -33,7 +34,9 @@
 			</div>
 			<div></div>
 		</div>
-		<slot {selectedItem} />
+		<div class="p-5">
+			<slot {selectedItem} />
+		</div>
 	{:else}
 		<button
 			class="group w-full h-full flex justify-center items-center p-5 min-h-32 text-amber-300 font-semibold transition-all rounded-lg ring-amber-300 hover:bg-stone-800 hover:ring-2"
@@ -45,7 +48,7 @@
 </div>
 
 <Dialog bind:this={dialog} class="finder-dialog">
-	<svelte:fragment slot="title">Choose a Weapon</svelte:fragment>
+	<svelte:fragment slot="title">{dialogTitle}</svelte:fragment>
 
 	<div class="sticky top-0 z-20 p-5 bg-zinc-800">
 		<slot name="utils" />

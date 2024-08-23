@@ -1,9 +1,8 @@
 <script lang="ts">
 	import { attackTypes, calcTotal, getValueDistribution, type Attack, type AttackType } from '$lib';
-	import Icon from '$lib/components/Icon.svelte';
-	import type { AttackState } from '$lib/weapon';
+	import type { ScaledAttack } from '$lib/scaling';
 
-	export let state: AttackState;
+	export let attack: ScaledAttack;
 
 	let dist: {
 		amount: number;
@@ -14,7 +13,7 @@
 	$: {
 		const flatAttack: Attack = {};
 
-		for (const [t, a] of Object.entries(state.attack)) {
+		for (const [t, a] of Object.entries(attack.attack)) {
 			flatAttack[t as AttackType] = calcTotal(a);
 		}
 
@@ -24,16 +23,16 @@
 
 <div class="text-sm leading-6 sm:mt-0 grow">
 	<div class="mb-4 font-light text-3xl flex items-center">
-		{Math.round(state.totalDamage * 10) / 10}
+		{Math.round(attack.totalDamage * 10) / 10}
 	</div>
 
 	<div class="flex flex-col gap-3">
 		{#each dist as d}
-			{@const attack = state.attack[d.key]}
+			{@const atk = attack.attack[d.key]}
 			{#if attack}
 				<div style:width={`${d.amount * 100}%`}>
 					<div style:background-color={attackTypes[d.key].color} class="h-2"></div>
-					<span class="text-lg">{Math.round(calcTotal(attack) * 10) / 10}</span>
+					<span class="text-lg">{Math.round(calcTotal(atk) * 10) / 10}</span>
 				</div>
 			{/if}
 		{/each}

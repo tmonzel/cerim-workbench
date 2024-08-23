@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { statTypes } from '$lib/core';
+	import { statTypes } from '$lib/stat';
 
 	export let key: string;
 	export let value: number;

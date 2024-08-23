@@ -1,7 +1,13 @@
 <script lang="ts">
-	import { ArmorType, readArmorByType } from '$lib/armor';
 	import { heroEquip } from '$lib/state';
+	import { derived } from 'svelte/store';
 	import ArmorSlot from './ArmorSlot.svelte';
+	import { armorStore } from '$lib/item/stores';
+	import { ArmorType } from '$lib/item';
+
+	export function readArmorByType(type: number) {
+		return derived(armorStore, (items) => Object.values(items).filter((item) => item.type === type));
+	}
 
 	const helmets = readArmorByType(ArmorType.HEAD);
 	const armors = readArmorByType(ArmorType.BODY);

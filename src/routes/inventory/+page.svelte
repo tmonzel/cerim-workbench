@@ -1,8 +1,9 @@
 <script lang="ts">
-	import { GoodsType, inventoryStore } from '$lib/inventory';
 	import { heroEquip } from '$lib/state';
 	import { derived } from 'svelte/store';
 	import InventorySlot from './InventorySlot.svelte';
+	import { inventoryStore } from '$lib/item/stores';
+	import { GoodsType } from '$lib/item';
 
 	const greatrunes = derived(inventoryStore, (items) => Object.values(items).filter((item) => item.type === GoodsType.GREAT_RUNE));
 </script>

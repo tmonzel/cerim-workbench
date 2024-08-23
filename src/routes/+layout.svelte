@@ -1,13 +1,12 @@
 <script lang="ts">
 	import '../fonts.css';
 	import '../app.css';
-	import { loadAccessories, loadArmors, loadCalcData, loadWeapons } from '$lib/data';
+	import { loadAccessories, loadArmors, loadCalcData, loadWeapons, loadInventory } from '$lib/data';
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
 	import { findBuild } from '$lib/api';
 	import { applySharedBuild } from '$lib/share';
-	import { loadInventory } from '$lib/inventory';
-	import HeroApp from '$lib/hero/components/HeroApp.svelte';
+	import App from './App.svelte';
 
 	let loading = true;
 
@@ -45,7 +44,7 @@
 		</div>
 	</div>
 {:else}
-	<HeroApp>
+	<App>
 		<slot />
-	</HeroApp>
+	</App>
 {/if}

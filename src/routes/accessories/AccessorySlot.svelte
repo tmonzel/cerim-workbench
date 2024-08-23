@@ -1,10 +1,10 @@
 <script lang="ts">
-	import type { AccessoryItem } from '$lib/accessory';
 	import EquippedAccessory from './EquippedAccessory.svelte';
 	import ItemSlot from '$lib/item/components/ItemSlot.svelte';
 	import { createCollection } from '$lib';
 	import InputControl from '$lib/components/InputControl.svelte';
 	import AccessoryCard from './AccessoryCard.svelte';
+	import type { AccessoryItem } from '$lib/item';
 
 	export let label: string;
 	export let item: AccessoryItem | null = null;
@@ -30,7 +30,7 @@
 	);
 </script>
 
-<ItemSlot {label} bind:selectedItem={item} result={$result} bind:pagination={$pagination} let:selectedItem>
+<ItemSlot {label} dialogTitle="Choose Accessory" bind:selectedItem={item} result={$result} bind:pagination={$pagination} let:selectedItem>
 	{#if selectedItem}
 		<EquippedAccessory item={selectedItem} on:update={(e) => (item = e.detail)} />
 	{:else}

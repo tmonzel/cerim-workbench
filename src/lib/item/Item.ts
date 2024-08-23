@@ -1,7 +1,7 @@
 import { spEffectsMap } from '$lib/data';
-import type { ItemData, ItemEffect, ItemRarity } from './types';
+import type { ItemEffect, ItemEntity, ItemRarity } from './types';
 
-export class Item {
+export class Item<T extends ItemEntity = ItemEntity> {
 	readonly type: number;
 	readonly name: string;
 	readonly weight: number;
@@ -13,14 +13,14 @@ export class Item {
 
 	constructor(
 		readonly id: string,
-		protected data: ItemData
+		protected entity: T
 	) {
-		this.type = data.type;
-		this.name = data.name;
-		this.iconId = data.iconId;
-		this.weight = data.weight ?? 0;
-		this.description = data.description;
-		this.rarity = data.rarity;
+		this.type = entity.type;
+		this.name = entity.name;
+		this.iconId = entity.iconId;
+		this.weight = entity.weight ?? 0;
+		this.description = entity.description;
+		this.rarity = entity.rarity;
 	}
 
 	protected applyEffects(ids: number[]): void {

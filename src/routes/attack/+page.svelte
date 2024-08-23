@@ -1,6 +1,6 @@
 <script lang="ts">
+	import { weaponStore } from '$lib/item/stores';
 	import { heroEquip } from '$lib/state';
-	import { weaponStore } from '$lib/weapon';
 	import WeaponSlot from './WeaponSlot.svelte';
 
 	$: items = Object.values($weaponStore);

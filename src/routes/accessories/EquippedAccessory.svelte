@@ -1,5 +1,4 @@
 <script lang="ts">
-	import type { AccessoryItem } from '$lib/accessory';
 	import CheckboxControl from '$lib/components/CheckboxControl.svelte';
 	import Icon from '$lib/components/Icon.svelte';
 	import ItemImage from '$lib/item/components/ItemImage.svelte';
@@ -7,6 +6,7 @@
 	import ItemHeader from '$lib/item/components/ItemHeader.svelte';
 	import ItemUpgradeBar from '$lib/item/components/ItemUpgradeBar.svelte';
 	import { createEventDispatcher } from 'svelte';
+	import type { AccessoryItem } from '$lib/item';
 
 	export let item: AccessoryItem;
 

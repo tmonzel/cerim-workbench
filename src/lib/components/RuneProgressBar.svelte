@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { calcNeededSouls } from '$lib/core';
-	import { heroState } from '$lib/hero';
-	import { uiState } from '$lib/state';
+	import { uiState, heroState } from '$lib/state';
 </script>
 
 <div class="relative">
@@ -11,9 +10,7 @@
 			class:justify-end={$heroState.progress > 0.075}
 			class:opacity-100={$uiState.showRuneInfo}
 		>
-			{$heroState.souls.toLocaleString()}<span class="ms-1"
-				>(+{calcNeededSouls($heroState.level).toLocaleString()})</span
-			>
+			{$heroState.souls.toLocaleString()}<span class="ms-1">(+{calcNeededSouls($heroState.level).toLocaleString()})</span>
 		</div>
 
 		<hr class="h-1 bg-amber-300 border-amber-300" />

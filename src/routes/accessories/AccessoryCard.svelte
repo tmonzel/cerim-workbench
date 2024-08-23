@@ -1,7 +1,7 @@
 <script lang="ts">
-	import type { AccessoryItem } from '$lib/accessory';
 	import Icon from '$lib/components/Icon.svelte';
 	import { getIconUrl } from '$lib/helpers';
+	import type { AccessoryItem } from '$lib/item';
 	import ItemEffectBadge from '$lib/item/components/ItemEffectBadge.svelte';
 	import ItemHeader from '$lib/item/components/ItemHeader.svelte';
 

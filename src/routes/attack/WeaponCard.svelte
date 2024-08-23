@@ -1,16 +1,19 @@
 <script lang="ts">
-	import AttackBadge from '$lib/components/AttackBadge.svelte';
-	import AttackDetail from '$lib/components/AttackDetail.svelte';
-	import GuardGrid from '$lib/components/GuardGrid.svelte';
+	import { affinities, AffinityType, validateRequirements } from '$lib';
+	import AttackBadge from './AttackBadge.svelte';
+	import AttackDetail from './AttackDetail.svelte';
+	import GuardGrid from './GuardGrid.svelte';
 	import Icon from '$lib/components/Icon.svelte';
+	import { weaponTypeInfo, type AttackItem } from '$lib/item';
 	import ItemCard from '$lib/item/components/ItemCard.svelte';
 	import ItemEffectBadge from '$lib/item/components/ItemEffectBadge.svelte';
 	import ItemHeader from '$lib/item/components/ItemHeader.svelte';
-	import { affinities, AffinityType, weaponTypeInfo, type AttackItem } from '$lib/weapon';
+	import { heroState } from '$lib/state';
 	import WeaponInfo from './WeaponInfo.svelte';
 
 	export let item: AttackItem;
-	export let slotted: boolean = false;
+
+	$: invalidAttributes = validateRequirements(item.requirements ?? {}, $heroState.attributes);
 </script>
 
 <ItemCard {item}>
@@ -36,7 +39,7 @@
 	</div>
 
 	<div class="mb-3">
-		<WeaponInfo {item} />
+		<WeaponInfo {item} {invalidAttributes} />
 	</div>
 
 	<ul>
@@ -47,7 +50,7 @@
 		{/each}
 	</ul>
 
-	{#if slotted && item.guard}
+	{#if item.guard}
 		<div class="px-4 py-4 sm:px-0">
 			<dt class="text-sm font-medium mb-2">Guard</dt>
 			<dd><GuardGrid data={item.guard} /></dd>

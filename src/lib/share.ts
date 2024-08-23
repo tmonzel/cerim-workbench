@@ -1,8 +1,8 @@
 import { get } from 'svelte/store';
 import { itemMap } from './data';
-import { AffinityType, AttackItem } from './weapon';
-import { AccessoryItem } from './accessory';
 import { heroAttack, heroAttributes, heroEquip, heroType, type HeroAttackState, type HeroEquipState } from './state';
+import { AccessoryItem, AttackItem } from './item';
+import { AffinityType } from './core';
 
 export type ItemSnapshot = {
 	id: string;

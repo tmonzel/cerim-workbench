@@ -1,13 +1,13 @@
 <script lang="ts">
 	import ItemSlot from '$lib/item/components/ItemSlot.svelte';
 	import { createCollection, DamageType } from '$lib/core';
-	import { weaponTypeInfo, type AttackItem } from '$lib/weapon';
 	import EquippedWeapon from './EquippedWeapon.svelte';
 	import WeaponCard from './WeaponCard.svelte';
 	import SelectControl from '$lib/components/SelectControl.svelte';
 	import InputControl from '$lib/components/InputControl.svelte';
 	import CheckboxControl from '$lib/components/CheckboxControl.svelte';
 	import SortButton from '$lib/item/components/SortButton.svelte';
+	import { weaponTypeInfo, type AttackItem } from '$lib/item';
 
 	export let label: string;
 	export let item: AttackItem | null = null;
@@ -58,7 +58,7 @@
 	);
 </script>
 
-<ItemSlot {label} bind:selectedItem={item} result={$result} bind:pagination={$pagination} let:selectedItem>
+<ItemSlot {label} dialogTitle="Choose {label} Weapon" bind:selectedItem={item} result={$result} bind:pagination={$pagination} let:selectedItem>
 	{#if selectedItem}
 		<EquippedWeapon item={selectedItem} on:update={(e) => (item = e.detail)} />
 	{:else}

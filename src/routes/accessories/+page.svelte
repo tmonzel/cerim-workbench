@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { accessoryStore } from '$lib/accessory';
+	import { accessoryStore } from '$lib/item/stores';
 	import { heroEquip } from '$lib/state';
 	import { derived } from 'svelte/store';
 	import AccessorySlot from './AccessorySlot.svelte';

@@ -1,6 +1,7 @@
 <script lang="ts">
+	import { affinities, AffinityType } from '$lib/core';
 	import SelectControl from '$lib/components/SelectControl.svelte';
-	import { affinities, AffinityType, type AttackItem } from '$lib/weapon';
+	import type { AttackItem } from '$lib/item';
 	import { createEventDispatcher } from 'svelte';
 
 	export let item: AttackItem;
