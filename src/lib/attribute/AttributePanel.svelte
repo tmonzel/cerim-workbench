@@ -1,6 +1,7 @@
 <script lang="ts">
-	import { heroAttributes, heroModifiedAttributes, heroTypeState } from '$lib/state';
+	import { heroTypeState } from '$lib/state';
 	import AttributeControl from './AttributeControl.svelte';
+	import { attributeStore, modifiedAttributes } from './state';
 	import { AttributeType, attributeTypes } from './types';
 </script>
 
@@ -10,11 +11,8 @@
 			<AttributeControl
 				base={$heroTypeState.attributes[type]}
 				attribute={attributeTypes[type]}
-				value={$heroAttributes[type]}
-				offset={$heroModifiedAttributes[type]}
-				on:changeValue={(e) => {
-					heroAttributes.update((attributes) => ({ ...attributes, [type]: e.detail }));
-				}}
+				offset={$modifiedAttributes[type]}
+				bind:value={$attributeStore[type]}
 			/>
 		</div>
 	{/each}

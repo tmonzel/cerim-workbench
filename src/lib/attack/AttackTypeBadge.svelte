@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { AttackType, attackTypes } from '$lib/core';
+	import { attackTypes, type AttackType } from './types';
 
 	export let type: `${AttackType}`;
 	export let value: number | undefined = undefined;

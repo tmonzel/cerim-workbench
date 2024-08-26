@@ -56,3 +56,13 @@ export type SpEffectModifier = {
 	key: string;
 	value: number;
 };
+
+export type Effect = {
+	target: string;
+	category: SpEffectCategory;
+	duration: number;
+	affectedSpellTypes?: string[];
+	conditions?: SpEffectCondition[];
+	modifiers?: SpEffectModifier[];
+	activated: boolean;
+};

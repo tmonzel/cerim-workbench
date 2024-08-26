@@ -1,9 +1,9 @@
 <script lang="ts">
+	import Pagination from '$lib/components/Pagination.svelte';
 	import Button from '$lib/components/Button.svelte';
 	import Badge from '$lib/components/Badge.svelte';
 	import Dialog from '$lib/components/Dialog.svelte';
 	import { type CollectionFindResult, type CollectionPagination } from '$lib/core';
-	import ItemList from './ItemList.svelte';
 
 	type T = $$Generic<Item>;
 
@@ -14,6 +14,10 @@
 	export let pagination: CollectionPagination;
 
 	let dialog: Dialog;
+
+	$: totalItems = result.totalItems;
+	$: itemsPerPage = pagination.itemsPerPage;
+	$: pageItemsTotal = itemsPerPage * pagination.page;
 
 	$: if (dialog && selectedItem) {
 		dialog.close();
@@ -54,14 +58,44 @@
 		<slot name="utils" />
 	</div>
 
-	<ItemList
-		items={result.items}
-		itemsPerPage={pagination.itemsPerPage}
-		totalItems={result.totalItems}
-		bind:currentPage={pagination.page}
-		bind:selectedItem
-		let:item
-	>
-		<slot name="listItem" {item} />
-	</ItemList>
+	{#if totalItems > itemsPerPage}
+		<div class="p-5 flex justify-between text-sm">
+			<div class="text-zinc-500">
+				{pageItemsTotal > totalItems ? totalItems : pageItemsTotal} / {totalItems}
+			</div>
+			<Pagination {totalItems} {itemsPerPage} bind:currentPage={pagination.page} />
+		</div>
+	{/if}
+
+	{#if result.items.length === 0}
+		<div class="text-sky-200 p-4 flex items-center rounded-lg bg-sky-900/50 m-4">
+			<span class="mat-icon me-2">warning</span>Sorry, no items found
+		</div>
+	{/if}
+
+	<ul class="grid 2xl:grid-cols-2 px-5 py-2 gap-10">
+		{#each result.items as item}
+			<li>
+				<button
+					type="button"
+					class="w-full my-2 text-left text-white rounded-lg p-5 hover:bg-zinc-800/50 group"
+					on:click={() => (selectedItem = item)}
+					class:ring-2={selectedItem?.id === item.id}
+					class:bg-stone-800={selectedItem?.id === item.id}
+					class:ring-amber-300={selectedItem?.id === item.id}
+				>
+					<slot name="listItem" {item} />
+				</button>
+			</li>
+		{/each}
+	</ul>
+
+	{#if totalItems > itemsPerPage}
+		<div class="p-5 flex justify-between text-sm">
+			<div class="text-zinc-500">
+				{pageItemsTotal > totalItems ? totalItems : pageItemsTotal} / {totalItems}
+			</div>
+			<Pagination {totalItems} {itemsPerPage} bind:currentPage={pagination.page} />
+		</div>
+	{/if}
 </Dialog>

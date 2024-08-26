@@ -1,6 +1,6 @@
 import type { AttributeType } from '$lib/attribute';
 import type { AttackType, DamageType, GraphMutation, Guard, GuardType } from '$lib/core';
-import type { SpEffectCategory, SpEffectCondition, SpEffectModifier } from '$lib/effect/types';
+import type { SpEffectModifier } from '$lib/effect';
 import type { Item } from './Item';
 
 export interface Upgradable {
@@ -53,16 +53,6 @@ export type ItemUpgrade = {
 	iconId: string;
 	effects?: number[];
 	effectInfo?: string;
-};
-
-export type ItemEffect = {
-	target: string;
-	category: SpEffectCategory;
-	duration: number;
-	affectedSpellTypes?: string[];
-	conditions?: SpEffectCondition[];
-	modifiers?: SpEffectModifier[];
-	activated: boolean;
 };
 
 export type ModifierType = 'flat' | 'percentual';

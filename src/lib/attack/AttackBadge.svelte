@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Attack } from '$lib/core';
+	import type { Attack } from './types';
 
 	export let attack: Attack;
 

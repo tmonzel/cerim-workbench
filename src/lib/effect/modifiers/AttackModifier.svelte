@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { attackTypes } from '$lib/core';
+	import { attackTypes } from '$lib/attack';
 
 	export let key: string;
 	export let value: number;

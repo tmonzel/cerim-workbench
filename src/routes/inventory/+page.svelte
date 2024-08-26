@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { heroEquip } from '$lib/state';
+	import { equipStore } from '$lib/equip';
 	import { derived } from 'svelte/store';
 	import InventorySlot from './InventorySlot.svelte';
 	import { inventoryStore } from '$lib/item/stores';
@@ -9,5 +9,5 @@
 </script>
 
 <div class="grid grid-cols-2 gap-5">
-	<InventorySlot label="Greatrune" items={$greatrunes} bind:item={$heroEquip.greatRune} />
+	<InventorySlot label="Greatrune" items={$greatrunes} bind:item={$equipStore.greatRune} />
 </div>

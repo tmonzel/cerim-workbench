@@ -3,7 +3,7 @@
 	import StatBadge from '$lib/stat/StatBadge.svelte';
 	import { damageTypes } from '$lib/core';
 	import type { AttackItem } from '$lib/item';
-	import { getScalingLetter } from '$lib/scaling';
+	import { getScalingLetter } from '$lib/attack';
 
 	export let item: AttackItem;
 	export let invalidAttributes: string[] = [];

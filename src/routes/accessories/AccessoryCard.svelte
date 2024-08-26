@@ -1,8 +1,8 @@
 <script lang="ts">
 	import Icon from '$lib/components/Icon.svelte';
+	import EffectBadge from '$lib/effect/EffectBadge.svelte';
 	import { getIconUrl } from '$lib/helpers';
 	import type { AccessoryItem } from '$lib/item';
-	import ItemEffectBadge from '$lib/item/components/ItemEffectBadge.svelte';
 	import ItemHeader from '$lib/item/components/ItemHeader.svelte';
 
 	export let item: AccessoryItem;
@@ -36,7 +36,7 @@
 		<ul>
 			{#each item.effects as effect}
 				<li>
-					<ItemEffectBadge {effect} />
+					<EffectBadge {effect} />
 				</li>
 			{/each}
 		</ul>

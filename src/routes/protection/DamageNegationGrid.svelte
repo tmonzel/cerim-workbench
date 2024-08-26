@@ -1,5 +1,5 @@
 <script lang="ts">
-	import AttackTypeBadge from '$lib/components/AttackTypeBadge.svelte';
+	import AttackTypeBadge from '$lib/attack/AttackTypeBadge.svelte';
 	import { roundValue, type DamageNegation } from '$lib/core';
 	import StatBadge from '$lib/stat/StatBadge.svelte';
 

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { VisXYContainer, VisLine, VisAxis, VisStackedBar } from '@unovis/svelte';
-	import { attackTypes, type AttributeAttackRecord } from '$lib/core';
 	import AttributeBadge from '$lib/attribute/AttributeBadge.svelte';
+	import { attackTypes, type AttributeAttackRecord } from './types';
 
 	export let data: AttributeAttackRecord[];
 	export let attributeType: string;

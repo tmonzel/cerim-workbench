@@ -1,6 +1,6 @@
 <script lang="ts">
-	import AttackTypeBadge from '$lib/components/AttackTypeBadge.svelte';
-	import type { Guard } from '$lib/core/types';
+	import AttackTypeBadge from '$lib/attack/AttackTypeBadge.svelte';
+	import type { Guard } from '$lib/core';
 	import StatBadge from '$lib/stat/StatBadge.svelte';
 
 	export let data: Guard;

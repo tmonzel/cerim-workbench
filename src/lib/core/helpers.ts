@@ -1,4 +1,4 @@
-import type { AttributeType } from './attributes';
+import type { AttributeType } from '$lib/attribute';
 import { type DynamicNumber, type GraphMutation } from './types';
 
 export function createDynamicNumber(base: number): DynamicNumber {

@@ -1,15 +1,15 @@
 <script lang="ts">
 	import { affinities, AffinityType, validateRequirements } from '$lib';
-	import AttackBadge from './AttackBadge.svelte';
-	import AttackDetail from './AttackDetail.svelte';
 	import GuardGrid from './GuardGrid.svelte';
 	import Icon from '$lib/components/Icon.svelte';
 	import { weaponTypeInfo, type AttackItem } from '$lib/item';
 	import ItemCard from '$lib/item/components/ItemCard.svelte';
-	import ItemEffectBadge from '$lib/item/components/ItemEffectBadge.svelte';
 	import ItemHeader from '$lib/item/components/ItemHeader.svelte';
 	import { heroState } from '$lib/state';
 	import WeaponInfo from './WeaponInfo.svelte';
+	import EffectBadge from '$lib/effect/EffectBadge.svelte';
+	import AttackBadge from '$lib/attack/AttackBadge.svelte';
+	import AttackDetail from '$lib/attack/AttackDetail.svelte';
 
 	export let item: AttackItem;
 
@@ -45,7 +45,7 @@
 	<ul>
 		{#each item.effects as effect}
 			<li>
-				<ItemEffectBadge {effect} />
+				<EffectBadge {effect} />
 			</li>
 		{/each}
 	</ul>

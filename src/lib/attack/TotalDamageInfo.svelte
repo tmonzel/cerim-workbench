@@ -1,6 +1,7 @@
 <script lang="ts">
-	import { attackTypes, calcTotal, getValueDistribution, type Attack, type AttackType } from '$lib';
-	import type { ScaledAttack } from '$lib/scaling';
+	import { calcTotal, getValueDistribution } from '$lib';
+	import type { ScaledAttack } from '$lib/attack/scaling';
+	import { attackTypes, type Attack, type AttackType } from './types';
 
 	export let attack: ScaledAttack;
 

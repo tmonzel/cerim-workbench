@@ -1,5 +1,6 @@
+import { createDynamicAttack, type AttackType } from './attack';
 import { AttributeType } from './attribute';
-import { calcCorrect, calcNeededSouls, createDynamicAttack, DamageType, DynamicValue, type AttackType, type DynamicNumber } from './core';
+import { calcCorrect, calcNeededSouls, DamageType, DynamicValue, type DynamicNumber } from './core';
 
 const HERO_MAX_LEVEL = 713;
 

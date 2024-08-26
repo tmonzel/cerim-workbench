@@ -1,23 +1,23 @@
 <script lang="ts">
-	import AttackBadge from './AttackBadge.svelte';
-	import AttackDetail from './AttackDetail.svelte';
 	import CheckboxControl from '$lib/components/CheckboxControl.svelte';
 	import Icon from '$lib/components/Icon.svelte';
 	import ItemImage from '$lib/item/components/ItemImage.svelte';
-	import ItemEffectBadge from '$lib/item/components/ItemEffectBadge.svelte';
 	import ItemHeader from '$lib/item/components/ItemHeader.svelte';
 	import ItemUpgradeBar from '$lib/item/components/ItemUpgradeBar.svelte';
 	import { createEventDispatcher } from 'svelte';
-	import AttackScalingInfo from './AttackScalingInfo.svelte';
 	import WeaponAffinitySelect from './WeaponAffinitySelect.svelte';
 	import WeaponInfo from './WeaponInfo.svelte';
-	import TotalDamageInfo from './TotalDamageInfo.svelte';
 	import { writable } from 'svelte/store';
 	import { affinities, AffinityType, validateRequirements } from '$lib';
 	import GuardGrid from './GuardGrid.svelte';
 	import { heroState } from '$lib/state';
-	import { calculateAttackScaling } from '$lib/scaling';
+	import { calculateAttackScaling } from '$lib/attack/scaling';
 	import { weaponTypeInfo, type AttackItem } from '$lib/item';
+	import EffectBadge from '$lib/effect/EffectBadge.svelte';
+	import AttackBadge from '$lib/attack/AttackBadge.svelte';
+	import AttackDetail from '$lib/attack/AttackDetail.svelte';
+	import AttackScalingInfo from '$lib/attack/AttackScalingInfo.svelte';
+	import TotalDamageInfo from '$lib/attack/TotalDamageInfo.svelte';
 
 	export let item: AttackItem;
 
@@ -86,7 +86,7 @@
 							{#each item.effects as effect}
 								<li class="flex gap-x-5">
 									<div class="grow">
-										<ItemEffectBadge {effect} />
+										<EffectBadge {effect} />
 									</div>
 									{#if effect.target !== 'enemy'}
 										<div class="pt-2">

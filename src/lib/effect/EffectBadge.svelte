@@ -1,12 +1,12 @@
 <script lang="ts">
-	import AbsorptionModifier from '../modifiers/AbsorptionModifier.svelte';
-	import AttackModifier from '../modifiers/AttackModifier.svelte';
-	import AttackStatusModifier from '../modifiers/AttackStatusModifier.svelte';
-	import AttributeModifier from '../modifiers/AttributeModifier.svelte';
-	import StatModifier from '../modifiers/StatModifier.svelte';
-	import type { ItemEffect } from '../types';
+	import type { Effect } from '$lib/effect';
+	import AbsorptionModifier from './modifiers/AbsorptionModifier.svelte';
+	import AttackModifier from './modifiers/AttackModifier.svelte';
+	import AttackStatusModifier from './modifiers/AttackStatusModifier.svelte';
+	import AttributeModifier from './modifiers/AttributeModifier.svelte';
+	import StatModifier from './modifiers/StatModifier.svelte';
 
-	export let effect: ItemEffect;
+	export let effect: Effect;
 </script>
 
 <div>

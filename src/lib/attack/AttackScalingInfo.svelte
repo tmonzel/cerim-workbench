@@ -1,6 +1,6 @@
 <script lang="ts">
-	import type { ScaledAttack } from '$lib/scaling';
 	import AttackScalingGraph from './AttackScalingGraph.svelte';
+	import type { ScaledAttack } from './scaling';
 
 	export let attack: ScaledAttack;
 </script>

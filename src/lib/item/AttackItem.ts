@@ -1,7 +1,7 @@
+import { AttackType, scalingAttributes, type Attack } from '$lib/attack';
 import { AttributeType } from '$lib/attribute';
-import { AffinityType, AttackType, GuardType, type Attack, type GraphMutation, type Guard } from '$lib/core';
+import { AffinityType, GuardType, type GraphMutation, type Guard } from '$lib/core';
 import { attackCorrectRecord, mutationRecord, upgradeSchemata } from '$lib/data';
-import { scalingAttributes } from '$lib/scaling';
 import { Item } from './Item';
 import type { WeaponEntity } from './entities';
 import type { AttackInfo, Upgradable, UpgradeSchema, WeaponConfig, WeaponScaling } from './types';

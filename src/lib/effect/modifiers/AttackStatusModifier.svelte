@@ -1,6 +1,5 @@
 <script lang="ts">
 	import StatusEffectIcon from '$lib/components/StatusEffectIcon.svelte';
-	import { statusTypes } from '$lib/core';
 
 	export let key: string;
 	export let value: number;

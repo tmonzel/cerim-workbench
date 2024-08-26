@@ -29,6 +29,7 @@
 			return 99 - base;
 		}
 
+		value = newValue;
 		dispatch('changeValue', newValue);
 	}
 </script>

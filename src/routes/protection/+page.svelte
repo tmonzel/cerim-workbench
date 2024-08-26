@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { heroEquip } from '$lib/state';
+	import { equipStore } from '$lib/equip';
 	import { derived } from 'svelte/store';
 	import ArmorSlot from './ArmorSlot.svelte';
 	import { armorStore } from '$lib/item/stores';
@@ -16,8 +16,8 @@
 </script>
 
 <div class="grow grid gap-5">
-	<ArmorSlot label="Head" items={$helmets} bind:item={$heroEquip.head} />
-	<ArmorSlot label="Chest" items={$armors} bind:item={$heroEquip.chest} />
-	<ArmorSlot label="Legs" items={$legs} bind:item={$heroEquip.legs} />
-	<ArmorSlot label="Arms" items={$gauntlets} bind:item={$heroEquip.arms} />
+	<ArmorSlot label="Head" items={$helmets} bind:item={$equipStore.head} />
+	<ArmorSlot label="Chest" items={$armors} bind:item={$equipStore.chest} />
+	<ArmorSlot label="Legs" items={$legs} bind:item={$equipStore.legs} />
+	<ArmorSlot label="Arms" items={$gauntlets} bind:item={$equipStore.arms} />
 </div>

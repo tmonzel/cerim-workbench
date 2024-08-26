@@ -2,9 +2,9 @@
 	import ArmorCard from './ArmorCard.svelte';
 	import ItemSlot from '$lib/item/components/ItemSlot.svelte';
 	import { createCollection } from '$lib';
-	import SortButton from '$lib/item/components/SortButton.svelte';
 	import InputControl from '$lib/components/InputControl.svelte';
 	import type { ProtectItem } from '$lib/item';
+	import SortButton from '$lib/components/SortButton.svelte';
 
 	export let label: string;
 	export let item: ProtectItem | null = null;

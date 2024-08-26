@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { accessoryStore } from '$lib/item/stores';
-	import { heroEquip } from '$lib/state';
+	import { equipStore } from '$lib/equip';
 	import { derived } from 'svelte/store';
 	import AccessorySlot from './AccessorySlot.svelte';
 
@@ -8,8 +8,16 @@
 </script>
 
 <div class="grid grid-cols-2 gap-5">
-	<AccessorySlot label="Pouch" items={$talismans} bind:item={$heroEquip.pouch} />
-	<AccessorySlot label="Pouch II" items={$talismans} bind:item={$heroEquip.pouch2} />
-	<AccessorySlot label="Pouch III" items={$talismans} bind:item={$heroEquip.pouch3} />
-	<AccessorySlot label="Pouch IV" items={$talismans} bind:item={$heroEquip.pouch4} />
+	<div>
+		<AccessorySlot label="Pouch" items={$talismans} bind:item={$equipStore.pouch} />
+	</div>
+	<div>
+		<AccessorySlot label="Pouch II" items={$talismans} bind:item={$equipStore.pouch2} />
+	</div>
+	<div>
+		<AccessorySlot label="Pouch III" items={$talismans} bind:item={$equipStore.pouch3} />
+	</div>
+	<div>
+		<AccessorySlot label="Pouch IV" items={$talismans} bind:item={$equipStore.pouch4} />
+	</div>
 </div>

@@ -1,12 +1,11 @@
 <script lang="ts">
-	import CheckboxControl from '$lib/components/CheckboxControl.svelte';
 	import Icon from '$lib/components/Icon.svelte';
 	import ItemImage from '$lib/item/components/ItemImage.svelte';
-	import ItemEffectBadge from '$lib/item/components/ItemEffectBadge.svelte';
 	import ItemHeader from '$lib/item/components/ItemHeader.svelte';
 	import ItemUpgradeBar from '$lib/item/components/ItemUpgradeBar.svelte';
 	import { createEventDispatcher } from 'svelte';
 	import type { AccessoryItem } from '$lib/item';
+	import EffectList from '$lib/effect/EffectList.svelte';
 
 	export let item: AccessoryItem;
 
@@ -46,17 +45,6 @@
 			<p class="text-sm text-zinc-500 italic mb-2">{item.effectInfo}</p>
 		{/if}
 
-		<ul>
-			{#each item.effects as effect}
-				<li class="flex gap-x-5">
-					<div class="grow">
-						<ItemEffectBadge {effect} />
-					</div>
-					<div class="pt-2">
-						<CheckboxControl bind:checked={effect.activated} on:checked={() => updateItem(item)}></CheckboxControl>
-					</div>
-				</li>
-			{/each}
-		</ul>
+		<EffectList editable effects={item.effects} on:checked={() => updateItem(item)} />
 	</div>
 </div>

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import AttackTypeBadge from '$lib/components/AttackTypeBadge.svelte';
+	import AttackTypeBadge from '$lib/attack/AttackTypeBadge.svelte';
 	import StatBadge from './StatBadge.svelte';
 	import StatValue from './StatValue.svelte';
 	import { DamageType } from '$lib/core';

@@ -1,15 +1,8 @@
-import {
-	AttackType,
-	calcCorrect,
-	calcTotal,
-	createDynamicAttack,
-	validateRequirements,
-	type Attack,
-	type AttributeAttackRecord,
-	type DynamicNumber
-} from '$lib/core';
-import { AttributeType } from './attribute';
-import type { AttackItem } from './item';
+import { AttributeType } from '$lib/attribute';
+import { calcCorrect, calcTotal, validateRequirements, type DynamicNumber } from '$lib/core';
+import type { AttackItem } from '$lib/item';
+import { createDynamicAttack } from './helpers';
+import { AttackType, type Attack, type AttributeAttackRecord } from './types';
 
 export const scalingAttributes = [
 	AttributeType.STRENGTH,

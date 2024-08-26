@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { attackTypes, getValueDistribution, type Attack } from '$lib/core';
+	import { getValueDistribution } from '$lib/core';
+	import { attackTypes, type Attack } from './types';
 
 	export let attack: Attack;
 	export let base: Attack = {};

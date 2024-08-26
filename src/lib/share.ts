@@ -1,8 +1,10 @@
 import { get } from 'svelte/store';
 import { itemMap } from './data';
-import { heroAttack, heroAttributes, heroEquip, heroType, type HeroAttackState, type HeroEquipState } from './state';
+import { heroAttack, heroType, type HeroAttackState } from './state';
 import { AccessoryItem, AttackItem } from './item';
 import { AffinityType } from './core';
+import { attributeStore } from './attribute';
+import { equipStore, type EquipState } from './equip';
 
 export type ItemSnapshot = {
 	id: string;
@@ -19,15 +21,15 @@ export type SharedBuild = {
 
 export function applySharedBuild(build: SharedBuild): void {
 	heroType.set(build.type);
-	heroAttributes.set(build.attributes);
+	attributeStore.set(build.attributes);
 	heroAttack.set(build.attack);
 
-	heroEquip.update((state) => {
+	equipStore.update((state) => {
 		const equip = { ...state };
 
 		if (build.equip) {
 			for (const [key, config] of Object.entries(build.equip)) {
-				const slot = key as keyof HeroEquipState;
+				const slot = key as keyof EquipState;
 				const item = itemMap.get(config.id);
 
 				if (!item) {
@@ -52,8 +54,8 @@ export function applySharedBuild(build: SharedBuild): void {
 
 export function makeSharedBuildSnapshot(): SharedBuild {
 	const currentType = get(heroType);
-	const currentEquip = get(heroEquip);
-	const currentAttributes = get(heroAttributes);
+	const currentEquip = get(equipStore);
+	const currentAttributes = get(attributeStore);
 	const currentAttack = get(heroAttack);
 
 	const equip: Record<string, ItemSnapshot> = {};

@@ -6,8 +6,8 @@
 	import SelectControl from '$lib/components/SelectControl.svelte';
 	import InputControl from '$lib/components/InputControl.svelte';
 	import CheckboxControl from '$lib/components/CheckboxControl.svelte';
-	import SortButton from '$lib/item/components/SortButton.svelte';
 	import { weaponTypeInfo, type AttackItem } from '$lib/item';
+	import SortButton from '$lib/components/SortButton.svelte';
 
 	export let label: string;
 	export let item: AttackItem | null = null;

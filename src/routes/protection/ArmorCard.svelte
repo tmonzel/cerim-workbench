@@ -1,21 +1,21 @@
 <script lang="ts">
 	import ResistanceGrid from './ResistanceGrid.svelte';
 	import ItemCard from '$lib/item/components/ItemCard.svelte';
-	import ItemEffectList from '$lib/item/components/ItemEffectList.svelte';
 	import ItemHeader from '$lib/item/components/ItemHeader.svelte';
 	import { createEventDispatcher } from 'svelte';
 	import { armorTypeInfo, type Item, type ProtectItem } from '$lib/item';
 	import Icon from '$lib/components/Icon.svelte';
 	import DamageNegationGrid from './DamageNegationGrid.svelte';
+	import EffectList from '$lib/effect/EffectList.svelte';
 
 	export let item: ProtectItem;
 	export let editable: boolean = false;
 
 	const dispatch = createEventDispatcher();
 
-	function updateItem(e: CustomEvent<Item>) {
-		item = e.detail as ProtectItem;
-		dispatch('update', e.detail);
+	function updateItem(item: Item) {
+		item = item;
+		dispatch('update', item);
 	}
 </script>
 
@@ -53,7 +53,7 @@
 		</p>
 	</div>
 
-	<ItemEffectList {item} {editable} on:update={updateItem} />
+	<EffectList effects={item.effects} {editable} on:checked={() => updateItem(item)} />
 
 	<dl class="divide-y divide-gray-100/20">
 		<div class="px-4 py-4 sm:px-0">
