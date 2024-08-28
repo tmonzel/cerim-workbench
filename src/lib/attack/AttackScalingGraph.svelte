@@ -31,17 +31,17 @@
 			attackTypes.sta.color
 		][i];
 
-	let nextAttack: Record<string, number> = {};
+	let nextAttack: Record<string, number> | null = {};
 
 	$: flatPosition = Math.round(position);
 
-	$: currentAttack = data[flatPosition].attack;
-	$: nextAttack = data[flatPosition + 1].attack;
+	$: currentAttack = data[flatPosition] ? data[flatPosition].attack : null;
+	$: nextAttack = data[flatPosition + 1] ? data[flatPosition + 1].attack : null;
 </script>
 
 <div style="--vis-axis-grid-color: rgba(255, 255, 255, 0.1)" class="flex flex-col items-end">
 	<div class="mb-2">
-		<VisXYContainer {data} width={215} height={125} duration={0} xDomain={[0, 99]} yDomain={[0, undefined]}>
+		<VisXYContainer {data} duration={0} xDomain={[0, 98]} yDomain={[0, undefined]} class="max-w-40 max-h-32 2xl:min-w-64 2xl:min-h-36">
 			<VisLine {x} {y} {color} />
 			<VisAxis type="x" tickValues={[0, 25, 50, 75]} />
 			<VisAxis type="y" tickValues={[0, 50, 100, 200, 300, 400, 500]} />
@@ -51,11 +51,12 @@
 	<div class="text-xs text-zinc-500 flex mb-1">
 		<AttributeBadge type={attributeType} /><span class="ms-1">({flatPosition})</span>
 	</div>
-
-	<dl class="grid grid-cols-2 px-2 py-1 text-xs bg-zinc-800 rounded-md">
-		{#each Object.entries(currentAttack) as [t, v]}
-			<dt class="me-2">{t}</dt>
-			<dd>+{Math.round((nextAttack[t] - v) * 10) / 10}</dd>
-		{/each}
-	</dl>
+	{#if currentAttack && nextAttack}
+		<dl class="grid grid-cols-2 px-2 py-1 text-xs bg-zinc-800 rounded-md">
+			{#each Object.entries(currentAttack) as [t, v]}
+				<dt class="me-2">{t}</dt>
+				<dd>+{Math.round((nextAttack[t] - v) * 10) / 10}</dd>
+			{/each}
+		</dl>
+	{/if}
 </div>

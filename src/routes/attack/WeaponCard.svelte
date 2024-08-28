@@ -7,9 +7,9 @@
 	import ItemHeader from '$lib/item/components/ItemHeader.svelte';
 	import { heroState } from '$lib/state';
 	import WeaponInfo from './WeaponInfo.svelte';
-	import EffectBadge from '$lib/effect/EffectBadge.svelte';
 	import AttackBadge from '$lib/attack/AttackBadge.svelte';
 	import AttackDetail from '$lib/attack/AttackDetail.svelte';
+	import ItemEffectList from '$lib/item/components/ItemEffectList.svelte';
 
 	export let item: AttackItem;
 
@@ -42,13 +42,7 @@
 		<WeaponInfo {item} {invalidAttributes} />
 	</div>
 
-	<ul>
-		{#each item.effects as effect}
-			<li>
-				<EffectBadge {effect} />
-			</li>
-		{/each}
-	</ul>
+	<ItemEffectList {item} />
 
 	{#if item.guard}
 		<div class="px-4 py-4 sm:px-0">

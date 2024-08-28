@@ -91,6 +91,7 @@ export function calculateAttributeAttack(weapon: AttackItem, attrValue: number, 
 }
 
 export function calculateAttackScaling(
+	baseAttack: Attack,
 	weapon: AttackItem,
 	attack: Record<AttackType, DynamicNumber>,
 	attributes: Record<AttributeType, number>,
@@ -107,7 +108,7 @@ export function calculateAttackScaling(
 	const invalidAttributes = validateRequirements(weapon.requirements ?? {}, attributes);
 
 	for (const attackType of Object.values(AttackType)) {
-		const attackBase = weapon.attack[attackType] ?? 0;
+		const attackBase = baseAttack[attackType] ?? 0;
 
 		if (!attackBase && attackType !== AttackType.SORCERY && attackType !== AttackType.INCANTATION) {
 			continue;
@@ -149,9 +150,10 @@ export function calculateAttackScaling(
 
 		const data: AttributeAttackRecord[] = [];
 
-		for (let i = 0; i < 99; i++) {
-			const attack = calculateAttributeAttack(weapon, i, attr);
-			data.push({ value: i, attack });
+		// Attribute modifications and two handed mode increase the x pos above 99 so
+		// we need to make some more iterations (need to improve this part in future versions)
+		for (let i = 0; i < 100; i++) {
+			data.push({ value: i, attack: calculateAttributeAttack(weapon, i, attr) });
 		}
 
 		scaling[attr] = data;

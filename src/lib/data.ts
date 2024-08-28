@@ -1,4 +1,6 @@
-import { type AttackCorrect, type GraphMutation, type SpEffect } from './core';
+import type { AttackCorrect } from './attack';
+import { type GraphMutation } from './core';
+import type { SpEffect } from './effect';
 import {
 	AccessoryItem,
 	AttackItem,

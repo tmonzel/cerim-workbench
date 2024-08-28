@@ -7,11 +7,11 @@
 	import { heroState } from '$lib/state';
 </script>
 
-<div class="px-12 py-10">
+<div class="p-7 2xl:px-12 2xl:py-10">
 	<Header />
 
 	<div class="flex gap-10">
-		<div class="min-w-56">
+		<div class="min-w-36">
 			<div class="sticky top-5 z-10">
 				<div class="mb-10">
 					<h3 class="font-semibold text-lg">Attributes</h3>
@@ -25,7 +25,7 @@
 			<slot />
 		</div>
 
-		<div class="max-w-72">
+		<div class="max-w-56 2xl:max-w-72">
 			<div class="sticky top-5">
 				<div class="mb-10">
 					<h3 class="font-semibold text-lg">Stats</h3>

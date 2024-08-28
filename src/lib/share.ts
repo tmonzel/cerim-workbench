@@ -3,7 +3,7 @@ import { itemMap } from './data';
 import { heroAttack, heroType, type HeroAttackState } from './state';
 import { AccessoryItem, AttackItem } from './item';
 import { AffinityType } from './core';
-import { attributeStore } from './attribute';
+import { attributeStore, type AttributeState } from './attribute';
 import { equipStore, type EquipState } from './equip';
 
 export type ItemSnapshot = {
@@ -14,7 +14,7 @@ export type ItemSnapshot = {
 
 export type SharedBuild = {
 	type: string;
-	attributes: Record<string, number>;
+	attributes: AttributeState;
 	equip?: Record<string, ItemSnapshot>;
 	attack: HeroAttackState;
 };

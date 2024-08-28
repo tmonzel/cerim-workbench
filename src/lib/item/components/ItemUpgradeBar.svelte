@@ -14,7 +14,7 @@
 	}
 </script>
 
-<div class="inline-flex gap-2 text-xl justify-center items-center">
+<div class="inline-flex gap-2 text-2xl justify-center items-center">
 	<div>
 		<Button theme="default" icon="add" disabled={item.tier >= item.possibleUpgrades} on:click={() => upgrade(item.tier + 1)} />
 	</div>

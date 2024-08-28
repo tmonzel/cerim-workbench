@@ -1,21 +1,13 @@
 <script lang="ts">
 	import Icon from '$lib/components/Icon.svelte';
 	import { goodTypeInfo } from '$lib/item/maps';
-	import type { InventoryItem, Item } from '$lib/item';
+	import type { InventoryItem } from '$lib/item';
 	import ItemCard from '$lib/item/components/ItemCard.svelte';
 	import ItemHeader from '$lib/item/components/ItemHeader.svelte';
-	import { createEventDispatcher } from 'svelte';
-	import EffectList from '$lib/effect/EffectList.svelte';
+	import ItemEffectList from '$lib/item/components/ItemEffectList.svelte';
 
 	export let item: InventoryItem;
 	export let editable: boolean = false;
-
-	const dispatch = createEventDispatcher();
-
-	function updateItem(item: Item) {
-		item = item;
-		dispatch('update', item);
-	}
 </script>
 
 <ItemCard {item}>
@@ -35,5 +27,5 @@
 		<p class="text-sm text-zinc-500 italic mb-2">{item.effectInfo}</p>
 	{/if}
 
-	<EffectList effects={item.effects} {editable} on:checked={() => updateItem(item)} />
+	<ItemEffectList {item} {editable} on:update />
 </ItemCard>

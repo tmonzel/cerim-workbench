@@ -6,3 +6,4 @@ export * from './InventoryItem';
 export * from './AttackItem';
 export * from './maps';
 export * from './entities';
+export * from './slot';

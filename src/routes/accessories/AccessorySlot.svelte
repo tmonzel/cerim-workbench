@@ -1,5 +1,4 @@
 <script lang="ts">
-	import EquippedAccessory from './EquippedAccessory.svelte';
 	import ItemSlot from '$lib/item/components/ItemSlot.svelte';
 	import { createCollection } from '$lib';
 	import InputControl from '$lib/components/InputControl.svelte';
@@ -32,10 +31,12 @@
 
 <ItemSlot {label} dialogTitle="Choose Accessory" bind:selectedItem={item} result={$result} bind:pagination={$pagination} let:selectedItem>
 	{#if selectedItem}
-		<EquippedAccessory item={selectedItem} on:update={(e) => (item = e.detail)} />
+		<AccessoryCard selected item={selectedItem} on:update={(e) => (item = e.detail)} />
 	{:else}
 		Accessory Slot
 	{/if}
+
+	<svelte:fragment slot="options"></svelte:fragment>
 
 	<svelte:fragment slot="utils">
 		<InputControl bind:value={$filters.search} placeholder="Find talismans..." class="text-xl" />

@@ -1,44 +1,42 @@
 <script lang="ts">
 	import Icon from '$lib/components/Icon.svelte';
-	import EffectBadge from '$lib/effect/EffectBadge.svelte';
-	import { getIconUrl } from '$lib/helpers';
+	import ItemEffectList from '$lib/item/components/ItemEffectList.svelte';
 	import type { AccessoryItem } from '$lib/item';
+	import ItemCard from '$lib/item/components/ItemCard.svelte';
 	import ItemHeader from '$lib/item/components/ItemHeader.svelte';
+	import ItemUpgradeBar from '$lib/item/components/ItemUpgradeBar.svelte';
 
 	export let item: AccessoryItem;
+	export let selected: boolean = false;
 </script>
 
-<article class="max-w-sm w-full lg:max-w-full lg:flex">
-	<div class="px-5">
-		<img src={getIconUrl(item.iconId)} alt={item.name} class="object-cover transition-all group-hover:brightness-150" />
-	</div>
+<ItemCard {item}>
+	<ItemHeader rarity={item.rarity} type="Talisman">
+		{item.name}
+		{#if !selected && item.possibleUpgrades > 0}
+			+(1-{item.possibleUpgrades + 1})
+		{/if}
 
-	<div class="grow">
-		<ItemHeader rarity={item.rarity} type="Talisman">
-			{item.name}
-			{#if item.possibleUpgrades > 0}
-				(1/{item.possibleUpgrades + 1})
-			{/if}
-		</ItemHeader>
-
-		{#if item.weight > 0}
-			<div class="mb-5 text-2xl font-light">
-				<div class="flex items-center gap-x-1">
-					<Icon name="weight" />{item.weight}
-				</div>
+		<svelte:fragment slot="options">
+			<div class="flex justify-center gap-2">
+				{#if selected && item.possibleUpgrades > 0}
+					<ItemUpgradeBar {item} on:update />
+				{/if}
 			</div>
-		{/if}
+		</svelte:fragment>
+	</ItemHeader>
 
-		{#if item.effectInfo}
-			<p class="text-sm text-zinc-500 italic mb-2">{item.effectInfo}</p>
-		{/if}
+	{#if item.weight > 0}
+		<div class="mb-5 text-2xl font-light">
+			<div class="flex items-center gap-x-1">
+				<Icon name="weight" />{item.weight}
+			</div>
+		</div>
+	{/if}
 
-		<ul>
-			{#each item.effects as effect}
-				<li>
-					<EffectBadge {effect} />
-				</li>
-			{/each}
-		</ul>
-	</div>
-</article>
+	{#if item.effectInfo}
+		<p class="text-sm text-zinc-500 italic mb-2">{item.effectInfo}</p>
+	{/if}
+
+	<ItemEffectList editable={selected} {item} on:update />
+</ItemCard>

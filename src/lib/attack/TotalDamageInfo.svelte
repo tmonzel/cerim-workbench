@@ -23,11 +23,11 @@
 </script>
 
 <div class="text-sm leading-6 sm:mt-0 grow">
-	<div class="mb-4 font-light text-3xl flex items-center">
+	<div class="mb-4 text-4xl flex items-center">
 		{Math.round(attack.totalDamage * 10) / 10}
 	</div>
 
-	<div class="flex flex-col gap-3">
+	<div class="flex flex-col gap-5">
 		{#each dist as d}
 			{@const atk = attack.attack[d.key]}
 			{#if attack}

@@ -5,8 +5,8 @@
 	export let item: Item;
 </script>
 
-<article class="max-w-sm w-full lg:max-w-full lg:flex">
-	<div class="px-5">
+<article class="max-w-sm w-full lg:max-w-full flex gap-x-5">
+	<div class="min-w-40">
 		<img src={getIconUrl(item.iconId)} alt={item.name} class="object-cover transition-all group-hover:brightness-150" />
 	</div>
 

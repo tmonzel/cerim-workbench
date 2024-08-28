@@ -33,10 +33,10 @@
 		<div class="flex justify-between px-5 pt-5">
 			<div></div>
 			<div class="flex gap-2 invisible group-hover:visible">
+				<slot name="options" />
 				<Button icon="sync" class="text-2xl text-zinc-500 bg-zinc-700/30" on:click={() => dialog.open()} />
 				<Button icon="clear" class="text-2xl text-zinc-500 bg-zinc-700/30" on:click={() => (selectedItem = null)} />
 			</div>
-			<div></div>
 		</div>
 		<div class="p-5">
 			<slot {selectedItem} />

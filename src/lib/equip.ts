@@ -1,5 +1,5 @@
 import { writable } from 'svelte/store';
-import type { AccessoryItem, AttackItem, InventoryItem, ProtectItem } from './item';
+import { AccessoryItem, createSlot, type AttackItem, type InventoryItem, type ProtectItem } from './item';
 
 export type EquipState = {
 	mainHand: AttackItem | null;
@@ -31,3 +31,5 @@ export const equipStore = writable<EquipState>({
 	pouch4: null,
 	greatRune: null
 });
+
+export const pouchSlot = createSlot<AccessoryItem>();

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { uiState, heroState } from '$lib/state';
+	import { uiState } from '$lib/state';
 	import { createEventDispatcher } from 'svelte';
 	import type { Attribute } from './types';
 
@@ -7,6 +7,7 @@
 	export let attribute: Attribute;
 	export let value: number;
 	export let offset: number = 0;
+	export let max: number = 99;
 
 	const id = crypto.randomUUID();
 	const dispatch = createEventDispatcher<{ changeValue: number }>();
@@ -25,8 +26,8 @@
 			return;
 		}
 
-		if (newValue + base > 99) {
-			return 99 - base;
+		if (newValue + base > max) {
+			return max - base;
 		}
 
 		value = newValue;
@@ -42,6 +43,7 @@
 	<div class="absolute inset-y-0 left-0 flex items-center z-20">
 		<button
 			class="rounded-md border-0 px-4 text-zinc-200 hover:scale-150 transition-transform ease-out"
+			disabled={value === 0}
 			on:pointerover={() => (showTooltip = true)}
 			on:pointerout={() => (showTooltip = false)}
 			on:click={() => changeValue(value - 1)}
@@ -50,18 +52,19 @@
 		</button>
 	</div>
 	<div class="rounded-md border-0 py-1 text-center text-zinc-300">
-		{base + value}
+		{total}
 		{#if offset > 0}<span class="opacity-60">(+{offset})</span>{/if}
 	</div>
 	<div class="absolute inset-y-0 right-0 flex items-center z-20">
 		<button
 			class="rounded-md border-0 bg-transparent px-4 text-zinc-200 hover:scale-150 transition-transform ease-out"
+			disabled={total >= max}
 			on:pointerover={() => (showTooltip = true)}
 			on:pointerout={() => (showTooltip = false)}
-			on:click={() => ($heroState.attributePoints > 0 ? changeValue(value + 1) : -1)}
+			on:click={() => (total < max ? changeValue(value + 1) : null)}
 		>
 			+
 		</button>
 	</div>
-	<div class="absolute z-10 rounded-md top-0 left-0 bottom-0 bg-zinc-400/20" style:width={`${(total / 99) * 100}%`}></div>
+	<div class="absolute z-10 rounded-md top-0 left-0 bottom-0 bg-zinc-400/20" style:width={`${(total / max) * 100}%`}></div>
 </div>
